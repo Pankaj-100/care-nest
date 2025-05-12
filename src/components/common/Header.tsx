@@ -37,7 +37,7 @@ const Header = () => {
     return (
         <div className='flex px-28 py-5 items-center justify-between bg-[var(--navy)] text-white'>
             <div className='flex items-center gap-2'>
-                <Image src={'/logo.svg'} alt='logo' width={50} height={50} />
+                <Image src={'/Logo.svg'} alt='logo' width={50} height={50} />
             </div>
             <div className='flex items-center gap-x-18'>
                 <nav className='flex items-center justify-between gap-x-5'>
