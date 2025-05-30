@@ -29,7 +29,7 @@ const NavbarMenuTitle: NavbarTypes[] = [
         ]
     },
     { title: 'Blogs', link: '/blogs' },
-    { title: 'Contact Us', link: '/contact-us' },
+    { title: 'Contact Us', link: '/contact' },
 ]
 
 const Header = () => {

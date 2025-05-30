@@ -11,65 +11,43 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const HeroSection = () => {
-  return (
-    <div className="relative h-[500px]">
-      <div className="h-full w-full relative">
-        <div className="w-full h-[500px] absolute right-0 ">
-          <div className=" w-2/3 h-[500px] absolute right-0 ">
-            <Image
-              src={"/hero-background.png"}
-              alt="hero background"
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-          <div
-            className="absolute top-0 left-0 h-full w-2/3 pointer-events-none "
-            style={{
-              background:
-                "linear-gradient(to left, #233d4d00 0%, #233d4d 50%, #233d4d 100%)",
-            }}
-          ></div>
-        </div>
 
-        <div className="absolute left-28 top-1/7 text-white w-[500px]">
-          <div>
-            <h1 className="font-semibold text-4xl leading-11">
-              Find Trusted, Compassionate Caregivers for Your Loved Ones at Home
-            </h1>
-          </div>
-          <div className="my-5">
-            <p>
-              Easily connect with trusted professionals who provide personal
-              care and support tailored to your family’s needs.Create your free
-              profile to discover verified, compassionate caregivers.
-            </p>
-          </div>
 
-          <div>
-            <YellowButton className="px-10">Find a caregiver</YellowButton>
-          </div>
-        </div>
+
+
+
+
+export const CareGiverHero = () => {
+    return (
+        <div className='relative h-[300px]'>
+            <div className='w-full h-[300px] absolute right-0 '>
+                <div className='absolute right-0 w-2/3 h-full'>
+                    <Image src="/hero-care-provider.jpg" alt="hero care provider" fill style={{ objectFit: 'cover' }} />
+                </div>
+
+                <div className="absolute top-0 left-0 h-full w-2/3 pointer-events-none " style={{ background: 'linear-gradient(to left, #233d4d00 0%, #233d4d 50%, #233d4d 100%)', }}></div>
+            </div>
+
+            <h1 className='absolute text-5xl text-white left-38 font-bold -translate-y-1/2 top-1/2'>Find A Caregiver</h1>
+
+            <div className="flex max-w-7xl mx-auto items-center justify-center absolute -bottom-12 -translate-x-1/2 left-1/2">
+        <CareType />
       </div>
+        </div>
+    )
+}
 
-      <div className="flex items-center justify-center absolute -bottom-12 -translate-x-1/2 left-1/2">
-        <BrowseCaregiver />
-      </div>
-    </div>
-  );
-};
 
-export const BrowseCaregiver = () => {
+export const CareType = () => {
   return (
     <div className="flex items-center w-[80vw] bg-white rounded-xl p-4 py-6 gap-x-7">
-      <div className="w-52">
+      {/* <div className="w-52">
         <h3 className="font-semibold text-lg mb-1">Browse caregivers</h3>
         <p className="text-xs text-gray-500">
           Create your free profile to discover verified, compassionate
           caregivers.
         </p>
-      </div>
+      </div> */}
 
       <div>
         <h3 className="mb-3 font-semibold text-sm">Care type</h3>
@@ -77,10 +55,9 @@ export const BrowseCaregiver = () => {
           selectPlaceholder="Select care"
           selectLabel="Care type"
           selectItem={[
-            "Personal care",
-            "Assisted care/Home care",
-            "Memory care",
-            "Private pay skilled nursing",
+          "live-in care",
+          "hourly care",
+          "overnight care",
           ]}
         />
       </div>
@@ -97,11 +74,12 @@ export const BrowseCaregiver = () => {
         <input
           type="text"
           placeholder="Enter zip code"
-          className="w-[180px] rounded-2xl outline-none border py-[5px] border-gray-300 text-gray-500 px-3"
+          className="w-80 not-odd:rounded-2xl outline-none border py-[5px] border-gray-300 text-gray-500 px-3"
         />
       </div>
-
+<div className="mt-6">
       <YellowButton>Search caregiver</YellowButton>
+    </div>
     </div>
   );
 };
@@ -118,7 +96,7 @@ export const SelectWithOption = ({
 }: SelectWithOptionProps) => {
   return (
     <Select>
-      <SelectTrigger className="w-[180px] rounded-2xl outline-none">
+      <SelectTrigger className="w-80  rounded-2xl outline-none">
         <SelectValue placeholder={selectPlaceholder} />
       </SelectTrigger>
       <SelectContent>
@@ -134,4 +112,4 @@ export const SelectWithOption = ({
     </Select>
   );
 };
-export default HeroSection;
+export default CareType;
