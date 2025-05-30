@@ -14,7 +14,7 @@ const BookSuccessful = ({ isModalOpen, onClose }: BookSuccessfulProps) => {
 
   const handleGoToRecentBooking = () => {
     onClose();
-    router.push("/recent-booking"); // Change this route if needed
+    router.push("/recent-booking"); // Change this rout if needed
   };
 
   return (
