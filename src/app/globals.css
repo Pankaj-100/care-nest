@@ -85,6 +85,8 @@
 
   --blue-gray: #233d4d;
   --golden-yellow: #f2a307;
+  --light-gray: #f8f9fa;
+  --cool-gray: #98a2b3;
 }
 
 .dark {
@@ -137,4 +139,8 @@
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
+}
+
+.card {
+  @apply border border-[#EAEAEA] rounded-2xl my-[3rem] py-6 px-4  bg-[#fff];
 }

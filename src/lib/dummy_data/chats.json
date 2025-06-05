@@ -1,0 +1,144 @@
+{
+  "chatList": [
+    {
+      "id": 1,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 1
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 5
+    },
+    {
+      "id": 3,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    },
+    {
+      "id": 2,
+      "profilePic": "",
+      "name": "William James",
+      "message": {
+        "content": "Hey william james, welcome...",
+        "time": "09:00 AM"
+      },
+      "unread": 0
+    }
+  ]
+}
