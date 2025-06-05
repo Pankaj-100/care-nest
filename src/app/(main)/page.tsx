@@ -9,13 +9,11 @@ import Testimonials from "@/components/landingPage/Testimonials";
 export default function Home() {
   return (
     <div>
-      <Header />
       <HeroSection />
       <ServiceWeProvide />
       <Testimonials />
-      <JoinCommunity/>
-      <BlogsSection/>
-      <Footer/>
+      <JoinCommunity />
+      <BlogsSection />
     </div>
   );
 }

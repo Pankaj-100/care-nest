@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import FilterSidebar from "../../components/careGiver/FilterSidebar";
-import CaregiverCard from "../../components/careGiver/CaregiverCard";
-import CaregiverModal from "../../components/careGiver/CaregiverModal";
+import FilterSidebar from "@/components/careGiver/FilterSidebar";
+import CaregiverCard from "@/components/careGiver/CaregiverCard";
+import CaregiverModal from "@/components/careGiver/CaregiverModal";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 
 interface Caregiver {
@@ -89,7 +89,7 @@ const CaregiversPage = () => {
   const [caregivers, setCaregivers] = useState<Caregiver[]>(caregiversData);
   const [isOpen, setIsOpen] = useState(false);
 
-    console.log("Caregivers:", caregivers);
+  console.log("Caregivers:", caregivers);
   const handleCardClick = (caregiver: Caregiver) => {
     setSelectedCaregiver(caregiver);
     setIsModalOpen(true);
@@ -169,16 +169,12 @@ const CaregiversPage = () => {
         onBookmarkToggle={handleBookmarkToggle}
       />
 
-
-     <ScheduleCare
-  isOpen={isOpen}
-  OnClose={() => setIsOpen(false)}
-  selectedCaregivers={caregivers.filter((c) => c.isBookmarked)}
- 
-/>
+      <ScheduleCare
+        isOpen={isOpen}
+        OnClose={() => setIsOpen(false)}
+        selectedCaregivers={caregivers.filter((c) => c.isBookmarked)}
+      />
     </div>
-
-    
   );
 };
 

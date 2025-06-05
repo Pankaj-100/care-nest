@@ -7,10 +7,8 @@ import PersonalCare from "./PersonalCare";
 export default function Page() {
   return (
     <>
-      <Header />
       <HeroSectionCareProvider title={"Services / Personal Care"} />
       <PersonalCare />
-      <Footer />
     </>
   );
 }

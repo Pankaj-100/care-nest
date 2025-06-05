@@ -6,15 +6,13 @@ import Footer from "@/components/common/Footer";
 interface Params {
   params: Promise<{ id: string }>;
 }
-export default async function BlogPage({ params }:Params) {
-const {id} = await params
+export default async function BlogPage({ params }: Params) {
+  const { id } = await params;
   console.log("id", id);
   return (
     <>
-    <Header />
       <HeroSectionCareProvider />
-    <BlogPostPage />
-    <Footer />
+      <BlogPostPage />
     </>
   );
 }

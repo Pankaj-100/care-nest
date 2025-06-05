@@ -8,7 +8,6 @@ import FAQBlock from "@/components/Contact/FAQBlock";
 export default function page() {
   return (
     <>
-      <Header />
       <HeroSectionCareProvider />
 
       {/* Full-width background section */}
@@ -38,8 +37,6 @@ export default function page() {
       <div className="max-w-7xl mx-auto">
         <FAQBlock />
       </div>
-
-      <Footer />
     </>
   );
 }

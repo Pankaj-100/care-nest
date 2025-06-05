@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 interface Props {
-  title: string;
+  title?: string;
 }
 
 const HeroSectionCareProvider = ({ title }: Props) => {
