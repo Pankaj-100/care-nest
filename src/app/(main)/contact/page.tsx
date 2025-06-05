@@ -1,7 +1,5 @@
 import HeroSectionCareProvider from "@/components/careProvider/HeroSectionCareProvider";
 import ContactInfo from "@/components/common/ContactInfo";
-import Footer from "@/components/common/Footer";
-import Header from "@/components/common/Header";
 import ContactForm from "@/components/Contact/ContactForm";
 import FAQBlock from "@/components/Contact/FAQBlock";
 

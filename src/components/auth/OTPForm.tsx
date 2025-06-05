@@ -41,14 +41,15 @@ function OTPForm({ isEmailVerify }: Props) {
       });
     }, 1000);
 
-    () => clearInterval(timer);
+    return () => clearInterval(timer);
   }, []);
 
   return (
     <div className="mt-[8rem]">
       <div className=" font-semibold text-2xl">OTP Verification</div>
       <div className=" mt-3">
-        We've sent a one-time password to your email — please enter it below.
+        We&apos;ve sent a one-time password to your email — please enter it
+        below.
       </div>
 
       <div className="my-8  flex flex-col  gap-4">

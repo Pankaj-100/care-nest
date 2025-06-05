@@ -1,8 +1,5 @@
-import Header from "@/components/common/Header";
 import BlogPostPage from "./BlogPagePost";
 import HeroSectionCareProvider from "@/components/careProvider/HeroSectionCareProvider";
-import Footer from "@/components/common/Footer";
-
 interface Params {
   params: Promise<{ id: string }>;
 }

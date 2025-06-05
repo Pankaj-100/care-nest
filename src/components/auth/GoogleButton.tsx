@@ -1,6 +1,5 @@
 import React from "react";
 
-import { Button } from "../ui/button";
 import { googleIcon } from "@/lib/svg_icons";
 import { CustomButton } from "../common/CustomInputs";
 

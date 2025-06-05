@@ -1,5 +1,3 @@
-import Footer from "@/components/common/Footer";
-import Header from "@/components/common/Header";
 import BlogsSection from "@/components/landingPage/BlogsSection";
 import HeroSection from "@/components/landingPage/HeroSection";
 import JoinCommunity from "@/components/landingPage/JoinCommunity";
