@@ -1,7 +1,5 @@
-
 import React from "react";
 import { CustomCard } from "./CustomCard";
-
 
 const CardSection = () => {
   const data = [
@@ -11,7 +9,7 @@ const CardSection = () => {
       name: "Nataly Birch",
       desc: "Elderly Care at Home: How to Ensure Comfort...",
       para: "What the data says about the harm of unnecessary medical tests...",
-      href: "",
+      href: "blogs/b1",
       date: "11 January 2025",
     },
     {
@@ -20,7 +18,7 @@ const CardSection = () => {
       name: "Nataly Birch",
       desc: "Elderly Care at Home: How to Ensure Comfort...",
       para: "What the data says about the harm of unnecessary medical tests...",
-      href: "",
+      href: "blogs/b2",
       date: "11 January 2025",
     },
     {
@@ -29,7 +27,7 @@ const CardSection = () => {
       name: "Nataly Birch",
       desc: "Elderly Care at Home: How to Ensure Comfort...",
       para: "What the data says about the harm of unnecessary medical tests...",
-      href: "",
+      href: "blogs/b3",
       date: "11 January 2025",
     },
     {
@@ -38,7 +36,7 @@ const CardSection = () => {
       name: "Nataly Birch",
       desc: "Elderly Care at Home: How to Ensure Comfort...",
       para: "What the data says about the harm of unnecessary medical tests...",
-      href: "",
+      href: "blogs/b4",
       date: "11 January 2025",
     },
     {
@@ -47,7 +45,7 @@ const CardSection = () => {
       name: "Nataly Birch",
       desc: "Elderly Care at Home: How to Ensure Comfort...",
       para: "What the data says about the harm of unnecessary medical tests...",
-      href: "",
+      href: "blogs/b5",
       date: "11 January 2025",
     },
     {
@@ -56,7 +54,7 @@ const CardSection = () => {
       name: "Nataly Birch",
       desc: "Elderly Care at Home: How to Ensure Comfort...",
       para: "What the data says about the harm of unnecessary medical tests...",
-      href: "/",
+      href: "blogs/b6",
       date: "11 January 2025",
     },
   ];

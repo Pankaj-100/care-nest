@@ -1,7 +1,11 @@
 import Image from "next/image";
 import React from "react";
 
-const HeroSectionCareProvider = () => {
+interface Props {
+  title?: string;
+}
+
+const HeroSectionCareProvider = ({ title }: Props) => {
   return (
     <div className="relative h-[300px]">
       <div className="w-full h-[300px] absolute right-0 ">
@@ -24,7 +28,7 @@ const HeroSectionCareProvider = () => {
       </div>
 
       <h1 className="absolute text-4xl text-white left-38 font-semibold -translate-y-1/2 top-1/2">
-        Become A Care Provider
+        {title ? title : "Become A Care Provider"}
       </h1>
     </div>
   );
