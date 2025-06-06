@@ -1,12 +1,24 @@
 import React from "react";
+
 import NoItems from "../common/NoItems";
+import NameHeader from "./NameHeader";
+import Chat from "./Chat";
+import InputMessage from "./InputMessage";
 
 function Messages() {
-  const noMessages = true;
+  const noMessages = false;
+
   return (
-    <div>
+    <div className="flex-grow flex ">
       {noMessages && <NoItems className="mt-[10rem]" />}
-      {!noMessages && <div className="card"></div>}
+
+      {!noMessages && (
+        <div className="flex-grow flex flex-col justify-between overflow-y-auto md:px-0 px-2 ">
+          <NameHeader />
+          <Chat />
+          <InputMessage />
+        </div>
+      )}
     </div>
   );
 }

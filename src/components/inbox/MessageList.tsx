@@ -1,23 +1,35 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import { SearchIcon } from "lucide-react";
 
 import { Input } from "../ui/input";
 import data from "@/lib/dummy_data/chats.json";
-import ProfilePic from "@/assets/profilepic1.png";
 import NoItems from "../common/NoItems";
+import DP from "../common/DP";
+import ProfilePic from "@/assets/profilepic1.png";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-function MessageList() {
+interface Props {
+  handleOpenMessages: () => void;
+}
+
+function MessageList({ handleOpenMessages }: Props) {
   const [search, setSearch] = useState("");
+  const isMobile = useIsMobile();
 
   const chatList = data?.chatList;
-  //   const noChats = chatList?.length === 0;
-  const noChats = true;
+  const noChats = chatList?.length === 0;
+  // const noChats = true;
+
+  const handleClick = () => {
+    if (isMobile) {
+      handleOpenMessages();
+    }
+  };
 
   return (
-    <div className="w-full ">
-      <div className=" flex items-center rounded-full px-4 py-1 bg-[var(--light-gray)] mb-2 ">
+    <div className="w-full flex flex-col flex-grow h-full  ">
+      <div className="flex items-center rounded-full px-4 py-1 bg-[var(--light-gray)] mb-2 ">
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -30,7 +42,10 @@ function MessageList() {
       {noChats && <NoItems className="mt-8" />}
 
       {!noChats && (
-        <div>
+        <div
+          className="flex flex-col h-full flex-grow overflow-y-auto hide-scrollbar"
+          onClick={handleClick}
+        >
           {chatList?.map((chat) => (
             <div
               className="flex justify-between py-2 hover:cursor-pointer hover:bg-gray-100  px-4 rounded-md transition-all "
@@ -38,12 +53,7 @@ function MessageList() {
             >
               <div className="flex gap-4">
                 <div className=" relative rounded-full flex w-12 h-12">
-                  <Image
-                    src={chat?.profilePic || ProfilePic}
-                    alt={chat?.name}
-                    fill
-                    className="rounded-full"
-                  />
+                  <DP url={chat?.profilePic || ProfilePic} alt={chat?.name} />
                 </div>
 
                 <div className="flex flex-col gap-1">

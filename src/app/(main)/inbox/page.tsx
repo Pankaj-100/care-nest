@@ -7,6 +7,7 @@ function page() {
   return (
     <div className="flex flex-col text-[var(--blue-gray)]">
       <HeroSectionProtected title="Inbox" />
+
       <InboxBlock />
     </div>
   );
