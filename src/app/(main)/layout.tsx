@@ -7,7 +7,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <section>
+    <section className="overflow-hidden">
       <Header />
       {children}
       <Footer />

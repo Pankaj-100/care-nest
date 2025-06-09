@@ -4,6 +4,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
+  SheetClose,
 } from "@/components/ui/sheet";
 
 interface Props {
@@ -16,12 +17,11 @@ interface Props {
 function CustomSheet({ open, handleOpen, children, className }: Props) {
   return (
     <Sheet open={open} onOpenChange={handleOpen}>
-      <SheetHeader>
-        <SheetTitle className="hidden"></SheetTitle>
-        <SheetDescription className="hidden"></SheetDescription>
-      </SheetHeader>
+      <SheetTitle className="hidden"></SheetTitle>
+      <SheetDescription className="hidden"></SheetDescription>
+
       <SheetContent
-        className={`md:w-[calc(100%-17rem)] w-full !max-w-full  ${className} overflow-y-auto`}
+        className={`md:w-[calc(100%-17rem)] w-full !max-w-full  ${className} overflow-y-auto [&>button:first-of-type]:hidden `}
       >
         {children}
       </SheetContent>
