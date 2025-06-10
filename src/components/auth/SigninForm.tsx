@@ -20,6 +20,8 @@ function SigninForm() {
   const router = useRouter();
 
   const handleSubmit = () => {
+    // Action: Local storage is used for static build only
+    localStorage.setItem("isLoggedIn", "yes");
     router.push("/");
   };
 

@@ -32,7 +32,8 @@ const Header = () => {
     setOpenNotifications((prev) => !prev);
   };
 
-  const isLoggedInUser = true;
+  // Action: Local storage is used for static build only
+  const isLoggedInUser = localStorage.getItem("isLoggedIn") === "yes";
   const unseenNotifications = true;
 
   const NavbarMenuTitle: NavbarTypes[] = [
