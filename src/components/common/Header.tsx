@@ -10,7 +10,6 @@ import { usePathname, useRouter } from "next/navigation";
 import Notification from "../Notification";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
 import CustomDrawer from "./CustomDrawer";
-import { MdMenu as MenuIcon } from "react-icons/md";
 
 export interface NavbarTypes {
   title: string;

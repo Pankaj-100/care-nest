@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { IoIosArrowRoundBack as BackIcon } from "react-icons/io";
-import { LuDot as DotIcon } from "react-icons/lu";
 
 import CustomSheet from "./common/CustomSheet";
 import data from "@/lib/dummy_data/notification.json";
@@ -46,7 +45,10 @@ function Notification({ open, handleOpen }: Props) {
 
           {!noNotifications &&
             notifications?.map((notification) => (
-              <div className="flex gap-x-3 items-center">
+              <div
+                className="flex gap-x-3 items-center"
+                key={notification.title}
+              >
                 <div className={notification.seen ? "invisible" : "visible"}>
                   <div className="w-2 h-2 rounded-full bg-[var(--golden-yellow)]"></div>
                 </div>
