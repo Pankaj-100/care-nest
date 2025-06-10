@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import { RedirectButton, YellowButton } from "../common/CustomButton";
+import { RedirectButton } from "../common/CustomButton";
 import {
   Select,
   SelectContent,
