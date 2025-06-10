@@ -19,9 +19,9 @@ function Notification({ open, handleOpen }: Props) {
     <CustomSheet
       open={open}
       handleOpen={handleOpen}
-      className="md:!max-w-[25rem] !w-full rounded-l-3xl px-5 text-[var(--blue-gray)] mx-0 "
+      className="md:!max-w-[25rem] !w-full rounded-l-3xl px-5 text-[var(--blue-gray] mx-0 ] "
     >
-      <div className="mt-10">
+      <div className="mt-12">
         <div className="flex items-center">
           <button
             className="bg-[#233D4D1A] border-0 p-3 rounded-full"
@@ -30,10 +30,10 @@ function Notification({ open, handleOpen }: Props) {
             <BackIcon size={20} />
           </button>
 
-          <div className="ms-[5rem] text-xl font-semibold">Notification</div>
+          <div className="ms-[5rem] text-xl font-medium">Notification</div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center ">
+        <div className="mt-5 flex flex-col px-3 ">
           {noNotifications && (
             <div className="flex flex-col items-center gap-4 mt-10  ml-[3.1rem]">
               <div> {noNotificationIcon}</div>
@@ -53,13 +53,13 @@ function Notification({ open, handleOpen }: Props) {
                   <div className="w-2 h-2 rounded-full bg-[var(--golden-yellow)]"></div>
                 </div>
 
-                <div className="flex gap-2 border-b border-[#EBEBEB] py-4">
-                  <div className="bg-[#233D4D1A] rounded-md p-3">
+                <div className="flex gap-3 border-b border-[#EBEBEB] py-4 items-center">
+                  <div className="bg-[#233D4D1A] rounded-md p-3 h-max">
                     {notificationIcon}
                   </div>
-                  <div className="flex flex-col ">
-                    <div>{notification.title}</div>
-                    <div className="text-[#B9B9B9] text-sm">
+                  <div className="flex flex-col  ">
+                    <div className="text-[0.9rem]">{notification.title}</div>
+                    <div className="text-[#B9B9B9] text-sm ">
                       {notification.time}
                     </div>
                   </div>
