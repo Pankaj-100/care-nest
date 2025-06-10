@@ -1,6 +1,7 @@
-import Image from "next/image";
 import React from "react";
-import { YellowButton } from "../common/CustomButton";
+import Image from "next/image";
+
+import { RedirectButton, YellowButton } from "../common/CustomButton";
 import {
   Select,
   SelectContent,
@@ -33,9 +34,9 @@ const HeroSection = () => {
           ></div>
         </div>
 
-        <div className="absolute left-28 top-1/7 text-white w-[500px]">
+        <div className="absolute lg:left-28 left-10 sm:top-1/7 top-1/4 text-white sm:w-[500px] break-words">
           <div>
-            <h1 className="font-semibold text-4xl leading-11">
+            <h1 className="font-semibold sm:text-4xl text-3xl sm:leading-11 ">
               Find Trusted, Compassionate Caregivers for Your Loved Ones at Home
             </h1>
           </div>
@@ -48,12 +49,16 @@ const HeroSection = () => {
           </div>
 
           <div>
-            <YellowButton className="px-10">Find a caregiver</YellowButton>
+            <RedirectButton
+              className="px-10"
+              path="/care-giver"
+              title="Find a caregiver"
+            />
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-center absolute -bottom-12 -translate-x-1/2 left-1/2">
+      <div className="lg:flex hidden items-center justify-center absolute sm:-bottom-12  -bottom-[18rem] -translate-x-1/2 left-1/2">
         <BrowseCaregiver />
       </div>
     </div>
@@ -62,8 +67,8 @@ const HeroSection = () => {
 
 export const BrowseCaregiver = () => {
   return (
-    <div className="flex items-center w-[80vw] bg-white rounded-xl p-4 py-6 gap-x-7">
-      <div className="w-52">
+    <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-y-4 w-[80vw] bg-white rounded-xl p-6 py-6 gap-x-7">
+      <div className="lg:w-52">
         <h3 className="font-semibold text-lg mb-1">Browse caregivers</h3>
         <p className="text-xs text-gray-500">
           Create your free profile to discover verified, compassionate
@@ -71,37 +76,52 @@ export const BrowseCaregiver = () => {
         </p>
       </div>
 
-      <div>
-        <h3 className="mb-3 font-semibold text-sm">Care type</h3>
-        <SelectWithOption
-          selectPlaceholder="Select care"
-          selectLabel="Care type"
-          selectItem={[
-            "Personal care",
-            "Assisted care/Home care",
-            "Memory care",
-            "Private pay skilled nursing",
-          ]}
-        />
-      </div>
-      <div>
-        <h3 className="mb-3 font-semibold text-sm">Recipient</h3>
-        <SelectWithOption
-          selectPlaceholder="Recipient"
-          selectLabel="Recipient"
-          selectItem={["Recipient1", "Recipient2", "Recipient3", "Recipient4"]}
-        />
-      </div>
-      <div>
-        <h3 className="mb-3 font-semibold text-sm">Zip code</h3>
-        <input
-          type="text"
-          placeholder="Enter zip code"
-          className="w-[180px] rounded-2xl outline-none border py-[5px] border-gray-300 text-gray-500 px-3"
-        />
-      </div>
+      <div className="flex-grow flex gap-4 flex-wrap">
+        <div className="flex-1">
+          <h3 className="mb-3  font-semibold text-sm">Care type</h3>
+          <SelectWithOption
+            selectPlaceholder="Select care"
+            selectLabel="Care type"
+            selectItem={[
+              "Personal care",
+              "Assisted care/Home care",
+              "Memory care",
+              "Private pay skilled nursing",
+            ]}
+            className="!w-full"
+          />
+        </div>
+        <div className="flex-1">
+          <h3 className="mb-3 font-semibold text-sm">Recipient</h3>
+          <SelectWithOption
+            selectPlaceholder="Recipient"
+            selectLabel="Recipient"
+            selectItem={[
+              "Recipient1",
+              "Recipient2",
+              "Recipient3",
+              "Recipient4",
+            ]}
+            className="!w-full"
+          />
+        </div>
+        <div className="flex-1">
+          <h3 className="mb-3 font-semibold text-sm">Zip code</h3>
+          <input
+            type="text"
+            placeholder="Enter zip code"
+            className="w-full min-w-[5rem] rounded-2xl outline-none border py-[5px] border-gray-300 text-gray-500 px-3"
+          />
+        </div>
 
-      <YellowButton>Search caregiver</YellowButton>
+        <div className="mt-auto">
+          <RedirectButton
+            className="px-10"
+            path="/care-giver?type=personal&recipient=seff&zipcode=1234567"
+            title="Search caregiver"
+          />
+        </div>
+      </div>
     </div>
   );
 };
@@ -110,15 +130,19 @@ interface SelectWithOptionProps {
   selectPlaceholder: string;
   selectLabel: string;
   selectItem: string[];
+  className?: string;
 }
 export const SelectWithOption = ({
   selectPlaceholder,
   selectLabel,
   selectItem,
+  className,
 }: SelectWithOptionProps) => {
   return (
     <Select>
-      <SelectTrigger className="w-[180px] rounded-2xl outline-none">
+      <SelectTrigger
+        className={`w-[180px] rounded-2xl outline-none ${className}`}
+      >
         <SelectValue placeholder={selectPlaceholder} />
       </SelectTrigger>
       <SelectContent>

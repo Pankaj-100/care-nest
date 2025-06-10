@@ -1,4 +1,8 @@
+"use client";
+
 import React from "react";
+import { useRouter } from "next/navigation";
+
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +29,31 @@ export const YellowButton = ({
     </Button>
   );
 };
+
+interface Props {
+  path: string;
+  title: string;
+  className?: string;
+  ButtonCompo?: React.JSX.ElementType;
+}
+
+export const RedirectButton = ({
+  path,
+  title,
+  className,
+  ButtonCompo,
+}: Props) => {
+  const router = useRouter();
+
+  const RenderedButton = ButtonCompo || YellowButton;
+
+  return (
+    <RenderedButton className={className} onClick={() => router.push(path)}>
+      {title}
+    </RenderedButton>
+  );
+};
+
 export const TransparentButton = ({
   children,
   disabled,

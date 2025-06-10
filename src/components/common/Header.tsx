@@ -10,6 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Notification from "../Notification";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
 import CustomDrawer from "./CustomDrawer";
+import { MdMenu as MenuIcon } from "react-icons/md";
 
 export interface NavbarTypes {
   title: string;
@@ -113,9 +114,9 @@ const Header = () => {
           <Image src={"/Logo.svg"} alt="logo" width={50} height={50} />
         </div>
 
-        {/* <button onClick={handleOpenMenu} className="lg:hidden">
+        <button onClick={handleOpenMenu} className="lg:hidden">
           <MenuIcon size={30} />
-        </button> */}
+        </button>
 
         <div className="lg:block hidden"> {navContent}</div>
         <CustomDrawer

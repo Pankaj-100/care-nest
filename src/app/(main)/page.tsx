@@ -6,7 +6,7 @@ import Testimonials from "@/components/landingPage/Testimonials";
 
 export default function Home() {
   return (
-    <div>
+    <div className="text-[var(--blue-gray)]">
       <HeroSection />
       <ServiceWeProvide />
       <Testimonials />
