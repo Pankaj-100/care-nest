@@ -3,9 +3,10 @@ import React from "react";
 
 interface Props {
   title?: string;
+  textClasses?: string;
 }
 
-const HeroSectionCareProvider = ({ title }: Props) => {
+const HeroSectionCareProvider = ({ title, textClasses }: Props) => {
   return (
     <div className="relative h-[300px]">
       <div className="w-full h-[300px] absolute right-0 ">
@@ -27,7 +28,9 @@ const HeroSectionCareProvider = ({ title }: Props) => {
         ></div>
       </div>
 
-      <h1 className="absolute lg:text-4xl text-3xl  text-white lg:left-16 left-8 lg:w-auto w-[6rem] text-center font-semibold -translate-y-1/2 lg:top-1/2 top-3/5">
+      <h1
+        className={`${textClasses} absolute lg:text-4xl text-3xl  text-white lg:left-16 left-8 lg:w-auto w-[6rem] text-center font-semibold -translate-y-1/2 lg:top-1/2 top-3/5 `}
+      >
         {title ? title : "Become A Care Giver"}
       </h1>
     </div>
