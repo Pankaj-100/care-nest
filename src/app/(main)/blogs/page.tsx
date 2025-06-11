@@ -7,7 +7,7 @@ export default function page() {
   return (
     <>
       {/* add the prop no need to create again */}
-      <HeroSectionCareProvider />
+      <HeroSectionCareProvider title="Blogs" textClasses="lg:ml-10 " />
       <Section3 />
       <CardSection />
     </>

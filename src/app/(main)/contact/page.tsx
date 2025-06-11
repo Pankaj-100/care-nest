@@ -6,15 +6,15 @@ import FAQBlock from "@/components/Contact/FAQBlock";
 export default function page() {
   return (
     <>
-      <HeroSectionCareProvider />
+      <HeroSectionCareProvider title="Contact Us" textClasses="lg:ml-10 " />
 
       {/* Full-width background section */}
       <div className="bg-[#F7F7F3] w-full">
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-10 mr-24">
+        <div className="lg:mx-[4.2rem] mx-[1.2rem]  px-6 py-12">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:mr-24">
             {/* Left Section */}
-            <div className="space-y-4 max-w-md">
-              <h2 className="text-5xl text-[var(--navy)] font-semibold leading-tight">
+            <div className="space-y-4 lg:max-w-md">
+              <h2 className="lg:text-5xl text-4xl text-[var(--navy)] font-semibold leading-tight">
                 Get in Touch. We’ll Respond Shortly
               </h2>
               <p className="text-[var(--coolgray)] text-md font-semibold leading-6">
@@ -32,7 +32,7 @@ export default function page() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto">
+      <div className="lg:mx-[4.2rem] mx-[1.2rem]">
         <FAQBlock />
       </div>
     </>

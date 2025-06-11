@@ -1,4 +1,4 @@
-import BlogPostPage from "./BlogPagePost";
+import BlogPostPage from "../../../../components/Blog/BlogPagePost";
 import HeroSectionCareProvider from "@/components/careProvider/HeroSectionCareProvider";
 interface Params {
   params: Promise<{ id: string }>;
@@ -8,7 +8,7 @@ export default async function BlogPage({ params }: Params) {
   console.log("id", id);
   return (
     <>
-      <HeroSectionCareProvider />
+      <HeroSectionCareProvider title="Blogs" textClasses="lg:ml-10 " />
       <BlogPostPage />
     </>
   );
