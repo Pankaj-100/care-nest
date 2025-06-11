@@ -21,7 +21,7 @@ function SigninForm() {
 
   const handleSubmit = () => {
     // Action: Local storage is used for static build only
-    localStorage.setItem("isLoggedIn", "yes");
+    localStorage.setItem("care_nest_token", "iampankaj");
     router.push("/");
   };
 

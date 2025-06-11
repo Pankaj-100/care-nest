@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { YellowButton } from "./CustomButton";
 import { ChevronDown } from "lucide-react";
 import { NavbarDropdown } from "./CustomDropdown";
@@ -22,6 +22,8 @@ export interface NavbarTypes {
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
   const path = usePathname();
   const router = useRouter();
 
@@ -32,8 +34,16 @@ const Header = () => {
     setOpenNotifications((prev) => !prev);
   };
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Action: Local storage is used for static build only
-  const isLoggedInUser = localStorage.getItem("isLoggedIn") === "yes";
+  const isLoggedInUser = isClient
+    ? localStorage.getItem("care_nest_token")
+      ? true
+      : false
+    : false;
   const unseenNotifications = true;
 
   const NavbarMenuTitle: NavbarTypes[] = [

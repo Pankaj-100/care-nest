@@ -65,10 +65,13 @@ const HeroSection = () => {
   );
 };
 
-export const BrowseCaregiver = () => {
+interface Props {
+  noDescription?: boolean;
+}
+export const BrowseCaregiver = ({ noDescription }: Props) => {
   return (
     <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-y-4 w-[80vw] bg-white rounded-xl p-6 py-6 gap-x-7">
-      <div className="lg:w-52">
+      <div className={`lg:w-52 ${noDescription ? "hidden" : "block"}`}>
         <h3 className="font-semibold text-lg mb-1">Browse caregivers</h3>
         <p className="text-xs text-gray-500">
           Create your free profile to discover verified, compassionate

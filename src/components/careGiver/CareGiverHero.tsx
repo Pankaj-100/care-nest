@@ -1,4 +1,4 @@
-import Image from "next/image";
+// import Image from "next/image";
 import React from "react";
 import { YellowButton } from "../common/CustomButton";
 import {
@@ -10,33 +10,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-
-
-
-
-
+import HeroSectionProtected from "../common/HeroSectionProtected";
+import { BrowseCaregiver } from "../landingPage/HeroSection";
 
 export const CareGiverHero = () => {
-    return (
-        <div className='relative h-[300px]'>
-            <div className='w-full h-[300px] absolute right-0 '>
+  return (
+    <div className="relative ">
+      {/* <div className='w-full h-[300px] absolute right-0 '>
                 <div className='absolute right-0 w-2/3 h-full'>
                     <Image src="/hero-care-provider.jpg" alt="hero care provider" fill style={{ objectFit: 'cover' }} />
                 </div>
 
                 <div className="absolute top-0 left-0 h-full w-2/3 pointer-events-none " style={{ background: 'linear-gradient(to left, #233d4d00 0%, #233d4d 50%, #233d4d 100%)', }}></div>
-            </div>
+            </div> */}
+      {/* 
+      <h1 className="absolute text-5xl text-white left-38 font-bold -translate-y-1/2 top-1/2">
+        Find A Caregiver
+      </h1> */}
 
-            <h1 className='absolute text-5xl text-white left-38 font-bold -translate-y-1/2 top-1/2'>Find A Caregiver</h1>
+      <HeroSectionProtected title="Find A Caregiver" />
 
-            <div className="flex max-w-7xl mx-auto items-center justify-center absolute -bottom-12 -translate-x-1/2 left-1/2">
-        <CareType />
+      <div className="lg:flex hidden items-center justify-center absolute sm:-bottom-12  -bottom-[18rem] -translate-x-1/2 left-1/2">
+        <BrowseCaregiver noDescription={true} />
       </div>
-        </div>
-    )
-}
-
+    </div>
+  );
+};
 
 export const CareType = () => {
   return (
@@ -54,11 +53,7 @@ export const CareType = () => {
         <SelectWithOption
           selectPlaceholder="Select care"
           selectLabel="Care type"
-          selectItem={[
-          "live-in care",
-          "hourly care",
-          "overnight care",
-          ]}
+          selectItem={["live-in care", "hourly care", "overnight care"]}
         />
       </div>
       <div>
@@ -77,9 +72,9 @@ export const CareType = () => {
           className="w-80 not-odd:rounded-2xl outline-none border py-[5px] border-gray-300 text-gray-500 px-3"
         />
       </div>
-<div className="mt-6">
-      <YellowButton>Search caregiver</YellowButton>
-    </div>
+      <div className="mt-6">
+        <YellowButton>Search caregiver</YellowButton>
+      </div>
     </div>
   );
 };
