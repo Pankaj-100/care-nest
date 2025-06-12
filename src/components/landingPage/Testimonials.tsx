@@ -5,7 +5,7 @@ import { CarouselItem } from "../ui/carousel";
 
 const Testimonials = () => {
   return (
-    <div className="py-20 bg-[var(--whiteSmoke)] sm:px-28 px-4">
+    <div className="sm:py-20 py-12 bg-[var(--whiteSmoke)] sm:px-28 px-8">
       <div className="text-center flex items-center justify-center mb-10">
         {/* <h1
           className="font-bold text-5xl text-center w-2/3 capitalize
@@ -13,7 +13,7 @@ const Testimonials = () => {
         >
           Trusted by members across the country
         </h1> */}
-        <div className="flex flex-col font-semibold sm:text-5xl text-3xl capitalize items-center sm:gap-4">
+        <div className="flex flex-col font-semibold sm:text-5xl text-3xl capitalize sm:items-center sm:gap-4">
           <div>Trusted by members across</div>
           <div>the country</div>
         </div>

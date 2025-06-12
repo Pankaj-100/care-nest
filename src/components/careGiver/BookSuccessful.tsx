@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { CustomButton } from "../common/CustomInputs";
 
 interface BookSuccessfulProps {
   isModalOpen: boolean;
@@ -14,7 +15,7 @@ const BookSuccessful = ({ isModalOpen, onClose }: BookSuccessfulProps) => {
 
   const handleGoToRecentBooking = () => {
     onClose();
-    router.push("/recent-booking"); // Change this rout if needed
+    router.push("/profile"); // Change this rout if needed
   };
 
   return (
@@ -39,16 +40,14 @@ const BookSuccessful = ({ isModalOpen, onClose }: BookSuccessfulProps) => {
 
         {/* Message */}
         <p className="text-gray-500 text-center mb-6 text-sm leading-relaxed">
-          You have booked caregivers. We will choose the best one for you and let you know.
+          You have booked caregivers. We will choose the best one for you and
+          let you know.
         </p>
 
         {/* Action Button */}
-        <button
-          onClick={handleGoToRecentBooking}
-          className="bg-yellow-400 hover:bg-yellow-500 transition duration-200 w-full py-2 px-4 rounded-full text-[var(--navy)] font-semibold text-md cursor-pointer"
-        >
+        <CustomButton className="w-full" onClick={handleGoToRecentBooking}>
           Go to Recent Booking
-        </button>
+        </CustomButton>
       </div>
     </div>
   );

@@ -12,19 +12,19 @@ export const ContactItem: React.FC<ContactItemProps> = ({
   label,
   value,
 }) => (
-  <div className="flex items-start gap-3 mb-4">
+  <div className="flex items-start gap-3  bg-[#fff] p-2 rounded-md">
     <div className="text-xl bg-[#233D4D] rounded-full p-4">
       <Image
         src={icon}
         alt={label}
         width={24}
         height={24}
-        className="w-6 h-6"
+        className="w-4 h-4"
       />
     </div>
     <div>
-      <p className="text-md font-semibold">{label}</p>
-      <p className="text-md text-gray-600">{value}</p>
+      <p className="text-md font-medium">{label}</p>
+      <p className="text-md text-[var(--cool-gray)]">{value}</p>
     </div>
   </div>
 );

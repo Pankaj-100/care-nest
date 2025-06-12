@@ -44,7 +44,7 @@ const FAQ = () => {
   return (
     <div className="flex lg:flex-row flex-col  bg-[var(--navy)] lg:px-18 px-8 lg:py-18 py-12">
       <div>
-        <div className="relative h-48 lg:w-38 ml-8">
+        <div className="relative  w-full h-48 lg:w-38 sm:ml-8">
           <Image
             src={"/care-provider-cta.png"}
             alt="faq"

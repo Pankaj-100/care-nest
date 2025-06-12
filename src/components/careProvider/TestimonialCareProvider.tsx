@@ -14,7 +14,7 @@ const TestimonialCareProvider = () => {
         </h1>
 
         <div className="flex items-center gap-x-4 mt-5">
-          <div className="relative lg:w-90 w-full lg:h-84 h-48">
+          <div className="relative f lg:w-90 w-full lg:h-84 h-48">
             <Image
               src={"/care-provider-testimonial-1.png"}
               alt="testimonial"

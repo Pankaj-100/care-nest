@@ -15,22 +15,10 @@ import { BrowseCaregiver } from "../landingPage/HeroSection";
 
 export const CareGiverHero = () => {
   return (
-    <div className="relative ">
-      {/* <div className='w-full h-[300px] absolute right-0 '>
-                <div className='absolute right-0 w-2/3 h-full'>
-                    <Image src="/hero-care-provider.jpg" alt="hero care provider" fill style={{ objectFit: 'cover' }} />
-                </div>
-
-                <div className="absolute top-0 left-0 h-full w-2/3 pointer-events-none " style={{ background: 'linear-gradient(to left, #233d4d00 0%, #233d4d 50%, #233d4d 100%)', }}></div>
-            </div> */}
-      {/* 
-      <h1 className="absolute text-5xl text-white left-38 font-bold -translate-y-1/2 top-1/2">
-        Find A Caregiver
-      </h1> */}
-
+    <div className="relative  ">
       <HeroSectionProtected title="Find A Caregiver" />
 
-      <div className="lg:flex hidden items-center justify-center absolute sm:-bottom-12  -bottom-[18rem] -translate-x-1/2 left-1/2">
+      <div className="lg:flex items-center justify-center lg:absolute sm:-bottom-20  bottom-0 lg:-translate-x-1/2 lg:left-1/2 lg:m-0 m-4">
         <BrowseCaregiver noDescription={true} />
       </div>
     </div>
@@ -40,14 +28,6 @@ export const CareGiverHero = () => {
 export const CareType = () => {
   return (
     <div className="flex items-center w-[80vw] bg-white rounded-xl p-4 py-6 gap-x-7">
-      {/* <div className="w-52">
-        <h3 className="font-semibold text-lg mb-1">Browse caregivers</h3>
-        <p className="text-xs text-gray-500">
-          Create your free profile to discover verified, compassionate
-          caregivers.
-        </p>
-      </div> */}
-
       <div>
         <h3 className="mb-3 font-semibold text-sm">Care type</h3>
         <SelectWithOption

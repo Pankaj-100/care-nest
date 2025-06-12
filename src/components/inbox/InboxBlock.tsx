@@ -28,6 +28,7 @@ function InboxBlock() {
           open={openMessages}
           handleOpen={handleOpenMessages}
           className="py-10"
+          showCrossButton={true}
         >
           {myMessages}
         </CustomSheet>

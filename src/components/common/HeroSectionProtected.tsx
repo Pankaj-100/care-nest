@@ -7,7 +7,7 @@ interface Props {
 }
 
 const HeroSectionProtected = ({ title, className }: Props) => {
-  const classes = `absolute text-4xl text-white lg:left-16 left-8 font-semibold -translate-y-1/2 top-1/2 ${className}`;
+  const classes = `absolute text-4xl text-white lg:left-16 left-8 font-semibold -translate-y-1/2 w-[6rem] top-1/2 ${className}`;
 
   return (
     <div className="relative">

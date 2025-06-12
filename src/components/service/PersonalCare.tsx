@@ -97,13 +97,13 @@ const PersonalCare = () => {
         />
 
         <section className="max-w-7xl mx-auto lg:py-16 py-12 px-6 md:px-16 relative z-10">
-          <div className="lg:mb-16 mb-8">
-            <h2 className="text-5xl  text-[var(--navy)] font-bold mb-6 lg:leading-[0.5]">
+          <div className="lg:mb-16 mb-4">
+            <h2 className="lg:text-5xl text-3xl  text-[var(--navy)] font-bold mb-6 lg:leading-[0.5]">
               Services We Provide
             </h2>
           </div>
           <div className="flex flex-col md:flex-row gap-6">
-            <ul className="pl-6 flex-1 text-[var(--navy)] text-lg leading-[100%] font-bold">
+            <ul className="lg:pl-6 pl-1 flex-1 text-[var(--navy)] text-lg leading-[100%] font-medium mb-2">
               {services.map((service, idx) => (
                 <li key={idx} className="flex items-center gap-2 py-3">
                   <img
@@ -142,7 +142,7 @@ const PersonalCare = () => {
             <h2 className="lg:text-5xl text-3xl font-bold leading-[100%]">
               Who Can Benefit from <br></br> Personal Care?
             </h2>
-            <ul className="text-lg text-[#FFFFFFB2] font-bold leading-[100%] pl-5 lg:mt-12 mt-4">
+            <ul className="text-lg text-[#FFFFFFB2] font-bold leading-[100%] lg:pl-5 pl-1 lg:mt-12 mt-4">
               {beneficiaries &&
                 beneficiaries.map((beneficiary, idx) => (
                   <li key={idx} className="mb-4">
@@ -164,9 +164,9 @@ const PersonalCare = () => {
       </div>
 
       {/* Contact Section */}
-      <section className="lg:mt-20 mt-12 px-6 md:px-16 text-[var(--navy)] max-w-7xl mx-auto flex lg:flex-row flex-col justify-between gap-16 lg:mb-20 mb-12">
+      <section className="lg:mt-20 mt-10 px-6 md:px-16 text-[var(--navy)] max-w-7xl mx-auto flex lg:flex-row flex-col justify-between gap-16 lg:mb-20 mb-12">
         <div className="lg:w-1/2">
-          <h2 className="lg:text-5xl text-4xl leading-[100%] font-bold mb-4">
+          <h2 className="lg:text-5xl text-3xl leading-[100%] font-bold mb-4">
             Ready To Get The Support You Need?
           </h2>
           <p className="mb-6 text-[var(--coolgray)] text-lg leading-[130%] font-normal">

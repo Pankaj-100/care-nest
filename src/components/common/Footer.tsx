@@ -111,7 +111,7 @@ const Footer = () => {
 
       <div className="my-7 flex items-center justify-between flex-wrap gap-y-5">
         <div>
-          <h3 className="text-lg font-medium mb-3">
+          <h3 className="text-lg font-medium lg:mb-3">
             Subscribe to our newsletter
           </h3>
           <div className="flex">
@@ -129,7 +129,7 @@ const Footer = () => {
         <div>
           <h1
             className="font-bold xl:text-[120px] lg:text-[80px] 
-           text-gray-400 tracking-widest"
+           text-gray-400 tracking-widest sm:mt-0 mt-2"
           >
             CARENEST
           </h1>

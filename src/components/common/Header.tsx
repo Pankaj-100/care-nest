@@ -48,8 +48,8 @@ const Header = () => {
 
   const NavbarMenuTitle: NavbarTypes[] = [
     { title: "Home", link: "/" },
-    { title: "Find a caregiver", link: "/care-giver" },
-    { title: "Become a care provider", link: "/care-provider" },
+    { title: "Find A Caregiver", link: "/care-giver" },
+    { title: "Become A Caregiver", link: "/care-provider" },
     {
       title: "Services",
       services: [

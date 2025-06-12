@@ -34,13 +34,13 @@ const HeroSection = () => {
           ></div>
         </div>
 
-        <div className="absolute lg:left-28 left-10 sm:top-1/7 top-1/4 text-white sm:w-[500px] break-words">
+        <div className="absolute lg:left-28 left-8 sm:top-1/7 top-1/2 sm:-translate-y-0 -translate-y-1/2 hyphens-auto text-white sm:w-[500px] break-words w-[calc(100vw-8rem)]">
           <div>
             <h1 className="font-semibold sm:text-4xl text-3xl sm:leading-11 ">
               Find Trusted, Compassionate Caregivers for Your Loved Ones at Home
             </h1>
           </div>
-          <div className="my-5">
+          <div className="my-5  ">
             <p>
               Easily connect with trusted professionals who provide personal
               care and support tailored to your family’s needs.Create your free
@@ -70,7 +70,7 @@ interface Props {
 }
 export const BrowseCaregiver = ({ noDescription }: Props) => {
   return (
-    <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-y-4 w-[80vw] bg-white rounded-xl p-6 py-6 gap-x-7">
+    <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-y-4 lg:w-[80vw] bg-white rounded-xl lg:p-6 p-4 py-6 gap-x-7 w-full">
       <div className={`lg:w-52 ${noDescription ? "hidden" : "block"}`}>
         <h3 className="font-semibold text-lg mb-1">Browse caregivers</h3>
         <p className="text-xs text-gray-500">
@@ -108,7 +108,7 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
             className="!w-full"
           />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 ">
           <h3 className="mb-3 font-semibold text-sm">Zip code</h3>
           <input
             type="text"
@@ -117,9 +117,9 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
           />
         </div>
 
-        <div className="mt-auto">
+        <div className="lg:mt-auto mt-4 lg:w-auto w-full ">
           <RedirectButton
-            className="px-10"
+            className="px-10 max-w-[10rem]"
             path="/care-giver?type=personal&recipient=seff&zipcode=1234567"
             title="Search caregiver"
           />
