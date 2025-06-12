@@ -14,7 +14,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
   ];
 
   return (
-    <div className="w-full md:w-1/4 p-6 shadow-lg rounded-lg h-[480px] mt-10">
+    <div className="w-full md:w-1/4 p-6 shadow-lg rounded-lg h-[520px] mt-10">
       {/* Profile Info */}
       <div className="mt-2 flex flex-row items-center gap-2 mb-6 border-b border-[#00000033]">
         <img src="/Recent/profile.png" alt="User" className="w-[60px] h-[60px] rounded-full" />
@@ -25,7 +25,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
       </div>
 
       {/* Menu Items */}
-      <ul className="space-y-3">
+      <ul className="space-y-7">
         {profileItem.map((item) => (
           <li
             key={item.id}

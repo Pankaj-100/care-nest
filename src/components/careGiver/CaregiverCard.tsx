@@ -7,6 +7,7 @@ export type CaregiverProps = {
   experience: string;
   rate: string;
   isBookmarked?: boolean;
+    heightClass?: string; 
   onClick?: () => void;
   onBookmarkToggle?: () => void; 
 };
@@ -16,6 +17,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   imgSrc,
   specialty,
   experience,
+  heightClass,
   rate,
   isBookmarked = false,
   onClick,
@@ -25,8 +27,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   return (
     <div
       onClick={onClick}
-      className="relative h-48 flex items-center gap-6 p-4 rounded-xl bg-white shadow border cursor-pointer hover:shadow-lg transition"
-    >
+className={`relative ${heightClass ?? "h-40"} flex items-center gap-6 rounded-xl p-4 bg-white shadow border cursor-pointer hover:shadow-lg transition`}    >
       {/* Bookmark Icon */}
       <div
         className="absolute top-3 right-3 cursor-pointer w-8 h-8 flex items-center justify-center rounded-full bg-[#233D4D1A] shadow"
