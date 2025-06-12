@@ -102,7 +102,7 @@ const SavedCaregivers = () => {
               className="object-contain"
             />
           </div>
-          <p className="text-lg text-gray-600">You haven't saved any caregivers yet!</p>
+          <p className="text-lg text-gray-600">You havent saved any caregivers yet!</p>
       
         </div>
       ) : (
