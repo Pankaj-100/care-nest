@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+
 import ActionDialog from "../common/ActionDialog";
 import { binIcon } from "@/lib/svg_icons";
 
 interface goToProps {
   goTo: (value: string) => void;
 }
-const Logout =  ({ goTo }: goToProps) => {
+const Logout = ({ goTo }: goToProps) => {
   const [openDeleteDialog, setOpenDialog] = useState(true);
+
+  const router = useRouter();
 
   const handleOpen = () => {
     setOpenDialog(false);
@@ -21,6 +26,9 @@ const Logout =  ({ goTo }: goToProps) => {
         icon={binIcon}
         confirmText="Logout"
         handleConfirm={() => {
+          Cookies.remove("care_nest_token");
+          handleOpen();
+          router.push("/");
         }}
         heading="Account Logout"
         subheading="Are you sure you want to Logout your Account?"

@@ -11,7 +11,7 @@ import Notification from "../Notification";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
 import CustomDrawer from "./CustomDrawer";
 import { MdMenu as MenuIcon } from "react-icons/md";
-
+import Cookies from "js-cookie";
 export interface NavbarTypes {
   title: string;
   link?: string;
@@ -22,7 +22,9 @@ export interface NavbarTypes {
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const [isLoggedInUser, setIsLoggedIn] = useState(false);
+
+  const isValidToken = Cookies.get("care_nest_token") ? true : false;
 
   const path = usePathname();
   const router = useRouter();
@@ -35,15 +37,9 @@ const Header = () => {
   };
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    setIsLoggedIn(isValidToken);
+  }, [isValidToken]);
 
-  // Action: Local storage is used for static build only
-  const isLoggedInUser = isClient
-    ? localStorage.getItem("care_nest_token")
-      ? true
-      : false
-    : false;
   const unseenNotifications = true;
 
   const NavbarMenuTitle: NavbarTypes[] = [

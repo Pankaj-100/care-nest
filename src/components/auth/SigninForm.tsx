@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 import { PasswordInput, TextInput } from "@/components/common/CustomInputs";
 import { EmailIcon, passwordIcon } from "@/lib/svg_icons";
@@ -20,8 +21,8 @@ function SigninForm() {
   const router = useRouter();
 
   const handleSubmit = () => {
-    // Action: Local storage is used for static build only
-    localStorage.setItem("care_nest_token", "iampankaj");
+    const token = "Mai_Hu_Pankaj";
+    Cookies.set("care_nest_token", token);
     router.push("/");
   };
 
