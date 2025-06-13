@@ -19,10 +19,10 @@ export function CustomDialog({ open, handleOpen, children, className }: Props) {
   }
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
-      <DialogTitle className="hidden"></DialogTitle>
-      <DialogDescription className="hidden"></DialogDescription>
-
       <DialogContent className={classes}>
+        <DialogTitle className="hidden"></DialogTitle>
+        <DialogDescription className="hidden"></DialogDescription>
+
         <div className="flex flex-col">{children}</div>
       </DialogContent>
     </Dialog>
