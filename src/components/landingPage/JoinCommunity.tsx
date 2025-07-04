@@ -6,11 +6,11 @@ const JoinCommunity = () => {
   return (
     <div className="sm:px-28 px-8 py-8 bg-[var(--navy)] lg:h-[70vh] h-max flex sm:flex-row flex-col justify-around lg:gap-[13rem] gap-[2rem] sm:items-center">
       <div className="sm:w-2/5 relative sm:order-0 order-1">
-        <h1 className="text-[var(--yellow)] font-medium lg:text-[42px] sm:text-3xl text-xl ">
+        <h1 className="text-[var(--yellow)] font-medium lg:text-[30px] sm:text-3xl xl:text-[42px]  ">
           Curious About Care giving on Our Platform? Join Our Trusted Community
         </h1>
 
-        <p className="text-gray-300 my-4 text-[20px] font-light capitalize">
+        <p className="text-gray-300 my-4 xl:text-[20px] font-light capitalize">
           Become part of a growing community of compassionate caregivers. Offer
           your skills, earn on your terms, and make a meaningful difference in
           the lives of elderly individuals and their families every day.

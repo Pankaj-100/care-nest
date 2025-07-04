@@ -4,17 +4,17 @@ import { RedirectButton, TransparentButton } from "../common/CustomButton";
 
 const ServiceWeProvide = () => {
   return (
-    <div className=" flex flex-col justify-center flex-wrap w-full  sm:pt-[5.5rem] pt-[2.5rem] pb-[2.5rem] bg-[var(--cream)] sm:px-28 px-8">
-      <h1 className="sm:font-medium font-semibold sm:text-5xl text-3xl sm:text-center sm:mb-10 mb-6">
+    <div className="flex flex-col justify-center w-full sm:pt-[5.5rem] pt-[2.5rem] pb-[2.5rem] bg-[var(--cream)] sm:px-28 px-4">
+      <h1 className="sm:font-medium font-semibold sm:text-5xl text-3xl text-center mb-10">
         Services We Provide
       </h1>
 
-      <div className="flex  item-center sm:justify-between justify-center gap-y-8  w-full  lg:px-20">
+      {/* Responsive grid for cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6">
         <Services />
         <Services />
         <Services />
         <Services />
-      
       </div>
     </div>
   );
@@ -22,8 +22,8 @@ const ServiceWeProvide = () => {
 
 const Services = () => {
   return (
-    <div className="sm:p-2 sm:w-58">
-      <div className="sm:w-58 h-58 rounded-2xl mb-3 relative">
+    <div className="p-2">
+      <div className="h-60 rounded-2xl mb-3 relative">
         <Image
           src={"/service1.png"}
           alt="personal care"
