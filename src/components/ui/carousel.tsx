@@ -4,7 +4,6 @@ import * as React from "react"
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
-import { ArrowLeft, ArrowRight } from "lucide-react"
 import { leftslide,rightslide } from "@/lib/svg_icons";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -189,7 +188,7 @@ function CarouselPrevious({
         orientation === "horizontal"
           ? "top-1/2 -left-12 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
-        className="p-0"
+        className
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}

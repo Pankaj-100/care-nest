@@ -4,7 +4,7 @@ import { RecentPage } from "./RecentPage";
 import { useState } from "react";
 import HeroSectionCareProvider from "@/components/careProvider/HeroSectionCareProvider";
 
-export default function page() {
+export default function Page() {
     const [selectedOption, setSelectedOption] = useState("Manage Profile");
       const title = selectedOption === "Manage Profile" ? "My Profile" : selectedOption;
   return (
