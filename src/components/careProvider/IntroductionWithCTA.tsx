@@ -15,14 +15,15 @@ const IntroductionWithCTA = () => {
         </div>
 
         <div className="my-5 w-full max-w-[90%]">
-          <p className="text-[var(--navy)] text-sm sm:text-base">
-            If you're searching for a trusted caregiving platform where you
-            can offer compassionate care to seniors, you're in the right place.
-            Join a community dedicated to making a real difference in the lives
-            of elderly individuals. Whether you're an experienced caregiver
-            or just starting out, this is the perfect platform to connect,
-            support, and grow your caregiving journey.
-          </p>
+      <p className="text-[var(--navy)] text-sm sm:text-base">
+  If you&apos;re searching for a trusted caregiving platform where you
+  can offer compassionate care to seniors, you&apos;re in the right place.
+  Join a community dedicated to making a real difference in the lives
+  of elderly individuals. Whether you&apos;re an experienced caregiver
+  or just starting out, this is the perfect platform to connect,
+  support, and grow your caregiving journey.
+</p>
+
         </div>
 
         <div className="max-w-[90%]">
