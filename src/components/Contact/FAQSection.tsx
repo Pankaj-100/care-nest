@@ -29,12 +29,12 @@ const FAQSection = () => {
   };
   return (
     <div className=" w-full md:w-1/2 space-y-4">
-      <h2 className="lg:text-5xl text-4xl font-bold text-[var(--navy)] font-Urbanist leading-tight">
+      <h2 className="lg:text-6xl text-4xl font-medium text-[var(--navy)] font-Urbanist leading-tight">
         Have Questions?
         <br />
         We Have Answers!
       </h2>
-      <p className="text-md text-[var(--coolgray)] ">
+      <p className="text-md  text-[var(--navy)]/70 ">
         Your Comprehensive CareLinix Guide: Answers to Your Most <br></br>Common
         Questions
       </p>
@@ -46,10 +46,10 @@ const FAQSection = () => {
             className=" w-full text-left font-medium border-b py-2 flex justify-between items-center text-[var(--navy)] text-lg leading-5 cursor-pointer"
           >
             {item.q}
-            <span>{openIndex === index ? "-" : "+"}</span>
+            <span className="text-[32px] font-light">{openIndex === index ? "-" : "+"}</span>
           </button>
           {openIndex === index && (
-            <p className="text-lg text-[var(--coolgray)] leading-5 mt-2">
+            <p className="text-lg text-[#98A2B3] leading-5 mt-2">
               {item.a}
             </p>
           )}

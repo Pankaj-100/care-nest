@@ -53,8 +53,9 @@ const FAQ = () => {
           />
         </div>
 
-        <h1 className="mt-6 text-[var(--yellow)] font-semibold lg:text-4xl text-3xl lg:w-2/3">
-          Curious About Caregiving on Our Platform? We’ve Got Answers!
+        <h1 className="mt-6 text-[var(--yellow)] font-medium lg:text-5xl text-3xl lg:w-2/3">
+          Curious About Caregiving on Our Platform ?  We’ve <br/>
+           Got Answers!
         </h1>
       </div>
 

@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
 import ActionDialog from "../common/ActionDialog";
-import { binIcon } from "@/lib/svg_icons";
+import {logouts } from "@/lib/svg_icons";
 
 interface goToProps {
   goTo: (value: string) => void;
@@ -23,7 +23,7 @@ const Logout = ({ goTo }: goToProps) => {
       <ActionDialog
         open={openDeleteDialog}
         handleOpen={handleOpen}
-        icon={binIcon}
+        icon={logouts}
         confirmText="Logout"
         handleConfirm={() => {
           Cookies.remove("care_nest_token");

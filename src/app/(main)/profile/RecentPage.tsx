@@ -149,21 +149,24 @@ const SavedCaregivers = () => {
     </div>
   );
 }
+interface RecentPageProps {
+  selectedOption: string;
+  setSelectedOption: (option: string) => void;
+}
 
-export function RecentPage() {
-  const [selectedOption, setSelectedOption] = useState("Manage Profile");
-
+export function RecentPage({ selectedOption, setSelectedOption }: RecentPageProps) {
   const renderRightPanel = () => {
     switch (selectedOption) {
       case "Manage Profile":
         return <ManageProfile />;
-         case "Recent Booking":
+      case "Recent Booking":
         return (
-          <RightBookingsPanel onBookingClick={() => setSelectedOption("Booking Detail")}   />
+          <RightBookingsPanel
+            onBookingClick={() => setSelectedOption("Booking Detail")}
+          />
         );
-
-        case "Booking Detail":
-  return <BookingDetails />;
+      case "Booking Detail":
+        return <BookingDetails />;
       case "Saved Caregivers":
         return <SavedCaregivers />;
       case "Reset Password":

@@ -7,7 +7,7 @@ interface Props {
 }
 
 const HeroSectionProtected = ({ title, className }: Props) => {
-  const classes = `absolute text-4xl text-white lg:left-16 left-8 font-semibold -translate-y-1/2 sm:w-auto w-[6rem] top-1/2 ${className}`;
+const classes = `absolute text-7xl text-white lg:left-16 left-8 font-medium -translate-y-1/2 sm:w-auto w-full top-1/2 whitespace-nowrap ${className}`;
 
   return (
     <div className="relative">
@@ -21,7 +21,7 @@ const HeroSectionProtected = ({ title, className }: Props) => {
       </div>
 
       <div
-        className="absolute top-0 left-0 h-full w-2/3 pointer-events-none "
+        className="absolute  top-0 left-0 h-full w-full pointer-events-none "
         style={{
           background:
             "linear-gradient(to left, #233d4d00 0%, #233d4d 50%, #233d4d 100%)",
@@ -29,6 +29,7 @@ const HeroSectionProtected = ({ title, className }: Props) => {
       ></div>
 
       <h1 className={classes}>{title ? title : "Become A Care Provider"}</h1>
+      
     </div>
   );
 };

@@ -35,7 +35,7 @@ const link: linkSection[] = [
       { title: "Jobs", link: "/" },
       { title: "Hiring", link: "/" },
       { title: "News", link: "/" },
-      { title: "Tips and tricks", link: "/" },
+      { title: "Tips and Tricks", link: "/" },
     ],
     Help: [
       { title: "FAQ", link: "/" },
@@ -91,13 +91,13 @@ const socialLink: linkItems[] = [
 ];
 const Footer = () => {
   return (
-    <div className="py-8 lg:px-24 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
+    <div className="pt-18 pb-8 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
       <div className="flex flex-wrap justify-between gap-4 ">
-        <div className="sm:w-68 w-full">
+        <div className="sm:w-75 w-full">
           <div className="relative w-24 h-24 x">
             <Image src="/Logo.svg" alt="Logo" fill />
           </div>
-          <p className="mt-4 text-sm text-gray-300">
+          <p className="mt-4 text-md text-white">
             CARENEST: Pioneering Advanced Medical Solutions to Elevate
             Healthcare Services and Improve Patient Outcomes
           </p>
@@ -129,14 +129,14 @@ const Footer = () => {
         <div>
           <h1
             className="font-bold xl:text-[120px] lg:text-[80px] 
-           text-gray-400 tracking-widest sm:mt-0 mt-2"
+           text-gray-400/30 tracking-widest sm:mt-0 mt-2"
           >
             CARENEST
           </h1>
         </div>
       </div>
 
-      <hr />
+      <hr/>
 
       <div className="flex flex-wrap gap-y-4 items-center justify-between sm:my-4 sm:mt-4 mt-8">
         <div className="flex items-center justify-around sm:w-auto w-full gap-x-5">
@@ -148,7 +148,7 @@ const Footer = () => {
         </div>
 
         <div className="sm:w-auto w-full flex justify-center sm:order-0 order-1">
-          <p className="text-sm text-gray-100 ">
+          <p className="text-sm text-[#FFFFFF] font-medium ">
             {" "}
             © 2024 Copyright By Sansbro - IMEDIC
           </p>
@@ -181,10 +181,10 @@ const FooterLink = ({
 }) => {
   return (
     <div>
-      <p className="font-semibold mb-4">{title}</p>
-      <ul className="flex flex-col gap-2">
+      <p className="font-medium mb-4">{title}</p>
+      <ul className="flex flex-col gap-5">
         {links.map((item, index) => (
-          <li className="text-sm text-gray-300" key={index}>
+          <li className="text-sm font-light text-gray-300" key={index}>
             {item.title}
           </li>
         ))}

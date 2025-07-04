@@ -4,13 +4,13 @@ import Image from "next/image";
 
 const JoinCommunity = () => {
   return (
-    <div className="sm:px-28 px-8 py-8 bg-[var(--navy)] lg:h-[60vh] h-max flex sm:flex-row flex-col justify-between lg:gap-[13rem] gap-[2rem] sm:items-center">
+    <div className="sm:px-28 px-8 py-8 bg-[var(--navy)] lg:h-[70vh] h-max flex sm:flex-row flex-col justify-around lg:gap-[13rem] gap-[2rem] sm:items-center">
       <div className="sm:w-2/5 relative sm:order-0 order-1">
-        <h1 className="text-[var(--yellow)] font-bold lg:text-4xl sm:text-3xl text-xl">
+        <h1 className="text-[var(--yellow)] font-medium lg:text-[42px] sm:text-3xl text-xl ">
           Curious About Care giving on Our Platform? Join Our Trusted Community
         </h1>
 
-        <p className="text-gray-300 my-4">
+        <p className="text-gray-300 my-4 text-[20px] font-light capitalize">
           Become part of a growing community of compassionate caregivers. Offer
           your skills, earn on your terms, and make a meaningful difference in
           the lives of elderly individuals and their families every day.

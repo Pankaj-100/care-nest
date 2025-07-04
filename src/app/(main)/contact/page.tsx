@@ -13,11 +13,11 @@ export default function page() {
         <div className="lg:mx-[4.2rem] mx-[1.2rem]  px-6 py-12">
           <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:mr-24">
             {/* Left Section */}
-            <div className="space-y-4 lg:max-w-md">
-              <h2 className="lg:text-5xl text-4xl text-[var(--navy)] font-semibold leading-tight">
+            <div className="space-y-4 lg:max-w-lg">
+              <h2 className="lg:text-6xl text-4xl text-[var(--navy)] font-medium leading-tight">
                 Get in Touch. We’ll Respond Shortly
               </h2>
-              <p className="text-[var(--coolgray)] text-md font-semibold leading-6">
+              <p className="text-[#667085] text-md  leading-6">
                 If you have any questions or concerns about CareLinix, please
                 don’t hesitate to reach out using the contact details below.
               </p>
@@ -25,7 +25,7 @@ export default function page() {
             </div>
 
             {/* Right Section */}
-            <div className="w-full md:w-[40%]">
+            <div className="w-full md:w-[50%]">
               <ContactForm />
             </div>
           </div>

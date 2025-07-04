@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useState } from "react";
 import ActionDialog from "../common/ActionDialog";
-import { binIcon } from "@/lib/svg_icons";
+import { cancelIcon } from "@/lib/svg_icons";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import Image from "next/image";
 import emptyCaregiverImage from "@/assets/care.svg"; 
@@ -168,11 +168,11 @@ const [isScheduleCareOpen, setIsScheduleCareOpen] = useState(false);
       <ActionDialog
         open={openDialog}
         handleOpen={handleCloseDialog}
-        icon={binIcon}
-        confirmText="Cancel"
+        icon={cancelIcon}
+        confirmText="Confirm"
         handleConfirm={handleConfirmCancel}
         heading="Confirm Cancellation"
-        subheading={`Are you sure you want to cancel booking ?`}
+        subheading={`You're about to cancel your booking. Any ongoing or scheduled services will be discontinued.`}
       />
 
       <ScheduleCare

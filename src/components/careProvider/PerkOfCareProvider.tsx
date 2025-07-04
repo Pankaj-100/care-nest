@@ -41,8 +41,8 @@ const perksData: PerksProps[] = [
 const PerkOfCareProvider = () => {
   return (
     <div className="lg:p-18 p-8  bg-[var(--cream)] h-auto">
-      <h1 className="font-semibold text-4xl leading-11 text-[var(--navy)] lg:w-1/2">
-        Perks of Joining as a Caregiver on Our Platform
+      <h1 className="font-medium text-5xl leading-11 text-[var(--navy)] lg:w-1/2">
+        Perks Of Joining As A  <br/> Caregiver On Our Platform
       </h1>
 
       <div className="mt-12 grid lg:grid-cols-3 grid-cols-2 gap-8">

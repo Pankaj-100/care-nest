@@ -38,7 +38,7 @@ const inputsData = [
 const RegisterAsCareProvider = () => {
   return (
     <div className="flex h-auto ">
-      <div className="relative lg:min-h-[800px] lg:w-1/2">
+      <div className="relative   lg:min-h-[800px] lg:min-w-1/2">
         <Image
           src={"/register-care-provider.jpg"}
           alt="faq"
@@ -46,10 +46,10 @@ const RegisterAsCareProvider = () => {
           style={{ objectFit: "cover" }}
         />
       </div>
-      <div className="lg:px-20 px-8 lg:py-20 py-12 flex justify-center bg-[var(--whiteSmoke)]">
+      <div className="lg:px-20 px-8 lg:py-20 py-12 flex justify-center bg-[var(--whiteSmoke)] lg:min-w-1/2">
         <div>
-          <h1 className="text-2xl font-semibold  text-[var(--navy)]">
-            Start Caring, Start Earning – Register as a Caregiver Now
+          <h1 className="text-4xl font-medium  text-[var(--navy)]">
+            Start Caring, Start Earning –  <br />Register as a Caregiver Now
           </h1>
 
           <form className="mt-8">

@@ -1,3 +1,4 @@
+import { editprofileimage } from "@/lib/svg_icons";
 interface SidebarProps {
   onSelect: (value: string) => void;
   selected: string;
@@ -16,8 +17,32 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
   return (
     <div className="w-full md:w-1/4 p-6 shadow-lg rounded-lg h-[520px] mt-10">
       {/* Profile Info */}
-      <div className="mt-2 flex flex-row items-center gap-2 mb-6 border-b border-[#00000033]">
-        <img src="/Recent/profile.png" alt="User" className="w-[60px] h-[60px] rounded-full" />
+      <div className="mt-2 flex flex-row items-center gap-2 mb-6 border-b border-[#00000033] py-1">
+<div className="relative w-[75px] h-[75px]">
+  <img
+    src="/Recent/profile.png"
+    alt="User"
+    className="w-[75px] h-[75px] rounded-full object-cover"
+  />
+  
+  {/* Upload Icon Overlay */}
+  <label htmlFor="profileImageUpload" className="absolute bottom-[-5px] right-[-5px] cursor-pointer">
+  {editprofileimage}
+  </label>
+  <input
+    type="file"
+    id="profileImageUpload"
+    className="hidden"
+    accept="image/*"
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        // handle upload here
+        console.log("Selected file:", file);
+      }
+    }}
+  />
+</div>
         <div className="flex flex-col">
           <h2 className="text-2xl font-bold text-[var(--navy)]">Joe Done</h2>
           <p className="text-sm text-gray-500">abc@gmail.com</p>

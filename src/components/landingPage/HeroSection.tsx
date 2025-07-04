@@ -14,10 +14,10 @@ import {
 
 const HeroSection = () => {
   return (
-    <div className="relative h-[500px]">
-      <div className="h-full w-full relative">
-        <div className="w-full h-[500px] absolute right-0 ">
-          <div className=" w-2/3 h-[500px] absolute right-0 ">
+    <div className="relative h-[550px]">
+      <div className="h-full w-full relative ">
+        <div className="w-full h-[550px] absolute right-0 ">
+          <div className=" w-3/4 h-[550px] absolute right-0 ">
             <Image
               src={"/hero-background.png"}
               alt="hero background"
@@ -41,7 +41,7 @@ const HeroSection = () => {
             </h1>
           </div>
           <div className="my-5  ">
-            <p>
+            <p className="font-light">
               Easily connect with trusted professionals who provide personal
               care and support tailored to your family’s needs.Create your free
               profile to discover verified, compassionate caregivers.
@@ -50,9 +50,9 @@ const HeroSection = () => {
 
           <div>
             <RedirectButton
-              className="px-10"
+              className="px-12"
               path="/care-giver"
-              title="Find a caregiver"
+              title="Find a Caregiver"
             />
           </div>
         </div>
@@ -72,7 +72,7 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
   return (
     <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-y-4 lg:w-[80vw] bg-white rounded-xl lg:p-6 p-4 py-6 gap-x-7 w-full">
       <div className={`lg:w-52 ${noDescription ? "hidden" : "block"}`}>
-        <h3 className="font-semibold text-lg mb-1">Browse caregivers</h3>
+        <h3 className="font-semibold text-lg mb-1">Browse Caregivers</h3>
         <p className="text-xs text-gray-500">
           Create your free profile to discover verified, compassionate
           caregivers.
@@ -81,10 +81,10 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
 
       <div className="flex-grow flex gap-4 flex-wrap">
         <div className="flex-1">
-          <h3 className="mb-3  font-semibold text-sm">Care type</h3>
+          <h3 className="mb-3  font-semibold text-sm">Care Type</h3>
           <SelectWithOption
-            selectPlaceholder="Select care"
-            selectLabel="Care type"
+            selectPlaceholder="Select Care"
+            selectLabel="Care Type"
             selectItem={[
               "Personal care",
               "Assisted care/Home care",
@@ -97,7 +97,7 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
         <div className="flex-1">
           <h3 className="mb-3 font-semibold text-sm">Recipient</h3>
           <SelectWithOption
-            selectPlaceholder="Recipient"
+            selectPlaceholder="Select Recipient"
             selectLabel="Recipient"
             selectItem={[
               "Recipient1",
@@ -109,10 +109,10 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
           />
         </div>
         <div className="flex-1 ">
-          <h3 className="mb-3 font-semibold text-sm">Zip code</h3>
+          <h3 className="mb-3 font-semibold text-sm">Zip Code</h3>
           <input
             type="text"
-            placeholder="Enter zip code"
+            placeholder="Enter Zip Code"
             className="w-full min-w-[5rem] rounded-2xl outline-none border py-[5px] border-gray-300 text-gray-500 px-3"
           />
         </div>
@@ -121,7 +121,7 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
           <RedirectButton
             className="px-10 max-w-[10rem]"
             path="/care-giver?type=personal&recipient=seff&zipcode=1234567"
-            title="Search caregiver"
+            title="Search Caregiver"
           />
         </div>
       </div>

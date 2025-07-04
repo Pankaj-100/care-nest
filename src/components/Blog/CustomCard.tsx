@@ -44,12 +44,12 @@ export const CustomCard = ({
               className="object-cover"
             />
           </div>
-          <p className="text-[var(--navy)] text-sm font-medium">{name}</p>
+          <p className="text-[#98A2B3] text-sm font-medium">{name}</p>
         </div>
-        <p className="text-[var(--navy)] text-sm">{date}</p>
+        <p className="text-[#98A2B3] text-sm">{date}</p>
       </div>
 
-      <h3 className="font-semibold text-base text-[var(--navy)] mb-1">
+      <h3 className="font-medium text-3xl  text-[var(--navy)] mb-1">
         {desc}
       </h3>
 

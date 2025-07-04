@@ -26,12 +26,12 @@ const PersonalCare = () => {
     <div className="">
       <section className="max-w-7xl mx-auto mt-10 flex lg:flex-row flex-col lg:py-10 px-6 md:px-16">
         <div>
-          <h2 className="lg:text-5xl text-3xl text-[var(--navy)] font-Urbanist font-bold mb-4 leading-tight">
+          <h2 className="lg:text-6xl text-3xl text-[var(--navy)] font-Urbanist font-bold mb-4 leading-tight">
             What Is Personal Care?
           </h2>
         </div>
         <div>
-          <p className="text-[var(--coolgray)] max-w-3xl leading-[130%] font-normal text-lg">
+          <p className="text-[#667085] max-w-3xl leading-[2rem] font-normal text-lg text-justify ">
             If you are searching for a trusted caregiving platform where you can
             offer compassionate care to seniors, you’re in the right place. We
             are community-dedicated to making personal care easily available and
@@ -139,7 +139,7 @@ const PersonalCare = () => {
 
         <div className="absolute inset-0 z-20 flex flex-col items-end justify-center pr-6 sm:pr-36 text-white  font-urbanist">
           <div className="max-w-[90%] sm:max-w-[60%] space-y-4">
-            <h2 className="lg:text-5xl text-3xl font-bold leading-[100%]">
+            <h2 className="lg:text-7xl text-3xl font-medium leading-[100%]">
               Who Can Benefit from <br></br> Personal Care?
             </h2>
             <ul className="text-lg text-[#FFFFFFB2] font-bold leading-[100%] lg:pl-5 pl-1 lg:mt-12 mt-4">
@@ -152,7 +152,7 @@ const PersonalCare = () => {
                         alt="check mark"
                         width={6}
                         height={6}
-                        className="w-6 h-6 bg-[#FFFFFFB2] rounded-full"
+                        className="w-6 h-6 bg-[#FFFFFFB2] p-2 rounded-full"
                       />
                       <span className="text-lg">{beneficiary}</span>
                     </div>
@@ -169,7 +169,7 @@ const PersonalCare = () => {
           <h2 className="lg:text-5xl text-3xl leading-[100%] font-bold mb-4">
             Ready To Get The Support You Need?
           </h2>
-          <p className="mb-6 text-[var(--coolgray)] text-lg leading-[130%] font-normal">
+          <p className="mb-6 text-[#667085] text-lg leading-[130%] font-normal">
             Connect with us to discuss your needs and find the best personal
             caregiver for you.
           </p>

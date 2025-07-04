@@ -13,7 +13,7 @@ const Testimonials = () => {
         >
           Trusted by members across the country
         </h1> */}
-        <div className="flex flex-col font-semibold sm:text-5xl text-3xl capitalize sm:items-center sm:gap-4">
+        <div className="flex flex-col font-medium sm:text-5xl text-5xl capitalize sm:items-center sm:gap-4">
           <div>Trusted by members across</div>
           <div>the country</div>
         </div>
@@ -34,7 +34,7 @@ const Testimonials = () => {
 
 const Testimonial = () => {
   return (
-    <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+    <CarouselItem className="md:basis-1/2 lg:basis-1/4">
       <div className="p-6 sm:w-84 w-auto bg-white rounded-2xl">
         <div className="flex items-center gap-x-6">
           <div className="relative w-10 h-10 rounded-full">

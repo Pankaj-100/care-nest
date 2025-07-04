@@ -74,40 +74,49 @@ const ScheduleCare = ({
         {/* Caregiver List */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-[var(--navy)] font-semibold text-md">
-            Caregivers Selected
+           Selected Caregivers 
           </h2>
           <h2 className="text-[var(--yellow)] font-semibold text-md cursor-pointer">
             Change
           </h2>
         </div>
 
-        <div className="space-y-3 mb-10 max-h-50 overflow-y-auto pr-2">
+        <div className="  space-y-3 mb-10 max-h-50 overflow-y-auto pr-2 ">
           {selectedCaregivers.map((c, index) => (
             <div
               key={index}
-              className="flex items-center border border-[#EBEBEB] rounded-lg p-2 space-x-3"
+              className="flex items-center border border-[#EBEBEB] rounded-lg p-2 space-x-3 justify-start "
             >
+
               <img
                 src={c.imgSrc}
                 alt="avatar"
                 className="w-10 h-10 rounded-full"
               />
-              <div className="flex-1 min-w-0">
-                <p className="text-[var(--navy)] font-semibold text-sm">
-                  {c.name}
-                </p>
-                <p className="text-gray-400 text-xs">{c.specialty}</p>
-              </div>
-              <div className="flex space-x-2">
-                <span className="border border-gray-400 rounded-full px-3 py-1 text-xs text-[var(--navy)] font-semibold">
-                  {c.experience}
-                </span>
-                <span className="border border-gray-400 rounded-full px-3 py-1 text-xs text-[var(--navy)] font-semibold">
-                  {c.rate}
-                </span>
-              </div>
+
+           
+<div className="flex items-center justify-between  gap-4">
+  {/* Left: Name + Specialty */}
+  <div className="flex flex-col min-w-22">
+    <p className="text-[var(--navy)] font-semibold text-sm leading-none">
+      {c.name}
+    </p>
+    <p className="text-gray-400 text-xs leading-tight">{c.specialty}</p>
+  </div>
+
+  {/* Right: Chips */}
+  <div className="flex gap-2 shrink-0">
+    <span className="border border-[#2F3C51] text-[#2F3C51] rounded-full px-3 py-[3px] text-sm font-normal">
+      {c.experience}
+    </span>
+    <span className="border border-[#2F3C51] text-[#2F3C51] rounded-full px-3 py-[3px] text-sm font-normal">
+      {c.rate}
+    </span>
+  </div>
+</div>
+
             </div>
-          ))}
+                     ))}
         </div>
 
         {/* Booking Form */}

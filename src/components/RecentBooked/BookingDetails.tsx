@@ -68,16 +68,15 @@ export default function BookingDetails() {
             </span>
           </p>
         </div>
-
+<div className="flex justify-end w-full">
+  <div className="flex flex-col items-end">
         <button
           onClick={() => setOpenDialog(true)}
-          className="text-[#ED4B5F] border border-[#ED4B5F] rounded-full px-6 py-2 hover:bg-[#FFF2F3] transition"
+          className="text-[#ED4B5F] border border-[#ED4B5F] rounded-full  px-6 py-2 mb-6 hover:bg-[#FFF2F3] transition"
         >
           Cancel Booking
         </button>
-      </div>
-
-      <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-4 mb-8">
         <span className="bg-[#2F3C51] text-white px-4 py-1 rounded-full text-sm">
           Accepted
         </span>
@@ -88,6 +87,11 @@ export default function BookingDetails() {
           1 Month
         </span>
       </div>
+      </div>  
+        </div>
+      </div>
+
+  
 
       <div className="space-y-4">
         {caregiverList.map((cg, index) => (

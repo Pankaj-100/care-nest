@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-
+import { quotes } from "@/lib/svg_icons";
 const TestimonialCareProvider = () => {
   return (
     <div className="flex lg:flex-row flex-col gap-x-16  gap-y-8 items-center justify-start lg:p-18 p-8 ">
@@ -40,9 +40,9 @@ export const Testimonial = () => {
   return (
     <div className="max-w-[30rem] ">
       <div>
-        <h1 className="text-[5rem] font-bold text-[var(--navy)] tracking-wider">
-          ❛❛
-        </h1>
+        <div className="mb-9">
+      {quotes}
+        </div>
       </div>
       <div>
         <p className="text-gray-600">

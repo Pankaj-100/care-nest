@@ -33,9 +33,9 @@ function ActionDialog({
       <div className="flex flex-col items-center">
         <div className="p-5 mb-4 rounded-full bg-[#F2A3071A]">{icon}</div>
         <div className="flex flex-col gap-1 items-center">
-          {heading && <div className="text-xl font-medium">{heading}</div>}
+          {heading && <div className="text-xl font-semibold">{heading}</div>}
           {subheading && (
-            <div className="text-[0.9rem] text-[var(--cool-gray)] text-nowrap">
+            <div className="text-sm text-[var(--cool-gray)]  text-wrap text-center max-w-75">
               {subheading}
             </div>
           )}

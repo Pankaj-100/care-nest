@@ -25,7 +25,7 @@ const MainContent: React.FC = () => {
         </p>
       </div>
 
-      <h1 className="text-3xl font-bold mb-4 text-[var(--navy)] leading-[120%]">
+      <h1 className="text-4xl font-medium mb-4 text-[var(--navy)] leading-[120%]">
         Elderly Care at Home: How to Ensure Comfort and Well-being
       </h1>
       <div className="space-y-4 text-[#667085] text-base leading-relaxed">

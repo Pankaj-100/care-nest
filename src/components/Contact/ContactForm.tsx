@@ -31,7 +31,7 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <div className="w-full md:w-[32rem] lg:p-6 p-4  bg-[var(--cream)] rounded-3xl shadow-md ">
+    <div className="w-full md:w-[34rem] lg:p-10 p-4  px-14 bg-[var(--cream)] rounded-3xl shadow-md ">
       <form
         onSubmit={handleSubmit}
         className="space-y-4 lg:mt-10 mt-3 lg:mb-10 mb-3 "

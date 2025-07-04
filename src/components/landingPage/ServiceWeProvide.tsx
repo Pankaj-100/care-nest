@@ -9,12 +9,12 @@ const ServiceWeProvide = () => {
         Services We Provide
       </h1>
 
-      <div className="flex flex-wrap item-center sm:justify-between justify-center gap-y-8  w-full">
+      <div className="flex  item-center sm:justify-between justify-center gap-y-8  w-full  lg:px-20">
         <Services />
         <Services />
         <Services />
         <Services />
-        <Services />
+      
       </div>
     </div>
   );

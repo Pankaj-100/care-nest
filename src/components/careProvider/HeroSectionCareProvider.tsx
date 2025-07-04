@@ -29,7 +29,7 @@ const HeroSectionCareProvider = ({ title, textClasses }: Props) => {
       </div>
 
       <h1
-        className={`${textClasses} absolute lg:text-4xl text-3xl  text-white lg:left-16 left-8 lg:w-auto w-[6rem] text-center font-semibold -translate-y-1/2 lg:top-1/2 top-3/5 `}
+        className={`${textClasses} absolute lg:text-6xl text-3xl whitespace-nowrap  text-white lg:left-25 left-8 lg:w-auto w-[6rem] text-center font-medium -translate-y-1/2 lg:top-1/2 top-3/5 `}
       >
         {title ? title : "Become A Care Giver"}
       </h1>

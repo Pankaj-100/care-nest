@@ -17,9 +17,9 @@ export const ContactItem: React.FC<ContactItemProps> = ({
       <Image
         src={icon}
         alt={label}
-        width={24}
-        height={24}
-        className="w-4 h-4"
+        width={30}
+        height={30}
+        className="w-5 h-5"
       />
     </div>
     <div>
