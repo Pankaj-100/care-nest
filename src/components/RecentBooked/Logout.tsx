@@ -26,7 +26,7 @@ const Logout = ({ goTo }: goToProps) => {
         icon={logouts}
         confirmText="Logout"
         handleConfirm={() => {
-          Cookies.remove("care_nest_token");
+          Cookies.remove("authToken");
           handleOpen();
           router.push("/");
         }}

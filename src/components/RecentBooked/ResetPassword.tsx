@@ -1,5 +1,9 @@
+"use client";
+
 import React, { useState } from "react";
 import { FiLock } from "react-icons/fi";
+import { toast } from "react-toastify";
+import { useChangePasswordMutation } from "@/store/api/profileApi";
 
 const ResetPassword = () => {
   const [form, setForm] = useState({
@@ -14,6 +18,8 @@ const ResetPassword = () => {
     confirmPassword: false,
   });
 
+  const [changePassword, { isLoading }] = useChangePasswordMutation();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -25,10 +31,31 @@ const ResetPassword = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Resetting password:", form);
-    // Add API call or logic here
+
+    const { currentPassword, newPassword, confirmPassword } = form;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return toast.error("All fields are required.");
+    }
+
+    if (newPassword !== confirmPassword) {
+      return toast.error("New password and confirmation do not match.");
+    }
+
+    try {
+      const res = await changePassword({ currentPassword, newPassword }).unwrap();
+      toast.success(res.message || "Password changed successfully.");
+      setForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+    } catch (err: unknown) {
+  if (typeof err === "object" && err !== null && "data" in err) {
+    const errorData = err as { data?: { message?: string } };
+    toast.error(errorData.data?.message || "Failed to change password. Try again.");
+  } else {
+    toast.error("Failed to change password.");
+  }
+}
   };
 
   return (
@@ -38,9 +65,11 @@ const ResetPassword = () => {
           <h2 className="text-3xl font-medium text-[#2B384C]">Reset Password</h2>
           <button
             type="submit"
-            className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition duration-200 ease-in-out font-semibold"
+            disabled={isLoading}
+            className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition duration-200 ease-in-out font-semibold disabled:opacity-60"
           >
-            Save <span><img src="/Recent/file.png" alt="save" /></span>
+            {isLoading ? "Saving..." : "Save"}
+            <span><img src="/Recent/file.png" alt="save" /></span>
           </button>
         </div>
 

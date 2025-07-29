@@ -1,7 +1,10 @@
 import { Roboto } from "next/font/google";
-
 import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from "./Provider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -23,7 +26,9 @@ export default function RootLayout({
       <body
         className={`${roboto.className} text-[var(--blue-gray)]  antialiased`}
       >
-        {children}
+       <Providers> {children}</Providers>
+                      <ToastContainer position="top-right" autoClose={3000} />
+
       </body>
     </html>
   );

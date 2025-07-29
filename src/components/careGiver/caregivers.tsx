@@ -135,7 +135,7 @@ const CaregiversPage = () => {
   }, []);
 
   const isLoggedInUser = isClient
-    ? localStorage.getItem("care_nest_token")
+    ? localStorage.getItem("authToken")
       ? true
       : false
     : false;

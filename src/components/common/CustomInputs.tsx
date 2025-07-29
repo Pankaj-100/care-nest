@@ -9,6 +9,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   divClassName?: string;
   Icon?: React.JSX.Element;
+  error?: string;
 }
 
 export const TextInput = ({
@@ -17,24 +18,29 @@ export const TextInput = ({
   className,
   divClassName,
   Icon,
+  error,
   ...props
 }: InputProps) => {
-  const classes = `w-full border-none focus-visible:ring-[0px] shadow-none ${className}`;
-  const divClasses = `flex items-center rounded-full bg-[#ffffff] py-2 px-4 ${divClassName}`;
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
   };
 
   return (
-    <div className={divClasses}>
-      {Icon && <div>{Icon}</div>}
-      <Input
-        value={text}
-        onChange={handleChange}
-        {...props}
-        className={classes}
-      />
+    <div className="w-full">
+      <div
+        className={`flex items-center rounded-full bg-[#ffffff] py-2 px-4 ${
+          error ? "border border-red-500" : ""
+        } ${divClassName}`}
+      >
+        {Icon && <div>{Icon}</div>}
+        <Input
+          value={text}
+          onChange={handleChange}
+          {...props}
+          className={`w-full border-none focus-visible:ring-0 shadow-none ${className}`}
+        />
+      </div>
+      {error && <p className="text-red-500 text-sm mt-1 ml-3">{error}</p>}
     </div>
   );
 };
@@ -44,32 +50,39 @@ export const PasswordInput = ({
   setText,
   className,
   Icon,
+  error,
   ...props
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const classes = `w-full border-none  focus-visible:ring-[0px] shadow-none ${className}`;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
   };
 
   return (
-    <div className={`flex items-center rounded-full bg-[#ffffff] py-2 px-4`}>
-      {Icon && <div>{Icon}</div>}
-      <Input
-        type={showPassword ? "text" : "password"}
-        value={text}
-        onChange={handleChange}
-        {...props}
-        className={classes}
-      />
-      <button
-        className="p-0 m-0"
-        onClick={() => setShowPassword((prev) => !prev)}
+    <div className="w-full">
+      <div
+        className={`flex items-center rounded-full bg-[#ffffff] py-2 px-4 ${
+          error ? "border border-red-500" : ""
+        }`}
       >
-        {showPassword ? eyeClosedIcon : eyeOpenIcon}
-      </button>
+        {Icon && <div>{Icon}</div>}
+        <Input
+          type={showPassword ? "text" : "password"}
+          value={text}
+          onChange={handleChange}
+          className={`w-full border-none focus-visible:ring-0 shadow-none ${className}`}
+          {...props}
+        />
+        <button
+          className="p-0 m-0"
+          onClick={() => setShowPassword((prev) => !prev)}
+          type="button"
+        >
+          {showPassword ? eyeClosedIcon : eyeOpenIcon}
+        </button>
+      </div>
+      {error && <p className="text-red-500 text-sm mt-1 ml-3">{error}</p>}
     </div>
   );
 };
@@ -78,13 +91,18 @@ interface ButtonProps {
   children: React.ReactNode;
   onClick: () => void;
   className?: string;
+  disabled?: boolean;
 }
 
-export const CustomButton = ({ children, onClick, className }: ButtonProps) => {
-  const classes = `bg-[var(--golden-yellow)] text-[var( --blue-gray)]  py-6 rounded-full hover:bg-[var(--golden-yellow)] hover:opacity-90 hover:cursor-pointer transition-all ${className}`;
+export const CustomButton = ({
+  children,
+  onClick,
+  className,
+  disabled,
+}: ButtonProps) => {
+  const classes = `bg-[var(--golden-yellow)] text-[var(--blue-gray)] py-6 rounded-full hover:bg-[var(--golden-yellow)] hover:opacity-90 hover:cursor-pointer transition-all ${className}`;
   return (
-    <Button className={classes} onClick={onClick}>
-      {" "}
+    <Button className={classes} onClick={onClick} disabled={disabled}>
       {children}
     </Button>
   );

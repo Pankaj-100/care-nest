@@ -24,7 +24,7 @@ const Header = () => {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [isLoggedInUser, setIsLoggedIn] = useState(false);
 
-  const isValidToken = Cookies.get("care_nest_token") ? true : false;
+  const isValidToken = Cookies.get("authToken") ? true : false;
 
   const path = usePathname();
   const router = useRouter();
