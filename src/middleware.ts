@@ -8,10 +8,10 @@ const restrictedPaths = [
   "/otp-verification",
   "/reset-password",
   "/email-verification",
-    "/",
-"/care-giver",
-"/care-provider",
-"/contact",
+   "/",
+  "/care-giver",
+  "/care-provider",
+  "/contact",
 
 
  
@@ -28,6 +28,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/static") ||
     pathname.endsWith(".png") ||
     pathname.endsWith(".jpg") ||
+     pathname.endsWith(".svg") ||
     pathname.endsWith(".woff2") ||
     pathname.endsWith(".css") ||
     pathname.endsWith(".js") ||
