@@ -8,6 +8,11 @@ const restrictedPaths = [
   "/otp-verification",
   "/reset-password",
   "/email-verification",
+    "/",
+"/care-giver",
+"/care-provider",
+"/contact",
+
 
  
 ];
@@ -26,7 +31,10 @@ export async function middleware(request: NextRequest) {
     pathname.endsWith(".woff2") ||
     pathname.endsWith(".css") ||
     pathname.endsWith(".js") ||
-    pathname.startsWith("/success")
+    pathname.startsWith("/success")||
+    pathname.startsWith("/blogs")||
+    pathname.startsWith("/service")
+    
   ) {
     return NextResponse.next();
   }
