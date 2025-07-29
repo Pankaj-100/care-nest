@@ -87,13 +87,22 @@ export default function ManageProfile() {
       await updateProfile(form).unwrap();
       toast.success("Profile updated successfully.");
     } catch (err: unknown) {
-  if (typeof err === "object" && err !== null && "data" in err) {
-    const errorData = err as { data?: { message?: string } };
-    toast.error(errorData.data?.message || "Failed to update profile.");
-  } else {
-    toast.error("Failed to update profile.");
-  }}
+      if (typeof err === "object" && err !== null && "data" in err) {
+        const errorData = err as { data?: { message?: string } };
+        toast.error(errorData.data?.message || "Failed to update profile.");
+      } else {
+        toast.error("Failed to update profile.");
+      }
+    }
   };
+
+  // Skeleton loader for input fields with pulsing data area but static icon
+  const InputSkeleton = ({ icon }: { icon: React.ReactNode }) => (
+    <div className="flex items-center px-4 py-4 rounded-full border border-gray-300 mb-4 ">
+      <div className="flex-1  rounded bg-gray-300 animate-pulse " />
+      <span className="text-xl text-gray-500 ml-3">{icon}</span>
+    </div>
+  );
 
   return (
     <div className="bg-[#F8F8F8] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto mt-10">
@@ -117,7 +126,13 @@ export default function ManageProfile() {
         </div>
 
         {isFetching ? (
-          <p className="text-gray-500 text-center">Loading profile...</p>
+          <>
+            <InputSkeleton icon={<FiUser />} />
+            <InputSkeleton icon={<FiMail />} />
+            <InputSkeleton icon={<FiUser />} />
+            <InputSkeleton icon={<FiMapPin />} />
+            <InputSkeleton icon={<FiPhone />} />
+          </>
         ) : (
           <div className="space-y-4">
             <InputField
@@ -186,7 +201,9 @@ function InputField({
     <div className="space-y-1">
       <div
         className={`flex items-center bg-white px-4 py-4 rounded-full border ${
-          error ? "border-red-500 ring-2 ring-red-400" : "focus-within:ring-2 ring-yellow-400"
+          error
+            ? "border-red-500 ring-2 ring-red-400"
+            : "focus-within:ring-2 ring-yellow-400"
         }`}
       >
         <input
