@@ -19,6 +19,7 @@ interface Caregiver {
   imgSrc: string;
   isBookmarked?: boolean;
 }
+
 const caregiversData: Caregiver[] = [
   {
     name: "Joe Doe",
@@ -155,18 +156,22 @@ interface RecentPageProps {
 }
 
 export function RecentPage({ selectedOption, setSelectedOption }: RecentPageProps) {
+    const [selectedBooking, setSelectedBooking] = useState<any>(null);
   const renderRightPanel = () => {
     switch (selectedOption) {
       case "Manage Profile":
         return <ManageProfile />;
       case "Recent Booking":
         return (
-          <RightBookingsPanel
-            onBookingClick={() => setSelectedOption("Booking Detail")}
+    <RightBookingsPanel
+            onBookingClick={(booking) => {
+              setSelectedBooking(booking); // save selected booking
+              setSelectedOption("Booking Detail");
+            }}
           />
         );
       case "Booking Detail":
-        return <BookingDetails />;
+        return <BookingDetails booking={selectedBooking} />;
       case "Saved Caregivers":
         return <SavedCaregivers />;
       case "Reset Password":

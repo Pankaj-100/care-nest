@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import { RedirectButton } from "../common/CustomButton";
@@ -11,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+import { useGetServiceNamesQuery } from "@/store/api/bookingApi";
 
 const HeroSection = () => {
   return (
@@ -68,60 +71,118 @@ const HeroSection = () => {
 interface Props {
   noDescription?: boolean;
 }
+
 export const BrowseCaregiver = ({ noDescription }: Props) => {
+  const { data, isLoading } = useGetServiceNamesQuery();
+
+  // State for selections
+  const [selectedCareType, setSelectedCareType] = useState<string>("");
+  const [selectedRecipient, setSelectedRecipient] = useState<string>("");
+  const [zipCode, setZipCode] = useState<string>("");
+
+  // Map service data to label/value pairs
+  const serviceOptions =
+    data?.data?.services.map((service) => ({
+      label: service.name,
+      value: service.id,
+    })) || [];
+
+  // Static recipient options
+  const recipientOptions = [
+    { label: "Recipient1", value: "Recipient1" },
+    { label: "Recipient2", value: "Recipient2" },
+    { label: "Recipient3", value: "Recipient3" },
+    { label: "Recipient4", value: "Recipient4" },
+  ];
+
+  // Build the dynamic redirect URL query params
+  const queryParams = new URLSearchParams();
+  if (selectedCareType) queryParams.append("type", selectedCareType);
+  if (selectedRecipient) queryParams.append("recipient", selectedRecipient);
+  if (zipCode) queryParams.append("zipcode", zipCode);
+
+  const redirectPath = `/care-giver?${queryParams.toString()}`;
+
   return (
-    <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-y-4 lg:w-[80vw] bg-white rounded-xl lg:p-6 p-4 py-6 gap-x-7 w-full">
+    <div
+      className={`flex lg:flex-row flex-col justify-between lg:items-center gap-y-4 lg:w-[80vw] bg-white rounded-xl lg:p-6 p-4 py-6 gap-x-7 w-full ${
+        noDescription ? "lg:pl-0" : ""
+      }`}
+    >
       <div className={`lg:w-52 ${noDescription ? "hidden" : "block"}`}>
         <h3 className="font-semibold text-lg mb-1">Browse Caregivers</h3>
         <p className="text-xs text-gray-500">
-          Create your free profile to discover verified, compassionate
-          caregivers.
+          Create your free profile to discover verified, compassionate caregivers.
         </p>
       </div>
 
       <div className="flex-grow flex gap-4 flex-wrap">
+        {/* Care Type */}
         <div className="flex-1">
-          <h3 className="mb-3  font-semibold text-sm">Care Type</h3>
-          <SelectWithOption
-            selectPlaceholder="Select Care"
-            selectLabel="Care Type"
-            selectItem={[
-              "Personal care",
-              "Assisted care/Home care",
-              "Memory care",
-              "Private pay skilled nursing",
-            ]}
-            className="!w-full"
-          />
+          <h3 className="mb-3 ml-2 font-semibold text-sm">Care Type</h3>
+          <Select
+            value={selectedCareType}
+            onValueChange={setSelectedCareType}
+            disabled={isLoading}
+          >
+            <SelectTrigger className="w-[180px] rounded-2xl ml-2 outline-none ">
+              <SelectValue placeholder={ "Select Care"} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Care Type</SelectLabel>
+                {serviceOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
+
+        {/* Recipient */}
         <div className="flex-1">
           <h3 className="mb-3 font-semibold text-sm">Recipient</h3>
-          <SelectWithOption
-            selectPlaceholder="Select Recipient"
-            selectLabel="Recipient"
-            selectItem={[
-              "Recipient1",
-              "Recipient2",
-              "Recipient3",
-              "Recipient4",
-            ]}
-            className="!w-full"
-          />
+          <Select
+            value={selectedRecipient}
+            onValueChange={setSelectedRecipient}
+          >
+            <SelectTrigger className="w-[180px] rounded-2xl outline-none ">
+              <SelectValue placeholder="Select Recipient" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Recipient</SelectLabel>
+                {recipientOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
-        <div className="flex-1 ">
+
+        {/* Zip Code */}
+        <div className="flex-1">
           <h3 className="mb-3 font-semibold text-sm">Zip Code</h3>
           <input
             type="text"
             placeholder="Enter Zip Code"
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value)}
             className="w-full min-w-[5rem] rounded-2xl outline-none border py-[5px] border-gray-300 text-gray-500 px-3"
           />
         </div>
 
-        <div className="lg:mt-auto mt-4 lg:w-auto w-full ">
+        {/* Search Button */}
+        <div className="lg:mt-auto mt-4 lg:w-auto w-full">
           <RedirectButton
             className="px-10 max-w-[10rem]"
-            path="/care-giver?type=personal&recipient=seff&zipcode=1234567"
+            path={redirectPath}
             title="Search Caregiver"
+            // disabled={!selectedCareType} // optional: disable if no care type selected
           />
         </div>
       </div>
@@ -129,36 +190,4 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
   );
 };
 
-interface SelectWithOptionProps {
-  selectPlaceholder: string;
-  selectLabel: string;
-  selectItem: string[];
-  className?: string;
-}
-export const SelectWithOption = ({
-  selectPlaceholder,
-  selectLabel,
-  selectItem,
-  className,
-}: SelectWithOptionProps) => {
-  return (
-    <Select>
-      <SelectTrigger
-        className={`w-[180px] rounded-2xl outline-none ${className}`}
-      >
-        <SelectValue placeholder={selectPlaceholder} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>{selectLabel}</SelectLabel>
-          {selectItem.map((item, index) => (
-            <SelectItem key={index} value={item}>
-              {item}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  );
-};
 export default HeroSection;

@@ -23,6 +23,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   onClick,
   onBookmarkToggle,
 }) => {
+  const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com";
   console.log("isBookmarked", onBookmarkToggle);
   return (
     <div
@@ -46,7 +47,8 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
 
       <div className="relative w-24 h-24 rounded-full">
         <img
-          src={imgSrc}
+        // src={`${cdnURL}/${imgSrc} `}
+          src={`/care-giver/boy-icon.png`}
           alt={name}
           className={`lg:w-24 w-20 lg:h-24 h-22 rounded-full object-cover`}
         />
