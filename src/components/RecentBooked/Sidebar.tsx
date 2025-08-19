@@ -5,8 +5,11 @@ import { editprofileimage } from "@/lib/svg_icons";
 import {
   useGetProfileQuery,
   useUpdateAvatarMutation,
+  useRemoveAvatarMutation,
 } from "@/store/api/profileApi";
 import { setProfile } from "../../store/profileSlice";
+import { toast } from "react-toastify";
+import { X } from "lucide-react"; // Add this import at the top
 
 interface SidebarProps {
   onSelect: (value: string) => void;
@@ -19,6 +22,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
 
   const { data: profileData } = useGetProfileQuery();
   const [updateAvatar] = useUpdateAvatarMutation();
+  const [removeAvatar] = useRemoveAvatarMutation();
 
   const { name, email, avatar, address, mobile, gender } = useSelector(
     (state: RootState) => state.profile
@@ -60,9 +64,31 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
             gender,
           })
         );
+        toast.success("Profile image updated successfully");
       }
     } catch (err) {
-      console.error("Failed to update avatar:", err);
+      toast.error("Failed to update profile image");
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    try{
+      const res = await removeAvatar().unwrap();
+      if(res?.success){
+        dispatch(
+          setProfile({
+            name,
+            email,
+            avatar: null,
+            address,
+            mobile,
+            gender,
+          })
+        );
+        toast.success("Profile image removed successfully");
+      }
+    } catch (error) {
+      toast.error("Failed to remove profile image");
     }
   };
 
@@ -79,17 +105,31 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
     <div className="w-full md:w-1/4 p-6 shadow-lg rounded-lg h-[520px] mt-10">
       {/* Profile Info */}
       <div className="mt-2 flex flex-row items-center gap-2 mb-6 border-b border-[#00000033] py-1">
-        <div className="relative w-[75px] h-[75px]">
+        <div className="relative w-[68px] h-[68px] group">
           <img
             src={avatar || "/Recent/profile.png"}
             alt="User Avatar"
-            className="w-[75px] h-[75px] rounded-full object-cover"
+            className="w-[68px] h-[68px] rounded-full object-cover"
           />
+          {/* X icon appears only on hover and centered */}
+          {avatar && (
+            <button
+              type="button"
+              onClick={handleRemoveAvatar}
+              className="absolute inset-0 flex items-center cursor-pointer justify-center bg-black/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              aria-label="Remove profile image"
+            >
+              <span className="bg-white rounded-full p-1 shadow ">
+                <X size={15} />
+              </span>
+            </button>
+          )}
           <label
             htmlFor="profileImageUpload"
-            className="absolute bottom-[-5px] right-[-5px] cursor-pointer"
+            className="absolute bottom-0 right-0 cursor-pointer w-6 h-6 flex items-center justify-center transition"
+            style={{ transform: "translate(30%, 30%)" }}
           >
-            {editprofileimage}
+            <span className="w-5 h-5 flex items-center justify-center " >{editprofileimage}</span>
           </label>
           <input
             type="file"

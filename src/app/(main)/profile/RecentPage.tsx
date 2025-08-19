@@ -11,7 +11,9 @@ import CaregiverCard from "@/components/careGiver/CaregiverCard";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import Image from "next/image";
 import emptyCaregiverImage from "@/assets/care.svg"; 
+
 interface Caregiver {
+  id: string;
   name: string;
   specialty: string;
   experience: string;
@@ -22,6 +24,7 @@ interface Caregiver {
 
 const caregiversData: Caregiver[] = [
   {
+    id: "1",
     name: "Joe Doe",
     specialty: "Elderly Care",
     experience: "12+ Years",
@@ -30,6 +33,7 @@ const caregiversData: Caregiver[] = [
     isBookmarked: false,
   },
   {
+    id: "2",
     name: "Jane Smith",
     specialty: "Pet Care",
     experience: "8+ Years",
@@ -38,6 +42,7 @@ const caregiversData: Caregiver[] = [
     isBookmarked: false,
   },
   {
+    id: "3",
     name: "Emily Johnson",
     specialty: "Baby Care",
     experience: "5+ Years",
@@ -46,6 +51,7 @@ const caregiversData: Caregiver[] = [
     isBookmarked: false,
   },
   {
+    id: "4",
     name: "Michael Brown",
     specialty: "Physical Therapy",
     experience: "10+ Years",
@@ -54,6 +60,7 @@ const caregiversData: Caregiver[] = [
     isBookmarked: false,
   },
   {
+    id: "5",
     name: "Sarah Davis",
     specialty: "Home Assistance",
     experience: "7+ Years",
@@ -61,7 +68,8 @@ const caregiversData: Caregiver[] = [
     imgSrc: "/care-giver/boy-icon.png",
     isBookmarked: false,
   },
-    {
+  {
+    id: "6",
     name: " Davis",
     specialty: "Home Assistance",
     experience: "7+ Years",
@@ -69,8 +77,6 @@ const caregiversData: Caregiver[] = [
     imgSrc: "/care-giver/boy-icon.png",
     isBookmarked: false,
   },
-
-
 ];
 
 const SavedCaregivers = () => { 
@@ -120,7 +126,6 @@ const SavedCaregivers = () => {
                 {...caregiver}
                 heightClass="h-30"
                 onClick={() => handleCardClick(caregiver.name)}
-                onBookmarkToggle={() => handleCardClick(caregiver.name)}
               />
             ))}
           </div>

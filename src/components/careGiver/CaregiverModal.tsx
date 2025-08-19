@@ -10,8 +10,11 @@ interface CaregiverModalProps {
   onClose: () => void;
   caregiverId: string | null;
   onBookmarkToggle: (id: string) => void;
+  onAddCaregiver: (id: string) => void; // <-- Add this line
   isBookmarked?: boolean;
   isLoggedInUser?: boolean;
+  showAddButton?: boolean;
+  showMessageButton?: boolean; // <-- Add this prop
 }
 
 const CaregiverModal: React.FC<CaregiverModalProps> = ({
@@ -19,19 +22,26 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
   onClose,
   caregiverId,
   onBookmarkToggle,
+  onAddCaregiver, // <-- Destructure the new handler
   isBookmarked,
   isLoggedInUser,
+  showAddButton = true, // <-- Default to true
+  showMessageButton = false,
 }) => {
   const { data, isLoading, isError } = useGetCaregiverDetailsQuery(
     caregiverId || "",
     { skip: !caregiverId }
   );
+  console.log("CaregiverModal data:", data);
 
-  if (!isOpen || !caregiverId) return null;
+  if (!isOpen || !caregiverId) {
+    console.log("Modal not open or caregiverId missing", isOpen, caregiverId);
+    return null;
+  }
   if (isLoading) return <div>Loading...</div>;
-  if (isError || !data?.data.details[0]) return <div>Failed to load caregiver</div>;
+  if (isError || !data?.data.details) return <div>Failed to load caregiver</div>;
 
-  const caregiver = data.data.details[0];
+  const caregiver = Array.isArray(data.data.details) ? data.data.details[0] : data.data.details;
 
   const bookmarkStatus = isBookmarked ?? false;
 
@@ -52,8 +62,13 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
         <div className="flex lg:flex-row flex-col gap-6 justify-between items-center break-all">
           <div className="flex gap-6 items-center">
             <img
-             // src={caregiver.avatar}
-             src={`/care-giver/boy-icon.png`}
+              src={
+                caregiver.avatar
+                  ? caregiver.avatar.startsWith("http")
+                    ? caregiver.avatar
+                    : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${caregiver.avatar}`
+                  : "/care-giver/boy-icon.png"
+              }
               alt="avatar"
               className="lg:w-24 w-15 lg:h-24 h-15 rounded-full"
             />
@@ -74,6 +89,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
           </div>
 
           <div className="flex flex-row gap-4 items-center ms-auto">
+            {/* Bookmark Icon */}
             <div>
               <img
                 src={
@@ -85,15 +101,27 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
                 className="w-4 h-4"
               />
             </div>
-            <CustomButton
-              onClick={() => {
-                onBookmarkToggle(caregiver.id);
-                onClose();
-              }}
-              className="!px-6"
-            >
-              Add CareGiver
-            </CustomButton>
+            {showMessageButton ? (
+              <CustomButton
+                onClick={() => {
+                  // Add your message inbox logic here
+                }}
+                className="!px-6"
+              >
+                Message
+              </CustomButton>
+            ) : (
+              showAddButton && (
+                <CustomButton
+                  onClick={() => {
+                    onAddCaregiver(caregiver.id); // <-- Use selection handler
+                  }}
+                  className="!px-6"
+                >
+                  Add CareGiver
+                </CustomButton>
+              )
+            )}
           </div>
         </div>
 
@@ -101,7 +129,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
         <div className="mt-6">
           <h3 className="text-xl font-medium text-[var(--navy)]">About</h3>
           <p className="text-[var(--cool-gray)] mt-2 leading-6">
-            {caregiver.about}
+            {caregiver.about ?? "No description available."}
           </p>
         </div>
 
@@ -115,14 +143,14 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
               <ContactItem
                 icon={"/Contact/phone.png"}
                 label={"Phone Number"}
-                value={isLoggedInUser ? caregiver.mobile : "XXXXXXXXXX"}
+                value={isLoggedInUser ? caregiver.mobile ?? "N/A" : "XXXXXXXXXX"}
               />
             </div>
             <div className="w-full sm:w-1/2 bg-gray-100 rounded-lg">
               <ContactItem
                 icon={"/Contact/email.png"}
                 label={"Email ID"}
-                value={isLoggedInUser ? caregiver.email : "XXXXXXXXXX"}
+                value={isLoggedInUser ? caregiver.email ?? "N/A" : "XXXXXXXXXX"}
               />
             </div>
           </div>
@@ -134,9 +162,9 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
             My Services
           </h3>
           <div className="grid grid-cols-2 gap-4 mt-3">
-            {caregiver.services.map((service) => (
+            {(caregiver.services ?? []).map((service, idx) => (
               <div
-                key={service}
+                key={`${service}-${idx}`}
                 className="flex gap-4 items-center p-4 bg-[#fff] rounded-md"
               >
                 <img
@@ -158,7 +186,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
             Why Choose Me?
           </h3>
           <div className="space-y-4 mt-3">
-            {caregiver.whyChooseMe.map((item, idx) => (
+            {(caregiver.whyChooseMe ?? []).map((item, idx) => (
               <div
                 key={idx}
                 className="flex gap-4 p-4 bg-[#fff] rounded-md"
@@ -186,3 +214,4 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
 };
 
 export default CaregiverModal;
+

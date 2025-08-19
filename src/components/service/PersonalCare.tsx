@@ -139,7 +139,7 @@ const PersonalCare = () => {
 
         <div className="absolute inset-0 z-20 flex flex-col items-end justify-center pr-6 sm:pr-36 text-white  font-urbanist">
           <div className="max-w-[90%] sm:max-w-[60%] space-y-4">
-            <h2 className="lg:text-7xl text-3xl font-medium leading-[100%]">
+            <h2 className="lg:text-7xl text-xl font-medium leading-[100%]">
               Who Can Benefit from <br></br> Personal Care?
             </h2>
             <ul className="text-lg text-[#FFFFFFB2] font-bold leading-[100%] lg:pl-5 pl-1 lg:mt-12 mt-4">

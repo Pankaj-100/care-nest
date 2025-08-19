@@ -244,6 +244,14 @@ updateAvatar: builder.mutation<{ success: boolean; message: string }, FormData>(
   }),
   invalidatesTags: ['Profile'],
 }),
+   // 🔹 Remove Avatar
+    removeAvatar: builder.mutation<{ success: Boolean; message: string}, void>({
+      query: () => ({
+        url: `/api/v1/user/avatar`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Profile'],
+    }),
 
     // 🔹 Delete Account
     deleteAccount: builder.mutation<{ success: boolean; message: string }, void>({
@@ -401,6 +409,7 @@ export const {
   useGetProfileQuery,
   useUpdateProfileMutation,
   useUpdateAvatarMutation,
+  useRemoveAvatarMutation,
   useDeleteAccountMutation,
   useChangePasswordMutation,
   useGetAboutQuery,

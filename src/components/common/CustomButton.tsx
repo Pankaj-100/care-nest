@@ -20,7 +20,7 @@ export const YellowButton = ({
   onClick,
 }: ButtonType) => {
   const classes = cn(
-    "hover:cursor-pointer rounded-3xl  bg-[var(--yellow)] px-4 py-5 text-xs text-[var(--navy)] font-semibold hover:bg-[var(--yellow-light)] transition-all duration-300 ease-in-out ",
+    "flex items-center gap-2 hover:cursor-pointer rounded-3xl  bg-[var(--yellow)] px-6 py-3 text-xs text-[var(--navy)] font-semibold hover:bg-[var(--yellow-light)] transition-all duration-300 ease-in-out ",
     className
   );
   return (

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import ActionDialog from "../common/ActionDialog";
+import CaregiverModal from "../careGiver/CaregiverModal";
 import { binIcon } from "@/lib/svg_icons";
 
 interface Caregiver {
@@ -12,7 +13,8 @@ interface Caregiver {
   price: string;
   selected: boolean;
   avatar: string;
-  id:string;
+  id: string;
+  status: string;
   isFinalSelection?: boolean;
 }
 
@@ -30,6 +32,7 @@ interface BookingDetailsProps {
 
 export default function BookingDetails({ booking }: BookingDetailsProps) {
   const [openDeleteDialog, setOpenDialog] = useState(false);
+  const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
 
   const handleOpen = () => {
     setOpenDialog(false);
@@ -39,7 +42,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
     console.log("Booking canceled");
     setOpenDialog(false);
   };
-console.log("Booking Details:", booking);
+  console.log("Booking Details:", booking);
   if (!booking) return <div className="p-4">No booking selected</div>;
 
   return (
@@ -52,11 +55,12 @@ console.log("Booking Details:", booking);
           </h2>
           <p className="text-sm text-[#7A8699] mt-2">
             <span className="block">
-              Booking ID: <span className="text-[#2F3C51]">#{booking.bookingId}</span>
+              Booking ID:{" "}
+              <span className="text-[#2F3C51]">#{booking.bookingId}</span>
             </span>
             <span className="block">
               Care Type:{" "}
-                      <span className="text-[#2F3C51]">Memory care</span>
+              <span className="text-[#2F3C51]">Memory care</span>
               {/* <span className="text-[#2F3C51]">{booking.careType}</span> */}
             </span>
             <span className="block">
@@ -70,22 +74,24 @@ console.log("Booking Details:", booking);
 
         <div className="flex justify-end w-full">
           <div className="flex flex-col items-end">
-            <button
-              onClick={() => setOpenDialog(true)}
-              className="text-[#ED4B5F] border border-[#ED4B5F] rounded-full px-6 py-2 mb-6 hover:bg-[#FFF2F3] transition"
-            >
-              Cancel Booking
-            </button>
+            {booking.status !== "cancelled" && (
+              <button
+                onClick={() => setOpenDialog(true)}
+                className="text-[#ED4B5F] border border-[#ED4B5F] rounded-full px-6 py-2 mb-6 hover:bg-[#FFF2F3] transition"
+              >
+                Cancel Booking
+              </button>
+            )}
             <div className="flex items-center gap-4 mb-8">
               <span className="bg-[#2F3C51] text-white px-4 py-1 rounded-full text-sm">
                 {booking.status}
               </span>
               <span className="border border-[#2F3C51] text-[#2F3C51] px-4 py-1 rounded-full text-sm flex items-center gap-1">
-                 <img src="/Recent/c.png" alt="calendar" className="w-4 h-4" />
+                <img src="/Recent/c.png" alt="calendar" className="w-4 h-4" />
                 {new Date(booking.appointmentDate).toLocaleDateString()}
               </span>
               <span className=" flex items-center gap-1 border border-[#2F3C51] text-[#2F3C51] px-4 py-1 rounded-full text-sm">
-                  <img src="/Recent/time.png" alt="duration" className="w-4 h-4" />
+                <img src="/Recent/time.png" alt="duration" className="w-4 h-4" />
                 {booking.duration} Days
               </span>
             </div>
@@ -97,39 +103,58 @@ console.log("Booking Details:", booking);
         {booking.caregivers?.map((cg, index) => (
           <div
             key={index}
-            className="bg-white rounded-xl p-4 flex items-center justify-between border"
+            className="bg-white rounded-xl p-4 flex items-center gap-4 border cursor-pointer"
+            onClick={() => setSelectedCaregiverId(cg.id)}
           >
-            <div className="flex items-center gap-4">
-              <Image
-                // src={cg.avatar}
-                 src={"/care-giver/boy-icon.png"}
-                alt={cg.name}
-                width={60}
-                height={60}
-                className="rounded-full"
-              />
-              <div>
-                <h4 className="font-semibold text-lg">{cg.name}</h4>
-                {/* <p className="text-sm text-[#7A8699]">{cg.specialty}</p> */}
-                      <p className="text-sm text-[#7A8699]">Elderly care</p>
-                <div className="flex gap-2 mt-1">
-                  <span className="border border-[#D1D5DB] rounded-full px-3 py-1 text-sm">
-                    {cg.experience} + years
-                  </span>
-                  <span className="border border-[#D1D5DB] rounded-full px-3 py-1 text-sm">
-                    ${cg.price}/hr
-                  </span>
-                </div>
+            <Image
+              src={
+                cg.avatar
+                  ? cg.avatar.startsWith("http")
+                    ? cg.avatar
+                    : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${cg.avatar}`
+                  : "/care-giver/boy-icon.png"
+              }
+              alt={cg.name}
+              width={60}
+              height={60}
+              className="rounded-full object-cover"
+              style={{ minWidth: 60, minHeight: 60 }}
+            />
+            <div>
+              <h4 className="font-semibold text-lg">{cg.name}</h4>
+              <p className="text-sm text-[#7A8699]">Elderly care</p>
+              <div className="flex gap-2 mt-1">
+                <span className="border border-[#D1D5DB] rounded-full px-3 py-1 text-sm">
+                  {cg.experience} + years
+                </span>
+                <span className="border border-[#D1D5DB] rounded-full px-3 py-1 text-sm">
+                  ${cg.price}/hr
+                </span>
               </div>
             </div>
-            {cg.selected && (
-              <span className="bg-[#2F3C51] text-white px-4 py-1 rounded-full text-sm">
+            {booking.status === "active" && cg.status === "active" && (
+              <span className="bg-[#2F3C51] text-white px-4 py-1 rounded-full text-sm flex items-center gap-2 ml-auto">
+                <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+                  <path d="M6.75 13.5L2.25 9L3.3075 7.9425L6.75 11.3775L14.6925 3.4425L15.75 4.5L6.75 13.5Z" fill="white"/>
+                </svg>
                 Selected Caregiver
               </span>
             )}
           </div>
         ))}
       </div>
+
+      {/* Caregiver Modal */}
+      <CaregiverModal
+        isOpen={!!selectedCaregiverId}
+        onClose={() => setSelectedCaregiverId(null)}
+        caregiverId={selectedCaregiverId}
+        onBookmarkToggle={() => {}}
+        onAddCaregiver={() => {}}
+        isBookmarked={false}
+        isLoggedInUser={true}
+        showMessageButton={true} // <-- Add this prop
+      />
 
       <ActionDialog
         open={openDeleteDialog}

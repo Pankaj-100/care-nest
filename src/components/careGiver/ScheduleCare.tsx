@@ -138,7 +138,13 @@ const ScheduleCare = ({
               className="flex items-center border border-[#EBEBEB] rounded-lg p-2 space-x-3 justify-start"
             >
               <img
-                src={"/care-giver/boy-icon.png"}
+                src={
+                  c.imgSrc
+                    ? c.imgSrc.startsWith("http")
+                      ? c.imgSrc
+                      : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.imgSrc}`
+                    : "/care-giver/boy-icon.png"
+                }
                 alt="avatar"
                 className="w-10 h-10 rounded-full"
               />

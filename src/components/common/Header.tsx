@@ -12,6 +12,7 @@ import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
 import CustomDrawer from "./CustomDrawer";
 import { MdMenu as MenuIcon } from "react-icons/md";
 import Cookies from "js-cookie";
+import { profileIcon } from "../icons/page";
 export interface NavbarTypes {
   title: string;
   link?: string;
@@ -106,8 +107,10 @@ const Header = () => {
             onClick={() => {
               router.push("/profile");
             }}
+            className="flex items-center gap-2"
           >
-            My Profile
+            {profileIcon()}
+            <span className="text-[var(--navy)] font-semibold">My Profile</span>
           </YellowButton>
         )}
       </div>

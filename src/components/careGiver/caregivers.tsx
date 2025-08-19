@@ -41,6 +41,7 @@ const CaregiversPage = () => {
   const [openRedirect, setOpenRedirect] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [caregivers, setCaregivers] = useState<Caregiver[]>([]);
+  const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
 
   useEffect(() => {
     setIsClient(true);
@@ -79,6 +80,12 @@ const CaregiversPage = () => {
   const handleOpenFilter = () => setOpenFilter((prev) => !prev);
   const handleOpenRedirect = () => setOpenRedirect((prev) => !prev);
 
+  const handleFilterChange = (filters: any) => {
+    // You can use these filters to refetch caregivers or update your API call
+    // Example: setFilters(filters) or refetch with new params
+    // console.log(filters);
+  };
+
   const mappedCaregiversForCards = caregivers.map((c) => ({
     id: c.id,
     name: c.name,
@@ -90,7 +97,7 @@ const CaregiversPage = () => {
   }));
 
   const mappedCaregiversForSchedule = caregivers
-    .filter((c) => c.isBookmarked)
+    .filter((c) => selectedCaregivers.includes(c.id)) // <-- use selectedCaregivers
     .map((c) => ({
       id: c.id,
       name: c.name,
@@ -105,7 +112,7 @@ const CaregiversPage = () => {
       <div className="flex flex-col md:flex-row gap-8">
         {/* Sidebar */}
         <div className="lg:block hidden">
-          <FilterSidebar />
+          <FilterSidebar onFilterChange={handleFilterChange} />
         </div>
 
         <div className="lg:hidden block">
@@ -115,7 +122,7 @@ const CaregiversPage = () => {
             showCrossButton={true}
             className="w-2/3 rounded-l-xl lg:hidden"
           >
-            <FilterSidebar />
+            <FilterSidebar onFilterChange={handleFilterChange} />
           </CustomSheet>
         </div>
 
@@ -163,6 +170,7 @@ const CaregiversPage = () => {
                 experience={caregiver.experience}
                 rate={caregiver.rate}
                 isBookmarked={caregiver?.isBookmarked}
+                isSelected={selectedCaregivers.includes(caregiver.id)} // <-- Add this line
                 onClick={() => handleCardClick(caregiver.id)}
                 onBookmarkToggle={() => handleBookmarkToggle(caregiver.id)}
               />
@@ -195,12 +203,20 @@ const CaregiversPage = () => {
         isLoggedInUser={isLoggedInUser}
       /> */}
       <CaregiverModal
-   isOpen={isModalOpen}
+  isOpen={isModalOpen}
   caregiverId={selectedCaregiverId}
- onClose={() => setIsModalOpen(false)}
+  onClose={() => setIsModalOpen(false)}
   onBookmarkToggle={handleBookmarkToggle}
-  isBookmarked={true}
-  isLoggedInUser={true}
+  onAddCaregiver={(id: string) => {
+    setSelectedCaregivers((prev) =>
+      prev.includes(id) ? prev : [...prev, id]
+    );
+    setIsModalOpen(false);
+  }}
+  isBookmarked={
+    caregivers.find((c) => c.id === selectedCaregiverId)?.isBookmarked ?? false
+  }
+  isLoggedInUser={isLoggedInUser}
 />
 
       {/* Schedule Booking Modal */}

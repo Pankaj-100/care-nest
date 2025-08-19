@@ -7,9 +7,10 @@ export type CaregiverProps = {
   experience: string;
   rate: string;
   isBookmarked?: boolean;
+  isSelected?: boolean;
   heightClass?: string;
   onClick?: () => void;
-  onBookmarkToggle?: () => void;
+  onBookmarkToggle?: () => void; // <-- Add this line
 };
 
 const CaregiverCard: React.FC<CaregiverProps> = ({
@@ -21,10 +22,9 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   rate,
   isBookmarked = false,
   onClick,
-  onBookmarkToggle,
+  isSelected = false,
 }) => {
   const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com";
-  console.log("isBookmarked", onBookmarkToggle);
   return (
     <div
       onClick={onClick}
@@ -33,7 +33,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
       } flex items-center gap-6 rounded-xl p-4 bg-white shadow border cursor-pointer hover:shadow-lg transition`}
     >
       {/* Bookmark Icon */}
-      <div className="absolute top-3 right-3 cursor-pointer w-8 h-8 flex items-center justify-center rounded-full bg-[#233D4D1A] shadow">
+      <div className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-[#233D4D1A] shadow">
         <img
           src={
             isBookmarked
@@ -47,18 +47,22 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
 
       <div className="relative w-24 h-24 rounded-full">
         <img
-        // src={`${cdnURL}/${imgSrc} `}
-          src={`/care-giver/boy-icon.png`}
+          src={
+            imgSrc
+              ? imgSrc.startsWith("http")
+                ? imgSrc
+                : `${cdnURL}/${imgSrc}`
+              : `/care-giver/boy-icon.png`
+          }
           alt={name}
           className={`lg:w-24 w-20 lg:h-24 h-22 rounded-full object-cover`}
         />
-        {isBookmarked && (
-          <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--navy)] opacity-80 rounded-full p-1">
+        {isSelected && (
+          <div className="absolute top-0 left-0 w-24 h-24 bg-[var(--navy)] opacity-80 rounded-full flex items-center justify-center">
             <img
               src="/care-giver/tick.png"
-              alt="Bookmarked"
-              className="w-10 h-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-              style={{ transform: "translate(0%, -0%)" }}
+              alt="Selected"
+              className="w-10 h-10"
             />
           </div>
         )}

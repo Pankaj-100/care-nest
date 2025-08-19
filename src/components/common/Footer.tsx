@@ -21,12 +21,12 @@ const link: linkSection[] = [
     Company: [
       { title: "Features", link: "/" },
       { title: "Pricing", link: "/" },
-      { title: "About us", link: "/" },
+      { title: "About Us", link: "/" },
       { title: "Contact", link: "/" },
     ],
     Resource: [
       { title: "Blog", link: "/" },
-      { title: "Customer stories", link: "/" },
+      { title: "Customer Stories", link: "/" },
       { title: "Information", link: "/" },
       { title: "Legal", link: "/" },
       { title: "Payments", link: "/" },
@@ -93,10 +93,10 @@ const Footer = () => {
   return (
     <div className="pt-18 pb-8 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
       <div className="flex flex-wrap justify-between gap-4 ">
-        <div className="sm:w-75 w-full">
-          <div className="relative w-24 h-24 x">
-            <Image src="/Logo.svg" alt="Logo" fill />
-          </div>
+        <div className="sm:w-75 w-full ">
+          <Link href="/" aria-label="Go to home" className="relative w-24 h-24 block cursor-pointer">
+            <Image src="/Logo.svg" alt="Carenest logo" fill priority />
+          </Link>
           <p className="mt-4 text-md text-white">
             CARENEST: Pioneering Advanced Medical Solutions to Elevate
             Healthcare Services and Improve Patient Outcomes
@@ -136,7 +136,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <hr/>
+      <hr className="relative left-1/2 right-1/2 -mx-[50vw] w-screen border-0 h-px bg-white/20 my-6" />
 
       <div className="flex flex-wrap gap-y-4 items-center justify-between sm:my-4 sm:mt-4 mt-8">
         <div className="flex items-center justify-around sm:w-auto w-full gap-x-5">

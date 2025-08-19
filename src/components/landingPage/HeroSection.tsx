@@ -53,7 +53,7 @@ const HeroSection = () => {
 
           <div>
             <RedirectButton
-              className="px-12"
+              className="px-12 py-6 text-sm"
               path="/care-giver"
               title="Find a Caregiver"
             />
@@ -125,7 +125,7 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
             onValueChange={setSelectedCareType}
             disabled={isLoading}
           >
-            <SelectTrigger className="w-[180px] rounded-2xl ml-2 outline-none ">
+            <SelectTrigger className="w-45 min-w-[5rem] py-5 rounded-4xl ml-2 outline-none ">
               <SelectValue placeholder={ "Select Care"} />
             </SelectTrigger>
             <SelectContent>
@@ -148,7 +148,7 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
             value={selectedRecipient}
             onValueChange={setSelectedRecipient}
           >
-            <SelectTrigger className="w-[180px] rounded-2xl outline-none ">
+            <SelectTrigger className="w-45 min-w-[5rem] rounded-4xl outline-none py-5 ">
               <SelectValue placeholder="Select Recipient" />
             </SelectTrigger>
             <SelectContent>
@@ -172,14 +172,14 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
             placeholder="Enter Zip Code"
             value={zipCode}
             onChange={(e) => setZipCode(e.target.value)}
-            className="w-full min-w-[5rem] rounded-2xl outline-none border py-[5px] border-gray-300 text-gray-500 px-3"
+            className="w-45 min-w-[5rem] rounded-4xl outline-none border py-[9px] border-gray-300 text-gray-900 px-5"
           />
         </div>
 
         {/* Search Button */}
         <div className="lg:mt-auto mt-4 lg:w-auto w-full">
           <RedirectButton
-            className="px-10 max-w-[10rem]"
+            className="px-10 py-6 text-sm"
             path={redirectPath}
             title="Search Caregiver"
             // disabled={!selectedCareType} // optional: disable if no care type selected
