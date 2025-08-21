@@ -10,7 +10,16 @@ const PRICES = [
 ];
 const LANGUAGES = ["English", "Spanish", "Arabic","German", "Russian","Chinese","Portuguese","Italian","Turkish","French","Japanese", "Hindi"];
 
-const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => void }) => {
+interface CaregiverFilters {
+  gender?: string;
+  certified?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+  languages?: string[];
+  prn?: string[];
+}
+
+const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: CaregiverFilters) => void }) => {
   const [gender, setGender] = useState<string>("");
   const [certified, setCertified] = useState<string>("");
   const [price, setPrice] = useState<{ min: number; max: number } | null>(null);
@@ -24,8 +33,8 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => v
       certified: certified === "" ? undefined : certified === "yes",
       minPrice: price?.min,
       maxPrice: price?.max,
-      languages: languages.join(","),
-      prn: prn.join(","),
+      languages,
+      prn,
     });
   }, [gender, certified, price, languages, prn, onFilterChange]);
 
@@ -39,7 +48,7 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => v
           {GENDERS.map((g) => (
             <label key={g} className="block text-sm text-[var(--coolgray)] font-medium">
               <input
-                type="checkbox"
+                type="radio"
                 name="gender"
                 checked={gender === g}
                 onChange={() => setGender(g)}
@@ -56,7 +65,7 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => v
         {PRICES.map((range, idx) => (
           <label key={idx} className="block text-sm text-[#98A2B3] font-medium">
             <input
-              type="checkbox"
+              type="radio"
               name="price"
               checked={price?.min === range.min && price?.max === range.max}
               onChange={() => setPrice({ min: range.min, max: range.max })}
@@ -71,7 +80,7 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => v
         <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Certified</h4>
         <label className="text-sm text-[#98A2B3] font-medium">
           <input
-            type="checkbox"
+            type="radio"
             name="certified"
             checked={certified === "yes"}
             onChange={() => setCertified("yes")}
@@ -80,7 +89,7 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => v
         </label>
         <label className="text-sm text-[#98A2B3] font-medium ml-4">
           <input
-            type="checkbox"
+            type="radio"
             name="certified"
             checked={certified === "no"}
             onChange={() => setCertified("no")}

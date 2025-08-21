@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { FiUser, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 import {
   useGetProfileQuery,
@@ -120,7 +121,7 @@ export default function ManageProfile() {
           >
             {isUpdating ? "Saving..." : "Save"}{" "}
             <span>
-              <img src="/Recent/file.png" alt="save" />
+              <Image src="/Recent/file.png" alt="save" width={20} height={20} />
             </span>
           </button>
         </div>

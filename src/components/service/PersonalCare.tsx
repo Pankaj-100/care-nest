@@ -54,7 +54,7 @@ const PersonalCare = () => {
       {/*  service we provide */}
 
       {/* <div className="bg-[#F7F7F3] mt-10 relative">
-        <img
+        <Image
           src="/dot.png"
           alt="dot"
           className="absolute top-6 left-10 w-10 h-10 z-0"
@@ -69,7 +69,7 @@ const PersonalCare = () => {
             <ul className="pl-6 flex-1 text-[var(--navy)] text-lg leading-[100%] font-bold">
               {services.map((service, idx) => (
                 <li key={idx} className="flex items-center gap-2 py-3">
-                  <img
+                  <Image
                     src="/ci_check.png"
                     alt="check mark"
                     className="w-6 bg-[#233D4D] rounded-full "
@@ -79,7 +79,7 @@ const PersonalCare = () => {
               ))}
             </ul>
 
-            <img
+            <Image
               src="/service.png"
               alt="Caregiver assistance"
               className="rounded-lg w-full md:w-1/2 object-cover h-75 md:h-96"
@@ -90,9 +90,11 @@ const PersonalCare = () => {
 
       <div className="bg-[#F7F7F3] mt-10 relative">
         {/* Decorative Dot Image Positioned Absolutely */}
-        <img
+        <Image
           src="/dot.png"
           alt="dot"
+          width={256}
+          height={256}
           className="absolute top-0 right-0 w-64 h-64 z-0 pointer-events-none"
         />
 
@@ -106,9 +108,11 @@ const PersonalCare = () => {
             <ul className="lg:pl-6 pl-1 flex-1 text-[var(--navy)] text-lg leading-[100%] font-medium mb-2">
               {services.map((service, idx) => (
                 <li key={idx} className="flex items-center gap-2 py-3">
-                  <img
+                  <Image
                     src="/ci_check.png"
                     alt="check mark"
+                    width={24}
+                    height={24}
                     className="w-6 bg-[#233D4D] rounded-full"
                   />
                   <span>{service}</span>
@@ -116,9 +120,11 @@ const PersonalCare = () => {
               ))}
             </ul>
 
-            <img
+            <Image
               src="/service.png"
               alt="Caregiver assistance"
+              width={400}
+              height={384}
               className="rounded-lg w-full md:w-1/2 object-cover h-75 md:h-96"
             />
           </div>
@@ -128,9 +134,11 @@ const PersonalCare = () => {
 
       <div className="relative w-full h-[450px] ">
         <div className="absolute inset-0 w-full h-full">
-          <img
+          <Image
             src="/personal-care.png"
             alt="Personal Care Background"
+            width={1920}
+            height={450}
             className="w-full h-full object-cover"
           />
         </div>
@@ -150,8 +158,8 @@ const PersonalCare = () => {
                       <Image
                         src="/dark-tick.png"
                         alt="check mark"
-                        width={6}
-                        height={6}
+                        width={24}
+                        height={24}
                         className="w-6 h-6 bg-[#FFFFFFB2] p-2 rounded-full"
                       />
                       <span className="text-lg">{beneficiary}</span>

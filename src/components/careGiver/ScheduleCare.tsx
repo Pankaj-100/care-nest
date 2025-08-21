@@ -8,17 +8,18 @@ import {
   useGetServiceNamesQuery,
   useCreateBookingMutation,
 } from "@/store/api/bookingApi";
+import Image from "next/image";
 
-interface ScheduleCareProps {
+export interface ScheduleCareProps {
   isOpen: boolean;
   OnClose: () => void;
   selectedCaregivers: {
     id: string;
     name: string;
-    experience: string;
-    rate: string;
     specialty: string;
-    imgSrc: string;
+    price: string;
+    experience: string;
+    avatar: string;
     isBookmarked?: boolean;
   }[];
 }
@@ -32,7 +33,7 @@ const ScheduleCare = ({
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
 
-  const { data, isLoading } = useGetServiceNamesQuery();
+  const { data } = useGetServiceNamesQuery();
   const serviceOptions =
     data?.data?.services.map((service) => ({
       label: service.name,
@@ -137,15 +138,17 @@ const ScheduleCare = ({
               key={index}
               className="flex items-center border border-[#EBEBEB] rounded-lg p-2 space-x-3 justify-start"
             >
-              <img
+              <Image
                 src={
-                  c.imgSrc
-                    ? c.imgSrc.startsWith("http")
-                      ? c.imgSrc
-                      : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.imgSrc}`
+                  c.avatar
+                    ? c.avatar.startsWith("http")
+                      ? c.avatar
+                      : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.avatar}`
                     : "/care-giver/boy-icon.png"
                 }
                 alt="avatar"
+                width={40}
+                height={40}
                 className="w-10 h-10 rounded-full"
               />
 
@@ -163,7 +166,7 @@ const ScheduleCare = ({
                     {c.experience}
                   </span>
                   <span className="border border-[#2F3C51] text-[#2F3C51] rounded-full px-3 py-[3px] text-sm font-normal">
-                    {c.rate}
+                    {c.price}
                   </span>
                 </div>
               </div>
@@ -241,7 +244,7 @@ const ScheduleCare = ({
               Cancel
             </button>
             <CustomButton
-             onClick={()=>{(handleBooking)}}
+              type="submit"
               className="!px-2 flex-1"
               disabled={isBooking}
             >

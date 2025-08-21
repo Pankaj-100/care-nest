@@ -54,9 +54,11 @@ const RecentPosts: React.FC = () => {
       <div className="space-y-8">
         {posts.map((post, idx) => (
           <div key={idx} className="flex gap-3 items-start">
-            <img
+            <Image
               src={post.image}
               alt={`Thumbnail for ${post.title}`}
+              width={80}
+              height={80}
               className="w-20 h-20 object-cover rounded-2xl"
             />
             <div>

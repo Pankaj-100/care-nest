@@ -119,9 +119,9 @@ interface CancelBookingRequest {
   caregiverId: string;
 }
 // --------- Base URLs ---------
-const baseUrl = process.env.NEXT_PUBLIC_API_URL ;
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not set.");
 
-// --------- Base Queries ---------
 const baseQuery = fetchBaseQuery({
   baseUrl,
   prepareHeaders: (headers, { getState }) => {
@@ -146,11 +146,11 @@ const refreshQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReauth: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
+const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions
+) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401 || result?.error?.status === 403) {
@@ -264,7 +264,7 @@ export const {
   useSearchCaregiversQuery,
   useGetCaregiverDetailsQuery,
   useCreateBookingMutation,
-    useGetServiceNamesQuery,
-    useGetRecentBookingsQuery,
-    useCancelBookingMutation,
+  useGetServiceNamesQuery,
+  useGetRecentBookingsQuery,
+  useCancelBookingMutation,
 } = bookingApi;

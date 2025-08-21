@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { CustomButton } from "../common/CustomInputs";
 
 interface BookSuccessfulProps {
@@ -26,9 +27,11 @@ const BookSuccessful = ({ isModalOpen, onClose }: BookSuccessfulProps) => {
       >
         {/* Success Icon */}
         <div className="flex justify-center items-center mb-4 w-16 h-16 rounded-full bg-[#F2A3071A] mx-auto">
-          <img
+          <Image
             src="/care-giver/yellow-tick.png"
             alt="Success"
+            width={32}
+            height={32}
             className="w-8 h-8"
           />
         </div>

@@ -4,9 +4,11 @@ import React from "react";
 const MainContent: React.FC = () => {
   return (
     <div className="w-full md:w-2/3">
-      <img
+      <Image
         src="/Blog/main-image.png"
         alt="Elderly care"
+        width={800} // or your preferred width
+        height={400} // or your preferred height
         className="rounded-lg w-full mb-4"
       />
       <div className="flex items-center gap-x-2">

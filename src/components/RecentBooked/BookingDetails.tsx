@@ -5,44 +5,22 @@ import { useState } from "react";
 import ActionDialog from "../common/ActionDialog";
 import CaregiverModal from "../careGiver/CaregiverModal";
 import { binIcon } from "@/lib/svg_icons";
-
-interface Caregiver {
-  name: string;
-  specialty: string;
-  experience: string;
-  price: string;
-  selected: boolean;
-  avatar: string;
-  id: string;
-  status: string;
-  isFinalSelection?: boolean;
-}
+import type { Booking } from "@/types/Booking";
 
 interface BookingDetailsProps {
-  booking: {
-    bookingId: string;
-    careType: string;
-    bookedOn: string;
-    appointmentDate: string;
-    duration: string;
-    status: string;
-    caregivers: Caregiver[];
-  };
+  booking: Booking;
 }
 
 export default function BookingDetails({ booking }: BookingDetailsProps) {
   const [openDeleteDialog, setOpenDialog] = useState(false);
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
 
-  const handleOpen = () => {
-    setOpenDialog(false);
-  };
-
+  const handleOpen = () => setOpenDialog(false);
   const handleCancelBooking = () => {
     console.log("Booking canceled");
     setOpenDialog(false);
   };
-  console.log("Booking Details:", booking);
+
   if (!booking) return <div className="p-4">No booking selected</div>;
 
   return (
@@ -60,13 +38,16 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             </span>
             <span className="block">
               Care Type:{" "}
-              <span className="text-[#2F3C51]">Memory care</span>
-              {/* <span className="text-[#2F3C51]">{booking.careType}</span> */}
+              <span className="text-[#2F3C51]">
+                {booking.careType ?? "Memory care"}
+              </span>
             </span>
             <span className="block">
               Booked On:{" "}
               <span className="text-[#2F3C51]">
-                {new Date(booking.bookedOn).toLocaleDateString()}
+                {booking.bookedOn
+                  ? new Date(booking.bookedOn).toLocaleDateString()
+                  : "N/A"}
               </span>
             </span>
           </p>
@@ -87,12 +68,14 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
                 {booking.status}
               </span>
               <span className="border border-[#2F3C51] text-[#2F3C51] px-4 py-1 rounded-full text-sm flex items-center gap-1">
-                <img src="/Recent/c.png" alt="calendar" className="w-4 h-4" />
-                {new Date(booking.appointmentDate).toLocaleDateString()}
+                <Image src="/Recent/c.png" alt="calendar" width={16} height={16} className="w-4 h-4" />
+                {booking.appointmentDate
+                  ? new Date(booking.appointmentDate).toLocaleDateString()
+                  : "N/A"}
               </span>
-              <span className=" flex items-center gap-1 border border-[#2F3C51] text-[#2F3C51] px-4 py-1 rounded-full text-sm">
-                <img src="/Recent/time.png" alt="duration" className="w-4 h-4" />
-                {booking.duration} Days
+              <span className="flex items-center gap-1 border border-[#2F3C51] text-[#2F3C51] px-4 py-1 rounded-full text-sm">
+                <Image src="/Recent/time.png" alt="duration" width={16} height={16} className="w-4 h-4" />
+                {booking.duration ? `${booking.duration} Days` : "N/A"}
               </span>
             </div>
           </div>
@@ -102,9 +85,9 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
       <div className="space-y-4">
         {booking.caregivers?.map((cg, index) => (
           <div
-            key={index}
+            key={cg.id ?? index}
             className="bg-white rounded-xl p-4 flex items-center gap-4 border cursor-pointer"
-            onClick={() => setSelectedCaregiverId(cg.id)}
+            onClick={() => setSelectedCaregiverId(cg.id ?? null)}
           >
             <Image
               src={
@@ -114,21 +97,21 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
                     : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${cg.avatar}`
                   : "/care-giver/boy-icon.png"
               }
-              alt={cg.name}
+              alt={cg.name ?? "Caregiver"}
               width={60}
               height={60}
               className="rounded-full object-cover"
               style={{ minWidth: 60, minHeight: 60 }}
             />
             <div>
-              <h4 className="font-semibold text-lg">{cg.name}</h4>
-              <p className="text-sm text-[#7A8699]">Elderly care</p>
+              <h4 className="font-semibold text-lg">{cg.name ?? "Unknown"}</h4>
+              <p className="text-sm text-[#7A8699]">{cg.specialty ?? "N/A"}</p>
               <div className="flex gap-2 mt-1">
                 <span className="border border-[#D1D5DB] rounded-full px-3 py-1 text-sm">
-                  {cg.experience} + years
+                  {cg.experience ? `${cg.experience} Years` : "N/A"}
                 </span>
                 <span className="border border-[#D1D5DB] rounded-full px-3 py-1 text-sm">
-                  ${cg.price}/hr
+                  {cg.price ? `${cg.price}/hr` : "N/A"}
                 </span>
               </div>
             </div>
@@ -149,11 +132,10 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
         isOpen={!!selectedCaregiverId}
         onClose={() => setSelectedCaregiverId(null)}
         caregiverId={selectedCaregiverId}
-        onBookmarkToggle={() => {}}
         onAddCaregiver={() => {}}
         isBookmarked={false}
         isLoggedInUser={true}
-        showMessageButton={true} // <-- Add this prop
+        showMessageButton={true}
       />
 
       <ActionDialog

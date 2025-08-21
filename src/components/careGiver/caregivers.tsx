@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { IoAlertCircleOutline as AlertIcon, IoFilter as FilterIcon } from "react-icons/io5";
 import Cookies from 'js-cookie';
@@ -22,17 +22,21 @@ interface Caregiver {
   services: string[];
   isBookmarked?: boolean;
 }
+interface CaregiverFilters {
+  gender?: string;
+  certified?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+  languages?: string[];
+
+}
+
 
 const CaregiversPage = () => {
   const searchParams = useSearchParams();
   const serviceId = searchParams.get("type") || "";
   // const recipient = searchParams.get("recipient") || "";
   const zipcode = searchParams.get("zipcode") || "";
-
-  const { data, isLoading, error } = useSearchCaregiversQuery({
-    serviceId,
-    zipcode,
-  });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
@@ -42,10 +46,21 @@ const CaregiversPage = () => {
   const [isClient, setIsClient] = useState(false);
   const [caregivers, setCaregivers] = useState<Caregiver[]>([]);
   const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
+  const [filters, setFilters] = useState<CaregiverFilters >({});
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const { data, isLoading, error } = useSearchCaregiversQuery({
+    serviceId,
+    zipcode,
+    ...filters,
+    languages: Array.isArray(filters.languages)
+      ? filters.languages.join(",")
+      : filters.languages || undefined,
+    
+  });
 
   useEffect(() => {
     if (data?.data?.caregivers) {
@@ -80,31 +95,29 @@ const CaregiversPage = () => {
   const handleOpenFilter = () => setOpenFilter((prev) => !prev);
   const handleOpenRedirect = () => setOpenRedirect((prev) => !prev);
 
-  const handleFilterChange = (filters: any) => {
-    // You can use these filters to refetch caregivers or update your API call
-    // Example: setFilters(filters) or refetch with new params
-    // console.log(filters);
-  };
+  const handleFilterChange = useCallback((newFilters: CaregiverFilters) => {
+    setFilters(newFilters);
+  }, []);
 
   const mappedCaregiversForCards = caregivers.map((c) => ({
     id: c.id,
     name: c.name,
-    imgSrc: c.avatar,
+    avatar: c.avatar ?? "/care-giver/boy-icon.png", // <-- changed
     specialty: c.services.join(", "),
     experience: `${c.experience} Years`,
-    rate: `$${c.price}/hr`,
+    price: c.price ? `$${c.price}/hr` : "N/A",      // <-- changed
     isBookmarked: c.isBookmarked ?? false,
   }));
 
   const mappedCaregiversForSchedule = caregivers
-    .filter((c) => selectedCaregivers.includes(c.id)) // <-- use selectedCaregivers
+    .filter((c) => selectedCaregivers.includes(c.id))
     .map((c) => ({
       id: c.id,
       name: c.name,
-      imgSrc: c.avatar,
+      avatar: c.avatar ?? "/care-giver/boy-icon.png", // <-- changed
       specialty: c.services.join(", "),
       experience: `${c.experience} Years`,
-      rate: `$${c.price}/hr`,
+      price: c.price ? `$${c.price}/hr` : "N/A",      // <-- changed
     }));
 
   return (
@@ -165,12 +178,12 @@ const CaregiversPage = () => {
               <CaregiverCard
                 key={caregiver.id}
                 name={caregiver.name}
-                imgSrc={caregiver.imgSrc}
+                avatar={caregiver.avatar}
                 specialty={caregiver.specialty}
                 experience={caregiver.experience}
-                rate={caregiver.rate}
+                price={caregiver.price}
                 isBookmarked={caregiver?.isBookmarked}
-                isSelected={selectedCaregivers.includes(caregiver.id)} // <-- Add this line
+                isSelected={selectedCaregivers.includes(caregiver.id)}
                 onClick={() => handleCardClick(caregiver.id)}
                 onBookmarkToggle={() => handleBookmarkToggle(caregiver.id)}
               />
@@ -206,7 +219,7 @@ const CaregiversPage = () => {
   isOpen={isModalOpen}
   caregiverId={selectedCaregiverId}
   onClose={() => setIsModalOpen(false)}
-  onBookmarkToggle={handleBookmarkToggle}
+  // onBookmarkToggle={handleBookmarkToggle}
   onAddCaregiver={(id: string) => {
     setSelectedCaregivers((prev) =>
       prev.includes(id) ? prev : [...prev, id]

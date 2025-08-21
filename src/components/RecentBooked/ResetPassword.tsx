@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { FiLock } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { useChangePasswordMutation } from "@/store/api/profileApi";
+import Image from "next/image";
 
 const ResetPassword = () => {
   const [form, setForm] = useState({
@@ -69,7 +70,7 @@ const ResetPassword = () => {
             className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition duration-200 ease-in-out font-semibold disabled:opacity-60"
           >
             {isLoading ? "Saving..." : "Save"}
-            <span><img src="/Recent/file.png" alt="save" /></span>
+            <span><Image src="/Recent/file.png" alt="save" width={20} height={20} /></span>
           </button>
         </div>
 

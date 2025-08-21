@@ -9,7 +9,8 @@ import {
 } from "@/store/api/profileApi";
 import { setProfile } from "../../store/profileSlice";
 import { toast } from "react-toastify";
-import { X } from "lucide-react"; // Add this import at the top
+import { X } from "lucide-react"; 
+import Image from "next/image";
 
 interface SidebarProps {
   onSelect: (value: string) => void;
@@ -66,7 +67,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
         );
         toast.success("Profile image updated successfully");
       }
-    } catch (err) {
+    } catch {
       toast.error("Failed to update profile image");
     }
   };
@@ -87,7 +88,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
         );
         toast.success("Profile image removed successfully");
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to remove profile image");
     }
   };
@@ -106,9 +107,11 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
       {/* Profile Info */}
       <div className="mt-2 flex flex-row items-center gap-2 mb-6 border-b border-[#00000033] py-1">
         <div className="relative w-[68px] h-[68px] group">
-          <img
+          <Image
             src={avatar || "/Recent/profile.png"}
             alt="User Avatar"
+            width={68}
+            height={68}
             className="w-[68px] h-[68px] rounded-full object-cover"
           />
           {/* X icon appears only on hover and centered */}
@@ -163,7 +166,13 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
             }`}
           >
             <span>{item.name}</span>
-            <img src={item.icon} alt="arrow" className="w-2 h-2" />
+            <Image
+              src={item.icon}
+              alt="arrow"
+              width={9}
+              height={9}
+              className="w-2 h-2"
+            />
           </li>
         ))}
       </ul>

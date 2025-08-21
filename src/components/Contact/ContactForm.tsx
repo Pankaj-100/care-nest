@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import Image from "next/image";
+
 
 interface ContactFormProps {
   name: string;
@@ -41,9 +43,11 @@ const ContactForm: React.FC = () => {
         </h3>
 
         <div className="relative">
-          <img
+          <Image
             src="/Contact/user-icon.png"
             alt="Name"
+            width={20}
+            height={20}
             className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
           />
 
@@ -59,9 +63,11 @@ const ContactForm: React.FC = () => {
         </div>
 
         <div className="relative">
-          <img
+          <Image
             src="/Contact/email-icon.png"
             alt="Name"
+            width={20}
+            height={20}
             className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
           />
 
@@ -77,9 +83,11 @@ const ContactForm: React.FC = () => {
         </div>
 
         <div className="relative">
-          <img
+          <Image
             src="/Contact/majesticons-icon.png"
             alt="Name"
+            width={20}
+            height={20}
             className="absolute left-4 top-4 w-5 h-5"
           />
 

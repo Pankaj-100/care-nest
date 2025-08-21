@@ -1,17 +1,22 @@
+"use client";
 import { FC, useState } from "react";
-import { useGetRecentBookingsQuery, useCancelBookingMutation } from "@/store/api/bookingApi";
+import {
+  useGetRecentBookingsQuery,
+  useCancelBookingMutation,
+} from "@/store/api/bookingApi";
 import ActionDialog from "../common/ActionDialog";
 import { cancelIcon } from "@/lib/svg_icons";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import Image from "next/image";
-import emptyCaregiverImage from "@/assets/care.svg"; 
+import emptyCaregiverImage from "@/assets/care.svg";
 import { toast } from "react-toastify";
+import type { Booking } from "@/types/Booking";
 
 const statusColor: Record<string, string> = {
   requested: "bg-yellow-400 text-white",
-  pending: "bg-yellow-400 text-white",   // API alias for Requested
+  pending: "bg-yellow-400 text-white", // API alias for Requested
   active: "bg-gray-800 text-white",
-  accepted: "bg-gray-800 text-white",    // API alias for Active
+  accepted: "bg-gray-800 text-white", // API alias for Active
   completed: "bg-green-500 text-white",
   cancelled: "bg-red-500 text-white",
 };
@@ -23,6 +28,7 @@ const uiToApiStatus: Record<string, string> = {
   Completed: "completed",
   Cancelled: "cancelled",
 };
+
 const apiToUiStatus: Record<string, string> = {
   requested: "Requested",
   pending: "Requested",
@@ -32,35 +38,58 @@ const apiToUiStatus: Record<string, string> = {
   cancelled: "Cancelled",
 };
 
-interface RightBookingsPanelProps {
-  onBookingClick: (booking: any) => void;
+interface RecentBookingsResponse {
+  data?: Booking[] | { bookings: Booking[] };
+  message?: string;
 }
 
-const RightBookingsPanel: FC<RightBookingsPanelProps> = ({ onBookingClick }) => {
+interface RightBookingsPanelProps {
+  onBookingClick: (booking: Booking) => void;
+}
+
+// Helper to safely unwrap response
+function extractBookings(resp?: RecentBookingsResponse): Booking[] {
+  if (!resp?.data) return [];
+  if (Array.isArray(resp.data)) return resp.data as Booking[];
+  if ("bookings" in resp.data) return (resp.data as { bookings: Booking[] }).bookings;
+  return [];
+}
+
+const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
+  onBookingClick,
+}) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<string>("All");
   const [isScheduleCareOpen, setIsScheduleCareOpen] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState<{ id: string; caregiverId: string } | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<{
+    id: string;
+    caregiverId: string;
+  } | null>(null);
 
-  // ADD: initialize mutation
-  const [cancelBooking, { isLoading: isCancelling, error: cancelError }] = useCancelBookingMutation();
+  // initialize mutation
+  const [cancelBooking, { isLoading: isCancelling }] =
+    useCancelBookingMutation();
 
   // Build status param for API (omit param for All)
   const statusParam =
-    selectedStatus === "All" ? undefined : uiToApiStatus[selectedStatus] || undefined;
+    selectedStatus === "All"
+      ? undefined
+      : uiToApiStatus[selectedStatus] || undefined;
 
   // Fetch with optional param
-  const { data, isLoading, error, refetch } = useGetRecentBookingsQuery(statusParam);
+  const { data, isLoading, error, refetch } =
+    useGetRecentBookingsQuery(statusParam);
 
-  // Normalize data shape: data or data.bookings
-  const bookings: any[] =
-    (Array.isArray((data as any)?.data) ? (data as any)?.data : (data as any)?.data?.bookings) || [];
+  const bookings = extractBookings(data);
 
   // Ensure client UI still filters if backend returns all
   const filteredBookings =
     selectedStatus === "All"
       ? bookings
-      : bookings.filter((b) => apiToUiStatus[b?.status?.toLowerCase?.()] === selectedStatus);
+      : bookings.filter(
+          (b) =>
+            apiToUiStatus[b?.status?.toLowerCase?.()] === selectedStatus
+        );
 
   const handleConfirmCancel = async () => {
     if (!selectedBooking) return;
@@ -71,8 +100,15 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({ onBookingClick }) => 
       }).unwrap();
       toast.success(res?.message || "Booking cancelled successfully");
       refetch();
-    } catch (err: any) {
-      const msg = err?.data?.message || err?.error || "Failed to cancel booking";
+    } catch (err) {
+      const errorObj = err as {
+        data?: { message?: string };
+        error?: string;
+      };
+      const msg =
+        errorObj?.data?.message ||
+        errorObj?.error ||
+        "Failed to cancel booking";
       toast.error(msg);
       console.error("Cancellation error:", err);
     } finally {
@@ -86,39 +122,59 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({ onBookingClick }) => 
     setSelectedBooking(null);
   };
 
-  if (isLoading) return <div className="p-6 text-gray-500">Loading bookings...</div>;
-  if (error) return <div className="p-6 text-red-500">Failed to load bookings.</div>;
+  if (isLoading)
+    return <div className="p-6 text-gray-500">Loading bookings...</div>;
+  if (error)
+    return (
+      <div className="p-6 text-red-500">Failed to load bookings.</div>
+    );
 
   return (
     <div className="w-full md:w-3/4 p-6 mt-10">
-      <h2 className="text-3xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">Recent Bookings</h2>
+      <h2 className="text-3xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
+        Recent Bookings
+      </h2>
 
       <div className="flex flex-wrap gap-2 mb-8">
-        {["All", "Requested", "Active", "Completed", "Cancelled"].map((status) => (
-          <button
-            key={status}
-            onClick={() => setSelectedStatus(status)}
-            className={`px-4 py-1 rounded-full font-medium text-sm ${
-              selectedStatus === status ? "bg-[var(--navy)] text-white" : "border border-[var(--navy)] text-[var(--navy)]"
-            }`}
-          >
-            {status}
-          </button>
-        ))}
+        {["All", "Requested", "Active", "Completed", "Cancelled"].map(
+          (status) => (
+            <button
+              key={status}
+              onClick={() => setSelectedStatus(status)}
+              className={`px-4 py-1 rounded-full font-medium text-sm ${
+                selectedStatus === status
+                  ? "bg-[var(--navy)] text-white"
+                  : "border border-[var(--navy)] text-[var(--navy)]"
+              }`}
+            >
+              {status}
+            </button>
+          )
+        )}
       </div>
 
       {filteredBookings.length === 0 ? (
         <div className="flex flex-col items-center justify-center mt-10 space-y-4">
           <div className="relative w-64 h-64">
-            <Image src={emptyCaregiverImage} alt="No bookings" fill className="object-contain" />
+            <Image
+              src={emptyCaregiverImage}
+              alt="No bookings"
+              fill
+              className="object-contain"
+            />
           </div>
-          <p className="text-lg text-gray-600">You have no bookings yet.</p>
+          <p className="text-lg text-gray-600">
+            You have no bookings yet.
+          </p>
         </div>
       ) : (
         <div className="space-y-4">
           {filteredBookings.map((booking) => {
             const apiStatus = booking.status?.toLowerCase?.() || "";
-            const uiStatus = apiToUiStatus[apiStatus] || booking.status || "Unknown";
+            const uiStatus =
+              apiToUiStatus[apiStatus] ||
+              booking.status ||
+              "Unknown";
 
             return (
               <div
@@ -128,23 +184,48 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({ onBookingClick }) => 
               >
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 bg-[var(--navy)] rounded-full flex items-center justify-center">
-                    <img src="/Recent/calendar.png" alt="calendar" className="w-6 h-6" />
+                    <Image
+                      src="/Recent/calendar.png"
+                      alt="calendar"
+                      width={24}
+                      height={24}
+                      className="w-6 h-6"
+                    />
                   </div>
                   <div>
-                    <p className="font-semibold text-lg text-[var(--navy)]">#{booking.bookingId}</p>
-                    <p className="text-sm text-gray-600">{"Memory care"}</p>
+                    <p className="font-semibold text-lg text-[var(--navy)]">
+                      #{booking.bookingId}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {booking.careType || "Memory care"}
+                    </p>
                     <div className="flex gap-2 mt-1 text-xs text-gray-500">
                       <div className="flex items-center gap-1 border px-2 py-1 rounded-full text-sm font-light">
-                        <img src="/Recent/c.png" alt="date" className="w-3 h-3" />
-                        {new Date(booking.bookedOn).toLocaleDateString()}
+                        <Image
+                          src="/Recent/c.png"
+                          alt="date"
+                          width={12}
+                          height={12}
+                          className="w-3 h-3"
+                        />
+                        {new Date(
+                          booking.bookedOn
+                        ).toLocaleDateString()}
                       </div>
                       <div className="flex text-sm font-light items-center gap-1 border px-2 py-1 rounded-full">
-                        <img src="/Recent/time.png" alt="duration" className="w-3 h-3" />
+                        <Image
+                          src="/Recent/time.png"
+                          alt="duration"
+                          width={12}
+                          height={12}
+                          className="w-3 h-3"
+                        />
                         {booking.duration || 1} Days
                       </div>
                       <div
                         className={`px-3 py-2 rounded-full text-md font-medium items-center ${
-                          statusColor[apiStatus] || "bg-gray-200 text-gray-700"
+                          statusColor[apiStatus] ||
+                          "bg-gray-200 text-gray-700"
                         }`}
                       >
                         {uiStatus}
@@ -162,29 +243,55 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({ onBookingClick }) => 
                         setIsScheduleCareOpen(true);
                       }}
                     >
-                      <img src="/Recent/reload.png" alt="reschedule" className="w-4 h-4" />
+                      <Image
+                        src="/Recent/reload.png"
+                        alt="reschedule"
+                        width={16}
+                        height={16}
+                        className="w-4 h-4"
+                      />
                     </div>
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
-                    {(apiStatus === "requested" || apiStatus === "active") && (
+                    {(apiStatus === "requested" ||
+                      apiStatus === "active") && (
                       <div
                         className={`w-14 h-14 flex items-center justify-center rounded-full text-lg leading-none  cursor-pointer ${
-                          isCancelling ? "bg-gray-300 cursor-not-allowed" : "bg-[#FF5C5F]"
+                          isCancelling
+                            ? "bg-gray-300 cursor-not-allowed"
+                            : "bg-[#FF5C5F]"
                         }`}
                         onClick={(e) => {
                           if (isCancelling) return;
                           e.stopPropagation();
                           const caregiverId =
-                            booking.caregivers?.find((c: any) => c?.isFinalSelection && c?.id)?.id ??
-                            booking.caregivers?.find((c: any) => !c?.isDeleted && c?.id)?.id ?? "";
-                          if (!caregiverId) return toast.error("No caregiver found for this booking.");
-                          setSelectedBooking({ id: booking.bookingId, caregiverId });
+                            booking.caregivers?.find(
+                              (c) => c?.isFinalSelection && c?.id
+                            )?.id ??
+                            booking.caregivers?.find(
+                              (c) => !c?.isDeleted && c?.id
+                            )?.id ??
+                            "";
+                          if (!caregiverId)
+                            return toast.error(
+                              "No caregiver found for this booking."
+                            );
+                          setSelectedBooking({
+                            id: booking.bookingId,
+                            caregiverId,
+                          });
                           setOpenDialog(true);
                         }}
                         aria-disabled={isCancelling}
                       >
-                        <img src="/Recent/cross.png" alt="cancel" className="w-4 h-4 cursor-pointer" />
+                        <Image
+                          src="/Recent/cross.png"
+                          alt="cancel"
+                          width={16}
+                          height={16}
+                          className="w-4 h-4 cursor-pointer"
+                        />
                       </div>
                     )}
                   </div>
@@ -213,9 +320,9 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({ onBookingClick }) => 
             id: "12345",
             name: "Joe Doe",
             specialty: "Elderly Care",
+            price: "$100/hr", // <-- use price only
             experience: "12+ Years",
-            rate: "$150/hr",
-            imgSrc: "/care-giver/boy-icon.png",
+            avatar: "/care-giver/boy-icon.png", // <-- use avatar
             isBookmarked: false,
           },
         ]}

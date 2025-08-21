@@ -4,12 +4,14 @@ import React from "react";
 import { ContactItem } from "../common/ContactInfo";
 import { CustomButton } from "../common/CustomInputs";
 import { useGetCaregiverDetailsQuery } from "@/store/api/bookingApi";
+import Image from "next/image";
+
 
 interface CaregiverModalProps {
   isOpen: boolean;
   onClose: () => void;
   caregiverId: string | null;
-  onBookmarkToggle: (id: string) => void;
+  // onBookmarkToggle: (id: string) => void;
   onAddCaregiver: (id: string) => void; // <-- Add this line
   isBookmarked?: boolean;
   isLoggedInUser?: boolean;
@@ -21,7 +23,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
   isOpen,
   onClose,
   caregiverId,
-  onBookmarkToggle,
+  // onBookmarkToggle,
   onAddCaregiver, // <-- Destructure the new handler
   isBookmarked,
   isLoggedInUser,
@@ -32,10 +34,12 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
     caregiverId || "",
     { skip: !caregiverId }
   );
-  console.log("CaregiverModal data:", data);
+  if (isOpen && caregiverId) {
+    console.log("CaregiverModal data:", caregiverId);
+  }
 
   if (!isOpen || !caregiverId) {
-    console.log("Modal not open or caregiverId missing", isOpen, caregiverId);
+    
     return null;
   }
   if (isLoading) return <div>Loading...</div>;
@@ -61,7 +65,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
         {/* Info Header */}
         <div className="flex lg:flex-row flex-col gap-6 justify-between items-center break-all">
           <div className="flex gap-6 items-center">
-            <img
+            <Image
               src={
                 caregiver.avatar
                   ? caregiver.avatar.startsWith("http")
@@ -70,6 +74,8 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
                   : "/care-giver/boy-icon.png"
               }
               alt="avatar"
+              width={96}
+              height={96}
               className="lg:w-24 w-15 lg:h-24 h-15 rounded-full"
             />
             <div>
@@ -91,13 +97,15 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
           <div className="flex flex-row gap-4 items-center ms-auto">
             {/* Bookmark Icon */}
             <div>
-              <img
+              <Image
                 src={
                   bookmarkStatus
                     ? "/care-giver/bookmark-bold.png"
                     : "/care-giver/bookmark.png"
                 }
                 alt="Bookmark"
+                width={16}
+                height={16}
                 className="w-4 h-4"
               />
             </div>
@@ -116,7 +124,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
                   onClick={() => {
                     onAddCaregiver(caregiver.id); // <-- Use selection handler
                   }}
-                  className="!px-6"
+                  className="!px-5"
                 >
                   Add CareGiver
                 </CustomButton>
@@ -167,9 +175,11 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
                 key={`${service}-${idx}`}
                 className="flex gap-4 items-center p-4 bg-[#fff] rounded-md"
               >
-                <img
+                <Image
                   src="/care-giver/home.png"
                   alt={service}
+                  width={16}
+                  height={16}
                   className="w-8 h-8"
                 />
                 <h4 className="text-md font-medium text-[var(--cool-gray)]">
@@ -191,9 +201,11 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
                 key={idx}
                 className="flex gap-4 p-4 bg-[#fff] rounded-md"
               >
-                <img
+                <Image
                   src="/care-giver/flexible.png"
                   alt={item.title}
+                  width={40}
+                  height={40}
                   className="w-10 h-10 rounded-full"
                 />
                 <div>
