@@ -121,7 +121,7 @@ const Header = () => {
     <>
       <div className="flex lg:px-28 px-10 py-5 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
         <div className="flex items-center gap-2">
-          <Image src={"/Logo_1.svg"} alt="logo" width={70} height={70} />
+          <Image src={"/Logo_1.svg"} alt="logo" width={90} height={90} />
         </div>
 
         <button onClick={handleOpenMenu} className="lg:hidden">

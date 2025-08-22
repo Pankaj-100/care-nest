@@ -18,6 +18,7 @@ export interface Booking {
   bookedOn: string;
   appointmentDate?: string | null;
   duration?: string | number | null;
+  service?: string | null;
   status: string;
   caregivers: Caregiver[];
 }

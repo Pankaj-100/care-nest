@@ -95,7 +95,7 @@ const Footer = () => {
       <div className="flex flex-wrap justify-between gap-4 ">
         <div className="sm:w-75 w-full ">
           <Link href="/" aria-label="Go to home" className="relative w-24 h-24 block cursor-pointer">
-            <Image src="/Logo.svg" alt="Carenest logo" fill priority />
+            <Image src="/Logo_1.svg" alt="Carenest logo" fill priority />
           </Link>
           <p className="mt-4 text-md text-white">
             CARENEST: Pioneering Advanced Medical Solutions to Elevate
