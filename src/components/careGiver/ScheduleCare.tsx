@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import BookSuccessful from "./BookSuccessful";
-import { CustomButton } from "../common/CustomInputs";
 import {
   useGetServiceNamesQuery,
   useCreateBookingMutation,
 } from "@/store/api/bookingApi";
 import Image from "next/image";
+import { toast } from "react-toastify"; // If using react-toastify
 
 export interface ScheduleCareProps {
   isOpen: boolean;
@@ -64,8 +64,16 @@ const ScheduleCare = ({
     }
   };
 
+  // Example: get user from context or props
+  const user = null; // Replace with your actual user logic
+
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!user) {
+      toast.error("Please sign in to book a caregiver.");
+      return;
+    }
 
     if (!meetingDate || !careType || selectedCaregivers.length === 0) {
       alert("Please fill all required fields.");
@@ -127,7 +135,10 @@ const ScheduleCare = ({
           <h2 className="text-[var(--navy)] font-semibold text-md">
             Selected Caregivers
           </h2>
-          <h2 className="text-[var(--yellow)] font-semibold text-md cursor-pointer">
+          <h2
+            className="text-[var(--yellow)] font-semibold text-md cursor-pointer"
+            onClick={OnClose}
+          >
             Change
           </h2>
         </div>
@@ -140,7 +151,7 @@ const ScheduleCare = ({
             >
               <Image
                 src={
-                  c.avatar
+                  c.avatar && c.avatar.trim() !== "/care-giver/boy-icon.png"
                     ? c.avatar.startsWith("http")
                       ? c.avatar
                       : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.avatar}`
@@ -239,17 +250,17 @@ const ScheduleCare = ({
             <button
               type="button"
               onClick={OnClose}
-              className="flex-1 bg-gray-200 text-[var(--navy)] font-semibold text-sm rounded-full py-2 hover:opacity-90"
+              className="flex-1 bg-gray-200 text-[var(--navy)] font-semibold text-sm rounded-full py-2 hover:opacity-90 cursor-pointer"
             >
               Cancel
             </button>
-            <CustomButton
+            <button
               type="submit"
-              className="!px-2 flex-1"
+              className="flex-1 bg-[var(--golden-yellow)] text-[var(--blue-gray)] py-3 rounded-full hover:opacity-90 font-semibold cursor-pointer"
               disabled={isBooking}
             >
               {isBooking ? "Booking..." : "Book Caregiver"}
-            </CustomButton>
+            </button>
           </div>
         </form>
       </div>

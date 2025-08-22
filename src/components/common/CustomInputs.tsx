@@ -1,8 +1,7 @@
 import { eyeClosedIcon, eyeOpenIcon } from "@/lib/svg_icons";
 import { Input } from "../ui/input";
 import { useState } from "react";
-
-import React from "react";
+import { Button } from "../ui/button";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   text: string;
@@ -88,9 +87,11 @@ export const PasswordInput = ({
   );
 };
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps {
   children: React.ReactNode;
+  onClick: () => void;
   className?: string;
+  disabled?: boolean;
 }
 
 export const CustomButton = ({
@@ -99,10 +100,10 @@ export const CustomButton = ({
   className,
   disabled,
 }: ButtonProps) => {
-  const classes = `bg-[var(--golden-yellow)] text-[var(--blue-gray)] py-3 rounded-full hover:bg-[var(--golden-yellow)] hover:opacity-90 hover:cursor-pointer transition-all ${className} ${className}`;
+  const classes = `bg-[var(--golden-yellow)] text-[var(--blue-gray)] py-6 rounded-full hover:bg-[var(--golden-yellow)] hover:opacity-90 hover:cursor-pointer transition-all ${className}`;
   return (
-    <button className={classes} onClick={onClick} disabled={disabled}>
+    <Button className={classes} onClick={onClick} disabled={disabled}>
       {children}
-    </button>
+    </Button>
   );
 };

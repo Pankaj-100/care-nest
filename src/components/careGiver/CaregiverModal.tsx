@@ -49,6 +49,8 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
 
   const bookmarkStatus = isBookmarked ?? false;
 
+  const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com";
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 max-w-screen">
       <div className="bg-[var(--light-gray)] rounded-xl p-8 py-4 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]">
@@ -67,10 +69,10 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
           <div className="flex gap-6 items-center">
             <Image
               src={
-                caregiver.avatar
+                caregiver.avatar && caregiver.avatar.trim() !== ""
                   ? caregiver.avatar.startsWith("http")
                     ? caregiver.avatar
-                    : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${caregiver.avatar}`
+                    : `${cdnURL}/${caregiver.avatar}`
                   : "/care-giver/boy-icon.png"
               }
               alt="avatar"

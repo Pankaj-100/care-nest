@@ -91,6 +91,7 @@ const CaregiversPage = () => {
     setSelectedCaregiverId(caregiverId);
     setIsModalOpen(true);
   };
+  
 
   const handleOpenFilter = () => setOpenFilter((prev) => !prev);
   const handleOpenRedirect = () => setOpenRedirect((prev) => !prev);
@@ -102,10 +103,10 @@ const CaregiversPage = () => {
   const mappedCaregiversForCards = caregivers.map((c) => ({
     id: c.id,
     name: c.name,
-    avatar: c.avatar ?? "/care-giver/boy-icon.png", // <-- changed
+    avatar: c.avatar ?? "/care-giver/boy-icon.png", 
     specialty: c.services.join(", "),
     experience: `${c.experience} Years`,
-    price: c.price ? `$${c.price}/hr` : "N/A",      // <-- changed
+    price: c.price ? `$${c.price}/hr` : "N/A",      
     isBookmarked: c.isBookmarked ?? false,
   }));
 
@@ -114,10 +115,10 @@ const CaregiversPage = () => {
     .map((c) => ({
       id: c.id,
       name: c.name,
-      avatar: c.avatar ?? "/care-giver/boy-icon.png", // <-- changed
+      avatar: c.avatar ?? "/care-giver/boy-icon.png", 
       specialty: c.services.join(", "),
       experience: `${c.experience} Years`,
-      price: c.price ? `$${c.price}/hr` : "N/A",      // <-- changed
+      price: c.price ? `$${c.price}/hr` : "N/A",
     }));
 
   return (
