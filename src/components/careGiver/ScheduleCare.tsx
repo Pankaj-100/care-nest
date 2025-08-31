@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import BookSuccessful from "./BookSuccessful";
@@ -8,40 +8,61 @@ import {
   useCreateBookingMutation,
 } from "@/store/api/bookingApi";
 import Image from "next/image";
-import Cookies from "js-cookie";
+
+export interface SelectedCaregiver {
+  id: string;
+  name: string;
+  specialty: string;
+  price: string;
+  experience: string;
+  avatar: string;
+  isBookmarked?: boolean;
+}
 
 export interface ScheduleCareProps {
   isOpen: boolean;
   OnClose: () => void;
-  selectedCaregivers: {
-    id: string;
-    name: string;
-    specialty: string;
-    price: string;
-    experience: string;
-    avatar: string;
-    isBookmarked?: boolean;
-  }[];
+  selectedCaregivers: SelectedCaregiver[];
 }
 
-const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps) => {
+interface Service {
+  id: string;
+  name: string;
+}
+
+interface BookingResponse {
+  success?: boolean;
+  message?: string;
+}
+
+function isBookingResponse(r: unknown): r is BookingResponse {
+  return typeof r === "object" && r !== null && "success" in r;
+}
+
+const ScheduleCare = ({
+  isOpen,
+  OnClose,
+  selectedCaregivers,
+}: ScheduleCareProps) => {
   const [meetingDate, setMeetingDate] = useState<Date | null>(new Date());
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
-
   const { data } = useGetServiceNamesQuery();
-  const serviceOptions =
-    data?.data?.services?.map((service: any) => ({
-      label: service.name,
-      value: service.id,
-    })) || [];
+
+  const serviceOptions = useMemo(
+    () =>
+      ((data?.data?.services as Service[] | undefined) || []).map((s) => ({
+        label: s.name,
+        value: s.id,
+      })),
+    [data]
+  );
 
   const [careType, setCareType] = useState("");
   const [duration, setDuration] = useState(1);
   const [durationUnit, setDurationUnit] = useState("Month");
   const [formError, setFormError] = useState<string | null>(null);
 
-  // Auto‑select first service if only one available
   useEffect(() => {
     if (serviceOptions.length === 1) {
       setCareType(serviceOptions[0].value);
@@ -85,12 +106,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
     }
 
     const durationInDays = convertToDays(duration, durationUnit);
-    const token =
-      typeof window !== "undefined"
-        ? Cookies.get("authToken") || localStorage.getItem("authToken")
-        : null;
 
-    // Payload (include both keys in case backend expects one specific)
     const payload = {
       appointmentDate: meetingDate.toISOString(),
       serviceId: careType,
@@ -100,19 +116,23 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
     };
 
     try {
-      // If your RTK mutation already adds headers, you can just pass payload.
-      // Otherwise, adjust createBooking to accept { payload, token }.
-      const res: any = await createBooking(payload).unwrap();
-      if (res?.success) {
+      const res = await createBooking(payload).unwrap(); // no cast
+      if (isBookingResponse(res) && res.success) {
         setIsSuccessModalOpen(true);
       } else {
-        setFormError(res?.message || "Booking failed. Try again.");
+        setFormError(
+          (isBookingResponse(res) && res.message) || "Booking failed. Try again."
+        );
       }
-    } catch (error: any) {
-      console.error("Booking failed:", error);
-      setFormError(
-        error?.data?.message || "Something went wrong. Please try again."
-      );
+    } catch (error: unknown) {
+      const errMsg =
+        typeof error === "object" &&
+        error !== null &&
+        "data" in error &&
+        (error as { data?: { message?: string } }).data?.message
+          ? (error as { data?: { message?: string } }).data!.message!
+          : "Something went wrong. Please try again.";
+      setFormError(errMsg);
     }
   };
 
@@ -141,7 +161,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
           Schedule Your Care
         </h1>
         <p className="text-center text-[var(--cool-gray)] text-md mt-1 mb-6">
-            Pick a preferred date and set the duration to <br /> continue booking.
+          Pick a preferred date and set the duration to <br /> continue booking.
         </p>
 
         <div className="flex items-center justify-between mb-4">
@@ -157,9 +177,9 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
         </div>
 
         <div className="space-y-3 mb-10 max-h-50 overflow-y-auto pr-2">
-          {selectedCaregivers.map((c, index) => (
+          {selectedCaregivers.map((c) => (
             <div
-              key={index}
+              key={c.id}
               className="flex items-center border border-[#EBEBEB] rounded-lg p-2 space-x-3 justify-start"
             >
               <Image
@@ -231,32 +251,34 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
             />
           </div>
 
-            <div className="flex space-x-3">
-              <div className="flex-1">
-                <label className="block text-[var(--navy)] font-semibold text-xs mb-1">
-                  Duration
-                </label>
-                <input
-                  type="number"
-                  min={1}
-                  value={duration}
-                  onChange={(e) => setDuration(Number(e.target.value))}
-                  className="w-full border border-gray-300 rounded-lg py-2 px-3 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
-                />
-              </div>
-              <div className="min-w-32 flex-1">
-                <label className="block text-transparent text-xs mb-1">.</label>
-                <select
-                  className="w-full border border-gray-300 rounded-lg py-2 px-3 text-[var(--navy)] text-md focus:ring-2 focus:ring-yellow-400"
-                  value={durationUnit}
-                  onChange={(e) => setDurationUnit(e.target.value)}
-                >
-                  <option>Month</option>
-                  <option>Week</option>
-                  <option>Day</option>
-                </select>
-              </div>
+          <div className="flex space-x-3">
+            <div className="flex-1">
+              <label className="block text-[var(--navy)] font-semibold text-xs mb-1">
+                Duration
+              </label>
+              <input
+                type="number"
+                min={1}
+                value={duration}
+                onChange={(e) => setDuration(Number(e.target.value))}
+                className="w-full border border-gray-300 rounded-lg py-2 px-3 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+              />
             </div>
+            <div className="min-w-32 flex-1">
+              <label className="block text-transparent text-xs mb-1">
+                .
+              </label>
+              <select
+                className="w-full border border-gray-300 rounded-lg py-2 px-3 text-[var(--navy)] text-md focus:ring-2 focus:ring-yellow-400"
+                value={durationUnit}
+                onChange={(e) => setDurationUnit(e.target.value)}
+              >
+                <option>Month</option>
+                <option>Week</option>
+                <option>Day</option>
+              </select>
+            </div>
+          </div>
 
           {formError && (
             <p className="text-red-500 text-sm -mt-2">{formError}</p>

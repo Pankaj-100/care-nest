@@ -6,6 +6,24 @@ import { CustomButton } from "../common/CustomInputs";
 import { useGetCaregiverDetailsQuery } from "@/store/api/bookingApi";
 import Image from "next/image";
 
+interface WhyChooseItem {
+  title: string;
+  description: string;
+}
+interface CaregiverDetail {
+  id: string;
+  name: string;
+  address?: string;
+  experience?: number;
+  price?: number;
+  about?: string;
+  mobile?: string;
+  email?: string;
+  services?: string[];
+  whyChooseMe?: WhyChooseItem[];
+  avatar?: string;
+}
+
 interface CaregiverModalProps {
   isOpen: boolean;
   caregiverId: string | null;
@@ -23,7 +41,6 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
   onAddCaregiver,
   isBookmarked,
 }) => {
-  // 1. All hooks at top (include skip on closed/empty)
   const { data, isLoading, isError } = useGetCaregiverDetailsQuery(
     caregiverId || "",
     { skip: !isOpen || !caregiverId }
@@ -71,14 +88,12 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
     }
   }, [isOpen, caregiverId, isLoading, isError, data]);
 
-  // 2. Now conditional rendering (AFTER hooks)
   if (!isOpen || !caregiverId) return null;
   if (isLoading) return <div className="p-6">Loading...</div>;
   if (isError || !data?.data?.details) return <div className="p-6">Failed to load caregiver</div>;
 
-  const caregiver = Array.isArray(data.data.details)
-    ? data.data.details[0]
-    : data.data.details;
+  const raw = data.data.details as CaregiverDetail | CaregiverDetail[];
+  const caregiver: CaregiverDetail = Array.isArray(raw) ? raw[0] : raw;
 
   const bookmarkStatus = isBookmarked ?? false;
 
@@ -117,10 +132,10 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
               </p>
               <div className="flex flex-wrap gap-4 text-[var(--blue-gray)]">
                 <span className="px-4 py-2 border rounded-full bg-white border-[var(--blue-gray)]">
-                  {caregiver.experience} yrs
+                  {caregiver.experience ?? 0} yrs
                 </span>
                 <span className="px-4 py-2 border rounded-full bg-white border-[var(--blue-gray)]">
-                  ${caregiver.price}/hrs
+                  ${caregiver.price ?? 0}/hrs
                 </span>
               </div>
             </div>
@@ -149,9 +164,9 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
 
         <div className="mt-6">
           <h3 className="text-xl font-medium text-[var(--navy)]">About</h3>
-            <p className="text-[var(--cool-gray)] mt-2 leading-6">
-              {caregiver.about ?? "No description available."}
-            </p>
+          <p className="text-[var(--cool-gray)] mt-2 leading-6">
+            {caregiver.about ?? "No description available."}
+          </p>
         </div>
 
         <div className="mt-6">
@@ -177,7 +192,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
         <div className="mt-6">
           <h3 className="text-xl font-medium text-[var(--navy)]">My Services</h3>
           <div className="grid grid-cols-2 gap-4 mt-3">
-            {(caregiver.services ?? []).map((service: string, idx: number) => (
+            {(caregiver.services ?? []).map((service, idx) => (
               <div
                 key={`${service}-${idx}`}
                 className="flex gap-4 items-center p-4 bg-white rounded-md"
@@ -195,16 +210,20 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
               </div>
             ))}
             {(caregiver.services ?? []).length === 0 && (
-              <p className="col-span-2 text-sm text-gray-400">No services listed.</p>
+              <p className="col-span-2 text-sm text-gray-400">
+                No services listed.
+              </p>
             )}
           </div>
         </div>
 
         <div className="mt-6 mb-4">
-          <h3 className="text-xl text-[var(--navy)] font-medium">Why Choose Me?</h3>
+          <h3 className="text-xl text-[var(--navy)] font-medium">
+            Why Choose Me?
+          </h3>
           <div className="space-y-4 mt-3">
             {(caregiver.whyChooseMe ?? []).map(
-              (item: any, idx: number) => (
+              (item: WhyChooseItem, idx: number) => (
                 <div key={idx} className="flex gap-4 p-4 bg-white rounded-md">
                   <Image
                     src="/care-giver/flexible.png"
@@ -225,7 +244,9 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
               )
             )}
             {(caregiver.whyChooseMe ?? []).length === 0 && (
-              <p className="text-sm text-gray-400">No additional reasons provided.</p>
+              <p className="text-sm text-gray-400">
+                No additional reasons provided.
+              </p>
             )}
           </div>
         </div>
