@@ -8,7 +8,7 @@ import {
   useCreateBookingMutation,
 } from "@/store/api/bookingApi";
 import Image from "next/image";
-import { toast } from "react-toastify"; // If using react-toastify
+import Cookies from "js-cookie";
 
 export interface ScheduleCareProps {
   isOpen: boolean;
@@ -24,18 +24,14 @@ export interface ScheduleCareProps {
   }[];
 }
 
-const ScheduleCare = ({
-  isOpen,
-  OnClose,
-  selectedCaregivers,
-}: ScheduleCareProps) => {
+const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps) => {
   const [meetingDate, setMeetingDate] = useState<Date | null>(new Date());
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
 
   const { data } = useGetServiceNamesQuery();
   const serviceOptions =
-    data?.data?.services.map((service) => ({
+    data?.data?.services?.map((service: any) => ({
       label: service.name,
       value: service.id,
     })) || [];
@@ -43,6 +39,14 @@ const ScheduleCare = ({
   const [careType, setCareType] = useState("");
   const [duration, setDuration] = useState(1);
   const [durationUnit, setDurationUnit] = useState("Month");
+  const [formError, setFormError] = useState<string | null>(null);
+
+  // Auto‑select first service if only one available
+  useEffect(() => {
+    if (serviceOptions.length === 1) {
+      setCareType(serviceOptions[0].value);
+    }
+  }, [serviceOptions]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -58,54 +62,63 @@ const ScheduleCare = ({
         return val * 30;
       case "week":
         return val * 7;
-      case "day":
       default:
         return val;
     }
   };
 
-  // Example: get user from context or props
-  const user = null; // Replace with your actual user logic
-
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError(null);
 
-    if (!user) {
-      toast.error("Please sign in to book a caregiver.");
+    if (!meetingDate) {
+      setFormError("Select meeting date.");
       return;
     }
-
-    if (!meetingDate || !careType || selectedCaregivers.length === 0) {
-      alert("Please fill all required fields.");
+    if (!careType) {
+      setFormError("Select care type.");
+      return;
+    }
+    if (selectedCaregivers.length === 0) {
+      setFormError("Select at least one caregiver.");
       return;
     }
 
     const durationInDays = convertToDays(duration, durationUnit);
-    const formattedDate = meetingDate.toISOString();
+    const token =
+      typeof window !== "undefined"
+        ? Cookies.get("authToken") || localStorage.getItem("authToken")
+        : null;
 
+    // Payload (include both keys in case backend expects one specific)
     const payload = {
-      appointmentDate: formattedDate,
+      appointmentDate: meetingDate.toISOString(),
       serviceId: careType,
       durationInDays: String(durationInDays),
+      caregivers: selectedCaregivers.map((c) => c.id),
       selectedCaregivers: selectedCaregivers.map((c) => c.id),
     };
 
     try {
-      const res = await createBooking(payload).unwrap();
+      // If your RTK mutation already adds headers, you can just pass payload.
+      // Otherwise, adjust createBooking to accept { payload, token }.
+      const res: any = await createBooking(payload).unwrap();
       if (res?.success) {
         setIsSuccessModalOpen(true);
       } else {
-        alert(res?.message || "Booking failed");
+        setFormError(res?.message || "Booking failed. Try again.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Booking failed:", error);
-      alert("Something went wrong. Please try again.");
+      setFormError(
+        error?.data?.message || "Something went wrong. Please try again."
+      );
     }
   };
 
   if (!isOpen) return null;
 
-  if (isSuccessModalOpen)
+  if (isSuccessModalOpen) {
     return (
       <BookSuccessful
         isModalOpen={isSuccessModalOpen}
@@ -115,11 +128,11 @@ const ScheduleCare = ({
         }}
       />
     );
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 h-screen">
-      <div className="absolute inset-0" onClick={OnClose}></div>
-
+      <div className="absolute inset-0" onClick={OnClose} />
       <div
         className="relative z-50 w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-lg overflow-y-auto max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
@@ -128,7 +141,7 @@ const ScheduleCare = ({
           Schedule Your Care
         </h1>
         <p className="text-center text-[var(--cool-gray)] text-md mt-1 mb-6">
-          Pick a preferred date and set the duration to <br /> continue booking.
+            Pick a preferred date and set the duration to <br /> continue booking.
         </p>
 
         <div className="flex items-center justify-between mb-4">
@@ -162,7 +175,6 @@ const ScheduleCare = ({
                 height={40}
                 className="w-10 h-10 rounded-full"
               />
-
               <div className="flex items-center justify-between gap-4">
                 <div className="flex flex-col min-w-22">
                   <p className="text-[var(--navy)] font-semibold text-sm leading-none">
@@ -219,32 +231,36 @@ const ScheduleCare = ({
             />
           </div>
 
-          <div className="flex space-x-3">
-            <div className="flex-1">
-              <label className="block text-[var(--navy)] font-semibold text-xs mb-1">
-                Duration
-              </label>
-              <input
-                type="number"
-                min={1}
-                value={duration}
-                onChange={(e) => setDuration(Number(e.target.value))}
-                className="w-full border border-gray-300 rounded-lg py-2 px-3 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
-              />
+            <div className="flex space-x-3">
+              <div className="flex-1">
+                <label className="block text-[var(--navy)] font-semibold text-xs mb-1">
+                  Duration
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  value={duration}
+                  onChange={(e) => setDuration(Number(e.target.value))}
+                  className="w-full border border-gray-300 rounded-lg py-2 px-3 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
+              <div className="min-w-32 flex-1">
+                <label className="block text-transparent text-xs mb-1">.</label>
+                <select
+                  className="w-full border border-gray-300 rounded-lg py-2 px-3 text-[var(--navy)] text-md focus:ring-2 focus:ring-yellow-400"
+                  value={durationUnit}
+                  onChange={(e) => setDurationUnit(e.target.value)}
+                >
+                  <option>Month</option>
+                  <option>Week</option>
+                  <option>Day</option>
+                </select>
+              </div>
             </div>
-            <div className="min-w-32 flex-1">
-              <label className="block text-transparent text-xs mb-1">.</label>
-              <select
-                className="w-full border border-gray-300 rounded-lg py-2 px-3 text-[var(--navy)] text-md focus:ring-2 focus:ring-yellow-400"
-                value={durationUnit}
-                onChange={(e) => setDurationUnit(e.target.value)}
-              >
-                <option>Month</option>
-                <option>Week</option>
-                <option>Day</option>
-              </select>
-            </div>
-          </div>
+
+          {formError && (
+            <p className="text-red-500 text-sm -mt-2">{formError}</p>
+          )}
 
           <div className="flex space-x-3 mt-6">
             <button
@@ -256,7 +272,7 @@ const ScheduleCare = ({
             </button>
             <button
               type="submit"
-              className="flex-1 bg-[var(--golden-yellow)] text-[var(--blue-gray)] py-3 rounded-full hover:opacity-90 font-semibold cursor-pointer"
+              className="flex-1 bg-[var(--golden-yellow)] text-[var(--blue-gray)] py-3 rounded-full hover:opacity-90 font-semibold cursor-pointer disabled:opacity-60"
               disabled={isBooking}
             >
               {isBooking ? "Booking..." : "Book Caregiver"}

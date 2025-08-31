@@ -251,6 +251,32 @@ export const authApi = createApi({
         }
       },
     }),
+
+    googleAuth: builder.mutation<AuthResponse, {
+      googleToken: string;
+      role: 'giver' | 'user';
+      rememberMe?: boolean;
+    }>({
+      query: ({ googleToken, role }) => ({
+        url: '/google-auth',
+        method: 'POST',
+        body: { googleToken, role },
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          const expires = arg.rememberMe ? 7 : undefined;
+            Cookies.set('authToken', data.data.accessToken, { expires });
+            Cookies.set('refreshToken', data.data.refreshToken, { expires: 7 });
+            dispatch(setCredentials({
+              accessToken: data.data.accessToken,
+              refreshToken: data.data.refreshToken
+            }));
+        } catch (e) {
+          console.error('Google auth failed:', e);
+        }
+      },
+    }),
   }),
 });
 
@@ -261,6 +287,6 @@ export const {
   useForgotPasswordMutation,
   useResendOtpMutation,
   useResetPasswordMutation,
-
   useLogoutMutation,
+  useGoogleAuthMutation,
 } = authApi;

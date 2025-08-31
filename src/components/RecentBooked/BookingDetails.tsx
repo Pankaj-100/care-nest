@@ -132,10 +132,8 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
         isOpen={!!selectedCaregiverId}
         onClose={() => setSelectedCaregiverId(null)}
         caregiverId={selectedCaregiverId}
-        onAddCaregiver={() => {}}
+        onAddCaregiver={(/* id */) => {}}
         isBookmarked={false}
-        isLoggedInUser={true}
-        showMessageButton={true}
       />
 
       <ActionDialog

@@ -1,60 +1,97 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { ContactItem } from "../common/ContactInfo";
 import { CustomButton } from "../common/CustomInputs";
 import { useGetCaregiverDetailsQuery } from "@/store/api/bookingApi";
 import Image from "next/image";
 
-
 interface CaregiverModalProps {
   isOpen: boolean;
-  onClose: () => void;
   caregiverId: string | null;
-  // onBookmarkToggle: (id: string) => void;
-  onAddCaregiver: (id: string) => void; // <-- Add this line
+  onClose: () => void;
+  onAddCaregiver: (id: string) => void;
   isBookmarked?: boolean;
-  isLoggedInUser?: boolean;
-  showAddButton?: boolean;
-  showMessageButton?: boolean; // <-- Add this prop
 }
+
+const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com";
 
 const CaregiverModal: React.FC<CaregiverModalProps> = ({
   isOpen,
   onClose,
   caregiverId,
-  // onBookmarkToggle,
-  onAddCaregiver, // <-- Destructure the new handler
+  onAddCaregiver,
   isBookmarked,
-  isLoggedInUser,
-  showAddButton = true, // <-- Default to true
-  showMessageButton = false,
 }) => {
+  // 1. All hooks at top (include skip on closed/empty)
   const { data, isLoading, isError } = useGetCaregiverDetailsQuery(
     caregiverId || "",
-    { skip: !caregiverId }
+    { skip: !isOpen || !caregiverId }
   );
-  if (isOpen && caregiverId) {
-    console.log("CaregiverModal data:", caregiverId);
-  }
 
-  if (!isOpen || !caregiverId) {
-    
-    return null;
-  }
-  if (isLoading) return <div>Loading...</div>;
-  if (isError || !data?.data.details) return <div>Failed to load caregiver</div>;
+  const viewedRef = useRef<Set<string>>(new Set());
 
-  const caregiver = Array.isArray(data.data.details) ? data.data.details[0] : data.data.details;
+  useEffect(() => {
+    const sendView = async (id: string) => {
+      try {
+        const token =
+          (typeof window !== "undefined" &&
+            (localStorage.getItem("authToken") || "")) ||
+          "";
+        if (!token) return;
+        const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "") || "";
+        await fetch(`${base}/api/v1/views/${id}`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } catch {
+        /* silent */
+      }
+    };
+
+    if (
+      isOpen &&
+      caregiverId &&
+      !isLoading &&
+      !isError &&
+      data?.data?.details &&
+      !viewedRef.current.has(caregiverId)
+    ) {
+      viewedRef.current.add(caregiverId);
+      const key = "caregiver_views_tracked";
+      try {
+        const stored = JSON.parse(sessionStorage.getItem(key) || "[]") as string[];
+        if (!stored.includes(caregiverId)) {
+          sendView(caregiverId);
+          sessionStorage.setItem(key, JSON.stringify([...stored, caregiverId]));
+        }
+      } catch {
+        sendView(caregiverId);
+      }
+    }
+  }, [isOpen, caregiverId, isLoading, isError, data]);
+
+  // 2. Now conditional rendering (AFTER hooks)
+  if (!isOpen || !caregiverId) return null;
+  if (isLoading) return <div className="p-6">Loading...</div>;
+  if (isError || !data?.data?.details) return <div className="p-6">Failed to load caregiver</div>;
+
+  const caregiver = Array.isArray(data.data.details)
+    ? data.data.details[0]
+    : data.data.details;
 
   const bookmarkStatus = isBookmarked ?? false;
 
-  const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com";
+  const avatarSrc =
+    caregiver.avatar && caregiver.avatar.trim() !== ""
+      ? caregiver.avatar.startsWith("http")
+        ? caregiver.avatar
+        : `${cdnURL}/${caregiver.avatar}`
+      : "/care-giver/boy-icon.png";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 max-w-screen">
       <div className="bg-[var(--light-gray)] rounded-xl p-8 py-4 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]">
-        {/* Close Button */}
         <div className="flex justify-end">
           <button
             onClick={onClose}
@@ -64,17 +101,10 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
           </button>
         </div>
 
-        {/* Info Header */}
         <div className="flex lg:flex-row flex-col gap-6 justify-between items-center break-all">
           <div className="flex gap-6 items-center">
             <Image
-              src={
-                caregiver.avatar && caregiver.avatar.trim() !== ""
-                  ? caregiver.avatar.startsWith("http")
-                    ? caregiver.avatar
-                    : `${cdnURL}/${caregiver.avatar}`
-                  : "/care-giver/boy-icon.png"
-              }
+              src={avatarSrc}
               alt="avatar"
               width={96}
               height={96}
@@ -83,13 +113,13 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
             <div>
               <h2 className="text-xl font-bold">{caregiver.name}</h2>
               <p className="text-[var(--cool-gray)] mb-2 text-md">
-                {caregiver.address}
+                {caregiver.address || "—"}
               </p>
               <div className="flex flex-wrap gap-4 text-[var(--blue-gray)]">
-                <span className="px-4 py-2 border rounded-full bg-[#fff] border-[var(--blue-gray)]">
-                  {caregiver.experience} yrs 
+                <span className="px-4 py-2 border rounded-full bg-white border-[var(--blue-gray)]">
+                  {caregiver.experience} yrs
                 </span>
-                <span className="px-4 py-2 border rounded-full bg-[#fff] border-[var(--blue-gray)]">
+                <span className="px-4 py-2 border rounded-full bg-white border-[var(--blue-gray)]">
                   ${caregiver.price}/hrs
                 </span>
               </div>
@@ -97,85 +127,60 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
           </div>
 
           <div className="flex flex-row gap-4 items-center ms-auto">
-            {/* Bookmark Icon */}
-            <div>
-              <Image
-                src={
-                  bookmarkStatus
-                    ? "/care-giver/bookmark-bold.png"
-                    : "/care-giver/bookmark.png"
-                }
-                alt="Bookmark"
-                width={16}
-                height={16}
-                className="w-4 h-4"
-              />
-            </div>
-            {showMessageButton ? (
-              <CustomButton
-                onClick={() => {
-                  // Add your message inbox logic here
-                }}
-                className="!px-6"
-              >
-                Message
-              </CustomButton>
-            ) : (
-              showAddButton && (
-                <CustomButton
-                  onClick={() => {
-                    onAddCaregiver(caregiver.id); // <-- Use selection handler
-                  }}
-                  className="!px-5"
-                >
-                  Add CareGiver
-                </CustomButton>
-              )
-            )}
+            <Image
+              src={
+                bookmarkStatus
+                  ? "/care-giver/bookmark-bold.png"
+                  : "/care-giver/bookmark.png"
+              }
+              alt="Bookmark"
+              width={16}
+              height={16}
+              className="w-4 h-4"
+            />
+            <CustomButton
+              onClick={() => caregiver.id && onAddCaregiver(caregiver.id)}
+              className="!px-5"
+            >
+              Add CareGiver
+            </CustomButton>
           </div>
         </div>
 
-        {/* About */}
         <div className="mt-6">
           <h3 className="text-xl font-medium text-[var(--navy)]">About</h3>
-          <p className="text-[var(--cool-gray)] mt-2 leading-6">
-            {caregiver.about ?? "No description available."}
-          </p>
+            <p className="text-[var(--cool-gray)] mt-2 leading-6">
+              {caregiver.about ?? "No description available."}
+            </p>
         </div>
 
-        {/* Contact Info */}
         <div className="mt-6">
-          <h3 className="text-xl font-medium text-[var(--navy)]">
-            Contact Details
-          </h3>
+          <h3 className="text-xl font-medium text-[var(--navy)]">Contact Details</h3>
           <div className="flex lg:flex-row flex-col gap-x-14 gap-y-4 mt-3">
             <div className="w-full sm:w-1/2 bg-gray-100 rounded-lg">
               <ContactItem
-                icon={"/Contact/phone.png"}
-                label={"Phone Number"}
-                value={isLoggedInUser ? caregiver.mobile ?? "N/A" : "XXXXXXXXXX"}
+                icon="/Contact/phone.png"
+                label="Phone Number"
+                value={caregiver.mobile ?? "N/A"}
               />
             </div>
             <div className="w-full sm:w-1/2 bg-gray-100 rounded-lg">
               <ContactItem
-                icon={"/Contact/email.png"}
-                label={"Email ID"}
-                value={isLoggedInUser ? caregiver.email ?? "N/A" : "XXXXXXXXXX"}
+                icon="/Contact/email.png"
+                label="Email ID"
+                value={caregiver.email ?? "N/A"}
               />
             </div>
           </div>
         </div>
 
-        {/* Services */}
         <div className="mt-6">
-          <h3 className="text-xl font-medium text-[var(--navy)]">
-            My Services
-          </h3>
+          <h3 className="text-xl font-medium text-[var(--navy)]">My Services</h3>
           <div className="grid grid-cols-2 gap-4 mt-3">
-            {(caregiver.services ?? []).map((service, idx) => (
+            {(caregiver.services ?? []).map((service: string, idx: number) => (
               <div
                 key={`${service}-${idx}`}
-                className="flex gap-4 items-center p-4 bg-[#fff] rounded-md"
+                className="flex gap-4 items-center p-4 bg-white rounded-md"
               >
                 <Image
                   src="/care-giver/home.png"
@@ -189,37 +194,39 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
                 </h4>
               </div>
             ))}
+            {(caregiver.services ?? []).length === 0 && (
+              <p className="col-span-2 text-sm text-gray-400">No services listed.</p>
+            )}
           </div>
         </div>
 
-        {/* Why Choose Me */}
         <div className="mt-6 mb-4">
-          <h3 className="text-xl text-[var(--navy)] font-medium">
-            Why Choose Me?
-          </h3>
+          <h3 className="text-xl text-[var(--navy)] font-medium">Why Choose Me?</h3>
           <div className="space-y-4 mt-3">
-            {(caregiver.whyChooseMe ?? []).map((item, idx) => (
-              <div
-                key={idx}
-                className="flex gap-4 p-4 bg-[#fff] rounded-md"
-              >
-                <Image
-                  src="/care-giver/flexible.png"
-                  alt={item.title}
-                  width={40}
-                  height={40}
-                  className="w-10 h-10 rounded-full"
-                />
-                <div>
-                  <h4 className="font-medium text-[var(--navy)]">
-                    {item.title}
-                  </h4>
-                  <p className="text-sm text-[var(--cool-gray)] mt-1">
-                    {item.description}
-                  </p>
+            {(caregiver.whyChooseMe ?? []).map(
+              (item: any, idx: number) => (
+                <div key={idx} className="flex gap-4 p-4 bg-white rounded-md">
+                  <Image
+                    src="/care-giver/flexible.png"
+                    alt={item.title}
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div>
+                    <h4 className="font-medium text-[var(--navy)]">
+                      {item.title}
+                    </h4>
+                    <p className="text-sm text-[var(--cool-gray)] mt-1">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
+            {(caregiver.whyChooseMe ?? []).length === 0 && (
+              <p className="text-sm text-gray-400">No additional reasons provided.</p>
+            )}
           </div>
         </div>
       </div>

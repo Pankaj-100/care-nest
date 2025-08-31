@@ -3,14 +3,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { IoAlertCircleOutline as AlertIcon, IoFilter as FilterIcon } from "react-icons/io5";
-import Cookies from 'js-cookie';
 import FilterSidebar from "@/components/careGiver/FilterSidebar";
 import CaregiverCard from "@/components/careGiver/CaregiverCard";
 import CaregiverModal from "@/components/careGiver/CaregiverModal";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import CustomSheet from "../common/CustomSheet";
-import LoginRedirectModal from "./LoginRedirectModal";
-
 import { useSearchCaregiversQuery } from "@/store/api/bookingApi";
 
 interface Caregiver {
@@ -28,29 +25,20 @@ interface CaregiverFilters {
   minPrice?: number;
   maxPrice?: number;
   languages?: string[];
-
 }
-
 
 const CaregiversPage = () => {
   const searchParams = useSearchParams();
   const serviceId = searchParams.get("type") || "";
-  // const recipient = searchParams.get("recipient") || "";
   const zipcode = searchParams.get("zipcode") || "";
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isScheduleOpen, setIsScheduleOpen] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
-  const [openRedirect, setOpenRedirect] = useState(false);
-  const [isClient, setIsClient] = useState(false);
   const [caregivers, setCaregivers] = useState<Caregiver[]>([]);
   const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
-  const [filters, setFilters] = useState<CaregiverFilters >({});
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const [filters, setFilters] = useState<CaregiverFilters>({});
 
   const { data, isLoading, error } = useSearchCaregiversQuery({
     serviceId,
@@ -59,7 +47,6 @@ const CaregiversPage = () => {
     languages: Array.isArray(filters.languages)
       ? filters.languages.join(",")
       : filters.languages || undefined,
-    
   });
 
   useEffect(() => {
@@ -72,18 +59,9 @@ const CaregiversPage = () => {
     }
   }, [data]);
 
-  const isLoggedInUser = isClient ? Boolean(Cookies.get("authToken")) : false;
-
   const handleBookmarkToggle = (id: string) => {
-    if (!isLoggedInUser) {
-      setOpenRedirect(true);
-      return;
-    }
-
-    setCaregivers((prev) =>
-      prev.map((cg) =>
-        cg.id === id ? { ...cg, isBookmarked: !cg.isBookmarked } : cg
-      )
+    setCaregivers(prev =>
+      prev.map(cg => (cg.id === id ? { ...cg, isBookmarked: !cg.isBookmarked } : cg))
     );
   };
 
@@ -91,31 +69,39 @@ const CaregiversPage = () => {
     setSelectedCaregiverId(caregiverId);
     setIsModalOpen(true);
   };
-  
-
-  const handleOpenFilter = () => setOpenFilter((prev) => !prev);
-  const handleOpenRedirect = () => setOpenRedirect((prev) => !prev);
 
   const handleFilterChange = useCallback((newFilters: CaregiverFilters) => {
     setFilters(newFilters);
   }, []);
 
-  const mappedCaregiversForCards = caregivers.map((c) => ({
+  // Toggle selection (add/remove) inside modal action
+  const handleAddCaregiver = (id: string) => {
+    setSelectedCaregivers(prev =>
+      prev.includes(id)
+        ? prev.filter(c => c !== id)
+        : prev.length < 3
+          ? [...prev, id]
+          : prev
+    );
+    setIsModalOpen(false);
+  };
+
+  const mappedCaregiversForCards = caregivers.map(c => ({
     id: c.id,
     name: c.name,
-    avatar: c.avatar ?? "/care-giver/boy-icon.png", 
+    avatar: c.avatar ?? "/care-giver/boy-icon.png",
     specialty: c.services.join(", "),
     experience: `${c.experience} Years`,
-    price: c.price ? `$${c.price}/hr` : "N/A",      
+    price: c.price ? `$${c.price}/hr` : "N/A",
     isBookmarked: c.isBookmarked ?? false,
   }));
 
   const mappedCaregiversForSchedule = caregivers
-    .filter((c) => selectedCaregivers.includes(c.id))
-    .map((c) => ({
+    .filter(c => selectedCaregivers.includes(c.id))
+    .map(c => ({
       id: c.id,
       name: c.name,
-      avatar: c.avatar ?? "/care-giver/boy-icon.png", 
+      avatar: c.avatar ?? "/care-giver/boy-icon.png",
       specialty: c.services.join(", "),
       experience: `${c.experience} Years`,
       price: c.price ? `$${c.price}/hr` : "N/A",
@@ -124,7 +110,6 @@ const CaregiversPage = () => {
   return (
     <div className="min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 lg:pt-28 px-4 md:px-16">
       <div className="flex flex-col md:flex-row gap-8">
-        {/* Sidebar */}
         <div className="lg:block hidden">
           <FilterSidebar onFilterChange={handleFilterChange} />
         </div>
@@ -132,15 +117,14 @@ const CaregiversPage = () => {
         <div className="lg:hidden block">
           <CustomSheet
             open={openFilter}
-            handleOpen={handleOpenFilter}
-            showCrossButton={true}
+            handleOpen={() => setOpenFilter(p => !p)}
+            showCrossButton
             className="w-2/3 rounded-l-xl lg:hidden"
           >
             <FilterSidebar onFilterChange={handleFilterChange} />
           </CustomSheet>
         </div>
 
-        {/* Content */}
         <div className="flex-1 flex flex-col">
           <div className="flex lg:flex-row flex-col justify-between lg:items-center mb-4 text-sm gap-y-4">
             <div className="flex gap-4 items-center">
@@ -150,16 +134,14 @@ const CaregiversPage = () => {
                 </span>{" "}
                 Found Based on Your Search
               </h2>
-
               <button
-                onClick={handleOpenFilter}
+                onClick={() => setOpenFilter(p => !p)}
                 className="flex items-center gap-1 lg:hidden"
               >
                 <FilterIcon size={15} />
                 Filter
               </button>
             </div>
-
             <div>
               <h2 className="flex flex-row items-center text-md gap-3 text-[var(--navy)] bg-[#5C9EAD26] p-2 rounded-3xl">
                 <AlertIcon size={20} />
@@ -171,36 +153,32 @@ const CaregiversPage = () => {
           {error && <div className="text-red-500 mb-4">Error loading caregivers.</div>}
 
           <div className="sm:mt-0 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {!isLoading && caregivers.length === 0 && (
-              <p>No caregivers found for your search.</p>
-            )}
-
-            {mappedCaregiversForCards.map((caregiver) => (
+            {!isLoading && caregivers.length === 0 && <p>No caregivers found.</p>}
+            {mappedCaregiversForCards.map(c => (
               <CaregiverCard
-                key={caregiver.id}
-                name={caregiver.name}
-                avatar={caregiver.avatar}
-                specialty={caregiver.specialty}
-                experience={caregiver.experience}
-                price={caregiver.price}
-                isBookmarked={caregiver?.isBookmarked}
-                isSelected={selectedCaregivers.includes(caregiver.id)}
-                onClick={() => handleCardClick(caregiver.id)}
-                onBookmarkToggle={() => handleBookmarkToggle(caregiver.id)}
+                key={c.id}
+                name={c.name}
+                avatar={c.avatar}
+                specialty={c.specialty}
+                experience={c.experience}
+                price={c.price}
+                isBookmarked={c.isBookmarked}
+                isSelected={selectedCaregivers.includes(c.id)}
+                onClick={() => handleCardClick(c.id)}
+                onBookmarkToggle={() => handleBookmarkToggle(c.id)}
               />
             ))}
           </div>
 
           <div className="mt-10 lg:mb-0 mb-5 w-full text-center max-w-xl mx-auto">
             <button
-              disabled={mappedCaregiversForSchedule.length < 3}
-              onClick={() => setIsOpen(true)}
-              className={`lg:w-[25rem] w-full max-w-full px-4 py-2 text-[var(--navy)] text-lg rounded-full font-semibold transition
-                ${
-                  mappedCaregiversForSchedule.length >= 3
-                    ? "bg-[var(--yellow)] cursor-pointer"
-                    : "bg-[#233D4D1A] hover:cursor-not-allowed"
-                }`}
+              disabled={mappedCaregiversForSchedule.length < 1}
+              onClick={() => setIsScheduleOpen(true)}
+              className={`lg:w-[25rem] w-full px-4 py-2 text-[var(--navy)] text-lg rounded-full font-semibold transition ${
+                mappedCaregiversForSchedule.length >= 1
+                  ? "bg-[var(--yellow)] cursor-pointer"
+                  : "bg-[#233D4D1A] hover:cursor-not-allowed"
+              }`}
             >
               Proceed
             </button>
@@ -208,40 +186,21 @@ const CaregiversPage = () => {
         </div>
       </div>
 
-      Caregiver Detail Modal
-      {/* <CaregiverModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        caregiverId={selectedCaregiverId}
-        onBookmarkToggle={handleBookmarkToggle}
-        isLoggedInUser={isLoggedInUser}
-      /> */}
       <CaregiverModal
-  isOpen={isModalOpen}
-  caregiverId={selectedCaregiverId}
-  onClose={() => setIsModalOpen(false)}
-  // onBookmarkToggle={handleBookmarkToggle}
-  onAddCaregiver={(id: string) => {
-    setSelectedCaregivers((prev) =>
-      prev.includes(id) ? prev : [...prev, id]
-    );
-    setIsModalOpen(false);
-  }}
-  isBookmarked={
-    caregivers.find((c) => c.id === selectedCaregiverId)?.isBookmarked ?? false
-  }
-  isLoggedInUser={isLoggedInUser}
-/>
-
-      {/* Schedule Booking Modal */}
-      <ScheduleCare
-        isOpen={isOpen}
-        OnClose={() => setIsOpen(false)}
-        selectedCaregivers={mappedCaregiversForSchedule}
+        isOpen={isModalOpen}
+        caregiverId={selectedCaregiverId}
+        onClose={() => setIsModalOpen(false)}
+        onAddCaregiver={handleAddCaregiver}
+        isBookmarked={
+          caregivers.find(c => c.id === selectedCaregiverId)?.isBookmarked ?? false
+        }
       />
 
-      {/* Redirect Login Modal */}
-      <LoginRedirectModal open={openRedirect} handleOpen={handleOpenRedirect} />
+      <ScheduleCare
+        isOpen={isScheduleOpen}
+        OnClose={() => setIsScheduleOpen(false)}
+        selectedCaregivers={mappedCaregiversForSchedule}
+      />
     </div>
   );
 };

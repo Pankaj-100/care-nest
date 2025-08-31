@@ -1,17 +1,89 @@
-import React from "react";
+"use client";
 
+import React, { useState } from "react";
+import { useGoogleLogin } from "@react-oauth/google";
+import { toast } from "react-toastify";
 import { googleIcon } from "@/lib/svg_icons";
-import { CustomButton } from "../common/CustomInputs";
+import { CustomButton } from "../common/CustomInputs"; // adjust if path differs
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setCredentials, setAccessToken } from "@/store/authSlice";
+import { useRouter } from "next/navigation";
 
-function GoogleButton() {
+interface GoogleButtonProps {
+  role?: "user" | "giver";
+  redirectPath?: string;
+}
+
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/+$/, "");
+
+function GoogleButton({ role = "user", redirectPath = "/profile" }: GoogleButtonProps) {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (response) => {
+      if (!response?.access_token) {
+        toast.error("No Google token");
+        return;
+      }
+      setLoading(true);
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/user/google-auth`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+            googleToken: response.access_token,
+            role,
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          toast.error(data?.message || "Google login failed");
+          setLoading(false);
+          return;
+        }
+
+        const accessToken = data?.data?.accessToken;
+        const refreshToken = data?.data?.refreshToken;
+
+        if (accessToken) {
+          Cookies.set("authToken", accessToken, { expires: 7 });
+          if (refreshToken) Cookies.set("refreshToken", refreshToken, { expires: 7 });
+
+          if (typeof setCredentials === "function") {
+            dispatch(setCredentials({ accessToken, refreshToken }));
+          } else {
+            dispatch(setAccessToken(accessToken));
+          }
+        }
+
+        toast.success("Google login successful!");
+        router.push(redirectPath); // now /profile by default
+      } catch (err) {
+        console.error("Google login error:", err);
+        toast.error("Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    },
+    onError: (err) => {
+      console.error("Google login failed:", err);
+      toast.error("Google login failed");
+    },
+  });
+
   return (
     <CustomButton
-      className="bg-[#ffffff] hover:bg-[#ffffff] text-[var( --blue-gray)] "
-      onClick={() => {}}
+      disabled={loading}
+      className="bg-white hover:bg-white text-[var(--blue-gray)]"
+      onClick={() => googleLogin()}
     >
       <div className="flex gap-2 items-center">
-        <div>{googleIcon}</div>
-        <div>Continue with Google</div>
+        <div className={loading ? "opacity-50" : ""}>{googleIcon}</div>
+        <div>{loading ? "Signing in..." : "Continue with Google"}</div>
       </div>
     </CustomButton>
   );
