@@ -19,10 +19,10 @@ type linkSection = {
 const link: linkSection[] = [
   {
     Company: [
-      { title: "Features", link: "/" },
-      { title: "Pricing", link: "/" },
       { title: "About Us", link: "/" },
-      { title: "Contact", link: "/" },
+      { title: "Pricing", link: "/" },
+      { title: "Features", link: "/" },
+      { title: "We accept Medicaid", link: "/" },
     ],
     Resource: [
       { title: "Blog", link: "/" },
@@ -94,12 +94,11 @@ const Footer = () => {
     <div className="pt-18 pb-8 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
       <div className="flex flex-wrap justify-between gap-4 ">
         <div className="sm:w-75 w-full ">
-          <Link href="/" aria-label="Go to home" className="relative w-24 h-24 block cursor-pointer">
+          <Link href="/" aria-label="Go to home" className="relative w-37 h-37 block cursor-pointer">
             <Image src="/Logo_1.svg" alt="Carenest logo" fill priority />
           </Link>
           <p className="mt-4 text-md text-white">
-            CARENEST: Pioneering Advanced Medical Solutions to Elevate
-            Healthcare Services and Improve Patient Outcomes
+            CareWorks provides compassionate, personalized eldercare services that support seniors and their families with dignity and respect.
           </p>
         </div>
 
@@ -131,7 +130,7 @@ const Footer = () => {
             className="font-bold xl:text-[120px] lg:text-[80px] 
            text-gray-400/30 tracking-widest sm:mt-0 mt-2"
           >
-            CARENEST
+            CAREWORKS
           </h1>
         </div>
       </div>
@@ -150,7 +149,7 @@ const Footer = () => {
         <div className="sm:w-auto w-full flex justify-center sm:order-0 order-1">
           <p className="text-sm text-[#FFFFFF] font-medium ">
             {" "}
-            © 2024 Copyright By Sansbro - IMEDIC
+            © 2024 Copyright | All rights reserved
           </p>
         </div>
 

@@ -29,22 +29,6 @@ export const CareType = () => {
   return (
     <div className="flex items-center w-[80vw] bg-white rounded-xl p-4 py-6 gap-x-7">
       <div>
-        <h3 className="mb-3 font-semibold text-sm">Care Type</h3>
-        <SelectWithOption
-          selectPlaceholder="Select Care"
-          selectLabel="Care Type"
-          selectItem={["live-in care", "hourly care", "overnight care"]}
-        />
-      </div>
-      <div>
-        <h3 className="mb-3 font-semibold text-sm">Recipient</h3>
-        <SelectWithOption
-          selectPlaceholder="Select Recipient"
-          selectLabel="Recipient"
-          selectItem={["Recipient1", "Recipient2", "Recipient3", "Recipient4"]}
-        />
-      </div>
-      <div>
         <h3 className="mb-3 font-semibold text-sm">Zip Code</h3>
         <input
           type="text"

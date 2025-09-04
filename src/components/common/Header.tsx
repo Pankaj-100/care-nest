@@ -13,6 +13,8 @@ import CustomDrawer from "./CustomDrawer";
 import { MdMenu as MenuIcon } from "react-icons/md";
 import Cookies from "js-cookie";
 import { profileIcon } from "../icons/page";
+import { PhoneIcon } from "../icons/page";
+
 export interface NavbarTypes {
   title: string;
   link?: string;
@@ -43,6 +45,7 @@ const Header = () => {
 
   const unseenNotifications = true;
 
+  // Build menu
   const NavbarMenuTitle: NavbarTypes[] = [
     { title: "Home", link: "/" },
     { title: "Find A Caregiver", link: "/care-giver" },
@@ -53,24 +56,21 @@ const Header = () => {
         { title: "Personal care", link: "/service/personal-care" },
         { title: "Assisted care/Home care", link: "/service/home-care" },
         { title: "Memory care", link: "/service/memory-care" },
-        {
-          title: "Private pay skilled nursing",
-          link: "/service/skilled-nursing",
-        },
+        { title: "Private pay skilled nursing", link: "/service/skilled-nursing" },
       ],
     },
   ];
 
   if (!isLoggedInUser) {
     NavbarMenuTitle.push({ title: "Blogs", link: "/blogs" });
-    NavbarMenuTitle.push({ title: "Contact Us", link: "/contact" });
+    NavbarMenuTitle.push({ title: "Login", link: "/signin" });
   } else {
     NavbarMenuTitle.push({ title: "Inbox", link: "/inbox" });
   }
 
   const navContent = (
     <div className="flex lg:flex-row flex-col items-center md:gap-x-18 lg:py-0 py-4">
-      <nav className="flex lg:flex-row flex-col items-center justify-between gap-5">
+      <nav className="flex lg:flex-row flex-col items-center justify-between gap-11">
         {NavbarMenuTitle.map((item, index) => (
           <NavbarMenu
             key={index}
@@ -92,14 +92,22 @@ const Header = () => {
           </button>
         )}
 
+        {/* Phone badge (always visible on large screens) */}
+        <Link
+          href="tel:9876543210"
+          className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-3 py-2 text-sm font-medium"
+        >
+          <PhoneIcon />
+          <span>987 654 3210</span>
+        </Link>
+
         {!isLoggedInUser && (
-          <YellowButton
-            onClick={() => {
-              router.push("/signin");
-            }}
+          <Link
+            href="/choose-path"
+            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-medium px-6 py-3 text-sm hover:brightness-105 transition"
           >
-            Login as Client
-          </YellowButton>
+            Get Started
+          </Link>
         )}
 
         {isLoggedInUser && (
@@ -119,9 +127,9 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex lg:px-28 px-10 py-5 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
+      <div className="flex lg:px-28 px-10 py-4 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
         <div className="flex items-center gap-2">
-          <Image src={"/Logo_1.svg"} alt="logo" width={90} height={90} />
+          <Image src={"/Logo_1.svg"} alt="logo" width={100} height={100} />
         </div>
 
         <button onClick={handleOpenMenu} className="lg:hidden">

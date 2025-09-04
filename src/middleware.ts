@@ -8,10 +8,13 @@ const restrictedPaths = [
   "/otp-verification",
   "/reset-password",
   "/email-verification",
+  "/choose-path",
    "/",
   "/care-giver",
   "/care-provider",
   "/contact",
+  "/zip-code",
+  "/find-job",
 
 
  
