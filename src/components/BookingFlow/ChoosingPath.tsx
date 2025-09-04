@@ -1,11 +1,9 @@
 "use client";
 
 import React from "react";
-import Header from "../common/Header";
-import Footer from "../common/Footer";
-import { RedirectButton, YellowButton } from "../common/CustomButton";
+import { YellowButton } from "../common/CustomButton";
 import Image from "next/image";
-import Link from "next/link";
+
 
 const cardBase =
   "flex flex-col items-center text-center gap-4 bg-white rounded-xl shadow-sm p-8 w-full max-w-[340px] transition hover:shadow-md";
