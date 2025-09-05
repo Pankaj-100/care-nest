@@ -69,7 +69,7 @@ const FindCareGiver: React.FC = () => {
     if (!selected.length) return;
     // Pass selected services to next step (example -> zip-code page)
     const q = encodeURIComponent(selected.join(","));
-    router.push(`/zip-code?services=${q}`);
+    router.push(`/need-service`);
   }
 
   return (
@@ -103,10 +103,10 @@ const FindCareGiver: React.FC = () => {
                   className="w-auto h-auto"
                 />
               </div>
-              <h2 className="font-semibold text-sm md:text-base text-[var(--navy)]">
+              <h2 className="font-semibold text-sm md:text-base text-[#233D4D]">
                 {s.title}
               </h2>
-              <p className="text-[11px] leading-relaxed whitespace-pre-line text-gray-500 max-w-[270px]">
+              <p className="text-[11px] leading-relaxed whitespace-pre-line text-[#98A2B3] max-w-[270px]">
                 {s.desc}
               </p>
 
@@ -138,7 +138,7 @@ const FindCareGiver: React.FC = () => {
       <div className="flex justify-center mt-12">
         <YellowButton
           onClick={handleNext}
-          className={`px-24 py-4 text-sm font-medium rounded-full ${
+          className={`px-24 py-6 text-md font-medium rounded-full ${
             !selected.length
               ? "opacity-50 cursor-not-allowed pointer-events-none"
               : ""

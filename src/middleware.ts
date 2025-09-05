@@ -15,6 +15,7 @@ const restrictedPaths = [
   "/contact",
   "/zip-code",
   "/find-job",
+  "/need-service",
 
 
  
