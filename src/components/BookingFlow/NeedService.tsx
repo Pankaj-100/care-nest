@@ -50,10 +50,10 @@ const NeedService: React.FC<NeedServiceProps> = ({ onNext, defaultValue }) => {
       const idx = RECIPIENT_OPTIONS.indexOf(selected);
       if (idx === -1) return;
       const dir = e.key === "ArrowDown" ? 1 : -1;
-      let next = (idx + dir + RECIPIENT_OPTIONS.length) % RECIPIENT_OPTIONS.length;
-      const nextVal = RECIPIENT_OPTIONS[next];
+      const nextIndex = (idx + dir + RECIPIENT_OPTIONS.length) % RECIPIENT_OPTIONS.length;
+      const nextVal = RECIPIENT_OPTIONS[nextIndex];
       setSelected(nextVal);
-      const btn = itemRefs.current[next];
+      const btn = itemRefs.current[nextIndex];
       btn?.focus();
     };
     window.addEventListener("keydown", handler);

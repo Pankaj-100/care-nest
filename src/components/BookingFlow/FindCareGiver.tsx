@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -68,8 +67,7 @@ const FindCareGiver: React.FC = () => {
   function handleNext() {
     if (!selected.length) return;
     // Pass selected services to next step (example -> zip-code page)
-    const q = encodeURIComponent(selected.join(","));
-    router.push(`/need-service`);
+    router.push(`/need-service?services=${encodeURIComponent(selected.join(","))}`);
   }
 
   return (
