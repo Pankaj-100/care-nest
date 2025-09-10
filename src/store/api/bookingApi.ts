@@ -195,10 +195,10 @@ export const bookingApi = createApi({
       query: (params) => {
         // remove empty values so backend only receives provided filters
         const cleaned = Object.fromEntries(
-          Object.entries(params).filter(([_, v]) => {
+          Object.entries(params).filter(([, v]) => {
             if (v === undefined || v === null) return false;
-            if (typeof v === 'string' && v.trim() === '') return false;
-            if (typeof v === 'number' && Number.isNaN(v)) return false;
+            if (typeof v === "string" && v.trim() === "") return false;
+            if (typeof v === "number" && Number.isNaN(v)) return false;
             return true;
           })
         );

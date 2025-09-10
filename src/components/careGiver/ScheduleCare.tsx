@@ -417,7 +417,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
             </div>
 
             <div className="mt-4 space-y-6">
-              {schedule[expandedDay]?.map((r, i) => (
+              {schedule[expandedDay]?.map((r) => (
                 <div key={r.id} className="space-y-2">
                   <div className="flex items-center justify-between text-xs text-[#7B8A9C]">
                     <span>{fmt(9 * 60)}</span>

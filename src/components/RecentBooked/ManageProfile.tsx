@@ -10,6 +10,17 @@ import {
   useUpdateProfileMutation,
 } from "@/store/api/profileApi";
 
+// Add a narrow type for API profile (no any)
+type ProfileApi = {
+  name?: string;
+  email?: string;
+  gender?: string;
+  address?: string;
+  mobile?: string;
+  zipcode?: number | string;
+  zipCode?: number | string;
+};
+
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ManageProfile() {
@@ -36,17 +47,24 @@ export default function ManageProfile() {
 
   useEffect(() => {
     if (profile) {
+      const p = profile as ProfileApi;
+      const rawZip = p.zipcode ?? p.zipCode;
+      let normalizedZip: number | undefined;
+
+      if (typeof rawZip === "number") {
+        normalizedZip = rawZip;
+      } else if (typeof rawZip === "string" && rawZip.trim() !== "") {
+        const n = Number(rawZip);
+        if (Number.isFinite(n)) normalizedZip = n;
+      }
+
       setForm({
-        name: profile.name || "",
-        email: profile.email || "",
-        gender: profile.gender || "",
-        address: profile.address || "",
-        mobile: profile.mobile || "",
-        // profile.zipcode can be number or string; normalize to string for input
-        zipcode:
-          typeof (profile as any).zipcode === "number"
-            ? String((profile as any).zipcode)
-            : (profile as any).zipcode || "",
+        name: p.name || "",
+        email: p.email || "",
+        gender: p.gender || "",
+        address: p.address || "",
+        mobile: p.mobile || "",
+        zipcode: normalizedZip !== undefined ? String(normalizedZip) : "",
       });
     }
   }, [profile]);

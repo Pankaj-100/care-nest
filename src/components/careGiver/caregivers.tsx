@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { IoAlertCircleOutline as AlertIcon, IoFilter as FilterIcon } from "react-icons/io5";
+import {  IoFilter as FilterIcon } from "react-icons/io5";
 import FilterSidebar from "@/components/careGiver/FilterSidebar";
 import CaregiverCard from "@/components/careGiver/CaregiverCard";
 import CaregiverModal from "@/components/careGiver/CaregiverModal";
