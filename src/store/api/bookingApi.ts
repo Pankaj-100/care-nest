@@ -4,7 +4,6 @@ import { setAccessToken, clearAuth } from '../authSlice';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { RootState } from '../store';
 
-// --------- Interfaces ---------
 interface RefreshTokenResponse {
   accessToken: string;
 }
@@ -16,7 +15,7 @@ interface Caregiver {
   price: number;
   experience: number;
   services: string[];
-    isBookmarked?: boolean;
+  isBookmarked?: boolean;
 }
 
 interface SearchCaregiversResponse {
@@ -38,10 +37,7 @@ interface CaregiverDetails {
   price: number;
   about: string;
   services: string[];
-  whyChooseMe: Array<{
-    title: string;
-    description: string;
-  }>;
+  whyChooseMe: Array<{ title: string; description: string }>;
 }
 
 interface Service {
@@ -53,17 +49,13 @@ interface Service {
 interface ServiceNamesResponse {
   success: boolean;
   messages: string;
-  data: {
-    services: Service[];
-  };
+  data: { services: Service[] };
 }
 
 interface CaregiverDetailsResponse {
   success: boolean;
   message: string;
-  data: {
-    details: CaregiverDetails[];
-  };
+  data: { details: CaregiverDetails[] };
 }
 
 interface BookingRequest {
@@ -83,6 +75,7 @@ interface BookingResponse {
     status: string;
   };
 }
+
 interface RecentBookingCaregiver {
   id: string | null;
   name: string;
@@ -97,7 +90,7 @@ interface RecentBooking {
   bookingId: string;
   bookedOn: string;
   appointmentDate: string;
-  duration: number;  
+  duration: number;
   status: string;
   caregivers: RecentBookingCaregiver[];
 }
@@ -105,10 +98,9 @@ interface RecentBooking {
 interface RecentBookingsResponse {
   success: boolean;
   message: string;
-  data: {
-    bookings: RecentBooking[];  
-  };
+  data: { bookings: RecentBooking[] };
 }
+
 interface CancelBookingResponse {
   success: boolean;
   message: string;
@@ -118,6 +110,18 @@ interface CancelBookingRequest {
   bookingId: string;
   caregiverId: string;
 }
+
+// Require zipcode; other params optional
+export interface SearchCaregiversParams {
+  zipcode: string;
+  serviceId?: string;
+  gender?: string;
+  certified?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+  languages?: string; // CSV
+}
+
 // --------- Base URLs ---------
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not set.");
@@ -127,9 +131,7 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
     const token = state.auth.accessToken;
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
+    if (token) headers.set('Authorization', `Bearer ${token}`);
     return headers;
   },
 });
@@ -139,17 +141,13 @@ const refreshQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
     const token = state.auth.refreshToken;
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
+    if (token) headers.set('Authorization', `Bearer ${token}`);
     return headers;
   },
 });
 
 const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
-  args,
-  api,
-  extraOptions
+  args, api, extraOptions
 ) => {
   let result = await baseQuery(args, api, extraOptions);
 
@@ -164,9 +162,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
     try {
       const refreshResult = await refreshQuery(
-        { url: '/new-access-token', method: 'POST' },
-        api,
-        extraOptions
+        { url: '/new-access-token', method: 'POST' }, api, extraOptions
       );
 
       if (refreshResult?.error?.status === 401 || refreshResult?.error?.status === 404) {
@@ -180,8 +176,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
         Cookies.set('authToken', accessToken);
         result = await baseQuery(args, api, extraOptions);
       }
-    } catch (error) {
-      console.error('Token refresh failed:', error);
+    } catch {
       api.dispatch(clearAuth());
       return result;
     }
@@ -190,31 +185,31 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   return result;
 };
 
-// --------- API Slice ---------
 export const bookingApi = createApi({
   reducerPath: 'bookingApi',
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
-   
-   
-   //search caergivers
-    searchCaregivers: builder.query<SearchCaregiversResponse, {
-      serviceId: string;
-      gender?: string;
-      zipcode?: string;
-      certified?: boolean;
-      minPrice?: number;
-      maxPrice?: number;
-      languages?: string; // comma-separated string
-    }>({
-      query: (params) => ({
-        url: '/api/v1/giver/search',
-        method: 'GET',
-        params,
-      }),
+
+    // Search caregivers by zipcode (other filters optional)
+    searchCaregivers: builder.query<SearchCaregiversResponse, SearchCaregiversParams>({
+      query: (params) => {
+        // remove empty values so backend only receives provided filters
+        const cleaned = Object.fromEntries(
+          Object.entries(params).filter(([_, v]) => {
+            if (v === undefined || v === null) return false;
+            if (typeof v === 'string' && v.trim() === '') return false;
+            if (typeof v === 'number' && Number.isNaN(v)) return false;
+            return true;
+          })
+        );
+        return {
+          url: '/api/v1/giver/search',
+          method: 'GET',
+          params: cleaned,
+        };
+      },
     }),
 
-    //get caregiver details
     getCaregiverDetails: builder.query<CaregiverDetailsResponse, string>({
       query: (caregiverId) => ({
         url: `/api/v1/giver/search/${caregiverId}`,
@@ -222,7 +217,6 @@ export const bookingApi = createApi({
       }),
     }),
 
-    //create booking
     createBooking: builder.mutation<BookingResponse, BookingRequest>({
       query: (bookingData) => ({
         url: '/api/v1/booking',
@@ -231,23 +225,21 @@ export const bookingApi = createApi({
       }),
     }),
 
-    //Get service names
     getServiceNames: builder.query<ServiceNamesResponse, void>({
-  query: () => ({
-    url: '/api/v1/service/names',
-    method: 'GET',
-  }),
-}),
-//get booking
-getRecentBookings: builder.query<RecentBookingsResponse, string | undefined>({
-  query: (status) => ({
-    url: `/api/v1/booking/recent/user`,
-    method: 'GET',
-    params: status ? { status } : undefined,
-  }),
-}),
+      query: () => ({
+        url: '/api/v1/service/names',
+        method: 'GET',
+      }),
+    }),
 
-  // Cancel booking endpoint
+    getRecentBookings: builder.query<RecentBookingsResponse, string | undefined>({
+      query: (status) => ({
+        url: `/api/v1/booking/recent/user`,
+        method: 'GET',
+        params: status ? { status } : undefined,
+      }),
+    }),
+
     cancelBooking: builder.mutation<CancelBookingResponse, CancelBookingRequest>({
       query: ({ bookingId, caregiverId }) => ({
         url: `/api/v1/booking/${bookingId}/cancel/user`,
@@ -259,7 +251,6 @@ getRecentBookings: builder.query<RecentBookingsResponse, string | undefined>({
   }),
 });
 
-// --------- Export Hooks ---------
 export const {
   useSearchCaregiversQuery,
   useGetCaregiverDetailsQuery,

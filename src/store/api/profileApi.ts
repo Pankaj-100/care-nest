@@ -10,6 +10,7 @@ interface Profile {
   name: string;
   email: string;
   address: string;
+  zipcode: number;
   mobile: string;
   avatar: string | null;
   gender: string;
@@ -27,6 +28,7 @@ interface UpdateProfilePayload {
   name: string;
   email: string;
   address: string;
+  zipcode: number;
   mobile: string;
   gender: string;
 }

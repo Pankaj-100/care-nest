@@ -22,6 +22,7 @@ function SignupForm() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -30,6 +31,7 @@ function SignupForm() {
     email: "",
     phone: "",
     address: "",
+    zipCode: "",
     password: "",
     confirmPassword: "",
   });
@@ -39,6 +41,7 @@ function SignupForm() {
     email: false,
     phone: false,
     address: false,
+    zipCode: false,
     password: false,
     confirmPassword: false,
   });
@@ -58,6 +61,9 @@ function SignupForm() {
         return /^\d{10}$/.test(value) ? "" : "Phone must be 10 digits";
       case "address":
         return value.trim() ? "" : "Address is required";
+      case "zipCode":
+        // 6 digits (adjust if needed)
+        return /^\d{6}$/.test(value.trim()) ? "" : "Invalid zip code";
       case "password":
         return value.length >= 6
           ? ""
@@ -74,7 +80,7 @@ function SignupForm() {
     setErrors((prev) => ({
       ...prev,
       [field]: validateField(field, value),
-    }));
+    }) as typeof prev);
   };
 
   const validateForm = () => {
@@ -83,6 +89,7 @@ function SignupForm() {
       email: validateField("email", email),
       phone: validateField("phone", phone),
       address: validateField("address", address),
+      zipCode: validateField("zipCode", zipCode),
       password: validateField("password", password),
       confirmPassword: validateField("confirmPassword", confirmPassword),
     };
@@ -93,6 +100,7 @@ function SignupForm() {
       email: true,
       phone: true,
       address: true,
+      zipCode: true,
       password: true,
       confirmPassword: true,
     });
@@ -103,29 +111,37 @@ function SignupForm() {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
+    // ensure numeric ZIP for backend
+    const zipcodeNum = Number(zipCode.trim());
+    if (!Number.isFinite(zipcodeNum)) {
+      toast.error("Zip code must be a number");
+      return;
+    }
+
     try {
-      const { data } = await signup({
-        name,
-        email,
-        address,
-        mobile: phone,
+      const payload: Parameters<typeof signup>[0] = {
+        name: name.trim(),
+        email: email.trim(),
+        address: address.trim(),
+        mobile: phone.trim(),
+        zipcode: zipcodeNum, // number as required by backend
         password,
         role: "user",
-      }).unwrap();
+      };
 
+      const { data } = await signup(payload).unwrap();
       if (data?.userId) {
-        
-        // toast.success("Signup successful! Please verify your email.");
         Cookies.set("userId", data.userId, { expires: 1 / 24 });
         router.push("/email-verification");
       }
     } catch (err: unknown) {
-  if (typeof err === "object" && err !== null && "data" in err) {
-    const errorData = err as { data?: { message?: string } };
-    toast.error(errorData.data?.message || "Signup failed. Please try again.");
-  } else {
-    toast.error("signup failed. Please try again.");
-  }}
+      if (typeof err === "object" && err !== null && "data" in err) {
+        const errorData = err as { data?: { message?: string } };
+        toast.error(errorData.data?.message || "Signup failed. Please try again.");
+      } else {
+        toast.error("Signup failed. Please try again.");
+      }
+    }
   };
 
   return (
@@ -162,6 +178,17 @@ function SignupForm() {
         placeholder="Enter Address"
         error={touched.address ? errors.address : ""}
         onBlur={() => handleBlur("address", address)}
+      />
+      {/* Zip Code */}
+      <TextInput
+        text={zipCode}
+        setText={setZipCode}
+        Icon={addressIcon}
+        placeholder="Enter Zip Code"
+        // use tel to surface numeric keypad on mobile
+        type="tel"
+        error={touched.zipCode ? errors.zipCode : ""}
+        onBlur={() => handleBlur("zipCode", zipCode)}
       />
       <PasswordInput
         text={password}

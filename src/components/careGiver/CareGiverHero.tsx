@@ -19,7 +19,19 @@ export const CareGiverHero = () => {
       <HeroSectionProtected title="Find A Caregiver" />
 
       <div className="lg:flex items-center justify-center lg:absolute sm:-bottom-20  bottom-0 lg:-translate-x-1/2 lg:left-1/2 lg:m-0 m-4">
-        <BrowseCaregiver noDescription={true} />
+        <BrowseCaregiver
+          // show heading + helper text in the hero box
+          title="Select 3 Caregivers"
+          description={
+            <>
+              Select up to{" "}
+              <span className="text-[var(--yellow)] font-semibold">
+                three caregivers
+              </span>{" "}
+              to continue with your booking.
+            </>
+          }
+        />
       </div>
     </div>
   );

@@ -1,15 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { ContactItem } from "../common/ContactInfo";
+import Image from "next/image";
 import { CustomButton } from "../common/CustomInputs";
 import { useGetCaregiverDetailsQuery } from "@/store/api/bookingApi";
-import Image from "next/image";
 
-interface WhyChooseItem {
-  title: string;
-  description: string;
-}
+
 interface CaregiverDetail {
   id: string;
   name: string;
@@ -20,8 +16,10 @@ interface CaregiverDetail {
   mobile?: string;
   email?: string;
   services?: string[];
-  whyChooseMe?: WhyChooseItem[];
   avatar?: string;
+  languages?: string[]; // optional
+  gender?: string; // optional
+  distanceMiles?: number; // optional
 }
 
 interface CaregiverModalProps {
@@ -36,8 +34,8 @@ const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com";
 
 const CaregiverModal: React.FC<CaregiverModalProps> = ({
   isOpen,
-  onClose,
   caregiverId,
+  onClose,
   onAddCaregiver,
   isBookmarked,
 }) => {
@@ -89,171 +87,182 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
   }, [isOpen, caregiverId, isLoading, isError, data]);
 
   if (!isOpen || !caregiverId) return null;
-  if (isLoading) return <div className="p-6">Loading...</div>;
-  if (isError || !data?.data?.details) return <div className="p-6">Failed to load caregiver</div>;
 
-  const raw = data.data.details as CaregiverDetail | CaregiverDetail[];
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4">
+      <div className="relative w-full max-w-6xl max-h-[90vh] overflow-hidden rounded-3xl bg-white shadow-2xl">
+        {/* Close */}
+        <button
+          aria-label="Close"
+          onClick={onClose}
+          className="absolute right-4 top-4 h-10 w-10 cursor-pointer rounded-full bg-white text-[#233D4D] border border-gray-200 hover:shadow-sm flex items-center justify-center"
+        >
+          ✕
+        </button>
+
+        {isLoading && (
+          <div className="p-12 text-center text-sm text-gray-500">Loading caregiver...</div>
+        )}
+        {(isError || !data?.data?.details) && !isLoading && (
+          <div className="p-12 text-center text-sm text-red-500">Failed to load caregiver.</div>
+        )}
+
+        {!isLoading && !isError && data?.data?.details && (
+          <ModalContent
+            raw={data.data.details as CaregiverDetail | CaregiverDetail[]}
+            onAddCaregiver={onAddCaregiver}
+            isBookmarked={!!isBookmarked}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+const ModalContent: React.FC<{
+  raw: CaregiverDetail | CaregiverDetail[];
+  onAddCaregiver: (id: string) => void;
+  isBookmarked: boolean;
+}> = ({ raw, onAddCaregiver, isBookmarked }) => {
   const caregiver: CaregiverDetail = Array.isArray(raw) ? raw[0] : raw;
-
-  const bookmarkStatus = isBookmarked ?? false;
 
   const avatarSrc =
     caregiver.avatar && caregiver.avatar.trim() !== ""
       ? caregiver.avatar.startsWith("http")
         ? caregiver.avatar
-        : `${cdnURL}/${caregiver.avatar}`
+        : `${cdnURL}/${caregiver.avatar.replace(/^\/+/, "")}`
       : "/care-giver/boy-icon.png";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 max-w-screen">
-      <div className="bg-[var(--light-gray)] rounded-xl p-8 py-4 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]">
-        <div className="flex justify-end">
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-800 text-sm font-bold cursor-pointer"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div className="flex lg:flex-row flex-col gap-6 justify-between items-center break-all">
-          <div className="flex gap-6 items-center">
+    <div className="grid grid-cols-1 md:grid-cols-[340px_1fr]">
+      {/* LEFT: Profile summary */}
+      <aside className="bg-[#F6F8F4] p-8 md:p-10">
+        <div className="flex flex-col items-center text-center">
+          <div className="relative">
             <Image
               src={avatarSrc}
-              alt="avatar"
-              width={96}
-              height={96}
-              className="lg:w-24 w-15 lg:h-24 h-15 rounded-full"
+              alt={caregiver.name}
+              width={144}
+              height={144}
+              className="h-36 w-36 rounded-full object-cover ring-2 ring-white shadow"
             />
-            <div>
-              <h2 className="text-xl font-bold">{caregiver.name}</h2>
-              <p className="text-[var(--cool-gray)] mb-2 text-md">
-                {caregiver.address || "—"}
-              </p>
-              <div className="flex flex-wrap gap-4 text-[var(--blue-gray)]">
-                <span className="px-4 py-2 border rounded-full bg-white border-[var(--blue-gray)]">
-                  {caregiver.experience ?? 0} yrs
-                </span>
-                <span className="px-4 py-2 border rounded-full bg-white border-[var(--blue-gray)]">
-                  ${caregiver.price ?? 0}/hrs
-                </span>
-              </div>
-            </div>
+            {/* Verified tick */}
+            <Image
+              src="/care-giver/verified.png"
+              alt="Verified"
+              width={28}
+              height={28}
+              className="absolute -bottom-1 -right-1 h-7 w-7"
+            />
           </div>
 
-          <div className="flex flex-row gap-4 items-center ms-auto">
-            <Image
-              src={
-                bookmarkStatus
-                  ? "/care-giver/bookmark-bold.png"
-                  : "/care-giver/bookmark.png"
+          <h2 className="mt-5 text-[26px] font-semibold text-[#233D4D] leading-tight">
+            {caregiver.name}
+          </h2>
+
+          <div className="mt-7 space-y-4 w-full">
+            <InfoRow label="Experience" value={`${caregiver.experience ?? 0}+ Years`} />
+            <InfoRow
+              label="Available Distance"
+              value={
+                caregiver.distanceMiles ? `Within ${caregiver.distanceMiles} miles` : "Within 10 miles"
               }
-              alt="Bookmark"
-              width={16}
-              height={16}
-              className="w-4 h-4"
             />
+            <InfoRow label="Preferred Gender" value={caregiver.gender ?? "Male"} />
+          </div>
+
+          {/* Actions */}
+          <div className="mt-8 w-full space-y-4">
+            <button
+              type="button"
+              className="w-full h-12 rounded-xl border border-[#233D4D1A] text-[#233D4D] font-medium bg-white hover:shadow-sm transition flex items-center justify-center gap-2"
+            >
+              <Image
+                src={isBookmarked ? "/care-giver/bookmark-bold.png" : "/care-giver/bookmark.png"}
+                alt="Save"
+                width={18}
+                height={18}
+              />
+              Save Caregiver
+            </button>
+
             <CustomButton
               onClick={() => caregiver.id && onAddCaregiver(caregiver.id)}
-              className="!px-5"
+              className="w-full h-12 rounded-xl text-[15px] font-semibold"
             >
-              Add CareGiver
+              + Add Caregiver
             </CustomButton>
           </div>
         </div>
+      </aside>
 
-        <div className="mt-6">
-          <h3 className="text-xl font-medium text-[var(--navy)]">About</h3>
-          <p className="text-[var(--cool-gray)] mt-2 leading-6">
-            {caregiver.about ?? "No description available."}
+      {/* RIGHT: Details */}
+      <main className="p-8 md:p-10 overflow-y-auto">
+        <h3 className="text-2xl font-semibold text-[#233D4D]">Overview</h3>
+        <hr className="mt-4 border-gray-200" />
+
+        {/* About */}
+        <Section title="About">
+          <p className="text-[15px] leading-7 text-[#6B778C]">
+            {caregiver.about ??
+              "No description available."}
           </p>
-        </div>
+        </Section>
 
-        <div className="mt-6">
-          <h3 className="text-xl font-medium text-[var(--navy)]">Contact Details</h3>
-          <div className="flex lg:flex-row flex-col gap-x-14 gap-y-4 mt-3">
-            <div className="w-full sm:w-1/2 bg-gray-100 rounded-lg">
-              <ContactItem
-                icon="/Contact/phone.png"
-                label="Phone Number"
-                value={caregiver.mobile ?? "N/A"}
-              />
+        {/* Location */}
+        <Section title="Location">
+          <p className="text-[15px] text-[#6B778C]">{caregiver.address ?? "—"}</p>
+        </Section>
+
+        {/* Services */}
+        <Section title="My Services">
+          {caregiver.services && caregiver.services.length > 0 ? (
+            <div className="flex flex-wrap gap-3">
+              {caregiver.services.map((s, i) => (
+                <Pill key={`${s}-${i}`}>{s}</Pill>
+              ))}
             </div>
-            <div className="w-full sm:w-1/2 bg-gray-100 rounded-lg">
-              <ContactItem
-                icon="/Contact/email.png"
-                label="Email ID"
-                value={caregiver.email ?? "N/A"}
-              />
+          ) : (
+            <p className="text-sm text-gray-400">No services listed.</p>
+          )}
+        </Section>
+
+        {/* Languages */}
+        <Section title="Languages">
+          {caregiver.languages && caregiver.languages.length > 0 ? (
+            <div className="flex flex-wrap gap-3">
+              {caregiver.languages.map((l, i) => (
+                <Pill key={`${l}-${i}`}>{l}</Pill>
+              ))}
             </div>
-          </div>
-        </div>
-
-        <div className="mt-6">
-          <h3 className="text-xl font-medium text-[var(--navy)]">My Services</h3>
-          <div className="grid grid-cols-2 gap-4 mt-3">
-            {(caregiver.services ?? []).map((service, idx) => (
-              <div
-                key={`${service}-${idx}`}
-                className="flex gap-4 items-center p-4 bg-white rounded-md"
-              >
-                <Image
-                  src="/care-giver/home.png"
-                  alt={service}
-                  width={16}
-                  height={16}
-                  className="w-8 h-8"
-                />
-                <h4 className="text-md font-medium text-[var(--cool-gray)]">
-                  {service}
-                </h4>
-              </div>
-            ))}
-            {(caregiver.services ?? []).length === 0 && (
-              <p className="col-span-2 text-sm text-gray-400">
-                No services listed.
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-6 mb-4">
-          <h3 className="text-xl text-[var(--navy)] font-medium">
-            Why Choose Me?
-          </h3>
-          <div className="space-y-4 mt-3">
-            {(caregiver.whyChooseMe ?? []).map(
-              (item: WhyChooseItem, idx: number) => (
-                <div key={idx} className="flex gap-4 p-4 bg-white rounded-md">
-                  <Image
-                    src="/care-giver/flexible.png"
-                    alt={item.title}
-                    width={40}
-                    height={40}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <div>
-                    <h4 className="font-medium text-[var(--navy)]">
-                      {item.title}
-                    </h4>
-                    <p className="text-sm text-[var(--cool-gray)] mt-1">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              )
-            )}
-            {(caregiver.whyChooseMe ?? []).length === 0 && (
-              <p className="text-sm text-gray-400">
-                No additional reasons provided.
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
+          ) : (
+            <p className="text-sm text-gray-400">No languages specified.</p>
+          )}
+        </Section>
+      </main>
     </div>
   );
 };
+
+const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+  <div className="flex justify-between text-sm text-[#6B778C]">
+    <span>{label}</span>
+    <span className="font-medium text-[#233D4D]">{value}</span>
+  </div>
+);
+
+const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="mt-6">
+    <h3 className="text-xl font-medium text-[var(--navy)]">{title}</h3>
+    <div className="mt-3">{children}</div>
+  </div>
+);
+
+const Pill: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="rounded-full bg-[#E1F5FE] px-4 py-2 text-sm font-semibold text-[#01579B]">
+    {children}
+  </div>
+);
 
 export default CaregiverModal;
 

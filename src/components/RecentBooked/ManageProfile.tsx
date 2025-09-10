@@ -22,6 +22,7 @@ export default function ManageProfile() {
     gender: "",
     address: "",
     mobile: "",
+    zipcode: "",
   });
 
   const [errors, setErrors] = useState({
@@ -30,6 +31,7 @@ export default function ManageProfile() {
     gender: "",
     address: "",
     mobile: "",
+    zipcode: "",
   });
 
   useEffect(() => {
@@ -40,6 +42,11 @@ export default function ManageProfile() {
         gender: profile.gender || "",
         address: profile.address || "",
         mobile: profile.mobile || "",
+        // profile.zipcode can be number or string; normalize to string for input
+        zipcode:
+          typeof (profile as any).zipcode === "number"
+            ? String((profile as any).zipcode)
+            : (profile as any).zipcode || "",
       });
     }
   }, [profile]);
@@ -55,7 +62,10 @@ export default function ManageProfile() {
       case "address":
         return value.trim() === "" ? "Address is required" : "";
       case "mobile":
-        return /^\d{10}$/.test(value) ? "" : "Mobile must be 10 digits";
+        return /^\d{10}$/.test(value) ? "": "Mobile must be 10 digits";
+      case "zipcode":
+        // Accept 5 or 6 digits. Adjust if your region requires a fixed length.
+        return /^\d{5,6}$/.test(value) ? "" : "Zip code must be 5–6 digits";
       default:
         return "";
     }
@@ -63,10 +73,14 @@ export default function ManageProfile() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    // Keep only digits for numeric fields
+    const nextVal =
+      name === "mobile" || name === "zipcode" ? value.replace(/\D/g, "") : value;
+
+    setForm((prev) => ({ ...prev, [name]: nextVal }));
 
     // Validate on change
-    const error = validateField(name, value);
+    const error = validateField(name, nextVal);
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
@@ -84,8 +98,20 @@ export default function ManageProfile() {
 
     if (Object.values(newErrors).some((msg) => msg)) return;
 
+    // Convert zipcode to number as required by backend
+    const zipNum = Number(form.zipcode);
+    if (!Number.isFinite(zipNum)) {
+      toast.error("Zip code must be numeric");
+      return;
+    }
+
     try {
-      await updateProfile(form).unwrap();
+      const payload = {
+        ...form,
+        zipcode: zipNum, // send number
+      } as unknown as Parameters<typeof updateProfile>[0];
+
+      await updateProfile(payload).unwrap();
       toast.success("Profile updated successfully.");
     } catch (err: unknown) {
       if (typeof err === "object" && err !== null && "data" in err) {
@@ -132,6 +158,7 @@ export default function ManageProfile() {
             <InputSkeleton icon={<FiMail />} />
             <InputSkeleton icon={<FiUser />} />
             <InputSkeleton icon={<FiMapPin />} />
+            <InputSkeleton icon={<FiMapPin />} />
             <InputSkeleton icon={<FiPhone />} />
           </>
         ) : (
@@ -151,6 +178,7 @@ export default function ManageProfile() {
               placeholder="Email Address"
               icon={<FiMail />}
               error={errors.email}
+              type="email"
             />
             <InputField
               name="gender"
@@ -168,6 +196,16 @@ export default function ManageProfile() {
               icon={<FiMapPin />}
               error={errors.address}
             />
+            {/* Zip Code */}
+            <InputField
+              name="zipcode"
+              value={form.zipcode}
+              onChange={handleChange}
+              placeholder="Zip Code"
+              icon={<FiMapPin />}
+              error={errors.zipcode}
+              type="tel"
+            />
             <InputField
               name="mobile"
               value={form.mobile}
@@ -175,6 +213,7 @@ export default function ManageProfile() {
               placeholder="Phone Number"
               icon={<FiPhone />}
               error={errors.mobile}
+              type="tel"
             />
           </div>
         )}
@@ -190,6 +229,7 @@ function InputField({
   placeholder,
   icon,
   error,
+  type = "text",
 }: {
   name: string;
   value: string;
@@ -197,6 +237,7 @@ function InputField({
   placeholder: string;
   icon: React.ReactNode;
   error?: string;
+  type?: React.HTMLInputTypeAttribute;
 }) {
   return (
     <div className="space-y-1">
@@ -208,12 +249,13 @@ function InputField({
         }`}
       >
         <input
-          type="text"
+          type={type}
           name={name}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
           className="flex-1 bg-transparent outline-none text-lg text-[#2B384C]/60"
+          inputMode={type === "tel" ? "numeric" : undefined}
         />
         <span className="text-xl text-gray-500 ml-3">{icon}</span>
       </div>

@@ -73,9 +73,11 @@ const HeroSection = () => {
 
 interface Props {
   noDescription?: boolean;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
 }
 
-export const BrowseCaregiver = ({ noDescription }: Props) => {
+export const BrowseCaregiver = ({ noDescription, title, description }: Props) => {
   const [zipCode, setZipCode] = useState<string>("");
 
   const redirectPath = zipCode
@@ -84,10 +86,11 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
 
   const hasDescription = !noDescription;
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!zipCode.trim()) return;
-    window.location.href = redirectPath;
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    if (zipCode.trim()) {
+      window.location.href = redirectPath;
+    }
   }
 
   return (
@@ -97,9 +100,11 @@ export const BrowseCaregiver = ({ noDescription }: Props) => {
     >
       {hasDescription && (
         <div className="col-span-5 space-y-2">
-          <h3 className="font-semibold text-lg">Browse A Caregivers</h3>
+          <h3 className="font-semibold text-lg">
+            {title ?? "Browse Caregivers"}
+          </h3>
           <p className="text-xs leading-relaxed text-gray-600">
-            Create your free profile to discover verified, compassionate caregivers.
+            {description ?? "Create your free profile to discover verified, compassionate caregivers."}
           </p>
         </div>
       )}

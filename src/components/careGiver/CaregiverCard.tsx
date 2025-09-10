@@ -12,6 +12,8 @@ export type CaregiverProps = {
   heightClass?: string;
   onClick?: () => void;
   onBookmarkToggle?: () => void;
+  isVerified?: boolean;                 // NEW
+  verifiedIconSrc?: string;             // NEW (override icon path)
 };
 
 const CaregiverCard: React.FC<CaregiverProps> = ({
@@ -24,6 +26,8 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   isBookmarked = false,
   onClick,
   isSelected = false,
+  isVerified = true,                     // default to true (show badge)
+  verifiedIconSrc = "/care-giver/verified.png", // place this in /public
 }) => {
   const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com";
   return (
@@ -74,7 +78,19 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
       </div>
 
       <div className="flex-1">
-        <h3 className="text-2xl font-medium text-[var(--navy)]">{name}</h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-2xl font-medium text-[var(--navy)]">{name}</h3>
+          {isVerified && (
+            <Image
+              src={verifiedIconSrc}
+              alt="Verified caregiver"
+              width={20}
+              height={20}
+              className="w-5 h-5"
+            />
+          )}
+        </div>
+
         <p className="text-md font-normal text-[var(--cool-gray)]">
           {specialty}
         </p>

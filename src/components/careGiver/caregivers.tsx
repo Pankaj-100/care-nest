@@ -21,7 +21,6 @@ interface Caregiver {
 }
 interface CaregiverFilters {
   gender?: string;
-  certified?: boolean;
   minPrice?: number;
   maxPrice?: number;
   languages?: string[];
@@ -30,7 +29,7 @@ interface CaregiverFilters {
 const CaregiversPage = () => {
   const searchParams = useSearchParams();
   const serviceId = searchParams.get("type") || "";
-  const zipcode = searchParams.get("zipcode") || "";
+  const zipcode = (searchParams.get("zipcode") || "").trim();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
@@ -40,13 +39,21 @@ const CaregiversPage = () => {
   const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
   const [filters, setFilters] = useState<CaregiverFilters>({});
 
-  const { data, isLoading, error } = useSearchCaregiversQuery({
-    serviceId,
+  // Build query args only with provided filters
+  const queryArgs = {
     zipcode,
-    ...filters,
-    languages: Array.isArray(filters.languages)
-      ? filters.languages.join(",")
-      : filters.languages || undefined,
+    ...(serviceId ? { serviceId } : {}),
+    ...(filters.gender ? { gender: filters.gender } : {}),
+    ...(typeof filters.minPrice === "number" ? { minPrice: filters.minPrice } : {}),
+    ...(typeof filters.maxPrice === "number" ? { maxPrice: filters.maxPrice } : {}),
+    ...(Array.isArray(filters.languages) && filters.languages.length
+      ? { languages: filters.languages.join(",") }
+      : {}),
+  };
+
+  const { data, isLoading, error } = useSearchCaregiversQuery(queryArgs, {
+    // Do not call the API without a zipcode
+    skip: !zipcode,
   });
 
   useEffect(() => {
@@ -56,8 +63,10 @@ const CaregiversPage = () => {
         isBookmarked: false,
       }));
       setCaregivers(enriched);
+    } else if (!zipcode) {
+      setCaregivers([]);
     }
-  }, [data]);
+  }, [data, zipcode]);
 
   const handleBookmarkToggle = (id: string) => {
     setCaregivers(prev =>
@@ -141,12 +150,6 @@ const CaregiversPage = () => {
                 <FilterIcon size={15} />
                 Filter
               </button>
-            </div>
-            <div>
-              <h2 className="flex flex-row items-center text-md gap-3 text-[var(--navy)] bg-[#5C9EAD26] p-2 rounded-3xl">
-                <AlertIcon size={20} />
-                Select up to three caregivers to continue with your booking.
-              </h2>
             </div>
           </div>
 

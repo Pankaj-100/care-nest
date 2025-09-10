@@ -12,7 +12,6 @@ const LANGUAGES = ["English", "Spanish", "Arabic","German", "Russian","Chinese",
 
 interface CaregiverFilters {
   gender?: string;
-  certified?: boolean;
   minPrice?: number;
   maxPrice?: number;
   languages?: string[];
@@ -21,7 +20,6 @@ interface CaregiverFilters {
 
 const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: CaregiverFilters) => void }) => {
   const [gender, setGender] = useState<string>("");
-  const [certified, setCertified] = useState<string>("");
   const [price, setPrice] = useState<{ min: number; max: number } | null>(null);
   const [languages, setLanguages] = useState<string[]>([]);
   const [prn, setPrn] = useState<string[]>([]);
@@ -30,13 +28,12 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: Caregiver
   React.useEffect(() => {
     onFilterChange({
       gender,
-      certified: certified === "" ? undefined : certified === "yes",
       minPrice: price?.min,
       maxPrice: price?.max,
       languages,
       prn,
     });
-  }, [gender, certified, price, languages, prn, onFilterChange]);
+  }, [gender, price, languages, prn, onFilterChange]);
 
   return (
     <aside className="w-full md:w-[250px] border rounded-xl p-4 space-y-4">
@@ -74,28 +71,6 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: Caregiver
             {range.label}
           </label>
         ))}
-      </div>
-      {/* Certified */}
-      <div>
-        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Certified</h4>
-        <label className="text-sm text-[#98A2B3] font-medium">
-          <input
-            type="radio"
-            name="certified"
-            checked={certified === "yes"}
-            onChange={() => setCertified("yes")}
-            className="mr-2 accent-[#233D4D]"
-          /> Yes
-        </label>
-        <label className="text-sm text-[#98A2B3] font-medium ml-4">
-          <input
-            type="radio"
-            name="certified"
-            checked={certified === "no"}
-            onChange={() => setCertified("no")}
-            className="mr-2 accent-[#233D4D]"
-          /> No
-        </label>
       </div>
       {/* Languages */}
       <div>

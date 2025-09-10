@@ -119,6 +119,7 @@ export const authApi = createApi({
       address: string;
       mobile: string;
       password: string;
+      zipcode: number;
       role: 'giver' | 'user';
     }>({
       query: (userData) => ({
