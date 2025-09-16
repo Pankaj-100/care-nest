@@ -1,12 +1,11 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
 import BookSuccessful from "./BookSuccessful";
 import {
   useCreateBookingMutation,
-  useGetServiceNamesQuery,
 } from "@/store/api/bookingApi";
 import { CustomButton } from "@/components/common/CustomInputs";
 // Use the imported SVG component (alias to PascalCase for JSX)
@@ -26,11 +25,6 @@ export interface ScheduleCareProps {
   isOpen: boolean;
   OnClose: () => void;
   selectedCaregivers: SelectedCaregiver[];
-}
-
-interface Service {
-  id: string;
-  name: string;
 }
 
 interface BookingResponse {
@@ -68,10 +62,6 @@ const initialSchedule: DaySchedule = DAYS.reduce((acc, d) => {
 
 const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps) => {
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
-  const { data } = useGetServiceNamesQuery();
-
-  const [careseekerZipcode, setCareseekerZipcode] = useState("");
-  const [requiredBy, setRequiredBy] = useState("");
 
   // Remove careType and serviceOptions logic
   // Instead, let user select multiple services (if needed)
@@ -81,7 +71,6 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   const [selectedDays, setSelectedDays] = useState<Day[]>(["Sun", "Mon"]);
-  const [expandedDay, setExpandedDay] = useState<Day>("Sun");
   const [schedule, setSchedule] = useState<DaySchedule>(initialSchedule);
   const [applyAll, setApplyAll] = useState(true);
   const [varySchedule, setVarySchedule] = useState(false);
@@ -104,7 +93,6 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
     setSelectedDays((prev) =>
       prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d]
     );
-    setExpandedDay(d);
     // Seed default ranges if adding a new day
     setSchedule((prev) => {
       if (!prev[d] || prev[d].length === 0) {
@@ -184,8 +172,6 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
     if (serviceIds.length === 0) return setFormError("Select at least one service.");
     if (selectedCaregivers.length === 0) return setFormError("Select at least one caregiver.");
     if (selectedDays.length === 0) return setFormError("Select at least one meeting day.");
-    if (!careseekerZipcode) return setFormError("Enter zipcode.");
-    if (!requiredBy) return setFormError("Enter required by.");
 
     // Build weeklySchedule array
     const weeklySchedule: { weekDay: number; startTime: string; endTime: string }[] = [];
@@ -385,10 +371,10 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                 <button
                   type="button"
                   className="text-[#233D4D] text-lg"
-                  onClick={() => setExpandedDay(d)}
-                  title="Expand"
+                  onClick={() => setSelectedDays((prev) => prev.filter((day) => day !== d))}
+                  title="Remove this day"
                 >
-                  ▾
+                  ✕
                 </button>
               </div>
               <div className="mt-4 space-y-6">

@@ -114,7 +114,6 @@ const SavedCaregivers = () => {
                 avatar={caregiver.avatar ?? "/care-giver/boy-icon.png"} // <-- changed
                 specialty={caregiver.specialty ?? ""}
                 experience={typeof caregiver.experience === "string" ? caregiver.experience : caregiver.experience ? `${caregiver.experience} Years` : ""}
-                price={caregiver.price !== undefined && caregiver.price !== null ? String(caregiver.price) : ""} // <-- fix here
                 isBookmarked={!!caregiver.isBookmarked}
                 heightClass="h-30"
                 onClick={() => handleCardClick(caregiver.name ?? "")}
