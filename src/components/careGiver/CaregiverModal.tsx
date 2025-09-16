@@ -5,21 +5,19 @@ import Image from "next/image";
 import { CustomButton } from "../common/CustomInputs";
 import { useGetCaregiverDetailsQuery } from "@/store/api/bookingApi";
 
-
 interface CaregiverDetail {
   id: string;
   name: string;
   address?: string;
+  location?: string; // Added location field
   experience?: number;
   price?: number;
   about?: string;
-  mobile?: string;
-  email?: string;
   services?: string[];
-  avatar?: string;
-  languages?: string[]; // optional
-  gender?: string; // optional
-  distanceMiles?: number; // optional
+  avatar?: string | null; // avatar can be null
+  languages?: string[];
+  gender?: string;
+  distanceMiles?: number;
 }
 
 interface CaregiverModalProps {
@@ -127,7 +125,7 @@ const ModalContent: React.FC<{
   const caregiver: CaregiverDetail = Array.isArray(raw) ? raw[0] : raw;
 
   const avatarSrc =
-    caregiver.avatar && caregiver.avatar.trim() !== ""
+    caregiver.avatar && typeof caregiver.avatar === "string" && caregiver.avatar.trim() !== ""
       ? caregiver.avatar.startsWith("http")
         ? caregiver.avatar
         : `${cdnURL}/${caregiver.avatar.replace(/^\/+/, "")}`
@@ -163,12 +161,13 @@ const ModalContent: React.FC<{
           <div className="mt-7 space-y-4 w-full">
             <InfoRow label="Experience" value={`${caregiver.experience ?? 0}+ Years`} />
             <InfoRow
-              label="Available Distance"
-              value={
-                caregiver.distanceMiles ? `Within ${caregiver.distanceMiles} miles` : "Within 10 miles"
-              }
+              label="Price"
+              value={caregiver.price ? `₹${caregiver.price}` : "—"}
             />
-            <InfoRow label="Preferred Gender" value={caregiver.gender ?? "Male"} />
+            <InfoRow
+              label="Gender"
+              value={caregiver.gender ?? "—"}
+            />
           </div>
 
           {/* Actions */}
@@ -186,12 +185,22 @@ const ModalContent: React.FC<{
               Save Caregiver
             </button>
 
-            <CustomButton
-              onClick={() => caregiver.id && onAddCaregiver(caregiver.id)}
-              className="w-full h-12 rounded-xl text-[15px] font-semibold"
-            >
-              + Add Caregiver
-            </CustomButton>
+            {isBookmarked ? (
+              <button
+                onClick={() => caregiver.id && onAddCaregiver(caregiver.id)}
+                className="w-full h-12 rounded-xl border border-[#FFA726] text-[#FFA726] font-semibold bg-black transition flex items-center justify-center"
+                style={{ background: "black", color: "#FFA726", border: "2px solid #FFA726" }}
+              >
+                Remove Caregiver
+              </button>
+            ) : (
+              <CustomButton
+                onClick={() => caregiver.id && onAddCaregiver(caregiver.id)}
+                className="w-full h-12 rounded-xl text-[15px] font-semibold"
+              >
+                + Add Caregiver
+              </CustomButton>
+            )}
           </div>
         </div>
       </aside>
@@ -204,14 +213,13 @@ const ModalContent: React.FC<{
         {/* About */}
         <Section title="About">
           <p className="text-[15px] leading-7 text-[#6B778C]">
-            {caregiver.about ??
-              "No description available."}
+            {caregiver.about?.trim() || "No description available."}
           </p>
         </Section>
 
         {/* Location */}
         <Section title="Location">
-          <p className="text-[15px] text-[#6B778C]">{caregiver.address ?? "—"}</p>
+          <p className="text-[15px] text-[#6B778C]">{caregiver.location ?? caregiver.address ?? "—"}</p>
         </Section>
 
         {/* Services */}

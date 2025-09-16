@@ -6,7 +6,6 @@ export type CaregiverProps = {
   avatar: string;
   specialty: string;
   experience: string;
-  price: string; // <-- changed from rate
   isBookmarked?: boolean;
   isSelected?: boolean;
   heightClass?: string;
@@ -21,13 +20,12 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   avatar,
   specialty,
   experience,
-  heightClass,
-  price, // <-- changed from rate
   isBookmarked = false,
   onClick,
   isSelected = false,
   isVerified = true,                     // default to true (show badge)
   verifiedIconSrc = "/care-giver/verified.png", // place this in /public
+  heightClass,
 }) => {
   const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com";
   return (
@@ -98,9 +96,6 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
         <div className="flex flex-row gap-4 mt-2 h-max text-sm">
           <div className=" text-md font-normal  border-1 border-[var(--navy)] rounded-full px-4 py-1  text-[var(--navy)] h-max whitespace-nowrap">
             {experience}
-          </div>
-          <div className="text-[var(--navy)] text-md font-normal border-1 border-[var(--navy)] rounded-full px-4 py-1 whitespace-nowrap">
-            {price}
           </div>
         </div>
       </div>

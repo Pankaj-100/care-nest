@@ -164,7 +164,6 @@ const CaregiversPage = () => {
                 avatar={c.avatar}
                 specialty={c.specialty}
                 experience={c.experience}
-                price={c.price}
                 isBookmarked={c.isBookmarked}
                 isSelected={selectedCaregivers.includes(c.id)}
                 onClick={() => handleCardClick(c.id)}

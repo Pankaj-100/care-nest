@@ -70,16 +70,13 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
   const { data } = useGetServiceNamesQuery();
 
-  const serviceOptions = useMemo(
-    () =>
-      ((data?.data?.services as Service[] | undefined) || []).map((s) => ({
-        label: s.name,
-        value: s.id,
-      })),
-    [data]
-  );
+  const [careseekerZipcode, setCareseekerZipcode] = useState("");
+  const [requiredBy, setRequiredBy] = useState("");
 
-  const [careType, setCareType] = useState("");
+  // Remove careType and serviceOptions logic
+  // Instead, let user select multiple services (if needed)
+  const [serviceIds, setServiceIds] = useState<string[]>([]);
+
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
 
@@ -94,8 +91,8 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
 
   // Preselect service if only one exists
   useEffect(() => {
-    if (serviceOptions.length === 1) setCareType(serviceOptions[0].value);
-  }, [serviceOptions]);
+    if (serviceIds.length === 1) setServiceIds([serviceIds[0]]);
+  }, [serviceIds]);
 
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => e.key === "Escape" && OnClose();
@@ -184,18 +181,31 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
     setFormError(null);
 
     if (!startDate) return setFormError("Select start date.");
-    if (!careType) return setFormError("Select service.");
+    if (serviceIds.length === 0) return setFormError("Select at least one service.");
     if (selectedCaregivers.length === 0) return setFormError("Select at least one caregiver.");
     if (selectedDays.length === 0) return setFormError("Select at least one meeting day.");
+    if (!careseekerZipcode) return setFormError("Enter zipcode.");
+    if (!requiredBy) return setFormError("Enter required by.");
 
-    const durationInDays = computeDurationDays(startDate, endDate);
+    // Build weeklySchedule array
+    const weeklySchedule: { weekDay: number; startTime: string; endTime: string }[] = [];
+    selectedDays.forEach((d) => {
+      (schedule[d] || []).forEach((r) => {
+        weeklySchedule.push({
+          weekDay: DAYS.indexOf(d), // 0=Sun, 1=Mon, etc.
+          startTime: fmtTime(r.start),
+          endTime: fmtTime(r.end),
+        });
+      });
+    });
 
-    // API payload (keep as defined by mutation type)
+    // API payload
     const payload = {
       appointmentDate: startDate.toISOString(),
-      serviceId: careType,
-      durationInDays: String(durationInDays),
+      serviceId: serviceIds[0], // Only one service
+      durationInDays: computeDurationDays(startDate, endDate).toString(),
       selectedCaregivers: selectedCaregivers.map((c) => c.id),
+      // ...other fields as needed
     };
 
     try {
@@ -218,6 +228,13 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
       setFormError(msg);
     }
   };
+
+  // Helper for time formatting
+  function fmtTime(minutes: number) {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+  }
 
   if (!isOpen) return null;
 
@@ -259,7 +276,6 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
             Change
           </button>
         </div>
-
         <div className="rounded-2xl border border-[#EBEBEB] p-3 sm:p-4 mb-6">
           <div className="space-y-3">
             {selectedCaregivers.map((c, idx) => (
@@ -285,14 +301,9 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                       </p>
                       <p className="text-[#7B8A9C] text-xs leading-tight">{c.specialty}</p>
                     </div>
-                    <div className="flex gap-2">
-                      <span className="border border-[#2F3C51] text-[#2F3C51] rounded-full px-3 py-[6px] text-xs">
-                        {c.experience}
-                      </span>
-                      <span className="border border-[#2F3C51] text-[#2F3C51] rounded-full px-3 py-[6px] text-xs">
-                        {c.price}
-                      </span>
-                    </div>
+                    <span className="border border-[#2F3C51] text-[#2F3C51] rounded-full px-3 py-[6px] text-xs">
+                      {c.experience}
+                    </span>
                   </div>
                 </div>
                 {idx < selectedCaregivers.length - 1 && (
@@ -300,32 +311,6 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                 )}
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Services */}
-        <div className="mb-5">
-          <label className="text-[var(--navy)] font-semibold text-sm block mb-1">
-            Services
-          </label>
-          <div className="relative">
-            <select
-              className="w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
-              value={careType}
-              onChange={(e) => setCareType(e.target.value)}
-            >
-              <option value="" disabled>
-                Select Service
-              </option>
-              {serviceOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#2F3C51]">
-              ▾
-            </span>
           </div>
         </div>
 
@@ -343,13 +328,12 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                 dateFormat="dd-MM-yyyy"
                 className="!w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
-              {/* Replaced Image with SVG */}
               <CalendarIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px]" />
             </div>
           </div>
           <div>
             <label className="block text-[var(--navy)] font-semibold text-sm mb-1">
-              End Date (Optional)
+              Service End Date (Optional)
             </label>
             <div className="relative">
               <DatePicker
@@ -360,18 +344,18 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                 placeholderText="Select Date"
                 className="!w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
-              {/* Replaced Image with SVG */}
               <CalendarIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px]" />
             </div>
           </div>
         </div>
 
-        {/* Days */}
+
+        {/* Service Days And Times */}
         <div className="mb-3">
           <label className="block text-[var(--navy)] font-semibold text-sm mb-2">
-            Preferred Meeting Days
+            Service Days And Times
           </label>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mb-4">
             {DAYS.map((d) => {
               const active = selectedDays.includes(d);
               return (
@@ -390,121 +374,109 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
               );
             })}
           </div>
+          {/* Show all selected days as cards */}
+          {selectedDays.map((d, idx) => (
+            <div key={d} className="rounded-2xl border border-[#EBEBEB] p-4 mb-4">
+              <div className="flex items-center justify-between">
+                <p className="text-[#233D4D] font-medium">
+                  {d} -{" "}
+                  <span className="text-[#7B8A9C] font-normal">{daySummary(d)}</span>
+                </p>
+                <button
+                  type="button"
+                  className="text-[#233D4D] text-lg"
+                  onClick={() => setExpandedDay(d)}
+                  title="Expand"
+                >
+                  ▾
+                </button>
+              </div>
+              <div className="mt-4 space-y-6">
+                {schedule[d]?.map((r) => (
+                  <div key={r.id} className="space-y-2">
+                    <div className="flex items-center justify-between text-xs text-[#7B8A9C]">
+                      <span>{fmt(9 * 60)}</span>
+                      <span>{fmt(12 * 60)}</span>
+                      <span>{fmt(15 * 60)}</span>
+                      <span>{fmt(18 * 60)}</span>
+                    </div>
+                    <div className="relative">
+                      <div className="h-2 bg-gray-200 rounded-full" />
+                      <input
+                        type="range"
+                        min={0}
+                        max={24 * 60}
+                        step={minutesStep}
+                        value={r.start}
+                        onChange={(e) =>
+                          changeTime(d, r.id, "start", Number(e.target.value))
+                        }
+                        className="absolute top-1/2 -translate-y-1/2 w-full opacity-0 cursor-pointer"
+                      />
+                      <input
+                        type="range"
+                        min={0}
+                        max={24 * 60}
+                        step={minutesStep}
+                        value={r.end}
+                        onChange={(e) =>
+                          changeTime(d, r.id, "end", Number(e.target.value))
+                        }
+                        className="absolute top-1/2 -translate-y-1/2 w-full opacity-0 cursor-pointer"
+                      />
+                      <div
+                        className="absolute top-[6px] h-2 bg-[#233D4D] rounded-full"
+                        style={{
+                          left: `${(r.start / (24 * 60)) * 100}%`,
+                          width: `${((r.end - r.start) / (24 * 60)) * 100}%`,
+                        }}
+                      />
+                      <div
+                        className="absolute -top-1.5 h-4 w-4 rounded-full bg-white border-2 border-[#233D4D]"
+                        style={{ left: `calc(${(r.start / (24 * 60)) * 100}% - 8px)` }}
+                      />
+                      <div
+                        className="absolute -top-1.5 h-4 w-4 rounded-full bg-white border-2 border-[#233D4D]"
+                        style={{ left: `calc(${(r.end / (24 * 60)) * 100}% - 8px)` }}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-[#7B8A9C]">
+                      <span>{fmt(r.start)}</span>
+                      <span>{fmt(r.end)}</span>
+                      <button
+                        type="button"
+                        className="text-red-500 text-sm"
+                        onClick={() => removeTime(d, r.id)}
+                        title="Remove time range"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => addTime(d)}
+                  className="text-[#233D4D] text-sm font-medium underline underline-offset-2"
+                >
+                  + Add Time
+                </button>
+                {/* Only show "Apply this time to all days" for first card */}
+                {idx === 0 && (
+                  <label className="flex items-center gap-2 text-sm text-[#233D4D] mt-2">
+                    <input
+                      type="checkbox"
+                      checked={applyAll}
+                      onChange={(e) => setApplyAll(e.target.checked)}
+                      className="h-4 w-4 rounded border-gray-300"
+                    />
+                    Apply this time to all days
+                  </label>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-
-        {/* Expanded day schedule */}
-        {selectedDays.length > 0 && (
-          <div className="rounded-2xl border border-[#EBEBEB] p-4 mb-5">
-            <div className="flex items-center justify-between">
-              <p className="text-[#233D4D] font-medium">
-                {expandedDay} -{" "}
-                <span className="text-[#7B8A9C] font-normal">{daySummary(expandedDay)}</span>
-              </p>
-              <button
-                type="button"
-                className="text-[#233D4D] text-lg"
-                onClick={() =>
-                  setExpandedDay((prev) => {
-                    const idx = selectedDays.indexOf(prev);
-                    const next = selectedDays[(idx + 1) % selectedDays.length] || prev;
-                    return next;
-                  })
-                }
-                title="Switch day"
-              >
-                ▾
-              </button>
-            </div>
-
-            <div className="mt-4 space-y-6">
-              {schedule[expandedDay]?.map((r) => (
-                <div key={r.id} className="space-y-2">
-                  <div className="flex items-center justify-between text-xs text-[#7B8A9C]">
-                    <span>{fmt(9 * 60)}</span>
-                    <span>{fmt(12 * 60)}</span>
-                    <span>{fmt(15 * 60)}</span>
-                    <span>{fmt(18 * 60)}</span>
-                  </div>
-                  <div className="relative">
-                    {/* Track */}
-                    <div className="h-2 bg-gray-200 rounded-full" />
-                    {/* Range 1: start */}
-                    <input
-                      type="range"
-                      min={0}
-                      max={24 * 60}
-                      step={minutesStep}
-                      value={r.start}
-                      onChange={(e) =>
-                        changeTime(expandedDay, r.id, "start", Number(e.target.value))
-                      }
-                      className="absolute top-1/2 -translate-y-1/2 w-full opacity-0 cursor-pointer"
-                    />
-                    {/* Range 2: end */}
-                    <input
-                      type="range"
-                      min={0}
-                      max={24 * 60}
-                      step={minutesStep}
-                      value={r.end}
-                      onChange={(e) =>
-                        changeTime(expandedDay, r.id, "end", Number(e.target.value))
-                      }
-                      className="absolute top-1/2 -translate-y-1/2 w-full opacity-0 cursor-pointer"
-                    />
-                    {/* Visual fill */}
-                    <div
-                      className="absolute top-[6px] h-2 bg-[#233D4D] rounded-full"
-                      style={{
-                        left: `${(r.start / (24 * 60)) * 100}%`,
-                        width: `${((r.end - r.start) / (24 * 60)) * 100}%`,
-                      }}
-                    />
-                    {/* Knobs */}
-                    <div
-                      className="absolute -top-1.5 h-4 w-4 rounded-full bg-white border-2 border-[#233D4D]"
-                      style={{ left: `calc(${(r.start / (24 * 60)) * 100}% - 8px)` }}
-                    />
-                    <div
-                      className="absolute -top-1.5 h-4 w-4 rounded-full bg-white border-2 border-[#233D4D]"
-                      style={{ left: `calc(${(r.end / (24 * 60)) * 100}% - 8px)` }}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between text-xs text-[#7B8A9C]">
-                    <span>{fmt(r.start)}</span>
-                    <span>{fmt(r.end)}</span>
-                    <button
-                      type="button"
-                      className="text-red-500 text-sm"
-                      onClick={() => removeTime(expandedDay, r.id)}
-                      title="Remove time range"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                </div>
-              ))}
-
-              <button
-                type="button"
-                onClick={() => addTime(expandedDay)}
-                className="text-[#233D4D] text-sm font-medium underline underline-offset-2"
-              >
-                + Add Time
-              </button>
-
-              <label className="flex items-center gap-2 text-sm text-[#233D4D]">
-                <input
-                  type="checkbox"
-                  checked={applyAll}
-                  onChange={(e) => setApplyAll(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300"
-                />
-                Apply this time to all days
-              </label>
-            </div>
-          </div>
-        )}
 
         <label className="flex items-center gap-2 text-sm text-[#233D4D] mb-4">
           <input
@@ -527,13 +499,12 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
           >
             Cancel
           </button>
-
           <CustomButton
             onClick={() => handleBooking(new Event("submit") as unknown as React.FormEvent)}
             disabled={isBooking}
-            className="flex-1 rounded-full"
+            className="flex-1 rounded-full  font-md text-base py-5 hover:opacity-90"
           >
-            {isBooking ? "Booking..." : "Book Caregiver"}
+            {isBooking ? "Booking..." : "Book Your Meeting"}
           </CustomButton>
         </div>
       </div>
