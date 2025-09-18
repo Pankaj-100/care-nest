@@ -2,12 +2,14 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import {  YellowButton } from "../common/CustomButton";
+import { YellowButton } from "../common/CustomButton";
 import { MapIcon } from "../icons/page";
-
+import { useAppDispatch, useAppSelector } from "../../store/hooks"; // Adjust path as needed
+import { setCareseekerZipcode } from "@/store/slices/bookingSlice"; // Adjust path as needed
 
 const ZipCodePage: React.FC = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [zip, setZip] = useState("");
   const [touched, setTouched] = useState(false);
 
@@ -18,9 +20,16 @@ const ZipCodePage: React.FC = () => {
     e.preventDefault();
     setTouched(true);
     if (!isValid) return;
-    const clean = encodeURIComponent(zip.trim());
-    router.push(`/care-giver?zipcode=${clean}`);
+    const cleanZip = zip.trim();
+    if (Number(cleanZip) === 0) return;
+    dispatch(setCareseekerZipcode(Number(cleanZip))); // Store in redux
+    router.push(`/care-giver?zipcode=${encodeURIComponent(cleanZip)}`); // Redirect
   }
+
+  const careseekerZipcode = useAppSelector(
+    (state) => state.booking.careseekerZipcode
+  );
+  console.log("CaregiversPage Redux zipcode:", careseekerZipcode);
 
   return (
     <main className="w-full flex flex-col items-center px-4 py-14 md:py-20 bg-[#F9F9F7]">

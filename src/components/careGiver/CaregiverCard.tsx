@@ -22,6 +22,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   experience,
   isBookmarked = false,
   onClick,
+  onBookmarkToggle,
   isSelected = false,
   isVerified = true,                     // default to true (show badge)
   verifiedIconSrc = "/care-giver/verified.png", // place this in /public
@@ -34,7 +35,15 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
       className={`relative ${heightClass ?? "h-40"} flex items-center gap-6 rounded-xl p-4 bg-white shadow border cursor-pointer hover:shadow-lg transition`}
     >
       {/* Bookmark Icon */}
-      <div className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-[#233D4D1A] shadow">
+      <div
+        className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-[#233D4D1A] shadow cursor-pointer"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (onBookmarkToggle) {
+            onBookmarkToggle();
+          }
+        }}
+      >
         <Image
           src={
             isBookmarked
@@ -54,7 +63,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
             avatar && avatar.trim() !== "" && avatar !== "/care-giver/boy-icon.png"
               ? avatar.startsWith("http")
                 ? avatar
-                : `${cdnURL}/${avatar}`
+                : `${cdnURL}/${avatar.replace(/^\/+/, "")}`
               : "/care-giver/boy-icon.png"
           }
           alt={name}

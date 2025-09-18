@@ -10,11 +10,11 @@ const cardBase =
 
 const ChoosingPath: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8F9FA]">
+    <div className="min-h-screen flex flex-col bg-[#F7F7F3]">
 
       <main className="flex-1 w-full">
         <section className="max-w-5xl mx-auto px-4 pt-14 pb-24">
-          <h1 className="text-center text-lg sm:text-xl font-semibold text-[var(--navy)] mb-12">
+          <h1 className="text-center text-2xl sm:text-xl font-semibold text-[var(--navy)] mb-12">
             Choose the path that suits your needs best.
           </h1>
 
@@ -31,7 +31,7 @@ const ChoosingPath: React.FC = () => {
                   />
                 </div>
                 <h2 className="font-semibold text-md">Find trusted caregivers</h2>
-                <p className="text-xs text-gray-500 leading-relaxed max-w-[270px]">
+                <p className="text-xs text-[#98A2B3] leading-relaxed max-w-[270px]">
                   Search for trusted caregivers near you —<br /> it&apos;s free and easy.
                 </p>
                 <YellowButton
@@ -54,7 +54,7 @@ const ChoosingPath: React.FC = () => {
                   />
                 </div>
                 <h2 className="font-semibold text-md">Work as a caregiver</h2>
-                <p className="text-xs text-gray-500 leading-relaxed max-w-[270px]">
+                <p className="text-xs text-[#98A2B3] leading-relaxed max-w-[270px]">
                   Build your profile and explore job <br /> opportunities.
                 </p>
                 <YellowButton

@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { setAccessToken, clearAuth } from '../authSlice';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { RootState } from '../store';
+import type { Booking } from '@/types/Booking';
 
 interface RefreshTokenResponse {
   accessToken: string;
@@ -59,10 +60,17 @@ interface CaregiverDetailsResponse {
 }
 
 interface BookingRequest {
-  appointmentDate: string;
-  serviceId: string;
-  durationInDays: string;
-  selectedCaregivers: string[];
+  startDate: string;
+  endDate?: string;
+  serviceIds: string[];
+  careseekerZipcode: number;
+  requiredBy: string;
+  weeklySchedule: {
+    weekDay: number;
+    startTime: string;
+    endTime: string;
+  }[];
+  shortlistedCaregiversIds: string[];
 }
 
 interface BookingResponse {
@@ -76,29 +84,11 @@ interface BookingResponse {
   };
 }
 
-interface RecentBookingCaregiver {
-  id: string | null;
-  name: string;
-  avatar: string | null;
-  isFinalSelection: boolean | null;
-  experience: number | null;
-  price: number | null;
-  isDeleted: boolean;
-}
-
-interface RecentBooking {
-  bookingId: string;
-  bookedOn: string;
-  appointmentDate: string;
-  duration: number;
-  status: string;
-  caregivers: RecentBookingCaregiver[];
-}
 
 interface RecentBookingsResponse {
   success: boolean;
   message: string;
-  data: { bookings: RecentBooking[] };
+  data: { bookings: Booking[] };
 }
 
 interface CancelBookingResponse {
@@ -109,6 +99,14 @@ interface CancelBookingResponse {
 interface CancelBookingRequest {
   bookingId: string;
   caregiverId: string;
+}
+
+// Define ServiceHighlight interface
+interface ServiceHighlight {
+  id: string;
+  name: string;
+  highlight: string;
+  icon?: string;
 }
 
 // Require zipcode; other params optional
@@ -185,6 +183,28 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   return result;
 };
 
+interface BookmarkCaregiverResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface BookmarkedCaregiver {
+  id: string;
+  name: string;
+  avatar: string | null;
+  experience: number;
+  price: number;
+  services: string[];
+}
+
+export interface GetBookmarksResponse {
+  success: boolean;
+  message: string;
+  data: {
+    givers: BookmarkedCaregiver[];
+  };
+}
+
 export const bookingApi = createApi({
   reducerPath: 'bookingApi',
   baseQuery: baseQueryWithReauth,
@@ -248,6 +268,27 @@ export const bookingApi = createApi({
       }),
     }),
 
+    getServiceHighlights: builder.query<{ services: ServiceHighlight[] }, void>({
+      query: () => '/api/v1/service/highlights',
+      transformResponse: (response: { data: { services: ServiceHighlight[] } }) => ({
+        services: response.data.services,
+      }),
+    }),
+
+    bookmarkCaregiver: builder.mutation<BookmarkCaregiverResponse, string>({
+      query: (caregiverId) => ({
+        url: `/api/v1/bookmarks/${caregiverId}`,
+        method: 'POST',
+      }),
+    }),
+
+    getBookmarkedCaregivers: builder.query<GetBookmarksResponse, void>({
+      query: () => ({
+        url: "/api/v1/bookmarks",
+        method: "GET",
+      }),
+    }),
+
   }),
 });
 
@@ -258,4 +299,7 @@ export const {
   useGetServiceNamesQuery,
   useGetRecentBookingsQuery,
   useCancelBookingMutation,
+  useGetServiceHighlightsQuery,
+  useBookmarkCaregiverMutation,
+  useGetBookmarkedCaregiversQuery,
 } = bookingApi;

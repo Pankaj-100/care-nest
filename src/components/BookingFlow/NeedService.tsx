@@ -2,11 +2,9 @@
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { YellowButton } from "../common/CustomButton";
-
-interface NeedServiceProps {
-  onNext?: (recipient: string) => void;
-  defaultValue?: string;
-}
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/store/hooks"; // Adjust path if needed
+import { setRequiredBy } from "@/store/slices/bookingSlice"; // Add this action in your slice
 
 const RECIPIENT_OPTIONS = [
   "Mother",
@@ -18,14 +16,16 @@ const RECIPIENT_OPTIONS = [
   "Myself",
 ];
 
-const NeedService: React.FC<NeedServiceProps> = ({ onNext, defaultValue }) => {
-  const [selected, setSelected] = useState<string>(
-    defaultValue && RECIPIENT_OPTIONS.includes(defaultValue)
-      ? defaultValue
-      : RECIPIENT_OPTIONS[0]
-  );
+const NeedService: React.FC = () => {
+  const [selected, setSelected] = useState<string>(RECIPIENT_OPTIONS[0]);
   const [submitting, setSubmitting] = useState(false);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const requiredBy = useAppSelector(state => state.booking.requiredBy);
+
+  console.log("NeedService Redux requiredBy:", requiredBy);
 
   const handleSelect = useCallback((val: string) => {
     setSelected(val);
@@ -34,12 +34,13 @@ const NeedService: React.FC<NeedServiceProps> = ({ onNext, defaultValue }) => {
   const handleNext = async () => {
     if (!selected) return;
     setSubmitting(true);
-    try {
-      onNext?.(selected);
-      // Continue to next booking step (routing handled by parent).
-    } finally {
-      setSubmitting(false);
+    dispatch(setRequiredBy(selected)); // Store only requiredBy in redux
+    if (isAuthenticated) {
+      router.push("/care-giver");
+    } else {
+      router.push("/signin");
     }
+    setSubmitting(false);
   };
 
   // Keyboard arrow navigation for accessibility
@@ -61,7 +62,7 @@ const NeedService: React.FC<NeedServiceProps> = ({ onNext, defaultValue }) => {
   }, [selected]);
 
   return (
-    <div className="w-full bg-[#F8F9F7] min-h-screen flex justify-center px-4">
+    <div className="w-full bg-[#F7F7F3] min-h-screen flex justify-center px-4">
       <div className="w-full max-w-[560px] mx-auto pt-14 pb-24">
         <h1 className="text-center font-semibold text-[#233D4D] text-[26px] sm:text-[30px] leading-snug tracking-[0.2px]">
           To personalize your care, tell us who

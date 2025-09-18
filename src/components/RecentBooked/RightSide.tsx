@@ -30,29 +30,21 @@ const uiToApiStatus: Record<string, string> = {
 };
 
 const apiToUiStatus: Record<string, string> = {
-  requested: "Requested",
-  pending: "Requested",
-  active: "Active",
-  accepted: "Active",
+  pending: "Pending",
+  accepted: "Accepted",
   completed: "Completed",
   cancelled: "Cancelled",
+  active: "Active",
 };
-
-interface RecentBookingsResponse {
-  data?: Booking[] | { bookings: Booking[] };
-  message?: string;
-}
 
 interface RightBookingsPanelProps {
   onBookingClick: (booking: Booking) => void;
 }
 
-// Helper to safely unwrap response
-function extractBookings(resp?: RecentBookingsResponse): Booking[] {
+// Use this helper in RightSide.tsx
+function extractBookings(resp?: { data?: { bookings: Booking[] } }): Booking[] {
   if (!resp?.data) return [];
-  if (Array.isArray(resp.data)) return resp.data as Booking[];
-  if ("bookings" in resp.data) return (resp.data as { bookings: Booking[] }).bookings;
-  return [];
+  return resp.data.bookings;
 }
 
 const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
@@ -77,9 +69,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
       : uiToApiStatus[selectedStatus] || undefined;
 
   // Fetch with optional param
-  const { data, isLoading, error, refetch } =
-    useGetRecentBookingsQuery(statusParam);
-
+  const { data, isLoading, error, refetch } = useGetRecentBookingsQuery(statusParam);
   const bookings = extractBookings(data);
 
   // Ensure client UI still filters if backend returns all
@@ -136,7 +126,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
       </h2>
 
       <div className="flex flex-wrap gap-2 mb-8">
-        {["All", "Requested", "Active", "Completed", "Cancelled"].map(
+        {["All", "Pending", "Accepted", "Active", "Completed", "Cancelled"].map(
           (status) => (
             <button
               key={status}
@@ -197,7 +187,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                       #{booking.bookingId}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {booking.careType || "Memory care"}
+                      {booking.careType }
                     </p>
                     <div className="flex gap-2 mt-1 text-xs text-gray-500">
                       <div className="flex items-center gap-1 border px-2 py-1 rounded-full text-sm font-light">
@@ -211,16 +201,6 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                         {new Date(
                           booking.bookedOn
                         ).toLocaleDateString()}
-                      </div>
-                      <div className="flex text-sm font-light items-center gap-1 border px-2 py-1 rounded-full">
-                        <Image
-                          src="/Recent/time.png"
-                          alt="duration"
-                          width={12}
-                          height={12}
-                          className="w-3 h-3"
-                        />
-                        {booking.duration || 1} Days
                       </div>
                       <div
                         className={`px-3 py-2 rounded-full text-md font-medium items-center ${

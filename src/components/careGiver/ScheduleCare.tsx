@@ -8,6 +8,7 @@ import {
   useCreateBookingMutation,
 } from "@/store/api/bookingApi";
 import { CustomButton } from "@/components/common/CustomInputs";
+import {useAppSelector } from "@/store/hooks";
 // Use the imported SVG component (alias to PascalCase for JSX)
 import { calenderIcon as CalendarIcon } from "../icons/page";
 
@@ -39,49 +40,43 @@ function isBookingResponse(r: unknown): r is BookingResponse {
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
 type Day = (typeof DAYS)[number];
 
-type TimeRange = { id: string; start: number; end: number }; // minutes 0..1440
-type DaySchedule = Record<Day, TimeRange[]>;
+const defaultStart = 9 * 60; // 09:00 AM
+const defaultEnd = 12 * 60;  // 12:00 PM
 
-const fmt = (m: number) => {
-  const h = Math.floor(m / 60);
-  const min = m % 60;
-  const period = h >= 12 ? "PM" : "AM";
-  const hour12 = ((h + 11) % 12) + 1;
-  return `${hour12.toString().padStart(2, "0")}:${min.toString().padStart(2, "0")} ${period}`;
-};
+function fmt(minutes: number) {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+}
 
-const defaultRanges: TimeRange[] = [
+const defaultRanges: { id: string; start: number; end: number }[] = [
   { id: "r1", start: 9 * 60, end: 12 * 60 }, // 09:00 - 12:00
   { id: "r2", start: 15 * 60, end: 18 * 60 }, // 03:00 - 06:00
 ];
 
-const initialSchedule: DaySchedule = DAYS.reduce((acc, d) => {
+const initialSchedule: Record<Day, { id: string; start: number; end: number }[]> = DAYS.reduce((acc, d) => {
   acc[d] = d === "Sun" || d === "Mon" ? defaultRanges.map(r => ({ ...r, id: `${d}-${r.id}` })) : [];
   return acc;
-}, {} as DaySchedule);
+}, {} as Record<Day, { id: string; start: number; end: number }[]>);
 
 const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps) => {
+
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
 
-  // Remove careType and serviceOptions logic
-  // Instead, let user select multiple services (if needed)
-  const [serviceIds, setServiceIds] = useState<string[]>([]);
+  const requiredBy = useAppSelector(state => state.booking.requiredBy);
+  const serviceIds = useAppSelector((state) => state.booking.serviceIds);
+  const careseekerZipcode = useAppSelector(state => state.booking.careseekerZipcode);
 
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   const [selectedDays, setSelectedDays] = useState<Day[]>(["Sun", "Mon"]);
-  const [schedule, setSchedule] = useState<DaySchedule>(initialSchedule);
+  const [schedule, setSchedule] = useState<Record<Day, { id: string; start: number; end: number }[]>>(initialSchedule);
   const [applyAll, setApplyAll] = useState(true);
   const [varySchedule, setVarySchedule] = useState(false);
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-
-  // Preselect service if only one exists
-  useEffect(() => {
-    if (serviceIds.length === 1) setServiceIds([serviceIds[0]]);
-  }, [serviceIds]);
 
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => e.key === "Escape" && OnClose();
@@ -89,46 +84,12 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
     return () => window.removeEventListener("keydown", onEsc);
   }, [isOpen, OnClose]);
 
-  const toggleDay = (d: Day) => {
-    setSelectedDays((prev) =>
-      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d]
-    );
-    // Seed default ranges if adding a new day
-    setSchedule((prev) => {
-      if (!prev[d] || prev[d].length === 0) {
-        return { ...prev, [d]: defaultRanges.map(r => ({ ...r, id: `${d}-${r.id}` })) };
-      }
-      return prev;
-    });
-  };
-
-  const addTime = (d: Day) => {
-    setSchedule((prev) => ({
-      ...prev,
-      [d]: [
-        ...prev[d],
-        {
-          id: `${d}-r${Date.now()}`,
-          start: 9 * 60,
-          end: 12 * 60,
-        },
-      ],
-    }));
-  };
-
-  const removeTime = (d: Day, id: string) => {
-    setSchedule((prev) => ({
-      ...prev,
-      [d]: prev[d].filter((r) => r.id !== id),
-    }));
-  };
-
-  const changeTime = (d: Day, id: string, key: "start" | "end", value: number) => {
+  // Remove addTime and allow only one slot per day
+  const changeTime = (d: Day, key: "start" | "end", value: number) => {
     const v = Math.max(0, Math.min(24 * 60, value));
     setSchedule((prev) => {
       const updated = prev[d].map((r) => {
-        if (r.id !== id) return r;
-        const next = { ...r, [key]: v } as TimeRange;
+        const next = { ...r, [key]: v } as { id: string; start: number; end: number };
         // Ensure start < end
         if (next.end <= next.start) {
           if (key === "start") next.end = Math.min(24 * 60, next.start + 60);
@@ -142,10 +103,28 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
         selectedDays
           .filter((sd) => sd !== d)
           .forEach((sd) => {
-            res = { ...res, [sd]: updated.map((r, i) => ({ ...r, id: `${sd}-${i}` })) };
+            res = { ...res, [sd]: updated.map((r) => ({ ...r, id: `${sd}-0` })) };
           });
       }
       return res;
+    });
+  };
+
+  // When toggling a day, always seed with one slot if missing
+  const toggleDay = (d: Day) => {
+    setSelectedDays((prev) =>
+      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d]
+    );
+    setSchedule((prev) => {
+      if (!prev[d] || prev[d].length === 0) {
+        return { ...prev, [d]: [{
+          id: `${d}-0`,
+          start: defaultStart,
+          end: defaultEnd,
+        }] };
+      }
+      // If more than one slot, keep only the first
+      return { ...prev, [d]: [prev[d][0]] };
     });
   };
 
@@ -156,13 +135,6 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
 
   const minutesStep = 30; // slider step
 
-  const computeDurationDays = (start: Date, end: Date | null) => {
-    if (!end) return 1;
-    const one = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
-    const two = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
-    const days = Math.round((two - one) / (1000 * 60 * 60 * 24)) + 1;
-    return Math.max(1, days);
-    };
 
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -176,42 +148,46 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
     // Build weeklySchedule array
     const weeklySchedule: { weekDay: number; startTime: string; endTime: string }[] = [];
     selectedDays.forEach((d) => {
-      (schedule[d] || []).forEach((r) => {
+      // Only take the first slot for each day
+      const slot = schedule[d]?.[0];
+      if (slot) {
         weeklySchedule.push({
-          weekDay: DAYS.indexOf(d), // 0=Sun, 1=Mon, etc.
-          startTime: fmtTime(r.start),
-          endTime: fmtTime(r.end),
+          weekDay: DAYS.indexOf(d),
+          startTime: fmtTime(slot.start),
+          endTime: fmtTime(slot.end),
         });
-      });
+      }
     });
+
+    // Prepare shortlistedCaregiversIds from selectedCaregivers
+    const shortlistedCaregiversIds = selectedCaregivers.map(c => c.id);
 
     // API payload
     const payload = {
-      appointmentDate: startDate.toISOString(),
-      serviceId: serviceIds[0], // Only one service
-      durationInDays: computeDurationDays(startDate, endDate).toString(),
-      selectedCaregivers: selectedCaregivers.map((c) => c.id),
-      // ...other fields as needed
+      startDate: startDate ? startDate.toISOString().slice(0, 10) : "",
+      endDate: endDate ? endDate.toISOString().slice(0, 10) : undefined,
+      serviceIds,
+      careseekerZipcode: Number(careseekerZipcode),
+      requiredBy,
+      weeklySchedule,
+      shortlistedCaregiversIds,
     };
-
+    console.log("Booking payload:", payload);
     try {
-      const res = await createBooking(payload).unwrap();
-      if (isBookingResponse(res) && res.success) {
-        setIsSuccessModalOpen(true);
+      const result = await createBooking(payload).unwrap();
+      if (isBookingResponse(result) && result.success) {
+        setIsSuccessModalOpen(true); // <-- Show success modal
       } else {
-        setFormError(
-          (isBookingResponse(res) && res.message) || "Booking failed. Try again."
-        );
+        setFormError(result.message || "Booking failed. Please try again.");
       }
-    } catch (error: unknown) {
-      const msg =
-        typeof error === "object" &&
-        error !== null &&
-        "data" in error &&
-        (error as { data?: { message?: string } }).data?.message
-          ? (error as { data?: { message?: string } }).data!.message!
-          : "Something went wrong. Please try again.";
-      setFormError(msg);
+    } catch (err: unknown) {
+      if (typeof err === "object" && err !== null && "data" in err && typeof (err as { data?: { message?: string } }).data?.message === "string") {
+        setFormError((err as { data?: { message?: string } }).data?.message ?? "Booking failed. Please try again.");
+      } else if (err instanceof Error && err.message) {
+        setFormError(err.message);
+      } else {
+        setFormError("Booking failed. Please try again.");
+      }
     }
   };
 
@@ -240,7 +216,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 h-screen">
       <div className="absolute inset-0" onClick={OnClose} />
       <div
-        className="relative z-50 w-full max-w-3xl bg-white rounded-3xl p-6 sm:p-8 shadow-lg overflow-y-auto max-h-[90vh]"
+        className="relative z-50 w-full max-w-2xl bg-white rounded-2xl p-4 sm:p-6 shadow-lg overflow-y-auto max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -272,7 +248,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                       c.avatar && c.avatar.trim() !== "/care-giver/boy-icon.png"
                         ? c.avatar.startsWith("http")
                           ? c.avatar
-                          : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.avatar}`
+                          : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.avatar.replace(/^\/+/, "")}`
                         : "/care-giver/boy-icon.png"
                     }
                     alt={c.name}
@@ -288,7 +264,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                       <p className="text-[#7B8A9C] text-xs leading-tight">{c.specialty}</p>
                     </div>
                     <span className="border border-[#2F3C51] text-[#2F3C51] rounded-full px-3 py-[6px] text-xs">
-                      {c.experience}
+                      {c.experience && c.experience !== "null" ? c.experience : "0+ Years"}
                     </span>
                   </div>
                 </div>
@@ -360,7 +336,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
               );
             })}
           </div>
-          {/* Show all selected days as cards */}
+          {/* Show only one slot per selected day */}
           {selectedDays.map((d, idx) => (
             <div key={d} className="rounded-2xl border border-[#EBEBEB] p-4 mb-4">
               <div className="flex items-center justify-between">
@@ -378,7 +354,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                 </button>
               </div>
               <div className="mt-4 space-y-6">
-                {schedule[d]?.map((r) => (
+                {schedule[d]?.slice(0, 1).map((r) => (
                   <div key={r.id} className="space-y-2">
                     <div className="flex items-center justify-between text-xs text-[#7B8A9C]">
                       <span>{fmt(9 * 60)}</span>
@@ -395,7 +371,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                         step={minutesStep}
                         value={r.start}
                         onChange={(e) =>
-                          changeTime(d, r.id, "start", Number(e.target.value))
+                          changeTime(d, "start", Number(e.target.value))
                         }
                         className="absolute top-1/2 -translate-y-1/2 w-full opacity-0 cursor-pointer"
                       />
@@ -406,7 +382,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                         step={minutesStep}
                         value={r.end}
                         onChange={(e) =>
-                          changeTime(d, r.id, "end", Number(e.target.value))
+                          changeTime(d, "end", Number(e.target.value))
                         }
                         className="absolute top-1/2 -translate-y-1/2 w-full opacity-0 cursor-pointer"
                       />
@@ -429,27 +405,13 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
                     <div className="flex items-center justify-between text-xs text-[#7B8A9C]">
                       <span>{fmt(r.start)}</span>
                       <span>{fmt(r.end)}</span>
-                      <button
-                        type="button"
-                        className="text-red-500 text-sm"
-                        onClick={() => removeTime(d, r.id)}
-                        title="Remove time range"
-                      >
-                        ✕
-                      </button>
                     </div>
                   </div>
                 ))}
-                <button
-                  type="button"
-                  onClick={() => addTime(d)}
-                  className="text-[#233D4D] text-sm font-medium underline underline-offset-2"
-                >
-                  + Add Time
-                </button>
+                {/* Remove "+ Add Time" button */}
                 {/* Only show "Apply this time to all days" for first card */}
                 {idx === 0 && (
-                  <label className="flex items-center gap-2 text-sm text-[#233D4D] mt-2">
+                  <label className="flex items-center justify-center gap-2 text-sm text-[#233D4D] mt-2">
                     <input
                       type="checkbox"
                       checked={applyAll}
@@ -488,7 +450,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
           <CustomButton
             onClick={() => handleBooking(new Event("submit") as unknown as React.FormEvent)}
             disabled={isBooking}
-            className="flex-1 rounded-full  font-md text-base py-5 hover:opacity-90"
+            className="flex-1 rounded-full  font-semibold text-sm py-5 hover:opacity-90"
           >
             {isBooking ? "Booking..." : "Book Your Meeting"}
           </CustomButton>

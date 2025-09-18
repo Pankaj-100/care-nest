@@ -8,7 +8,9 @@ import CaregiverCard from "@/components/careGiver/CaregiverCard";
 import CaregiverModal from "@/components/careGiver/CaregiverModal";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import CustomSheet from "../common/CustomSheet";
-import { useSearchCaregiversQuery } from "@/store/api/bookingApi";
+import { useSearchCaregiversQuery, useBookmarkCaregiverMutation } from "@/store/api/bookingApi";
+import { useAppSelector } from "@/store/hooks";
+import { toast } from "react-toastify";
 
 interface Caregiver {
   id: string;
@@ -28,7 +30,6 @@ interface CaregiverFilters {
 
 const CaregiversPage = () => {
   const searchParams = useSearchParams();
-  const serviceId = searchParams.get("type") || "";
   const zipcode = (searchParams.get("zipcode") || "").trim();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,24 +38,16 @@ const CaregiversPage = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [caregivers, setCaregivers] = useState<Caregiver[]>([]);
   const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
-  const [filters, setFilters] = useState<CaregiverFilters>({});
+  const [, setFilters] = useState<CaregiverFilters>({});
 
-  // Build query args only with provided filters
-  const queryArgs = {
-    zipcode,
-    ...(serviceId ? { serviceId } : {}),
-    ...(filters.gender ? { gender: filters.gender } : {}),
-    ...(typeof filters.minPrice === "number" ? { minPrice: filters.minPrice } : {}),
-    ...(typeof filters.maxPrice === "number" ? { maxPrice: filters.maxPrice } : {}),
-    ...(Array.isArray(filters.languages) && filters.languages.length
-      ? { languages: filters.languages.join(",") }
-      : {}),
-  };
+  const careseekerZipcode = useAppSelector(state => state.booking.careseekerZipcode);
+  console.log("Redux zipcode:", careseekerZipcode);
 
-  const { data, isLoading, error } = useSearchCaregiversQuery(queryArgs, {
-    // Do not call the API without a zipcode
-    skip: !zipcode,
-  });
+
+  const { data, isLoading, error } = useSearchCaregiversQuery(
+    { zipcode: careseekerZipcode ? String(careseekerZipcode) : "" },
+    { skip: !careseekerZipcode }
+  );
 
   useEffect(() => {
     if (data?.data?.caregivers) {
@@ -68,10 +61,18 @@ const CaregiversPage = () => {
     }
   }, [data, zipcode]);
 
-  const handleBookmarkToggle = (id: string) => {
-    setCaregivers(prev =>
-      prev.map(cg => (cg.id === id ? { ...cg, isBookmarked: !cg.isBookmarked } : cg))
-    );
+  const [bookmarkCaregiver] = useBookmarkCaregiverMutation();
+
+  const handleBookmarkToggle = async (id: string) => {
+    try {
+      await bookmarkCaregiver(id).unwrap();
+      setCaregivers(prev =>
+        prev.map(cg => (cg.id === id ? { ...cg, isBookmarked: !cg.isBookmarked } : cg))
+      );
+      toast.success("Caregiver bookmarked successfully!");
+    } catch {
+      toast.error("Failed to bookmark caregiver.");
+    }
   };
 
   const handleCardClick = (caregiverId: string) => {

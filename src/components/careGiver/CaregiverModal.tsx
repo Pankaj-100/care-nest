@@ -1,20 +1,22 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { CustomButton } from "../common/CustomInputs";
-import { useGetCaregiverDetailsQuery } from "@/store/api/bookingApi";
+import { useGetCaregiverDetailsQuery, useBookmarkCaregiverMutation } from "@/store/api/bookingApi";
+import { toast } from "react-toastify";
 
 interface CaregiverDetail {
   id: string;
   name: string;
   address?: string;
-  location?: string; // Added location field
+  location?: string;
   experience?: number;
+  isSelected?: boolean;
   price?: number;
   about?: string;
   services?: string[];
-  avatar?: string | null; // avatar can be null
+  avatar?: string | null;
   languages?: string[];
   gender?: string;
   distanceMiles?: number;
@@ -88,7 +90,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4">
-      <div className="relative w-full max-w-6xl max-h-[90vh] overflow-hidden rounded-3xl bg-white shadow-2xl">
+      <div className="relative w-full max-w-3xl max-h-[70vh] overflow-hidden rounded-2xl bg-white shadow-2xl">
         {/* Close */}
         <button
           aria-label="Close"
@@ -99,10 +101,10 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
         </button>
 
         {isLoading && (
-          <div className="p-12 text-center text-sm text-gray-500">Loading caregiver...</div>
+          <div className="p-10 text-center text-sm text-gray-500">Loading caregiver...</div>
         )}
         {(isError || !data?.data?.details) && !isLoading && (
-          <div className="p-12 text-center text-sm text-red-500">Failed to load caregiver.</div>
+          <div className="p-10 text-center text-sm text-red-500">Failed to load caregiver.</div>
         )}
 
         {!isLoading && !isError && data?.data?.details && (
@@ -123,6 +125,8 @@ const ModalContent: React.FC<{
   isBookmarked: boolean;
 }> = ({ raw, onAddCaregiver, isBookmarked }) => {
   const caregiver: CaregiverDetail = Array.isArray(raw) ? raw[0] : raw;
+  const [bookmarkCaregiver, { isLoading: bookmarking }] = useBookmarkCaregiverMutation();
+  const [bookmarked, setBookmarked] = useState(isBookmarked);
 
   const avatarSrc =
     caregiver.avatar && typeof caregiver.avatar === "string" && caregiver.avatar.trim() !== ""
@@ -131,10 +135,20 @@ const ModalContent: React.FC<{
         : `${cdnURL}/${caregiver.avatar.replace(/^\/+/, "")}`
       : "/care-giver/boy-icon.png";
 
+  const handleBookmark = async () => {
+    if (!caregiver.id) return;
+    try {
+      await bookmarkCaregiver(caregiver.id).unwrap();
+      setBookmarked(true);
+      toast.success("Caregiver bookmarked successfully!");
+    } catch {
+      toast.error("Failed to bookmark caregiver.");
+    }
+  };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[340px_1fr]">
-      {/* LEFT: Profile summary */}
-      <aside className="bg-[#F6F8F4] p-8 md:p-10">
+    <div className="grid grid-cols-1 md:grid-cols-[260px_1fr]">
+      <aside className="bg-[#F6F8F4] p-3 md:p-4">
         <div className="flex flex-col items-center text-center">
           <div className="relative">
             <Image
@@ -174,21 +188,23 @@ const ModalContent: React.FC<{
           <div className="mt-8 w-full space-y-4">
             <button
               type="button"
-              className="w-full h-12 rounded-xl border border-[#233D4D1A] text-[#233D4D] font-medium bg-white hover:shadow-sm transition flex items-center justify-center gap-2"
+              className="w-full h-12 rounded-xl cursor-pointer border border-[#233D4D1A] text-[#233D4D] font-medium bg-white hover:shadow-sm transition flex items-center justify-center gap-2"
+              onClick={handleBookmark}
+              disabled={bookmarking || bookmarked}
             >
               <Image
-                src={isBookmarked ? "/care-giver/bookmark-bold.png" : "/care-giver/bookmark.png"}
+                src={bookmarked ? "/care-giver/bookmark-bold.png" : "/care-giver/bookmark.png"}
                 alt="Save"
                 width={18}
                 height={18}
               />
-              Save Caregiver
+              {bookmarking ? "Saving..." : bookmarked ? "Saved Caregiver" : "Save Caregiver"}
             </button>
 
-            {isBookmarked ? (
+            {caregiver.isSelected ? (
               <button
                 onClick={() => caregiver.id && onAddCaregiver(caregiver.id)}
-                className="w-full h-12 rounded-xl border border-[#FFA726] text-[#FFA726] font-semibold bg-black transition flex items-center justify-center"
+                className="w-full h-12 rounded-xl border-2 border-[#FFA726] text-[#FFA726] font-semibold bg-black transition flex items-center justify-center"
                 style={{ background: "black", color: "#FFA726", border: "2px solid #FFA726" }}
               >
                 Remove Caregiver
@@ -204,9 +220,7 @@ const ModalContent: React.FC<{
           </div>
         </div>
       </aside>
-
-      {/* RIGHT: Details */}
-      <main className="p-8 md:p-10 overflow-y-auto">
+      <main className="p-5 md:p-7 overflow-y-auto">
         <h3 className="text-2xl font-semibold text-[#233D4D]">Overview</h3>
         <hr className="mt-4 border-gray-200" />
 

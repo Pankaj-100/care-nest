@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { RedirectButton } from "../common/CustomButton";
+import { useAppDispatch } from "@/store/hooks";
+import { setCareseekerZipcode } from "@/store/slices/bookingSlice";
+import { useRouter } from "next/navigation";
 
 
 const HeroSection = () => {
@@ -79,26 +82,28 @@ interface Props {
 
 export const BrowseCaregiver = ({ noDescription, title, description }: Props) => {
   const [zipCode, setZipCode] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const redirectPath = zipCode
-    ? `/care-giver?zipcode=${encodeURIComponent(zipCode)}`
-    : "/care-giver";
+  const redirectPath = "/find-job";
 
-  const hasDescription = !noDescription;
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
+  function handleRedirect(e?: React.MouseEvent | React.FormEvent) {
+    if (e) e.preventDefault();
     if (zipCode.trim()) {
-      window.location.href = redirectPath;
+      console.log("Dispatching zipcode to Redux:", zipCode.trim());
+      dispatch(setCareseekerZipcode(Number(zipCode.trim()))); // Store in redux
+      router.push(redirectPath);
     }
   }
+
+  
 
   return (
     <div
       className={`bg-white rounded-xl shadow-sm p-5 lg:p-6 w-full mx-auto lg:w-[55vw] xl:max-w-4xl
-      ${hasDescription ? "lg:grid lg:grid-cols-12 lg:gap-6" : "lg:grid lg:grid-cols-12 lg:gap-6"}`}
+      ${noDescription ? "lg:grid lg:grid-cols-12 lg:gap-6" : "lg:grid lg:grid-cols-12 lg:gap-6"}`}
     >
-      {hasDescription && (
+      {!noDescription && (
         <div className="col-span-5 space-y-2">
           <h3 className="font-semibold text-lg">
             {title ?? "Browse Caregivers"}
@@ -109,49 +114,44 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         </div>
       )}
 
-      {/* Form: input + button now occupy the SAME horizontal space that used to sit between
-         the description and the button, by splitting remaining columns */}
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleRedirect}
         className={`flex flex-col gap-4 col-span-12 ${
-          hasDescription ? "lg:col-span-7" : "lg:col-span-12"
+          !noDescription ? "lg:col-span-7" : "lg:col-span-12"
         } lg:grid lg:grid-cols-12`}
       >
-        {/* ZIP input */}
         <div
           className={`flex flex-col col-span-8 ${
-            hasDescription ? "lg:col-span-8" : "lg:col-span-8"
+            !noDescription ? "lg:col-span-8" : "lg:col-span-8"
           }`}
         >
           <label className="mb-2 font-semibold text-sm" htmlFor="zip-input">
             Provide Zip code
           </label>
-            <input
-              id="zip-input"
-              type="text"
-              placeholder="Enter Zip Code"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-              className="w-full rounded-3xl outline-none border border-gray-300 py-3 px-5 text-gray-900 text-sm focus:border-gray-400 focus:ring-0"
-              maxLength={10}
-            />
+          <input
+            id="zip-input"
+            type="text"
+            placeholder="Enter Zip Code"
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value)}
+            className="w-full rounded-full outline-none border border-gray-300 py-3 px-5 text-gray-900 text-sm focus:border-gray-400 focus:ring-0"
+            maxLength={10}
+          />
         </div>
-
-        {/* Button shares the horizontal space (remaining columns) */}
         <div
           className={`col-span-4 flex items-end ${
-            hasDescription ? "lg:col-span-4" : "lg:col-span-4"
+            !noDescription ? "lg:col-span-4" : "lg:col-span-4"
           }`}
         >
-          <RedirectButton
-            className={`w-full justify-center px-8 py-3 h-[46px] rounded-3xl text-sm font-medium transition ${
-              !zipCode.trim()
-                ? "opacity-50 cursor-not-allowed pointer-events-none"
-                : ""
-            }`}
-            path={redirectPath}
-            title="Search Caregiver"
-          />
+          <button
+            type="submit"
+            className={`w-full justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-sm font-semibold transition whitespace-nowrap
+              ${!zipCode.trim() ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}
+              bg-[#FFA726] text-[#233D4D]`}
+            disabled={!zipCode.trim()}
+          >
+            Search Caregiver
+          </button>
         </div>
       </form>
     </div>
