@@ -27,7 +27,15 @@ export interface SelectedCaregiver {
 export interface ScheduleCareProps {
   isOpen: boolean;
   OnClose: () => void;
-  selectedCaregivers: SelectedCaregiver[];
+  selectedCaregivers: {
+    id: string;
+    name: string;
+    avatar: string;
+    specialty: string;
+    experience: string;
+    price: string;
+  }[];
+  onBookingSuccess?: () => void; // <-- Add this line
 }
 
 interface BookingResponse {
@@ -61,7 +69,7 @@ const initialSchedule: Record<Day, { id: string; start: number; end: number }[]>
   return acc;
 }, {} as Record<Day, { id: string; start: number; end: number }[]>);
 
-const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps) => {
+const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }: ScheduleCareProps) => {
 
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
 
@@ -192,7 +200,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
       // Store booking data in redux and redirect to signin
       dispatch(setPendingBooking(payload));
       OnClose();
-      router.push("/signin"); // <-- use router.push instead of window.location.href
+      router.push("/signup"); // <-- use router.push instead of window.location.href
       return;
     }
 
@@ -201,6 +209,9 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
       const result = await createBooking(payload).unwrap();
       if (isBookingResponse(result) && result.success) {
         setIsSuccessModalOpen(true);
+        if (onBookingSuccess) {
+          onBookingSuccess();
+        }
       } else {
         setFormError(result.message || "Booking failed. Please try again.");
       }
