@@ -303,7 +303,6 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
             price: "$100/hr", // <-- use price only
             experience: "12+ Years",
             avatar: "/care-giver/boy-icon.png", // <-- use avatar
-            isBookmarked: false,
           },
         ]}
       />

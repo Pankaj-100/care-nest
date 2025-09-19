@@ -13,13 +13,29 @@ import Image from "next/image";
 import emptyCaregiverImage from "@/assets/care.svg";
 import type { Booking } from "@/types/Booking";
 import { useGetBookmarkedCaregiversQuery } from "@/store/api/bookingApi";
+import ScheduleCare from "@/components/careGiver/ScheduleCare";
+import BookSuccessful from "@/components/careGiver/BookSuccessful";
 
 const SavedCaregiversPanel = () => {
   const { data, isLoading, isError } = useGetBookmarkedCaregiversQuery();
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
+  const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
+  const [isScheduleOpen, setIsScheduleOpen] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   if (isLoading) return <div>Loading saved caregivers...</div>;
   if (isError || !data?.data?.givers) return <div>No saved caregivers found.</div>;
+
+  const mappedCaregiversForSchedule = data.data.givers
+    .filter(giver => selectedCaregivers.includes(giver.id))
+    .map(giver => ({
+      id: giver.id,
+      name: giver.name,
+      avatar: giver.avatar ?? "/care-giver/boy-icon.png",
+      specialty: giver.services.join(", "),
+      experience: typeof giver.experience === "string" ? giver.experience : giver.experience ? `${giver.experience} Years` : "0+ Years",
+      price: giver.price ? `₹${giver.price}` : "N/A",
+    }));
 
   return (
     <div className="p-6 mt-10">
@@ -57,20 +73,26 @@ const SavedCaregiversPanel = () => {
                 experience={typeof giver.experience === "string" ? giver.experience : giver.experience ? `${giver.experience} Years` : "0+ Years"}
                 isBookmarked={true}
                 heightClass="h-30"
-                onClick={() => setSelectedCaregiverId(giver.id)}
+                isSelected={selectedCaregivers.includes(giver.id)}
+                onClick={() => {
+                  setSelectedCaregiverId(giver.id);
+                  setSelectedCaregivers(prev =>
+                    prev.includes(giver.id)
+                      ? prev.filter(id => id !== giver.id)
+                      : prev.length < 3
+                        ? [...prev, giver.id]
+                        : prev
+                  );
+                }}
               />
             ))}
           </div>
           <div className="mt-10 text-center max-w-xl mx-auto">
             <button
-              disabled={false}
-              onClick={() => {}}
+              disabled={selectedCaregivers.length < 3}
+              onClick={() => setIsScheduleOpen(true)}
               className={`w-full px-12 py-4 text-[var(--navy)] text-lg bg-yellow-500 rounded-full font-semibold transition
-                ${
-                  true
-                    ? " hover:  shadow-md"
-                    : " cursor-not-allowed"
-                }`}
+                ${selectedCaregivers.length >= 3 ? "hover:shadow-md" : "cursor-not-allowed opacity-50"}`}
             >
               Proceed
             </button>
@@ -85,6 +107,23 @@ const SavedCaregiversPanel = () => {
         onAddCaregiver={() => {}}
         isBookmarked={true}
       />
+
+      {/* ScheduleCare Modal */}
+      <ScheduleCare
+        isOpen={isScheduleOpen}
+        OnClose={() => setIsScheduleOpen(false)}
+        selectedCaregivers={mappedCaregiversForSchedule}
+        // Pass a callback to show success modal if needed
+        onBookingSuccess={() => setShowSuccessModal(true)}
+      />
+
+      {/* Booking Success Modal */}
+      {showSuccessModal && (
+        <BookSuccessful
+          isModalOpen={showSuccessModal}
+          onClose={() => setShowSuccessModal(false)}
+        />
+      )}
     </div>
   );
 };
