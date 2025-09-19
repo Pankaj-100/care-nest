@@ -8,9 +8,11 @@ import {
   useCreateBookingMutation,
 } from "@/store/api/bookingApi";
 import { CustomButton } from "@/components/common/CustomInputs";
-import {useAppSelector } from "@/store/hooks";
+import {useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setPendingBooking } from "@/store/slices/bookingSlice"; // Create this action
 // Use the imported SVG component (alias to PascalCase for JSX)
 import { calenderIcon as CalendarIcon } from "../icons/page";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export interface SelectedCaregiver {
   id: string;
@@ -77,6 +79,19 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const bookingSuccess = searchParams.get("bookingSuccess") === "true";
+
+  useEffect(() => {
+    if (bookingSuccess) {
+      setIsSuccessModalOpen(true);
+    }
+  }, [bookingSuccess]);
 
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => e.key === "Escape" && OnClose();
@@ -172,11 +187,20 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers }: ScheduleCareProps
       weeklySchedule,
       shortlistedCaregiversIds,
     };
-    console.log("Booking payload:", payload);
+
+    if (!isAuthenticated) {
+      // Store booking data in redux and redirect to signin
+      dispatch(setPendingBooking(payload));
+      OnClose();
+      router.push("/signin"); // <-- use router.push instead of window.location.href
+      return;
+    }
+
+    // Proceed with booking API call if authenticated
     try {
       const result = await createBooking(payload).unwrap();
       if (isBookingResponse(result) && result.success) {
-        setIsSuccessModalOpen(true); // <-- Show success modal
+        setIsSuccessModalOpen(true);
       } else {
         setFormError(result.message || "Booking failed. Please try again.");
       }

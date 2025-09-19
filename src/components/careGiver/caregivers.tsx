@@ -11,6 +11,7 @@ import CustomSheet from "../common/CustomSheet";
 import { useSearchCaregiversQuery, useBookmarkCaregiverMutation } from "@/store/api/bookingApi";
 import { useAppSelector } from "@/store/hooks";
 import { toast } from "react-toastify";
+import BookSuccessful from "@/components/careGiver/BookSuccessful";
 
 interface Caregiver {
   id: string;
@@ -31,6 +32,7 @@ interface CaregiverFilters {
 const CaregiversPage = () => {
   const searchParams = useSearchParams();
   const zipcode = (searchParams.get("zipcode") || "").trim();
+  const bookingSuccess = searchParams.get("bookingSuccess") === "true";
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
@@ -39,6 +41,7 @@ const CaregiversPage = () => {
   const [caregivers, setCaregivers] = useState<Caregiver[]>([]);
   const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
   const [, setFilters] = useState<CaregiverFilters>({});
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const careseekerZipcode = useAppSelector(state => state.booking.careseekerZipcode);
   console.log("Redux zipcode:", careseekerZipcode);
@@ -116,6 +119,12 @@ const CaregiversPage = () => {
       experience: `${c.experience} Years`,
       price: c.price ? `$${c.price}/hr` : "N/A",
     }));
+
+  useEffect(() => {
+    if (bookingSuccess) {
+      setShowSuccessModal(true);
+    }
+  }, [bookingSuccess]);
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 lg:pt-28 px-4 md:px-16">
@@ -204,6 +213,14 @@ const CaregiversPage = () => {
         OnClose={() => setIsScheduleOpen(false)}
         selectedCaregivers={mappedCaregiversForSchedule}
       />
+
+      {/* Show success modal if bookingSuccess is true */}
+      {showSuccessModal && (
+        <BookSuccessful
+          isModalOpen={showSuccessModal}
+          onClose={() => setShowSuccessModal(false)}
+        />
+      )}
     </div>
   );
 };

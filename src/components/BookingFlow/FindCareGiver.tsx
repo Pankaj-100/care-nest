@@ -35,7 +35,7 @@ const FindCareGiver: React.FC = () => {
   }
 
   // If you need to prepend your backend URL:
-  const backendUrl = process.env.NEXT_PUBLIC_API_URL; // e.g., "https://your-backend.com"
+  const backendUrl = "https://dev-carenest.s3.ap-south-1.amazonaws.com"; // e.g., "https://your-backend.com"
 
   return (
     <main className="w-full px-4 py-14 md:py-16 bg-[#F7F7F3]">
@@ -70,8 +70,8 @@ const FindCareGiver: React.FC = () => {
                   <Image
                     src={iconUrl}
                     alt={s.name}
-                    width={140}
-                    height={140}
+                    width={100}
+                    height={100}
                     className="w-auto h-auto"
                   />
                 </div>

@@ -14,6 +14,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Link from "next/link";
 
 import { useSigninMutation } from "@/store/api/authApi"; // Adjust path as needed
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { clearPendingBooking } from "@/store/slices/bookingSlice";
+import { useCreateBookingMutation } from "@/store/api/bookingApi";
 
 function SigninForm() {
   const [email, setEmail] = useState("");
@@ -22,6 +25,9 @@ function SigninForm() {
 
   const router = useRouter();
   const [signin, { isLoading }] = useSigninMutation();
+  const pendingBooking = useAppSelector(state => state.booking.pendingBooking);
+  const dispatch = useAppDispatch();
+  const [createBooking] = useCreateBookingMutation();
 
   const handleSubmit = async () => {
     if (!email || !password) {
@@ -46,6 +52,18 @@ function SigninForm() {
           Cookies.set("refreshToken", response.data.refreshToken); // Session cookie
         }
         
+        if (pendingBooking) {
+          try {
+            const result = await createBooking(pendingBooking).unwrap();
+            if (result.success) {
+              dispatch(clearPendingBooking());
+              router.push("/care-giver?bookingSuccess=true");
+              return;
+            }
+          } catch {
+            // Optionally show error
+          }
+        }
         router.push("/");
       } else {
        

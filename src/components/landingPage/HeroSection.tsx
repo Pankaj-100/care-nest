@@ -146,7 +146,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
           <button
             type="submit"
             className={`w-full justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-sm font-semibold transition whitespace-nowrap
-              ${!zipCode.trim() ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}
+              ${!zipCode.trim() ? " cursor-not-allowed pointer-events-none" : ""}
               bg-[#FFA726] text-[#233D4D]`}
             disabled={!zipCode.trim()}
           >

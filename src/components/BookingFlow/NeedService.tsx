@@ -3,8 +3,8 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { YellowButton } from "../common/CustomButton";
 import { useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/store/hooks"; // Adjust path if needed
-import { setRequiredBy } from "@/store/slices/bookingSlice"; // Add this action in your slice
+import { useAppDispatch } from "@/store/hooks";
+import { setRequiredBy } from "@/store/slices/bookingSlice";
 
 const RECIPIENT_OPTIONS = [
   "Mother",
@@ -22,10 +22,6 @@ const NeedService: React.FC = () => {
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const requiredBy = useAppSelector(state => state.booking.requiredBy);
-
-  console.log("NeedService Redux requiredBy:", requiredBy);
 
   const handleSelect = useCallback((val: string) => {
     setSelected(val);
@@ -35,11 +31,7 @@ const NeedService: React.FC = () => {
     if (!selected) return;
     setSubmitting(true);
     dispatch(setRequiredBy(selected)); // Store only requiredBy in redux
-    if (isAuthenticated) {
-      router.push("/care-giver");
-    } else {
-      router.push("/signin");
-    }
+    router.push("/care-giver");
     setSubmitting(false);
   };
 

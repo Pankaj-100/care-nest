@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { YellowButton } from "../common/CustomButton";
 import { MapIcon } from "../icons/page";
 import { useAppDispatch, useAppSelector } from "../../store/hooks"; // Adjust path as needed
 import { setCareseekerZipcode } from "@/store/slices/bookingSlice"; // Adjust path as needed
@@ -23,7 +22,7 @@ const ZipCodePage: React.FC = () => {
     const cleanZip = zip.trim();
     if (Number(cleanZip) === 0) return;
     dispatch(setCareseekerZipcode(Number(cleanZip))); // Store in redux
-    router.push(`/care-giver?zipcode=${encodeURIComponent(cleanZip)}`); // Redirect
+    router.push("/find-job"); // Redirect to /find-job
   }
 
   const careseekerZipcode = useAppSelector(
@@ -72,12 +71,13 @@ const ZipCodePage: React.FC = () => {
           )}
         </div>
 
-        <YellowButton
-          className="mt-2 px-4 py-6 text-md font-medium"
-          onClick={() => (window.location.href = "/find-job")}
+        <button
+            type="submit"
+            className={`w-full bg-[#FFA726] text-[#233D4D] justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-sm font-semibold transition whitespace-nowrap`}
+            disabled={!isValid}
         >
           Continue
-        </YellowButton>
+        </button>
       </form>
     </main>
   );
