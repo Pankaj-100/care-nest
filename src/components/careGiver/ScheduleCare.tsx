@@ -11,7 +11,7 @@ import { CustomButton } from "@/components/common/CustomInputs";
 import {useAppSelector, useAppDispatch } from "@/store/hooks";
 import { setPendingBooking } from "@/store/slices/bookingSlice"; // Create this action
 // Use the imported SVG component (alias to PascalCase for JSX)
-import { calenderIcon as CalendarIcon } from "../icons/page";
+import { calendarIcon as CalenderIcon } from "../icons/page";
 import { useSearchParams, useRouter } from "next/navigation";
 
 export interface SelectedCaregiver {
@@ -325,7 +325,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
                 dateFormat="dd-MM-yyyy"
                 className="!w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
-              <CalendarIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px]" />
+              <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px]" />
             </div>
           </div>
           <div>
@@ -341,7 +341,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
                 placeholderText="Select Date"
                 className="!w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
-              <CalendarIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px]" />
+              <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px]" />
             </div>
           </div>
         </div>

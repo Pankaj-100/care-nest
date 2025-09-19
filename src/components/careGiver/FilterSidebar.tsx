@@ -30,8 +30,7 @@ interface CaregiverFilters {
   languages?: string[];
   prn?: string[];
   locationMiles?: number;
-  minExperience?: number; // Add this
-  maxExperience?: number; // Add this
+  experience?: string;
 }
 
 const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: CaregiverFilters) => void }) => {
@@ -51,8 +50,7 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: Caregiver
       languages,
       prn,
       // locationMiles,
-      minExperience: experience?.min,
-      maxExperience: experience?.max,
+      experience: experience ? `${experience.min}-${experience.max}` : undefined,
     });
   }, [gender, price, languages, prn, locationMiles, experience, onFilterChange]);
 

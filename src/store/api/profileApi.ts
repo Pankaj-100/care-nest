@@ -139,6 +139,19 @@ interface CreateWhyChooseMePayload {
 interface RefreshTokenResponse {
   accessToken: string;
 }
+// required by fields
+
+interface RequiredByResponse {
+  success: boolean;
+  message: string;
+  data: {
+    requiredBy: string;
+  };
+}
+
+interface UpdateRequiredByPayload {
+  requiredBy: string;
+}
 
 // --------- Base URLs ---------
 const baseUrl = 'https://carenest-backend-8y2y.onrender.com';
@@ -403,6 +416,26 @@ updateAvatar: builder.mutation<{ success: boolean; message: string }, FormData>(
         { type: 'WhyChooseMe', id: 'LIST' },
       ],
     }),
+
+    // 🔹 Get Required By
+    getRequiredBy: builder.query<string, void>({
+      query: () => `/api/v1/user/required-by`,
+      transformResponse: (res: RequiredByResponse) => res.data.requiredBy,
+      providesTags: ['Profile'],
+    }),
+
+    // 🔹 Update Required By
+    updateRequiredBy: builder.mutation<
+      { success: boolean; message: string },
+      UpdateRequiredByPayload
+    >({
+      query: (body) => ({
+        url: `/api/v1/user/required-by`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ['Profile'],
+    }),
   }),
 });
 
@@ -425,4 +458,6 @@ export const {
   useCreateWhyChooseMeMutation,
   useUpdateWhyChooseMeMutation,
   useDeleteWhyChooseMeMutation,
+  useGetRequiredByQuery,
+  useUpdateRequiredByMutation,
 } = profileApi;

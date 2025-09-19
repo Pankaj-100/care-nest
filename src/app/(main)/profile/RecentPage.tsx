@@ -37,6 +37,17 @@ const SavedCaregiversPanel = () => {
       price: giver.price ? `₹${giver.price}` : "N/A",
     }));
 
+  const handleAddCaregiver = (id: string) => {
+    setSelectedCaregivers(prev =>
+      prev.includes(id)
+        ? prev // Already selected, do nothing
+        : prev.length < 3
+          ? [...prev, id]
+          : prev
+    );
+    setSelectedCaregiverId(null); // Close modal after adding
+  };
+
   return (
     <div className="p-6 mt-10">
       <h2 className="text-2xl font-bold">Saved Caregivers</h2>
@@ -104,7 +115,7 @@ const SavedCaregiversPanel = () => {
         isOpen={!!selectedCaregiverId}
         caregiverId={selectedCaregiverId}
         onClose={() => setSelectedCaregiverId(null)}
-        onAddCaregiver={() => {}}
+        onAddCaregiver={handleAddCaregiver}
         isBookmarked={true}
       />
 

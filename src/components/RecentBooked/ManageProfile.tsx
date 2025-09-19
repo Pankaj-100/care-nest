@@ -8,6 +8,8 @@ import Image from "next/image";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
+  useGetRequiredByQuery,
+  useUpdateRequiredByMutation,
 } from "@/store/api/profileApi";
 
 // Add a narrow type for API profile (no any)
@@ -38,6 +40,9 @@ export default function ManageProfile() {
   const { data: profile, isLoading: isFetching } = useGetProfileQuery();
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
+  const { data: requiredBy, isLoading: isRequiredByLoading } = useGetRequiredByQuery();
+  const [updateRequiredBy, { isLoading: isUpdatingRequiredBy }] = useUpdateRequiredByMutation();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -47,6 +52,8 @@ export default function ManageProfile() {
     zipcode: "",
     careRecipient: "", // <-- Add this
   });
+
+  const [careRecipient, setCareRecipient] = useState("");
 
   const [errors, setErrors] = useState({
     name: "",
@@ -82,6 +89,12 @@ export default function ManageProfile() {
     }
   }, [profile]);
 
+  useEffect(() => {
+    if (requiredBy) {
+      setCareRecipient(requiredBy);
+    }
+  }, [requiredBy]);
+
   const validateField = (name: string, value: string) => {
     switch (name) {
       case "name":
@@ -112,6 +125,10 @@ export default function ManageProfile() {
     // Validate on change
     const error = validateField(name, nextVal);
     setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  const handleCareRecipientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCareRecipient(e.target.value);
   };
 
   const hasErrors = Object.values(errors).some((msg) => msg);
@@ -150,6 +167,17 @@ export default function ManageProfile() {
       } else {
         toast.error("Failed to update profile.");
       }
+    }
+  };
+
+  const handleCareRecipientSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!careRecipient) return;
+    try {
+      await updateRequiredBy({ requiredBy: careRecipient }).unwrap();
+      toast.success("Care recipient updated successfully.");
+    } catch {
+      toast.error("Failed to update care recipient.");
     }
   };
 
@@ -253,40 +281,43 @@ export default function ManageProfile() {
 
       {/* Care recipient section */}
       <div className="mt-10 bg-[#F8F8F8] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto">
-        <div className="flex justify-between items-center mb-6 border-b pb-6">
-          <h2 className="text-3xl font-semibold leading-8 text-[var(--navy)]">
-            Who Needs Home Care Service
-          </h2>
-          <button
-            type="submit"
-            disabled={isUpdating || hasErrors}
-            className={`flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition font-semibold ${
-              isUpdating || hasErrors ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            {isUpdating ? "Saving..." : "Save"}{" "}
-            <span>
-              <Image src="/Recent/file.png" alt="save" width={20} height={20} />
-            </span>
-          </button>
-        </div>
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <div className="flex items-center bg-white px-4 py-4 rounded-full border focus-within:ring-2 ring-yellow-400">
-              <select
-                name="careRecipient"
-                value={form.careRecipient}
-                onChange={handleChange}
-                className="flex-1 bg-transparent outline-none text-lg text-[#2B384C]/60"
-              >
-                <option value="">Select</option>
-                {CARE_RECIPIENT_OPTIONS.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
+        <form onSubmit={handleCareRecipientSave}>
+          <div className="flex justify-between items-center mb-6 border-b pb-6">
+            <h2 className="text-3xl font-semibold leading-8 text-[var(--navy)]">
+              Who Needs Home Care Service
+            </h2>
+            <button
+              type="submit"
+              disabled={isUpdatingRequiredBy || !careRecipient}
+              className={`flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition font-semibold ${
+                isUpdatingRequiredBy || !careRecipient ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isUpdatingRequiredBy ? "Saving..." : "Save"}{" "}
+              <span>
+                <Image src="/Recent/file.png" alt="save" width={20} height={20} />
+              </span>
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <div className="flex items-center bg-white px-4 py-4 rounded-full border focus-within:ring-2 ring-yellow-400">
+                <select
+                  name="careRecipient"
+                  value={careRecipient}
+                  onChange={handleCareRecipientChange}
+                  className="flex-1 bg-transparent outline-none text-lg text-[#2B384C]/60"
+                  disabled={isRequiredByLoading}
+                >
+                  <option value="">Select</option>
+                  {CARE_RECIPIENT_OPTIONS.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
