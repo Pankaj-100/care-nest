@@ -6,9 +6,22 @@ const PRICES = [
   { label: "$100 - $200", min: 100, max: 200 },
   { label: "$200 - $300", min: 200, max: 300 },
   { label: "$300 - $400", min: 300, max: 400 },
-  { label: "$400+", min: 400, max: 700 },
+  { label: "$400- $500 ", min: 400, max: 700 },
 ];
-const LANGUAGES = ["English", "Spanish", "Arabic","German", "Russian","Chinese","Portuguese","Italian","Turkish","French","Japanese", "Hindi"];
+const LANGUAGES = ["English", "Spanish","French","Italian","Vietnamese","Urdu"];
+const LOCATIONS = [
+  { label: "Within 2 miles from my current location", value: 2 },
+  { label: "Within 10 miles", value: 10 },
+  { label: "Within 15 miles", value: 15 },
+  { label: "Within 20 miles", value: 20 },
+  { label: "Within 30 miles", value: 30 },
+];
+const EXPERIENCES = [
+  { label: "0-1 years", min: 0, max: 1 },
+  { label: "2-5 years", min: 2, max: 5 },
+  { label: "6-10 years", min: 6, max: 10 },
+  { label: "10+ years", min: 10, max: 99 },
+];
 
 interface CaregiverFilters {
   gender?: string;
@@ -16,6 +29,9 @@ interface CaregiverFilters {
   maxPrice?: number;
   languages?: string[];
   prn?: string[];
+  locationMiles?: number;
+  minExperience?: number; // Add this
+  maxExperience?: number; // Add this
 }
 
 const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: CaregiverFilters) => void }) => {
@@ -23,6 +39,8 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: Caregiver
   const [price, setPrice] = useState<{ min: number; max: number } | null>(null);
   const [languages, setLanguages] = useState<string[]>([]);
   const [prn, setPrn] = useState<string[]>([]);
+  const [locationMiles, setLocationMiles] = useState<number | null>(null);
+  const [experience, setExperience] = useState<{ min: number; max: number } | null>(null);
 
   // Call this whenever a filter changes
   React.useEffect(() => {
@@ -32,8 +50,11 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: Caregiver
       maxPrice: price?.max,
       languages,
       prn,
+      // locationMiles,
+      minExperience: experience?.min,
+      maxExperience: experience?.max,
     });
-  }, [gender, price, languages, prn, onFilterChange]);
+  }, [gender, price, languages, prn, locationMiles, experience, onFilterChange]);
 
   return (
     <aside className="w-full md:w-[250px] border rounded-xl p-4 space-y-4">
@@ -72,24 +93,18 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: Caregiver
           </label>
         ))}
       </div>
-      {/* Languages */}
+      {/* Location */}
       <div>
-        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Language</h4>
-        {LANGUAGES.map((lang) => (
-          <label key={lang} className="block text-[#98A2B3] font-medium">
+        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Location</h4>
+        {LOCATIONS.map((loc) => (
+          <label key={loc.value} className="block text-sm text-[#98A2B3] font-medium">
             <input
               type="checkbox"
-              checked={languages.includes(lang)}
-              onChange={() =>
-                setLanguages((prev) =>
-                  prev.includes(lang)
-                    ? prev.filter((l) => l !== lang)
-                    : [...prev, lang]
-                )
-              }
+              checked={locationMiles === loc.value}
+              onChange={() => setLocationMiles(loc.value)}
               className="mr-2 accent-[#233D4D]"
             />
-            {lang}
+            {loc.label}
           </label>
         ))}
       </div>
@@ -128,6 +143,43 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: Caregiver
           Fixed Schedule
         </label>
       </div>
+      {/* Experience */}
+      <div>
+        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Experience</h4>
+        {EXPERIENCES.map((exp, idx) => (
+          <label key={idx} className="block text-sm text-[#98A2B3] font-medium">
+            <input
+              type="checkbox"
+              checked={experience?.min === exp.min && experience?.max === exp.max}
+              onChange={() => setExperience(exp)}
+              className="mr-2 accent-[#233D4D]"
+            />
+            {exp.label}
+          </label>
+        ))}
+      </div>
+      {/* Languages */}
+      <div>
+        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Language</h4>
+        {LANGUAGES.map((lang) => (
+          <label key={lang} className="block text-[#98A2B3] font-medium">
+            <input
+              type="checkbox"
+              checked={languages.includes(lang)}
+              onChange={() =>
+                setLanguages((prev) =>
+                  prev.includes(lang)
+                    ? prev.filter((l) => l !== lang)
+                    : [...prev, lang]
+                )
+              }
+              className="mr-2 accent-[#233D4D]"
+            />
+            {lang}
+          </label>
+        ))}
+      </div>
+
     </aside>
   );
 };
