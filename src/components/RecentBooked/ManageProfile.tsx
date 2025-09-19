@@ -23,6 +23,17 @@ type ProfileApi = {
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const CARE_RECIPIENT_OPTIONS = [
+  "Mother",
+  "Father",
+  "Spouse / Partner",
+  "Siblings",
+  "Grandparents",
+  "Child",
+  "Myself",
+  "Other",
+];
+
 export default function ManageProfile() {
   const { data: profile, isLoading: isFetching } = useGetProfileQuery();
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
@@ -34,6 +45,7 @@ export default function ManageProfile() {
     address: "",
     mobile: "",
     zipcode: "",
+    careRecipient: "", // <-- Add this
   });
 
   const [errors, setErrors] = useState({
@@ -65,6 +77,7 @@ export default function ManageProfile() {
         address: p.address || "",
         mobile: p.mobile || "",
         zipcode: normalizedZip !== undefined ? String(normalizedZip) : "",
+        careRecipient: "", // or p.careRecipient if available from API
       });
     }
   }, [profile]);
@@ -89,9 +102,8 @@ export default function ManageProfile() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    // Keep only digits for numeric fields
     const nextVal =
       name === "mobile" || name === "zipcode" ? value.replace(/\D/g, "") : value;
 
@@ -150,11 +162,100 @@ export default function ManageProfile() {
   );
 
   return (
-    <div className="bg-[#F8F8F8] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto mt-10">
-      <form onSubmit={handleSubmit}>
+    <div>
+      <div className="bg-[#F8F8F8] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto mt-10">
+        <form onSubmit={handleSubmit}>
+          <div className="flex justify-between items-center mb-6 border-b pb-6">
+            <h2 className="text-3xl font-semibold leading-8 text-[var(--navy)]">
+              Personal Information
+            </h2>
+            <button
+              type="submit"
+              disabled={isUpdating || hasErrors}
+              className={`flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition font-semibold ${
+                isUpdating || hasErrors ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isUpdating ? "Saving..." : "Save"}{" "}
+              <span>
+                <Image src="/Recent/file.png" alt="save" width={20} height={20} />
+              </span>
+            </button>
+          </div>
+
+          {isFetching ? (
+            <>
+              <InputSkeleton icon={<FiUser />} />
+              <InputSkeleton icon={<FiMail />} />
+              <InputSkeleton icon={<FiUser />} />
+              <InputSkeleton icon={<FiMapPin />} />
+              <InputSkeleton icon={<FiMapPin />} />
+              <InputSkeleton icon={<FiPhone />} />
+            </>
+          ) : (
+            <div className="space-y-4">
+              <InputField
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Full Name"
+                icon={<FiUser />}
+                error={errors.name}
+              />
+              <InputField
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="Email Address"
+                icon={<FiMail />}
+                error={errors.email}
+                type="email"
+              />
+              <InputField
+                name="gender"
+                value={form.gender}
+                onChange={handleChange}
+                placeholder="Gender"
+                icon={<FiUser />}
+                error={errors.gender}
+              />
+              <InputField
+                name="address"
+                value={form.address}
+                onChange={handleChange}
+                placeholder="Address"
+                icon={<FiMapPin />}
+                error={errors.address}
+              />
+              {/* Zip Code */}
+              <InputField
+                name="zipcode"
+                value={form.zipcode}
+                onChange={handleChange}
+                placeholder="Zip Code"
+                icon={<FiMapPin />}
+                error={errors.zipcode}
+                type="tel"
+              />
+              <InputField
+                name="mobile"
+                value={form.mobile}
+                onChange={handleChange}
+                placeholder="Phone Number"
+                icon={<FiPhone />}
+                error={errors.mobile}
+                type="tel"
+              />
+            </div>
+          )}
+        </form>
+      </div>
+
+      {/* Care recipient section */}
+      <div className="mt-10 bg-[#F8F8F8] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto">
         <div className="flex justify-between items-center mb-6 border-b pb-6">
           <h2 className="text-3xl font-semibold leading-8 text-[var(--navy)]">
-            Personal Information
+            Who Needs Home Care Service
           </h2>
           <button
             type="submit"
@@ -169,73 +270,24 @@ export default function ManageProfile() {
             </span>
           </button>
         </div>
-
-        {isFetching ? (
-          <>
-            <InputSkeleton icon={<FiUser />} />
-            <InputSkeleton icon={<FiMail />} />
-            <InputSkeleton icon={<FiUser />} />
-            <InputSkeleton icon={<FiMapPin />} />
-            <InputSkeleton icon={<FiMapPin />} />
-            <InputSkeleton icon={<FiPhone />} />
-          </>
-        ) : (
-          <div className="space-y-4">
-            <InputField
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Full Name"
-              icon={<FiUser />}
-              error={errors.name}
-            />
-            <InputField
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="Email Address"
-              icon={<FiMail />}
-              error={errors.email}
-              type="email"
-            />
-            <InputField
-              name="gender"
-              value={form.gender}
-              onChange={handleChange}
-              placeholder="Gender"
-              icon={<FiUser />}
-              error={errors.gender}
-            />
-            <InputField
-              name="address"
-              value={form.address}
-              onChange={handleChange}
-              placeholder="Address"
-              icon={<FiMapPin />}
-              error={errors.address}
-            />
-            {/* Zip Code */}
-            <InputField
-              name="zipcode"
-              value={form.zipcode}
-              onChange={handleChange}
-              placeholder="Zip Code"
-              icon={<FiMapPin />}
-              error={errors.zipcode}
-              type="tel"
-            />
-            <InputField
-              name="mobile"
-              value={form.mobile}
-              onChange={handleChange}
-              placeholder="Phone Number"
-              icon={<FiPhone />}
-              error={errors.mobile}
-              type="tel"
-            />
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <div className="flex items-center bg-white px-4 py-4 rounded-full border focus-within:ring-2 ring-yellow-400">
+              <select
+                name="careRecipient"
+                value={form.careRecipient}
+                onChange={handleChange}
+                className="flex-1 bg-transparent outline-none text-lg text-[#2B384C]/60"
+              >
+                <option value="">Select</option>
+                {CARE_RECIPIENT_OPTIONS.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
           </div>
-        )}
-      </form>
+        </div>
+      </div>
     </div>
   );
 }
