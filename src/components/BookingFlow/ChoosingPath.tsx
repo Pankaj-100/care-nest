@@ -58,8 +58,8 @@ const ChoosingPath: React.FC = () => {
                   Build your profile and explore job <br /> opportunities.
                 </p>
                 <YellowButton
-                  onClick={() => (window.location.href = "/care-provider")}
-                  className="mt-2 px-6 py-2 text-xs font-mediu"
+                  onClick={() => (window.location.href = "https://carenest-caregiver.vercel.app/signup")}
+                  className="mt-2 px-6 py-2 text-xs font-medium"
                 >
                   Find caregiving job
                 </YellowButton>

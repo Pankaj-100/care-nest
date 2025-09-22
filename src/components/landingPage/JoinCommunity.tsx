@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { YellowButton } from "../common/CustomButton";
 import Image from "next/image";
@@ -16,7 +18,12 @@ const JoinCommunity = () => {
           the lives of elderly individuals and their families every day.
         </p>
 
-        <YellowButton className="px-8">
+        <YellowButton
+          className="px-8"
+          onClick={() =>
+            (window.location.href = "https://carenest-caregiver.vercel.app/signup")
+          }
+        >
           Join our cool community as a Caregiver
         </YellowButton>
 
