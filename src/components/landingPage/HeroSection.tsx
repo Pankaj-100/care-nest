@@ -35,8 +35,7 @@ const HeroSection = () => {
           </h1>
           <div className="my-5">
             <p className="font-light">
-              Easily connect with trusted professionals who provide personal
-              care and support tailored to your family’s needs.
+              Easily connect with trusted professionals in the Houston community who provide personal care and support tailored to your family’s needs
             </p>
           </div>
 
@@ -61,7 +60,7 @@ const HeroSection = () => {
             <RedirectButton
               className="px-6 py-6 text-sm after:content-['→'] after:ml-2 after:inline-block after:transition-transform hover:after:translate-x-1"
               path="/contact"
-              title="Contact us"
+              title="Contact Us"
             />
           </div>
         </div>
@@ -100,15 +99,15 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
 
   return (
     <div
-      className={`bg-white rounded-xl shadow-sm p-5 lg:p-6 w-full mx-auto lg:w-[55vw] xl:max-w-4xl
+      className={`bg-white rounded-xl shadow-sm p-5 lg:p-6 w-full mx-auto lg:w-[70vw] xl:max-w-6xl
       ${noDescription ? "lg:grid lg:grid-cols-12 lg:gap-6" : "lg:grid lg:grid-cols-12 lg:gap-6"}`}
     >
       {!noDescription && (
         <div className="col-span-5 space-y-2">
           <h3 className="font-semibold text-lg">
-            {title ?? "Browse Caregivers"}
+            {title ?? "Browse A Caregivers"}
           </h3>
-          <p className="text-xs leading-relaxed text-gray-600">
+          <p className="text-sm leading-relaxed text-gray-600">
             {description ?? "Create your free profile to discover verified, compassionate caregivers."}
           </p>
         </div>
@@ -121,11 +120,11 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         } lg:grid lg:grid-cols-12`}
       >
         <div
-          className={`flex flex-col col-span-8 ${
-            !noDescription ? "lg:col-span-8" : "lg:col-span-8"
+          className={`flex flex-col col-span-7 ${
+            !noDescription ? "lg:col-span-7" : "lg:col-span-8"
           }`}
         >
-          <label className="mb-2 font-semibold text-sm" htmlFor="zip-input">
+          <label className="mb-2 font-semibold text-base" htmlFor="zip-input">
             Provide Zip code
           </label>
           <input
@@ -139,13 +138,13 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
           />
         </div>
         <div
-          className={`col-span-4 flex items-end ${
+          className={`col-span-5 flex items-end ${
             !noDescription ? "lg:col-span-4" : "lg:col-span-4"
           }`}
         >
           <button
             type="submit"
-            className={`w-full justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-sm font-semibold transition whitespace-nowrap
+            className={`w-full justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-base font-semibold transition whitespace-nowrap
               ${!zipCode.trim() ? " cursor-not-allowed pointer-events-none" : ""}
               bg-[#FFA726] text-[#233D4D]`}
             disabled={!zipCode.trim()}

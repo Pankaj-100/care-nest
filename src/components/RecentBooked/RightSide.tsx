@@ -12,13 +12,14 @@ import emptyCaregiverImage from "@/assets/care.svg";
 import { toast } from "react-toastify";
 import type { Booking } from "@/types/Booking";
 
+
 const statusColor: Record<string, string> = {
-  requested: "bg-yellow-400 text-white",
-  pending: "bg-yellow-400 text-white", // API alias for Requested
-  active: "bg-gray-800 text-white",
-  accepted: "bg-gray-800 text-white", // API alias for Active
-  completed: "bg-green-500 text-white",
-  cancelled: "bg-red-500 text-white",
+  requested: "bg-[#E7A200] text-white",
+  pending: "bg-[#E7A200] text-white", // API alias for Requested
+  active: "bg-[#233D4D] text-white",
+  accepted: "bg-[#233D4D] text-white", // API alias for Active
+  completed: "bg-[#5FC009] text-white",
+  cancelled: "bg-[#FF5C5F] text-white",
 };
 
 // Map UI <-> API statuses
@@ -26,14 +27,14 @@ const uiToApiStatus: Record<string, string> = {
   Requested: "requested",
   Active: "active",
   Completed: "completed",
-  Cancelled: "cancelled",
+  Cancelled: "cancel",
 };
 
 const apiToUiStatus: Record<string, string> = {
   pending: "Pending",
   accepted: "Accepted",
   completed: "Completed",
-  cancelled: "Cancelled",
+  cancelled: "Cancel",
   active: "Active",
 };
 
@@ -126,12 +127,12 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
       </h2>
 
       <div className="flex flex-wrap gap-2 mb-8">
-        {["All", "Pending", "Accepted", "Active", "Completed", "Cancelled"].map(
+        {["All", "Pending", "Accepted", "Active", "Completed", "Cancel"].map(
           (status) => (
             <button
               key={status}
               onClick={() => setSelectedStatus(status)}
-              className={`px-4 py-1 rounded-full font-medium text-sm ${
+              className={`px-5 py-2 rounded-full font-medium text-sm ${
                 selectedStatus === status
                   ? "bg-[var(--navy)] text-white"
                   : "border border-[var(--navy)] text-[var(--navy)]"
@@ -235,12 +236,14 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                 ) : (
                   <div className="flex items-center gap-3">
                     {(apiStatus === "requested" ||
-                      apiStatus === "active") && (
+                      apiStatus === "pending" ||
+                      apiStatus === "active" ||
+                      apiStatus === "accepted") && (
                       <div
-                        className={`w-14 h-14 flex items-center justify-center rounded-full text-lg leading-none  cursor-pointer ${
+                        className={`w-14 h-14 flex items-center justify-center rounded-full text-lg leading-none cursor-pointer ${
                           isCancelling
                             ? "bg-gray-300 cursor-not-allowed"
-                            : "bg-[#FF5C5F]"
+                            : "" // Changed from bg to border
                         }`}
                         onClick={(e) => {
                           if (isCancelling) return;
@@ -266,11 +269,11 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                         aria-disabled={isCancelling}
                       >
                         <Image
-                          src="/Recent/cross.png"
+                          src="/cancel.png"
                           alt="cancel"
-                          width={16}
-                          height={16}
-                          className="w-4 h-4 cursor-pointer"
+                          width={35}
+                          height={35}
+                          className="w-13 h-13 cursor-pointer"
                         />
                       </div>
                     )}

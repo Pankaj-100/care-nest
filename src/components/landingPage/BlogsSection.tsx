@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import { TransparentButton } from "../common/CustomButton";
+import { useRouter } from "next/navigation";
 
 type Blog = {
+  id: string; // Add id field
   title: string;
   author: string;
   date: string;
@@ -12,6 +16,7 @@ type Blog = {
 
 const BLOGS: Blog[] = [
   {
+    id: "b1", // Add unique id
     title: "Elderly Care at Home: How to Ensure Comfort & Safety",
     author: "Nataly Birch",
     date: "11 January 2025",
@@ -19,6 +24,7 @@ const BLOGS: Blog[] = [
     excerpt: "What the data says about the harm of unnecessary medical tests",
   },
   {
+    id: "b2", // Add unique id
     title: "Assisted Care/Home Care: How to Ensure Comfort & Safety",
     author: "Alex Morgan",
     date: "05 January 2025",
@@ -26,11 +32,12 @@ const BLOGS: Blog[] = [
     excerpt: "Assisted home care provides daily support for comfort and safety.",
   },
   {
+    id: "b3", // Add unique id
     title: "Memory Care: How to Ensure Comfort & Safety",
     author: "Jordan Lee",
     date: "02 January 2025",
     image: "/blog/blog3.png",
-    excerpt: "Specialized support for dementia or Alzheimer’s with compassion.",
+    excerpt: "Specialized support for dementia or Alzheimer's with compassion.",
   },
 ];
 
@@ -52,7 +59,13 @@ const BlogsSection = () => {
   );
 };
 
-const BlogCard = ({ title, author, date, image, excerpt }: Blog) => {
+const BlogCard = ({ id, title, author, date, image, excerpt }: Blog) => {
+  const router = useRouter();
+
+  const handleLearnMore = () => {
+    router.push(`/blogs/${id}`);
+  };
+
   return (
     <div className="sm:p-2 sm:w-90">
       <div className="sm:w-90 h-[300px] rounded-2xl mb-3 relative overflow-hidden">
@@ -87,7 +100,9 @@ const BlogCard = ({ title, author, date, image, excerpt }: Blog) => {
         </h3>
         <p className="w-full text-sm text-[var(--navy)] mb-3">{excerpt}</p>
       </div>
-      <TransparentButton className="w-full">Learn more</TransparentButton>
+      <TransparentButton className="w-full" onClick={handleLearnMore}>
+        Learn more
+      </TransparentButton>
     </div>
   );
 };

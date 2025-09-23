@@ -48,7 +48,15 @@ const Header = () => {
   // Build menu
   const NavbarMenuTitle: NavbarTypes[] = [
     { title: "Home", link: "/" },
-    { title: "Find A Caregiver", link: "/care-giver" },
+    {
+      title: "Who we are",
+      services: [
+        { title: "About Us", link: "/about" },
+        { title: "Our Team", link: "/team" },
+        { title: "Our Mission", link: "/mission" },
+        { title: "Contact Us", link: "/contact" },
+      ],
+    },
     { title: "Become A Caregiver", link: "/care-provider" },
     {
       title: "Services",
@@ -63,7 +71,13 @@ const Header = () => {
 
   if (!isLoggedInUser) {
     NavbarMenuTitle.push({ title: "Blogs", link: "/blogs" });
-    NavbarMenuTitle.push({ title: "Login", link: "/signin" });
+    NavbarMenuTitle.push({ 
+      title: "Login",
+      services: [
+        { title: "Login as Care Seeker", link: "/signin" },
+        { title: "Login as Care Giver", link: "https://carenest-caregiver.vercel.app/signin" },
+      ],
+    });
   } else {
     NavbarMenuTitle.push({ title: "Inbox", link: "/inbox" });
   }
@@ -127,7 +141,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex lg:px-28 px-10 py-4 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
+      <div className="flex lg:px-28 px-10 py-6 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
         <div className="flex items-center gap-2">
           <Image src={"/Logo_1.svg"} alt="logo" width={100} height={100} />
         </div>
@@ -163,7 +177,9 @@ const NavbarMenu = ({ title, link, path, services }: NavbarTypes) => {
     <div
       className="flex items-center gap-x-1 cursor-pointer relative"
       onClick={() => {
-        if (title === "Services") setOpenDropdown(!openDropdown);
+        if (title === "Services" || title === "Login" || title === "Who we are") {
+          setOpenDropdown(!openDropdown);
+        }
       }}
     >
       {link ? (
@@ -179,10 +195,26 @@ const NavbarMenu = ({ title, link, path, services }: NavbarTypes) => {
         <span className="text-sm">{title}</span>
       )}
 
-      {title === "Services" && <ChevronDown size={19} />}
+      {(title === "Services" || title === "Who we are" || title === "Login") && (
+        <ChevronDown size={19} />
+      )}
 
-      {/* Dropdown */}
+      {/* Dropdown for Services */}
       {title === "Services" && (
+        <div className="mt-5 absolute -right-10 z-50">
+          <NavbarDropdown isOpen={openDropdown} items={services || []} />
+        </div>
+      )}
+
+      {/* Dropdown for Who we are */}
+      {title === "Who we are" && (
+        <div className="mt-5 absolute -right-10 z-50">
+          <NavbarDropdown isOpen={openDropdown} items={services || []} />
+        </div>
+      )}
+
+      {/* Dropdown for Login */}
+      {title === "Login" && (
         <div className="mt-5 absolute -right-10 z-50">
           <NavbarDropdown isOpen={openDropdown} items={services || []} />
         </div>

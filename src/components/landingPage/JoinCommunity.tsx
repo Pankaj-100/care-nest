@@ -9,7 +9,7 @@ const JoinCommunity = () => {
     <div className="sm:px-28 px-8 py-8 bg-[var(--navy)] lg:h-[70vh] h-max flex sm:flex-row flex-col justify-around lg:gap-[13rem] gap-[2rem] sm:items-center">
       <div className="sm:w-2/5 relative sm:order-0 order-1">
         <h1 className="text-[var(--yellow)] font-medium lg:text-[30px] sm:text-3xl xl:text-[42px]  ">
-          Curious About Care giving on Our Platform? Join Our Trusted Community
+          Curious About Care Giving On Our Platform? Join Our Trusted Community
         </h1>
 
         <p className="text-gray-300 my-4 xl:text-[20px] font-light capitalize">

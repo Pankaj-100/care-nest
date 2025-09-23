@@ -10,7 +10,7 @@ function AuthLayout({ image, children }: Props) {
   return (
     <div className="w-full h-screen py-8 md:px-20 px-5 bg-[#F7F7F3] flex flex-col text-[var(--blue-gray)] ">
       <div className="mb-4">
-        <Image src={"/auth/logo-1.png"} alt="Logo" width={100} height={110} />
+        <Image src={"/auth/logo-1.png"} alt="Logo" width={150} height={150} />
       </div>
 
       <div className="grid grid-cols-12 h-full flex-1 min-h-0">

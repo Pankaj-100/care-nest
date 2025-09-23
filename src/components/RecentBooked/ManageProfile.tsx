@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FiUser, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 import { toast } from "react-toastify";
 import Image from "next/image";
 
@@ -11,6 +10,7 @@ import {
   useGetRequiredByQuery,
   useUpdateRequiredByMutation,
 } from "@/store/api/profileApi";
+import { mailIcon, userIcon, locationIcon, phoneIcon } from "../icons/page";
 
 // Add a narrow type for API profile (no any)
 type ProfileApi = {
@@ -183,9 +183,9 @@ export default function ManageProfile() {
 
   // Skeleton loader for input fields with pulsing data area but static icon
   const InputSkeleton = ({ icon }: { icon: React.ReactNode }) => (
-    <div className="flex items-center px-4 py-4 rounded-full border border-gray-300 mb-4 ">
-      <div className="flex-1  rounded bg-gray-300 animate-pulse " />
-      <span className="text-xl text-gray-500 ml-3">{icon}</span>
+    <div className="flex items-center px-5 py-5 rounded-full border border-gray-300 mb-4">
+      <div className="flex-1 h-6 rounded bg-gray-300 animate-pulse" />
+      <span className="text-xl text-gray-500 ml-12">{icon}</span>
     </div>
   );
 
@@ -213,12 +213,12 @@ export default function ManageProfile() {
 
           {isFetching ? (
             <>
-              <InputSkeleton icon={<FiUser />} />
-              <InputSkeleton icon={<FiMail />} />
-              <InputSkeleton icon={<FiUser />} />
-              <InputSkeleton icon={<FiMapPin />} />
-              <InputSkeleton icon={<FiMapPin />} />
-              <InputSkeleton icon={<FiPhone />} />
+              <InputSkeleton icon={userIcon()} />
+              <InputSkeleton icon={mailIcon()} />
+              <InputSkeleton icon={userIcon()} />
+              <InputSkeleton icon={locationIcon()} />
+              <InputSkeleton icon={locationIcon()} />
+              <InputSkeleton icon={phoneIcon()} />
             </>
           ) : (
             <div className="space-y-4">
@@ -227,7 +227,7 @@ export default function ManageProfile() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Full Name"
-                icon={<FiUser />}
+                icon={userIcon()}
                 error={errors.name}
               />
               <InputField
@@ -235,16 +235,17 @@ export default function ManageProfile() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Email Address"
-                icon={<FiMail />}
+                icon={mailIcon()}
                 error={errors.email}
                 type="email"
+                disabled={true}
               />
               <InputField
                 name="gender"
                 value={form.gender}
                 onChange={handleChange}
                 placeholder="Gender"
-                icon={<FiUser />}
+                icon={userIcon()}
                 error={errors.gender}
               />
               <InputField
@@ -252,7 +253,7 @@ export default function ManageProfile() {
                 value={form.address}
                 onChange={handleChange}
                 placeholder="Address"
-                icon={<FiMapPin />}
+                icon={locationIcon()}
                 error={errors.address}
               />
               {/* Zip Code */}
@@ -261,7 +262,7 @@ export default function ManageProfile() {
                 value={form.zipcode}
                 onChange={handleChange}
                 placeholder="Zip Code"
-                icon={<FiMapPin />}
+                icon={locationIcon()}
                 error={errors.zipcode}
                 type="tel"
               />
@@ -270,7 +271,7 @@ export default function ManageProfile() {
                 value={form.mobile}
                 onChange={handleChange}
                 placeholder="Phone Number"
-                icon={<FiPhone />}
+                icon={phoneIcon()}
                 error={errors.mobile}
                 type="tel"
               />
@@ -331,6 +332,7 @@ function InputField({
   icon,
   error,
   type = "text",
+  disabled = false,
 }: {
   name: string;
   value: string;
@@ -339,12 +341,15 @@ function InputField({
   icon: React.ReactNode;
   error?: string;
   type?: React.HTMLInputTypeAttribute;
+  disabled?: boolean;
 }) {
   return (
     <div className="space-y-1">
       <div
         className={`flex items-center bg-white px-4 py-4 rounded-full border ${
-          error
+          disabled
+            ? "bg-gray-100 border-gray-300 cursor-not-allowed"
+            : error
             ? "border-red-500 ring-2 ring-red-400"
             : "focus-within:ring-2 ring-yellow-400"
         }`}
@@ -355,10 +360,17 @@ function InputField({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="flex-1 bg-transparent outline-none text-lg text-[#2B384C]/60"
+          disabled={disabled}
+          className={`flex-1 bg-transparent outline-none text-lg ${
+            disabled 
+              ? "text-gray-500 cursor-not-allowed" 
+              : "text-[#2B384C]/60"
+          }`}
           inputMode={type === "tel" ? "numeric" : undefined}
         />
-        <span className="text-xl text-gray-500 ml-3">{icon}</span>
+        <span className={`text-xl ml-12 ${disabled ? "text-gray-400" : "text-gray-500"}`}>
+          {icon}
+        </span>
       </div>
       {error && <p className="text-red-500 text-sm ml-4">{error}</p>}
     </div>

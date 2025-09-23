@@ -8,6 +8,7 @@ import tiktok from "../../../public/tiktok.svg";
 import instagram from "../../../public/instagram.svg";
 import linkedin from "../../../public/linkedin.svg";
 
+
 type linkItems = {
   icons?: string;
   title?: string;
@@ -16,96 +17,85 @@ type linkItems = {
 type linkSection = {
   [section: string]: linkItems[];
 };
+
 const link: linkSection[] = [
   {
     Company: [
-      { title: "About Us", link: "/" },
-      { title: "Pricing", link: "/" },
-      { title: "Features", link: "/" },
-      { title: "We accept Medicaid", link: "/" },
+      { title: "About Us", link: "/about" },
+      { title: "Pricing", link: "/pricing" },
+      { title: "Features", link: "/features" },
+      { title: "We accept Medicaid", link: "/medicaid" },
     ],
-    Resource: [
-      { title: "Blog", link: "/" },
-      { title: "Customer Stories", link: "/" },
-      { title: "Information", link: "/" },
-      { title: "Legal", link: "/" },
-      { title: "Payments", link: "/" },
+    "Other Services": [
+      { title: "Transportation", link: "/services/transportation" },
+      { title: "Veteran Homecare", link: "/services/veteran-homecare" },
+      { title: "Private Sitters", link: "/services/private-sitters" },
+      { title: "Homemakers", link: "/services/homemakers" },
     ],
-    Carrer: [
-      { title: "Jobs", link: "/" },
-      { title: "Hiring", link: "/" },
-      { title: "News", link: "/" },
-      { title: "Tips and Tricks", link: "/" },
+    "Locations we cover": [
+      { title: "Sugarland, TX", link: "/locations/sugarland" },
+      { title: "Katy, TX", link: "/locations/katy" },
+      { title: "Spring, TX", link: "/locations/spring" },
+      { title: "Cypress, TX", link: "/locations/cypress" },
     ],
-    Help: [
-      { title: "FAQ", link: "/" },
-      { title: "Help Center", link: "/" },
-      { title: "Support", link: "/" },
+    "Quick Links": [
+      { title: "FAQs", link: "/faq" },
+      { title: "Privacy Policy", link: "/privacy" },
+      { title: "Resources", link: "/resources" },
+      { title: "Veterans Financial Assistance", link: "/veterans-assistance" },
     ],
   },
 ];
 
 const footerLink: linkItems[] = [
-  {
-    title: "Terms",
-    link: "/",
-  },
-  {
-    title: "Privacy",
-    link: "/",
-  },
-  {
-    title: "Cookies",
-    link: "/",
-  },
-  {
-    title: "Legal",
-    link: "/",
-  },
-  {
-    title: "Recalls",
-    link: "/",
-  },
+  { title: "Terms", link: "/terms" },
+  { title: "Privacy", link: "/privacy" },
+  { title: "Cookies", link: "/cookies" },
+  { title: "Legal", link: "/legal" },
+  { title: "Recalls", link: "/recalls" },
 ];
+
 const socialLink: linkItems[] = [
-  {
-    icons: youtube,
-    link: "/",
-  },
-  {
-    icons: tiktok,
-    link: "/",
-  },
-  {
-    icons: linkedin,
-    link: "/",
-  },
-  {
-    icons: instagram,
-    link: "/",
-  },
-  {
-    icons: facebook,
-    link: "/",
-  },
+  { icons: youtube, link: "/" },
+  { icons: tiktok, link: "/" },
+  { icons: linkedin, link: "/" },
+  { icons: instagram, link: "/" },
+  { icons: facebook, link: "/" },
 ];
+
 const Footer = () => {
   return (
-    <div className="pt-18 pb-8 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
-      <div className="flex flex-wrap justify-between gap-4 ">
-        <div className="sm:w-75 w-full ">
-          <Link href="/" aria-label="Go to home" className="relative w-37 h-37 block cursor-pointer">
+    <div className="pt-8 pb-8 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-12 items-center">
+        {/* Logo and Description */}
+        <div className="lg:col-span-2 mt-8">
+          <Link href="/" aria-label="Go to home" className="relative w-45 h-40 block cursor-pointer mb-4">
             <Image src="/Logo_1.svg" alt="Carenest logo" fill priority />
           </Link>
-          <p className="mt-4 text-md text-white">
-            CareWorks provides compassionate, personalized eldercare services that support seniors and their families with dignity and respect.
+          <p className={`text-base text-[#FFFFFF] font-light`}>
+            CareWorks provides compassionate, <br /> personalized eldercare services that <br/> support seniors and their families with <br/> dignity and respect.
           </p>
         </div>
 
-        <FooterLink title="Company" links={link[0]["Company"]} />
-        <FooterLink title="Resource" links={link[0]["Resource"]} />
-        <FooterLink title="Carrer" links={link[0]["Carrer"]} />
-        <FooterLink title="Help" links={link[0]["Help"]} />
+        {/* Company Links */}
+        <div className="mt-8">
+          <FooterLink title="Company" links={link[0]["Company"]} />
+        </div>
+        
+        {/* Other Services */}
+        <div className="mt-8">
+          <FooterLink title="Other Services" links={link[0]["Other Services"]} />
+        </div>
+        
+        {/* Locations we cover */}
+        <div className="mt-8">
+          <FooterLink title="Locations we cover" links={link[0]["Locations we cover"]} />
+        </div>
+        
+        {/* Quick Links */}
+        <div className="mt-8">
+          <FooterLink title="Quick Links" links={link[0]["Quick Links"]} />
+        </div>
       </div>
 
       <div className="my-7 flex items-center justify-between flex-wrap gap-y-5">
@@ -117,19 +107,16 @@ const Footer = () => {
             <input
               type="text"
               placeholder="Email address"
-              className="outline-none border-b py-2 sm:w-60 w-70"
+              className="outline-none border-b py-2 sm:w-60 w-70 bg-transparent text-white placeholder-gray-300"
             />
             <button className="bg-[var(--yellow)] text-black px-4 py-4 rounded-t-lg cursor-pointer">
-              <ChevronRight />{" "}
+              <ChevronRight />
             </button>
           </div>
         </div>
 
         <div>
-          <h1
-            className="font-bold xl:text-[120px] lg:text-[80px] 
-           text-gray-400/30 tracking-widest sm:mt-0 mt-2"
-          >
+          <h1 className="font-bold xl:text-[120px] lg:text-[80px] text-gray-400/30 tracking-widest sm:mt-0 mt-2">
             CAREWORKS
           </h1>
         </div>
@@ -147,8 +134,7 @@ const Footer = () => {
         </div>
 
         <div className="sm:w-auto w-full flex justify-center sm:order-0 order-1">
-          <p className="text-sm text-[#FFFFFF] font-medium ">
-            {" "}
+          <p className="text-sm text-[#FFFFFF] font-medium">
             © 2024 Copyright | All rights reserved
           </p>
         </div>
@@ -180,11 +166,16 @@ const FooterLink = ({
 }) => {
   return (
     <div>
-      <p className="font-medium mb-4">{title}</p>
-      <ul className="flex flex-col gap-5">
+      <p className="font-medium mb-6 text-white">{title}</p>
+      <ul className="flex flex-col gap-3">
         {links.map((item, index) => (
-          <li className="text-sm font-light text-gray-300" key={index}>
-            {item.title}
+          <li key={index}>
+            <Link 
+              href={item.link} 
+              className="text-sm font-light text-gray-300 hover:text-white transition-colors"
+            >
+              {item.title}
+            </Link>
           </li>
         ))}
       </ul>
