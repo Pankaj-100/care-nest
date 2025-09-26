@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import {  IoFilter as FilterIcon } from "react-icons/io5";
+import { IoFilter as FilterIcon } from "react-icons/io5";
 import FilterSidebar from "@/components/careGiver/FilterSidebar";
 import CaregiverCard from "@/components/careGiver/CaregiverCard";
 import CaregiverModal from "@/components/careGiver/CaregiverModal";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import CustomSheet from "../common/CustomSheet";
-import { useSearchCaregiversQuery, useBookmarkCaregiverMutation } from "@/store/api/bookingApi";
+import { useSearchCaregiversQuery, useBookmarkCaregiverMutation, SearchCaregiversParams } from "@/store/api/bookingApi";
 import { useAppSelector } from "@/store/hooks";
 import { toast } from "react-toastify";
 import BookSuccessful from "@/components/careGiver/BookSuccessful";
@@ -20,13 +20,18 @@ interface Caregiver {
   price: number;
   experience: number;
   services: string[];
+  gender?: string;
   isBookmarked?: boolean;
 }
+
 interface CaregiverFilters {
   gender?: string;
   minPrice?: number;
   maxPrice?: number;
   languages?: string[];
+  prn?: string[];
+  locationMiles?: number;
+  experience?: string;
 }
 
 const CaregiversPage = () => {
@@ -40,16 +45,49 @@ const CaregiversPage = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [caregivers, setCaregivers] = useState<Caregiver[]>([]);
   const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
-  const [, setFilters] = useState<CaregiverFilters>({});
+  const [filters, setFilters] = useState<CaregiverFilters>({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const careseekerZipcode = useAppSelector(state => state.booking.careseekerZipcode);
-  console.log("Redux zipcode:", careseekerZipcode);
+  const serviceIds = useAppSelector(state => state.booking.serviceIds);
+  const requiredBy = useAppSelector(state => state.booking.requiredBy); // Add this
 
 
+
+  // Build the search parameters including filters - properly typed
+  const searchApiParams: SearchCaregiversParams = React.useMemo(() => {
+    const baseParams: SearchCaregiversParams = {
+      zipcode: careseekerZipcode ? String(careseekerZipcode) : "",
+    };
+
+    // Add filter parameters - make sure gender is included
+    if (filters.gender) {
+      baseParams.gender = filters.gender;
+    }
+    if (filters.minPrice) baseParams.minPrice = filters.minPrice;
+    if (filters.maxPrice) baseParams.maxPrice = filters.maxPrice;
+    if (filters.locationMiles) baseParams.locationMiles = filters.locationMiles;
+    if (filters.experience) baseParams.experience = filters.experience;
+    
+    // Convert arrays to comma-separated strings
+    if (filters.languages && filters.languages.length > 0) {
+      baseParams.languages = filters.languages.join(',');
+    }
+    if (filters.prn && filters.prn.length > 0) {
+      baseParams.prn = filters.prn.join(',');
+    }
+    
+    return baseParams;
+  }, [careseekerZipcode, filters]); // Remove serviceIds from dependencies
+
+  // API call with filters - this will refetch automatically when searchApiParams changes
   const { data, isLoading, error } = useSearchCaregiversQuery(
-    { zipcode: careseekerZipcode ? String(careseekerZipcode) : "" },
-    { skip: !careseekerZipcode }
+    searchApiParams,
+    { 
+      skip: !careseekerZipcode,
+      // Force refetch when parameters change
+      refetchOnMountOrArgChange: true,
+    }
   );
 
   useEffect(() => {
@@ -59,6 +97,7 @@ const CaregiversPage = () => {
         isBookmarked: false,
       }));
       setCaregivers(enriched);
+      console.log("Loaded caregivers:", enriched.length);
     } else if (!zipcode) {
       setCaregivers([]);
     }
@@ -74,7 +113,7 @@ const CaregiversPage = () => {
       );
       toast.success("Caregiver bookmarked successfully!");
     } catch {
-      toast.error("Failed to bookmark caregiver.");
+      toast.error("Login to bookmark caregiver.");
     }
   };
 
@@ -83,21 +122,63 @@ const CaregiversPage = () => {
     setIsModalOpen(true);
   };
 
+  // This is the key function - it updates filters which triggers API refetch
   const handleFilterChange = useCallback((newFilters: CaregiverFilters) => {
+    console.log("Filter change received:", newFilters);
     setFilters(newFilters);
-  }, []);
+    // The useSearchCaregiversQuery will automatically refetch because searchApiParams changed
+  }, []); // Empty dependency array since setFilters is stable
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setFilters({});
+    toast.info("Filters cleared");
+  };
 
   // Toggle selection (add/remove) inside modal action
   const handleAddCaregiver = (id: string) => {
-    setSelectedCaregivers(prev =>
-      prev.includes(id)
-        ? prev.filter(c => c !== id)
-        : prev.length < 3
-          ? [...prev, id]
-          : prev
-    );
+    setSelectedCaregivers(prev => {
+      console.log("Current selected caregivers:", prev);
+      console.log("Trying to add/remove:", id);
+      console.log("Current count:", prev.length);
+      
+      // If caregiver is already selected, remove it
+      if (prev.includes(id)) {
+        const updated = prev.filter(c => c !== id);
+        console.log("Removing caregiver. New list:", updated);
+        
+        // Update localStorage
+        localStorage.setItem('selectedCaregivers', JSON.stringify(updated));
+        window.dispatchEvent(new CustomEvent('caregiver-selection-changed'));
+        
+        return updated;
+      }
+      
+      // Add the new caregiver (NO LIMIT CHECK)
+      const updated = [...prev, id];
+      console.log("Adding caregiver. New list:", updated);
+      
+      // Update localStorage
+      localStorage.setItem('selectedCaregivers', JSON.stringify(updated));
+      window.dispatchEvent(new CustomEvent('caregiver-selection-changed'));
+      
+      return updated;
+    });
+    
     setIsModalOpen(false);
   };
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('selectedCaregivers');
+      if (saved) {
+        setSelectedCaregivers(JSON.parse(saved));
+      }
+    } catch (error) {
+      console.error('Error loading selected caregivers:', error);
+    }
+  }, []);
 
   const mappedCaregiversForCards = caregivers.map(c => ({
     id: c.id,
@@ -109,6 +190,7 @@ const CaregiversPage = () => {
     isBookmarked: c.isBookmarked ?? false,
   }));
 
+  // When passing data to ScheduleCare component, include Redux data
   const mappedCaregiversForSchedule = caregivers
     .filter(c => selectedCaregivers.includes(c.id))
     .map(c => ({
@@ -122,15 +204,41 @@ const CaregiversPage = () => {
 
   useEffect(() => {
     if (bookingSuccess) {
+      // Clear selected caregivers when coming from successful booking redirect
+      setSelectedCaregivers([]);
+      localStorage.removeItem('selectedCaregivers');
+      window.dispatchEvent(new CustomEvent('caregiver-selection-changed'));
+      
       setShowSuccessModal(true);
+      console.log("Booking success from URL - cleared selected caregivers");
     }
   }, [bookingSuccess]);
+
+  // Clear selected caregivers after successful booking
+  const handleBookingSuccess = () => {
+    // Clear the selected caregivers
+    setSelectedCaregivers([]);
+    
+    // Clear from localStorage
+    localStorage.removeItem('selectedCaregivers');
+    
+    // Dispatch event to notify other components
+    window.dispatchEvent(new CustomEvent('caregiver-selection-changed'));
+    
+    // Show success modal
+    setShowSuccessModal(true);
+    
+    console.log("Booking successful - cleared selected caregivers");
+  };
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 lg:pt-28 px-4 md:px-16">
       <div className="flex flex-col md:flex-row gap-8">
         <div className="lg:block hidden">
-          <FilterSidebar onFilterChange={handleFilterChange} />
+          <FilterSidebar 
+            onFilterChange={handleFilterChange}
+            initialFilters={filters}
+          />
         </div>
 
         <div className="lg:hidden block">
@@ -140,7 +248,10 @@ const CaregiversPage = () => {
             showCrossButton
             className="w-2/3 rounded-l-xl lg:hidden"
           >
-            <FilterSidebar onFilterChange={handleFilterChange} />
+            <FilterSidebar 
+              onFilterChange={handleFilterChange}
+              initialFilters={filters}
+            />
           </CustomSheet>
         </div>
 
@@ -161,12 +272,39 @@ const CaregiversPage = () => {
                 Filter
               </button>
             </div>
+
+            {/* Show active filters count */}
+            {Object.keys(filters).some(key => {
+              const value = filters[key as keyof CaregiverFilters];
+              return value && (Array.isArray(value) ? value.length > 0 : true);
+            }) && (
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-gray-500">
+                  Filters active
+                </span>
+                <button
+                  onClick={clearAllFilters}
+                  className="text-red-500 hover:text-red-700 underline"
+                >
+                  Clear All
+                </button>
+              </div>
+            )}
           </div>
 
           {error && <div className="text-red-500 mb-4">Error loading caregivers.</div>}
 
           <div className="sm:mt-0 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {!isLoading && caregivers.length === 0 && <p>No caregivers found.</p>}
+            {!isLoading && caregivers.length === 0 && (
+              <div className="col-span-2 text-center py-8">
+                <p className="text-gray-500">No caregivers found matching your criteria.</p>
+              </div>
+            )}
+            {isLoading && (
+              <div className="col-span-2 text-center py-8">
+                <p>Searching caregivers...</p>
+              </div>
+            )}
             {mappedCaregiversForCards.map(c => (
               <CaregiverCard
                 key={c.id}
@@ -212,9 +350,13 @@ const CaregiversPage = () => {
         isOpen={isScheduleOpen}
         OnClose={() => setIsScheduleOpen(false)}
         selectedCaregivers={mappedCaregiversForSchedule}
+        onBookingSuccess={handleBookingSuccess} // Use the updated handler
+        // Pass Redux data to ScheduleCare
+        serviceIds={serviceIds}
+        requiredBy={requiredBy}
+        zipcode={careseekerZipcode ?? undefined}
       />
 
-      {/* Show success modal if bookingSuccess is true */}
       {showSuccessModal && (
         <BookSuccessful
           isModalOpen={showSuccessModal}

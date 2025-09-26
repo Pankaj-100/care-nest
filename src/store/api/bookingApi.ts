@@ -117,7 +117,12 @@ export interface SearchCaregiversParams {
   certified?: boolean;
   minPrice?: number;
   maxPrice?: number;
-  languages?: string; // CSV
+  languages?: string; // Keep as string (comma-separated)
+  prn?: string; // Keep as string (comma-separated) 
+  locationMiles?: number;
+  experience?: string;
+  minExperience?: number;
+  maxExperience?: number;
 }
 
 // --------- Base URLs ---------

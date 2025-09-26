@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation"; // Add usePathname
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setCareseekerZipcode } from "@/store/slices/bookingSlice";
 import Image from "next/image";
 import { RedirectButton } from "../common/CustomButton";
-import { useAppDispatch } from "@/store/hooks";
-import { setCareseekerZipcode } from "@/store/slices/bookingSlice";
-import { useRouter } from "next/navigation";
 
 
 const HeroSection = () => {
@@ -35,7 +35,7 @@ const HeroSection = () => {
           </h1>
           <div className="my-5">
             <p className="font-light">
-              Easily connect with trusted professionals in the Houston community who provide personal care and support tailored to your family’s needs
+              Easily connect with trusted professionals in the Houston community who provide personal care and support tailored to your family’s needs.
             </p>
           </div>
 
@@ -83,19 +83,36 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
   const [zipCode, setZipCode] = useState<string>("");
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const pathname = usePathname(); // Add this import
+  
+  // Get the stored zipcode from Redux
+  const storedZipcode = useAppSelector(state => state.booking.careseekerZipcode);
 
-  const redirectPath = "/find-job";
+  // Dynamic redirect path based on current page
+  // const redirectPath = pathname === "/care-giver" ? "/care-giver" : "/find-job";
+
+  // Initialize zipcode from Redux state on component mount
+  useEffect(() => {
+    if (storedZipcode) {
+      setZipCode(String(storedZipcode));
+    }
+  }, [storedZipcode]);
 
   function handleRedirect(e?: React.MouseEvent | React.FormEvent) {
     if (e) e.preventDefault();
     if (zipCode.trim()) {
-      console.log("Dispatching zipcode to Redux:", zipCode.trim());
       dispatch(setCareseekerZipcode(Number(zipCode.trim()))); // Store in redux
-      router.push(redirectPath);
+      
+      if (pathname === "/care-giver") {
+        // If already on caregiver page, just update the zipcode - the page will auto-refresh
+        // No need to navigate, the useEffect in caregivers.tsx will handle the new search
+        return;
+      } else {
+        // From landing page or other pages, go to find-job
+        router.push("/find-job");
+      }
     }
   }
-
-  
 
   return (
     <div

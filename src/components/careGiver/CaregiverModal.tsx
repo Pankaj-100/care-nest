@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { CustomButton } from "../common/CustomInputs";
 import { useGetCaregiverDetailsQuery, useBookmarkCaregiverMutation } from "@/store/api/bookingApi";
 import { toast } from "react-toastify";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -128,6 +127,14 @@ const ModalContent: React.FC<{
   const caregiver: CaregiverDetail = Array.isArray(raw) ? raw[0] : raw;
   const [bookmarkCaregiver, { isLoading: bookmarking }] = useBookmarkCaregiverMutation();
   const [bookmarked, setBookmarked] = useState(isBookmarked);
+  const [isSelected, setIsSelected] = useState(false); // Initialize as false
+
+  // Check if caregiver is already selected (you might need to get this from your global state or localStorage)
+  useEffect(() => {
+    // Check if this caregiver is already in selected caregivers list
+    const selectedCaregivers = JSON.parse(localStorage.getItem('selectedCaregivers') || '[]');
+    setIsSelected(selectedCaregivers.includes(caregiver.id));
+  }, [caregiver.id]);
 
   const avatarSrc =
     caregiver.avatar && typeof caregiver.avatar === "string" && caregiver.avatar.trim() !== ""
@@ -143,13 +150,33 @@ const ModalContent: React.FC<{
       setBookmarked(true);
       toast.success("Caregiver bookmarked successfully!");
     } catch {
-      toast.error("Failed to bookmark caregiver.");
+      toast.error("login to bookmark caregiver.");
+    }
+  };
+
+  const handleAddRemoveCaregiver = () => {
+    if (caregiver.id) {
+      const selectedCaregivers = JSON.parse(localStorage.getItem('selectedCaregivers') || '[]');
+      
+      if (isSelected) {
+        // Remove caregiver
+        const updatedCaregivers = selectedCaregivers.filter((id: string) => id !== caregiver.id);
+        localStorage.setItem('selectedCaregivers', JSON.stringify(updatedCaregivers));
+        setIsSelected(false);
+      } else {
+        // Add caregiver
+        const updatedCaregivers = [...selectedCaregivers, caregiver.id];
+        localStorage.setItem('selectedCaregivers', JSON.stringify(updatedCaregivers));
+        setIsSelected(true);
+      }
+      
+      onAddCaregiver(caregiver.id);
     }
   };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] h-full">
-      {/* Left sidebar - existing code */}
+      {/* Left sidebar */}
       <aside className="bg-[#F6F8F4] p-3 md:p-4">
         <div className="flex flex-col items-center text-center">
           <div className="relative">
@@ -190,35 +217,34 @@ const ModalContent: React.FC<{
           <div className="mt-8 w-full space-y-4">
             <button
               type="button"
-              className="w-full h-12 rounded-xl cursor-pointer border border-[#233D4D1A] text-[#233D4D] font-medium bg-white hover:shadow-sm transition flex items-center justify-center gap-2"
+              className={`w-full h-12 rounded-xl cursor-pointer border font-medium transition flex items-center justify-center gap-2 ${
+                bookmarked 
+                  ? "border-[#233D4D] bg-[#233D4D] text-white" 
+                  : "border-[#233D4D1A] text-[#233D4D] bg-white hover:shadow-sm"
+              }`}
               onClick={handleBookmark}
-              disabled={bookmarking || bookmarked}
+              disabled={bookmarking}
             >
               <Image
                 src={bookmarked ? "/care-giver/bookmark-bold.png" : "/care-giver/bookmark.png"}
                 alt="Save"
                 width={18}
                 height={18}
+                className={bookmarked ? "filter brightness-0 invert" : ""}
               />
               {bookmarking ? "Saving..." : bookmarked ? "Saved Caregiver" : "Save Caregiver"}
             </button>
 
-            {caregiver.isSelected ? (
-              <button
-                onClick={() => caregiver.id && onAddCaregiver(caregiver.id)}
-                className="w-full h-12 rounded-xl border-2 border-[#FFA726] text-[#FFA726] font-semibold bg-black transition flex items-center justify-center"
-                style={{ background: "black", color: "#FFA726", border: "2px solid #FFA726" }}
-              >
-                Remove Caregiver
-              </button>
-            ) : (
-              <CustomButton
-                onClick={() => caregiver.id && onAddCaregiver(caregiver.id)}
-                className="w-full h-12 rounded-xl text-[15px] font-semibold"
-              >
-                + Add Caregiver
-              </CustomButton>
-            )}
+            <button
+              onClick={handleAddRemoveCaregiver}
+              className={`w-full h-12 rounded-xl cursor-pointer font-semibold transition flex items-center justify-center ${
+                isSelected
+                  ? "border-2 border-[#F2A307] text-[#F2A307] bg-white hover:bg-red-50"
+                  : "border-2 border-[#F2A307] text-[#233D4D] bg-[#F2A307] hover:bg-[#FF9800]"
+              }`}
+            >
+              {isSelected ? "Remove Caregiver" : "+ Add Caregiver"}
+            </button>
           </div>
         </div>
       </aside>

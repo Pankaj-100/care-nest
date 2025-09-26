@@ -308,6 +308,12 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
             avatar: "/care-giver/boy-icon.png", // <-- use avatar
           },
         ]}
+        onBookingSuccess={() => {
+          // Handle booking success
+          setIsScheduleCareOpen(false);
+          // Add any other success handling logic you need
+          console.log("Booking successful from RightSide component");
+        }}
       />
     </div>
   );

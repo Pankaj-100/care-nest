@@ -67,10 +67,12 @@ const Header = () => {
         { title: "Private pay skilled nursing", link: "/service/skilled-nursing" },
       ],
     },
+    // Move Blogs here so it's always visible
+    { title: "Blogs", link: "/blogs" },
   ];
 
   if (!isLoggedInUser) {
-    NavbarMenuTitle.push({ title: "Blogs", link: "/blogs" });
+    // Only add Login options when not logged in
     NavbarMenuTitle.push({ 
       title: "Login",
       services: [
@@ -79,6 +81,7 @@ const Header = () => {
       ],
     });
   } else {
+    // Add Inbox when logged in
     NavbarMenuTitle.push({ title: "Inbox", link: "/inbox" });
   }
 

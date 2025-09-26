@@ -8,8 +8,8 @@ import {
   useCreateBookingMutation,
 } from "@/store/api/bookingApi";
 import { CustomButton } from "@/components/common/CustomInputs";
-import {useAppSelector, useAppDispatch } from "@/store/hooks";
-import { setPendingBooking } from "@/store/slices/bookingSlice"; // Create this action
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setPendingBooking } from "@/store/slices/bookingSlice";
 // Use the imported SVG component (alias to PascalCase for JSX)
 import { calendarIcon as CalenderIcon } from "../icons/page";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -27,15 +27,11 @@ export interface SelectedCaregiver {
 export interface ScheduleCareProps {
   isOpen: boolean;
   OnClose: () => void;
-  selectedCaregivers: {
-    id: string;
-    name: string;
-    avatar: string;
-    specialty: string;
-    experience: string;
-    price: string;
-  }[];
-  onBookingSuccess?: () => void; // <-- Add this line
+  selectedCaregivers: SelectedCaregiver[]; 
+  onBookingSuccess: () => void;
+  serviceIds?: string[];
+  requiredBy?: string;
+  zipcode?: number;
 }
 
 interface BookingResponse {
@@ -51,17 +47,21 @@ const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
 type Day = (typeof DAYS)[number];
 
 const defaultStart = 9 * 60; // 09:00 AM
-const defaultEnd = 12 * 60;  // 12:00 PM
+const defaultEnd = 17 * 60;  // 05:00 PM (changed to 24-hour range)
 
-function fmt(minutes: number) {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
-}
+
+
+// Convert minutes to 12-hour format
+const formatTime12Hour = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+  return `${displayHours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')} ${period}`;
+};
 
 const defaultRanges: { id: string; start: number; end: number }[] = [
-  { id: "r1", start: 9 * 60, end: 12 * 60 }, // 09:00 - 12:00
-  { id: "r2", start: 15 * 60, end: 18 * 60 }, // 03:00 - 06:00
+  { id: "r1", start: 9 * 60, end: 17 * 60 }, // 09:00 AM - 05:00 PM
 ];
 
 const initialSchedule: Record<Day, { id: string; start: number; end: number }[]> = DAYS.reduce((acc, d) => {
@@ -69,13 +69,21 @@ const initialSchedule: Record<Day, { id: string; start: number; end: number }[]>
   return acc;
 }, {} as Record<Day, { id: string; start: number; end: number }[]>);
 
-const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }: ScheduleCareProps) => {
+const ScheduleCare = ({ 
+  isOpen, 
+  OnClose, 
+  selectedCaregivers, 
+  onBookingSuccess,
+  serviceIds,
+  requiredBy,
+  zipcode
+}: ScheduleCareProps) => {
 
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
 
-  const requiredBy = useAppSelector(state => state.booking.requiredBy);
-  const serviceIds = useAppSelector((state) => state.booking.serviceIds);
-  const careseekerZipcode = useAppSelector(state => state.booking.careseekerZipcode);
+  const requiredByRedux = useAppSelector(state => state.booking.requiredBy);
+  const serviceIdsRedux = useAppSelector((state) => state.booking.serviceIds);
+  const careseekerZipcodeRedux = useAppSelector(state => state.booking.careseekerZipcode);
 
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -107,26 +115,91 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
     return () => window.removeEventListener("keydown", onEsc);
   }, [isOpen, OnClose]);
 
-  // Remove addTime and allow only one slot per day
-  const changeTime = (d: Day, key: "start" | "end", value: number) => {
-    const v = Math.max(0, Math.min(24 * 60, value));
+  // Change time with better UX - separate handlers for start and end (24-hour range)
+  const changeStartTime = (d: Day, value: number) => {
+    const v = Math.max(0, Math.min(23 * 60, value)); // 12 AM to 11 PM
     setSchedule((prev) => {
       const updated = prev[d].map((r) => {
-        const next = { ...r, [key]: v } as { id: string; start: number; end: number };
-        // Ensure start < end
-        if (next.end <= next.start) {
-          if (key === "start") next.end = Math.min(24 * 60, next.start + 60);
-          else next.start = Math.max(0, next.end - 60);
+        const next = { ...r, start: v };
+        // Ensure end is at least 1 hour after start
+        if (next.end <= next.start + 30) {
+          next.end = Math.min(24 * 60, next.start + 60);
         }
         return next;
       });
+      
       let res = { ...prev, [d]: updated };
+      
       // Apply to all selected days if toggle is on
       if (applyAll) {
         selectedDays
-          .filter((sd) => sd !== d)
+          .filter((sd) => sd !== d) // Exclude current day
           .forEach((sd) => {
-            res = { ...res, [sd]: updated.map((r) => ({ ...r, id: `${sd}-0` })) };
+            // Apply the same time changes to other selected days
+            const updatedForOtherDay = (prev[sd] || []).map((r) => {
+              const next = { ...r, start: v };
+              // Ensure end is at least 1 hour after start
+              if (next.end <= next.start + 30) {
+                next.end = Math.min(24 * 60, next.start + 60);
+              }
+              return next;
+            });
+            
+            // If the day doesn't have a schedule, create one
+            if (!prev[sd] || prev[sd].length === 0) {
+              updatedForOtherDay.push({
+                id: `${sd}-0`,
+                start: v,
+                end: Math.min(24 * 60, v + 60),
+              });
+            }
+            
+            res = { ...res, [sd]: updatedForOtherDay };
+          });
+      }
+      return res;
+    });
+  };
+
+  const changeEndTime = (d: Day, value: number) => {
+    const v = Math.max(1 * 60, Math.min(24 * 60, value)); // 1 AM to 12 AM (24:00)
+    setSchedule((prev) => {
+      const updated = prev[d].map((r) => {
+        const next = { ...r, end: v };
+        // Ensure start is at least 30 minutes before end
+        if (next.start >= next.end - 30) {
+          next.start = Math.max(0, next.end - 60);
+        }
+        return next;
+      });
+      
+      let res = { ...prev, [d]: updated };
+      
+      // Apply to all selected days if toggle is on
+      if (applyAll) {
+        selectedDays
+          .filter((sd) => sd !== d) // Exclude current day
+          .forEach((sd) => {
+            // Apply the same time changes to other selected days
+            const updatedForOtherDay = (prev[sd] || []).map((r) => {
+              const next = { ...r, end: v };
+              // Ensure start is at least 30 minutes before end
+              if (next.start >= next.end - 30) {
+                next.start = Math.max(0, next.end - 60);
+              }
+              return next;
+            });
+            
+            // If the day doesn't have a schedule, create one
+            if (!prev[sd] || prev[sd].length === 0) {
+              updatedForOtherDay.push({
+                id: `${sd}-0`,
+                start: Math.max(0, v - 60),
+                end: v,
+              });
+            }
+            
+            res = { ...res, [sd]: updatedForOtherDay };
           });
       }
       return res;
@@ -135,36 +208,89 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
 
   // When toggling a day, always seed with one slot if missing
   const toggleDay = (d: Day) => {
-    setSelectedDays((prev) =>
-      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d]
-    );
-    setSchedule((prev) => {
-      if (!prev[d] || prev[d].length === 0) {
-        return { ...prev, [d]: [{
-          id: `${d}-0`,
-          start: defaultStart,
-          end: defaultEnd,
-        }] };
+    setSelectedDays((prev) => {
+      const isRemoving = prev.includes(d);
+      
+      if (isRemoving) {
+        return prev.filter((x) => x !== d);
+      } else {
+        return [...prev, d];
       }
-      // If more than one slot, keep only the first
-      return { ...prev, [d]: [prev[d][0]] };
+    });
+    
+    setSchedule((prev) => {
+      // If removing a day, just return current state
+      if (prev[d] && selectedDays.includes(d)) {
+        return prev;
+      }
+      
+      // If adding a new day, determine what time slots to use
+      let timeSlotToUse = {
+        start: defaultStart,
+        end: defaultEnd,
+      };
+      
+      // If "Apply to all days" is enabled and there are existing selected days, 
+      // use the time from the first selected day
+      if (applyAll && selectedDays.length > 0) {
+        const firstSelectedDay = selectedDays[0];
+        const firstDaySchedule = prev[firstSelectedDay]?.[0];
+        
+        if (firstDaySchedule) {
+          timeSlotToUse = {
+            start: firstDaySchedule.start,
+            end: firstDaySchedule.end,
+          };
+        }
+      }
+      
+      // Add the new day with the determined time slot
+      return { 
+        ...prev, 
+        [d]: [{
+          id: `${d}-0`,
+          start: timeSlotToUse.start,
+          end: timeSlotToUse.end,
+        }] 
+      };
     });
   };
 
   const daySummary = (d: Day) =>
     (schedule[d] || [])
-      .map((r) => `${fmt(r.start)} - ${fmt(r.end)}`)
+      .map((r) => `${formatTime12Hour(r.start)} - ${formatTime12Hour(r.end)}`)
       .join(", ") || "No time set";
 
-  const minutesStep = 30; // slider step
+  // Get time markers for the slider (24-hour format)
+  const getTimeMarkers = () => {
+    const markers = [];
+    // Show markers every 4 hours for 24-hour range
+    for (let hour = 0; hour < 24; hour += 4) { // Changed <= to < to avoid duplicate
+      markers.push({
+        value: hour * 60,
+        label: formatTime12Hour(hour * 60)
+      });
+    }
+    // Add the final 12 AM marker separately with unique key
+    markers.push({
+      value: 24 * 60, // Use 24*60 as value but show as 12 AM
+      label: "12:00 AM"
+    });
+    return markers;
+  };
 
+  const timeMarkers = getTimeMarkers();
 
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
 
     if (!startDate) return setFormError("Select start date.");
-    if (serviceIds.length === 0) return setFormError("Select at least one service.");
+    
+    // Check if serviceIds exists and has length
+    const effectiveServiceIds = serviceIds || serviceIdsRedux || [];
+    if (effectiveServiceIds.length === 0) return setFormError("You missed service selection, start the booking from home page.");
+    
     if (selectedCaregivers.length === 0) return setFormError("Select at least one caregiver.");
     if (selectedDays.length === 0) return setFormError("Select at least one meeting day.");
 
@@ -185,13 +311,17 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
     // Prepare shortlistedCaregiversIds from selectedCaregivers
     const shortlistedCaregiversIds = selectedCaregivers.map(c => c.id);
 
+    // Use effective values (prop or Redux fallback)
+    const effectiveRequiredBy = requiredBy || requiredByRedux;
+    const effectiveZipcode = zipcode || careseekerZipcodeRedux;
+
     // API payload
     const payload = {
       startDate: startDate ? startDate.toISOString().slice(0, 10) : "",
       endDate: endDate ? endDate.toISOString().slice(0, 10) : undefined,
-      serviceIds,
-      careseekerZipcode: Number(careseekerZipcode),
-      requiredBy,
+      serviceIds: effectiveServiceIds,
+      careseekerZipcode: Number(effectiveZipcode),
+      requiredBy: effectiveRequiredBy,
       weeklySchedule,
       shortlistedCaregiversIds,
     };
@@ -200,7 +330,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
       // Store booking data in redux and redirect to signin
       dispatch(setPendingBooking(payload));
       OnClose();
-      router.push("/signup"); // <-- use router.push instead of window.location.href
+      router.push("/signup");
       return;
     }
 
@@ -232,6 +362,45 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
     const m = minutes % 60;
     return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
   }
+
+  const [isDragging, setIsDragging] = useState<'start' | 'end' | null>(null);
+
+  // Add mouse event handlers
+  const handleMouseDown = (type: 'start' | 'end') => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDragging(type);
+  };
+
+  const handleMouseMove = (d: Day) => (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const percentage = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const minutes = Math.round(percentage * 24 * 60 / 15) * 15; // Round to 15-minute intervals
+    
+    if (isDragging === 'start') {
+      changeStartTime(d, minutes);
+    } else if (isDragging === 'end') {
+      changeEndTime(d, minutes);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(null);
+  };
+
+  // Add this useEffect for global mouse events
+  useEffect(() => {
+    const handleGlobalMouseUp = () => setIsDragging(null);
+
+    if (isDragging) {
+      document.addEventListener('mouseup', handleGlobalMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
+  }, [isDragging]);
 
   if (!isOpen) return null;
 
@@ -290,6 +459,10 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
                     width={44}
                     height={44}
                     className="w-11 h-11 rounded-full"
+                    onError={() => {
+                      // Fallback to default image if local image fails to load
+                      console.error("Image failed to load");
+                    }}
                   />
                   <div className="flex-1 flex items-center justify-between gap-4">
                     <div className="min-w-32">
@@ -371,6 +544,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
               );
             })}
           </div>
+          
           {/* Show only one slot per selected day */}
           {selectedDays.map((d, idx) => (
             <div key={d} className="rounded-2xl border border-[#EBEBEB] p-4 mb-4">
@@ -381,77 +555,86 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
                 </p>
                 <button
                   type="button"
-                  className="text-[#233D4D] text-lg"
+                  className="text-[#233D4D] text-lg hover:bg-gray-100 w-6 h-6 rounded-full flex items-center justify-center"
                   onClick={() => setSelectedDays((prev) => prev.filter((day) => day !== d))}
                   title="Remove this day"
                 >
                   ✕
                 </button>
               </div>
-              <div className="mt-4 space-y-6">
+              
+              <div className="mt-4 space-y-4">
                 {schedule[d]?.slice(0, 1).map((r) => (
-                  <div key={r.id} className="space-y-2">
-                    <div className="flex items-center justify-between text-xs text-[#7B8A9C]">
-                      <span>{fmt(9 * 60)}</span>
-                      <span>{fmt(12 * 60)}</span>
-                      <span>{fmt(15 * 60)}</span>
-                      <span>{fmt(18 * 60)}</span>
+                  <div key={r.id} className="space-y-4">
+                    {/* Time markers */}
+                    <div className="flex items-center justify-between text-xs text-[#7B8A9C] px-1">
+                      {timeMarkers.map(marker => (
+                        <span key={marker.value} className="text-center">
+                          {marker.label.split(' ')[0]}<br/>
+                          <span className="text-[10px]">{marker.label.split(' ')[1]}</span>
+                        </span>
+                      ))}
                     </div>
-                    <div className="relative">
-                      <div className="h-2 bg-gray-200 rounded-full" />
-                      <input
-                        type="range"
-                        min={0}
-                        max={24 * 60}
-                        step={minutesStep}
-                        value={r.start}
-                        onChange={(e) =>
-                          changeTime(d, "start", Number(e.target.value))
-                        }
-                        className="absolute top-1/2 -translate-y-1/2 w-full opacity-0 cursor-pointer"
-                      />
-                      <input
-                        type="range"
-                        min={0}
-                        max={24 * 60}
-                        step={minutesStep}
-                        value={r.end}
-                        onChange={(e) =>
-                          changeTime(d, "end", Number(e.target.value))
-                        }
-                        className="absolute top-1/2 -translate-y-1/2 w-full opacity-0 cursor-pointer"
-                      />
-                      <div
-                        className="absolute top-[6px] h-2 bg-[#233D4D] rounded-full"
-                        style={{
-                          left: `${(r.start / (24 * 60)) * 100}%`,
-                          width: `${((r.end - r.start) / (24 * 60)) * 100}%`,
-                        }}
-                      />
-                      <div
-                        className="absolute -top-1.5 h-4 w-4 rounded-full bg-white border-2 border-[#233D4D]"
-                        style={{ left: `calc(${(r.start / (24 * 60)) * 100}% - 8px)` }}
-                      />
-                      <div
-                        className="absolute -top-1.5 h-4 w-4 rounded-full bg-white border-2 border-[#233D4D]"
-                        style={{ left: `calc(${(r.end / (24 * 60)) * 100}% - 8px)` }}
-                      />
+                    
+                    {/* Custom dual-handle slider - MOUSE EVENT VERSION */}
+                    <div className="relative px-2 mb-4">
+                      {/* Slider container */}
+                      <div 
+                        className="relative h-8 flex items-center cursor-pointer"
+                        onMouseMove={handleMouseMove(d)}
+                        onMouseUp={handleMouseUp}
+                        onMouseLeave={handleMouseUp}
+                      >
+                        {/* Background track */}
+                        <div className="w-full h-1 bg-gray-300 rounded-full"></div>
+                        
+                        {/* Active track */}
+                        <div
+                          className="absolute h-1 bg-[#233D4D] rounded-full"
+                          style={{
+                            left: `${(r.start / (24 * 60)) * 100}%`,
+                            width: `${((r.end - r.start) / (24 * 60)) * 100}%`,
+                          }}
+                        ></div>
+                        
+                        {/* Start handle */}
+                        <div
+                          className="absolute w-4 h-4 bg-white border-2 border-[#233D4D] rounded-full shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow"
+                          style={{
+                            left: `calc(${(r.start / (24 * 60)) * 100}% - 8px)`,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            zIndex: 40,
+                          }}
+                          onMouseDown={handleMouseDown('start')}
+                        ></div>
+                        
+                        {/* End handle */}
+                        <div
+                          className="absolute w-4 h-4 bg-white border-2 border-[#233D4D] rounded-full shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow"
+                          style={{
+                            left: `calc(${(r.end / (24 * 60)) * 100}% - 8px)`,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            zIndex: 40,
+                          }}
+                          onMouseDown={handleMouseDown('end')}
+                        ></div>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between text-xs text-[#7B8A9C]">
-                      <span>{fmt(r.start)}</span>
-                      <span>{fmt(r.end)}</span>
-                    </div>
+                    
+                  
                   </div>
                 ))}
-                {/* Remove "+ Add Time" button */}
-                {/* Only show "Apply this time to all days" for first card */}
-                {idx === 0 && (
-                  <label className="flex items-center justify-center gap-2 text-sm text-[#233D4D] mt-2">
+                
+                {/* Apply to all days checkbox - only show for first card */}
+                {idx === 0 && selectedDays.length > 1 && (
+                  <label className="flex items-center justify-center gap-2 text-sm text-[#233D4D] mt-4 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={applyAll}
                       onChange={(e) => setApplyAll(e.target.checked)}
-                      className="h-4 w-4 rounded border-gray-300"
+                      className="h-4 w-4 rounded border-gray-300 text-[#233D4D] focus:ring-[#233D4D]"
                     />
                     Apply this time to all days
                   </label>
@@ -485,7 +668,7 @@ const ScheduleCare = ({ isOpen, OnClose, selectedCaregivers, onBookingSuccess }:
           <CustomButton
             onClick={() => handleBooking(new Event("submit") as unknown as React.FormEvent)}
             disabled={isBooking}
-            className="flex-1 rounded-full  font-semibold text-sm py-5 hover:opacity-90"
+            className="flex-1 rounded-full font-semibold text-sm py-5 hover:opacity-90"
           >
             {isBooking ? "Booking..." : "Book Your Meeting"}
           </CustomButton>

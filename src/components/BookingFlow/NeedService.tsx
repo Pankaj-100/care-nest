@@ -16,6 +16,45 @@ const RECIPIENT_OPTIONS = [
   "Myself",
 ];
 
+// Custom SVG component for selected state
+const CheckIcon: React.FC = () => (
+  <svg
+    width="25"
+    height="24"
+    viewBox="0 0 25 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <mask
+      id="mask0_2426_32706"
+      style={{ maskType: "luminance" }}
+      maskUnits="userSpaceOnUse"
+      x="1"
+      y="1"
+      width="23"
+      height="22"
+    >
+      <path
+        d="M12.5 22C13.8135 22.0016 15.1143 21.7437 16.3278 21.2411C17.5412 20.7384 18.6434 20.0009 19.571 19.071C20.5009 18.1434 21.2384 17.0412 21.7411 15.8278C22.2437 14.6143 22.5016 13.3135 22.5 12C22.5016 10.6866 22.2437 9.38572 21.7411 8.17225C21.2384 6.95878 20.5009 5.85659 19.571 4.92901C18.6434 3.99909 17.5412 3.26162 16.3278 2.75897C15.1143 2.25631 13.8135 1.99839 12.5 2.00001C11.1866 1.99839 9.88572 2.25631 8.67225 2.75897C7.45878 3.26162 6.35659 3.99909 5.42901 4.92901C4.49909 5.85659 3.76162 6.95878 3.25897 8.17225C2.75631 9.38572 2.49839 10.6866 2.50001 12C2.49839 13.3135 2.75631 14.6143 3.25897 15.8278C3.76162 17.0412 4.49909 18.1434 5.42901 19.071C6.35659 20.0009 7.45878 20.7384 8.67225 21.2411C9.88572 21.7437 11.1866 22.0016 12.5 22Z"
+        fill="white"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.5 12L11.5 15L17.5 9"
+        stroke="black"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </mask>
+    <g mask="url(#mask0_2426_32706)">
+      <path d="M0.5 0H24.5V24H0.5V0Z" fill="#233D4D" />
+    </g>
+  </svg>
+);
+
 const NeedService: React.FC = () => {
   const [selected, setSelected] = useState<string>(RECIPIENT_OPTIONS[0]);
   const [submitting, setSubmitting] = useState(false);
@@ -43,7 +82,8 @@ const NeedService: React.FC = () => {
       const idx = RECIPIENT_OPTIONS.indexOf(selected);
       if (idx === -1) return;
       const dir = e.key === "ArrowDown" ? 1 : -1;
-      const nextIndex = (idx + dir + RECIPIENT_OPTIONS.length) % RECIPIENT_OPTIONS.length;
+      const nextIndex =
+        (idx + dir + RECIPIENT_OPTIONS.length) % RECIPIENT_OPTIONS.length;
       const nextVal = RECIPIENT_OPTIONS[nextIndex];
       setSelected(nextVal);
       const btn = itemRefs.current[nextIndex];
@@ -71,7 +111,9 @@ const NeedService: React.FC = () => {
             return (
               <button
                 key={item}
-                ref={el => { itemRefs.current[i] = el; }}
+                ref={(el) => {
+                  itemRefs.current[i] = el;
+                }}
                 type="button"
                 role="radio"
                 aria-checked={isActive}
@@ -84,15 +126,8 @@ const NeedService: React.FC = () => {
                   }`}
               >
                 <span>{item}</span>
-                <span
-                  className={`w-7 h-7 flex items-center justify-center rounded-full text-xs font-semibold transition
-                    ${
-                      isActive
-                        ? "border border-[#233D4D] text-[#233D4D]"
-                        : "border border-transparent"
-                    }`}
-                >
-                  {isActive ? "✓" : ""}
+                <span className="flex items-center justify-center">
+                  {isActive && <CheckIcon />}
                 </span>
               </button>
             );
@@ -104,10 +139,10 @@ const NeedService: React.FC = () => {
             onClick={handleNext}
             disabled={submitting}
             className={`px-65 py-6 text-md font-medium rounded-full ${
-            !selected.length
-              ? "opacity-50 cursor-not-allowed pointer-events-none"
-              : ""
-          }`}
+              !selected.length
+                ? "opacity-50 cursor-not-allowed pointer-events-none"
+                : ""
+            }`}
           >
             {submitting ? (
               <>

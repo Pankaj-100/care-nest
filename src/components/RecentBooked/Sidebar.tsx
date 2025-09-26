@@ -29,14 +29,29 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
     (state: RootState) => state.profile
   );
 
-  // Sync fetched profile data to Redux state (prepend CDN only here)
+  // Helper function to construct proper avatar URL
+  const getAvatarUrl = (avatarPath: string | null | undefined): string | null => {
+    if (!avatarPath) return null;
+    
+    // If it's already a complete URL, return as is
+    if (avatarPath.startsWith('http://') || avatarPath.startsWith('https://')) {
+      return avatarPath;
+    }
+    
+    // Clean up the path - remove leading slashes
+    const cleanPath = avatarPath.replace(/^\/+/, '');
+    
+    // Return the properly constructed URL
+    return `${cdnURL}/${cleanPath}`;
+  };
+
+  // Sync fetched profile data to Redux state
   useEffect(() => {
     if (profileData) {
+      const avatarUrl = getAvatarUrl(profileData.avatar);
       const updatedProfile = {
         ...profileData,
-        avatar: profileData.avatar
-          ? `${cdnURL}/${profileData.avatar}`
-          : null,
+        avatar: avatarUrl,
       };
       dispatch(setProfile(updatedProfile));
     }
@@ -48,13 +63,28 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Please upload a valid image file (JPEG, PNG, GIF, WebP)');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size should be less than 5MB');
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("file", file); // Make sure the field name matches API
+    formData.append("file", file);
 
     try {
       const res = await updateAvatar(formData).unwrap();
       if (res?.success) {
-        const localAvatarURL = URL.createObjectURL(file); // Use temporary preview
+        // Create a temporary preview URL for immediate feedback
+        const localAvatarURL = URL.createObjectURL(file);
+        
         dispatch(
           setProfile({
             name,
@@ -65,17 +95,25 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
             gender,
           })
         );
+        
         toast.success("Profile image updated successfully");
+        
+        // Refresh the profile data after a short delay to get the actual S3 URL
+        setTimeout(() => {
+          // This will trigger a re-fetch of profile data
+          window.location.reload();
+        }, 2000);
       }
-    } catch {
+    } catch (error) {
+      console.error('Avatar upload error:', error);
       toast.error("Failed to update profile image");
     }
   };
 
   const handleRemoveAvatar = async () => {
-    try{
+    try {
       const res = await removeAvatar().unwrap();
-      if(res?.success){
+      if (res?.success) {
         dispatch(
           setProfile({
             name,
@@ -88,7 +126,8 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
         );
         toast.success("Profile image removed successfully");
       }
-    } catch {
+    } catch (error) {
+      console.error('Avatar removal error:', error);
       toast.error("Failed to remove profile image");
     }
   };
@@ -113,6 +152,12 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
             width={68}
             height={68}
             className="w-[68px] h-[68px] rounded-full object-cover"
+            onError={(e) => {
+              // Fallback to default image on error
+              const target = e.target as HTMLImageElement;
+              target.src = "/Recent/profile.png";
+            }}
+            unoptimized={avatar?.startsWith('blob:') || false} // For temporary blob URLs
           />
           {/* X icon appears only on hover and centered */}
           {avatar && (
@@ -122,7 +167,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
               className="absolute inset-0 flex items-center cursor-pointer justify-center bg-black/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
               aria-label="Remove profile image"
             >
-              <span className="bg-white rounded-full p-1 shadow ">
+              <span className="bg-white rounded-full p-1 shadow">
                 <X size={15} />
               </span>
             </button>
@@ -132,7 +177,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
             className="absolute bottom-0 right-0 cursor-pointer w-6 h-6 flex items-center justify-center transition"
             style={{ transform: "translate(30%, 30%)" }}
           >
-            <span className="w-5 h-5 flex items-center justify-center " >{editprofileimage}</span>
+            <span className="w-5 h-5 flex items-center justify-center">{editprofileimage}</span>
           </label>
           <input
             type="file"

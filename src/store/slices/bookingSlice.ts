@@ -14,14 +14,14 @@ interface PendingBookingPayload {
 interface BookingState {
   careseekerZipcode: number | null;
   requiredBy: string;
-  serviceIds: string[];
+  serviceIds: string[]; // Make sure this exists
   pendingBooking: PendingBookingPayload | null;
 }
 
 const initialState: BookingState = {
   careseekerZipcode: null,
   requiredBy: "",
-  serviceIds: [],
+  serviceIds: [], // Initialize as empty array
   pendingBooking: null,
 };
 

@@ -10,7 +10,7 @@ import {
   useGetRequiredByQuery,
   useUpdateRequiredByMutation,
 } from "@/store/api/profileApi";
-import { mailIcon, userIcon, locationIcon, phoneIcon } from "../icons/page";
+import { MailIcon, UserIcon, LocationIcon, dailerIcon } from "../icons/page";
 
 // Add a narrow type for API profile (no any)
 type ProfileApi = {
@@ -213,12 +213,12 @@ export default function ManageProfile() {
 
           {isFetching ? (
             <>
-              <InputSkeleton icon={userIcon()} />
-              <InputSkeleton icon={mailIcon()} />
-              <InputSkeleton icon={userIcon()} />
-              <InputSkeleton icon={locationIcon()} />
-              <InputSkeleton icon={locationIcon()} />
-              <InputSkeleton icon={phoneIcon()} />
+              <InputSkeleton icon={UserIcon()} />
+              <InputSkeleton icon={MailIcon()} />
+              <InputSkeleton icon={UserIcon()} />
+              <InputSkeleton icon={LocationIcon()} />
+              <InputSkeleton icon={LocationIcon()} />
+              <InputSkeleton icon={dailerIcon()} />
             </>
           ) : (
             <div className="space-y-4">
@@ -227,7 +227,7 @@ export default function ManageProfile() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Full Name"
-                icon={userIcon()}
+                icon={UserIcon()}
                 error={errors.name}
               />
               <InputField
@@ -235,7 +235,7 @@ export default function ManageProfile() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Email Address"
-                icon={mailIcon()}
+                icon={MailIcon()}
                 error={errors.email}
                 type="email"
                 disabled={true}
@@ -245,7 +245,7 @@ export default function ManageProfile() {
                 value={form.gender}
                 onChange={handleChange}
                 placeholder="Gender"
-                icon={userIcon()}
+                icon={UserIcon()}
                 error={errors.gender}
               />
               <InputField
@@ -253,7 +253,7 @@ export default function ManageProfile() {
                 value={form.address}
                 onChange={handleChange}
                 placeholder="Address"
-                icon={locationIcon()}
+                icon={LocationIcon()}
                 error={errors.address}
               />
               {/* Zip Code */}
@@ -262,7 +262,7 @@ export default function ManageProfile() {
                 value={form.zipcode}
                 onChange={handleChange}
                 placeholder="Zip Code"
-                icon={locationIcon()}
+                icon={LocationIcon()}
                 error={errors.zipcode}
                 type="tel"
               />
@@ -271,7 +271,7 @@ export default function ManageProfile() {
                 value={form.mobile}
                 onChange={handleChange}
                 placeholder="Phone Number"
-                icon={phoneIcon()}
+                icon={dailerIcon()}
                 error={errors.mobile}
                 type="tel"
               />

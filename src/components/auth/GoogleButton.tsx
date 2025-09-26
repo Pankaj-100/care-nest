@@ -9,6 +9,9 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setCredentials, setAccessToken } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/store/hooks";
+import { clearPendingBooking } from "@/store/slices/bookingSlice";
+import { useCreateBookingMutation } from "@/store/api/bookingApi";
 
 interface GoogleButtonProps {
   role?: "user" | "giver";
@@ -21,6 +24,8 @@ function GoogleButton({ role = "user", redirectPath = "/profile" }: GoogleButton
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const pendingBooking = useAppSelector((state) => state.booking.pendingBooking);
+  const [createBooking] = useCreateBookingMutation();
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (response) => {
@@ -33,7 +38,7 @@ function GoogleButton({ role = "user", redirectPath = "/profile" }: GoogleButton
         const res = await fetch(`${API_BASE}/api/v1/user/google-auth`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
+          body: JSON.stringify({
             googleToken: response.access_token,
             role,
           }),
@@ -57,6 +62,23 @@ function GoogleButton({ role = "user", redirectPath = "/profile" }: GoogleButton
             dispatch(setCredentials({ accessToken, refreshToken }));
           } else {
             dispatch(setAccessToken(accessToken));
+          }
+        }
+
+        // Check for pending booking - SAME LOGIC AS SigninForm
+        if (pendingBooking) {
+          try {
+            const result = await createBooking(pendingBooking).unwrap();
+            if (result.success) {
+              dispatch(clearPendingBooking());
+              router.push("/care-giver?bookingSuccess=true");
+              return;
+            }
+          } catch (error) {
+            console.error("Booking failed:", error);
+            // Still redirect to care-giver page even if booking fails
+            router.push("/care-giver");
+            return;
           }
         }
 
