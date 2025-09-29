@@ -47,10 +47,32 @@ interface Service {
   zipcode: string;
 }
 
+interface ServiceName {
+  id: string;
+  name: string;
+}
+
+interface ServiceHighlight {
+  id: string;
+  name: string;
+  highlight: string;
+  icon: string;
+}
+
 interface ServiceNamesResponse {
   success: boolean;
   messages: string;
-  data: { services: Service[] };
+  data: {
+    services: ServiceName[];
+  };
+}
+
+interface ServiceHighlightsResponse {
+  success: boolean;
+  messages: string;
+  data: {
+    services: ServiceHighlight[];
+  };
 }
 
 interface CaregiverDetailsResponse {
@@ -99,14 +121,6 @@ interface CancelBookingResponse {
 interface CancelBookingRequest {
   bookingId: string;
   caregiverId: string;
-}
-
-// Define ServiceHighlight interface
-interface ServiceHighlight {
-  id: string;
-  name: string;
-  highlight: string;
-  icon?: string;
 }
 
 // Require zipcode; other params optional
@@ -273,10 +287,10 @@ export const bookingApi = createApi({
       }),
     }),
 
-    getServiceHighlights: builder.query<{ services: ServiceHighlight[] }, void>({
-      query: () => '/api/v1/service/highlights',
-      transformResponse: (response: { data: { services: ServiceHighlight[] } }) => ({
-        services: response.data.services,
+    getServiceHighlights: builder.query<ServiceHighlightsResponse, void>({
+      query: () => ({
+        url: '/api/v1/service/highlights',
+        method: 'GET',
       }),
     }),
 
