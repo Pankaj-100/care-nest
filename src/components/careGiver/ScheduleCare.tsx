@@ -117,13 +117,14 @@ const ScheduleCare = ({
 
   // Change time with better UX - separate handlers for start and end (24-hour range)
   const changeStartTime = (d: Day, value: number) => {
-    const v = Math.max(0, Math.min(23 * 60, value)); // 12 AM to 11 PM
+    // Change max from 23*60 to 23*60+45 (23:45) to prevent 24:00
+    const v = Math.max(0, Math.min(23 * 60 + 45, value)); 
     setSchedule((prev) => {
       const updated = prev[d].map((r) => {
         const next = { ...r, start: v };
-        // Ensure end is at least 1 hour after start
+        // Ensure end is at least 1 hour after start, but cap at 23:59
         if (next.end <= next.start + 30) {
-          next.end = Math.min(24 * 60, next.start + 60);
+          next.end = Math.min(23 * 60 + 59, next.start + 60); // Cap at 23:59
         }
         return next;
       });
@@ -162,7 +163,8 @@ const ScheduleCare = ({
   };
 
   const changeEndTime = (d: Day, value: number) => {
-    const v = Math.max(1 * 60, Math.min(24 * 60, value)); // 1 AM to 12 AM (24:00)
+    // Change max from 24*60 to 23*60+59 (23:59)
+    const v = Math.max(1 * 60, Math.min(23 * 60 + 59, value));
     setSchedule((prev) => {
       const updated = prev[d].map((r) => {
         const next = { ...r, end: v };
@@ -261,21 +263,16 @@ const ScheduleCare = ({
       .map((r) => `${formatTime12Hour(r.start)} - ${formatTime12Hour(r.end)}`)
       .join(", ") || "No time set";
 
-  // Get time markers for the slider (24-hour format)
+  // Get time markers for the slider (24-hour format) - FIXED
   const getTimeMarkers = () => {
     const markers = [];
-    // Show markers every 4 hours for 24-hour range
-    for (let hour = 0; hour < 24; hour += 4) { // Changed <= to < to avoid duplicate
+    // Show markers every 4 hours, but stop at 20 (8 PM) to avoid 24:00
+    for (let hour = 0; hour <= 20; hour += 4) {
       markers.push({
         value: hour * 60,
         label: formatTime12Hour(hour * 60)
       });
     }
-    // Add the final 12 AM marker separately with unique key
-    markers.push({
-      value: 24 * 60, // Use 24*60 as value but show as 12 AM
-      label: "12:00 AM"
-    });
     return markers;
   };
 
@@ -290,8 +287,8 @@ const ScheduleCare = ({
     // Check if serviceIds exists and has length
     const effectiveServiceIds = serviceIds || serviceIdsRedux || [];
     if (effectiveServiceIds.length === 0) return setFormError("You missed service selection, start the booking from home page.");
-    
-    if (selectedCaregivers.length === 0) return setFormError("Select at least one caregiver.");
+
+    if (selectedCaregivers.length < 3) return setFormError("Select at least three caregivers.");
     if (selectedDays.length === 0) return setFormError("Select at least one meeting day.");
 
     // Build weeklySchedule array
@@ -356,11 +353,18 @@ const ScheduleCare = ({
     }
   };
 
-  // Helper for time formatting
+  // Helper for time formatting - FIXED VERSION
   function fmtTime(minutes: number) {
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-    return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+    // Clamp minutes to valid 24-hour range (0-1439)
+    const clampedMinutes = Math.max(0, Math.min(1439, minutes));
+    
+    const h = Math.floor(clampedMinutes / 60);
+    const m = clampedMinutes % 60;
+    
+    // Ensure hours are in 0-23 range
+    const validHours = h >= 24 ? 23 : h;
+    
+    return `${validHours.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
   }
 
   const [isDragging, setIsDragging] = useState<'start' | 'end' | null>(null);

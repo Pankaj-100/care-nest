@@ -129,9 +129,8 @@ export interface SearchCaregiversParams {
   languages?: string; // Keep as string (comma-separated)
   prn?: string; // Keep as string (comma-separated) 
   locationMiles?: number;
-  experience?: string;
-  minExperience?: number;
-  maxExperience?: number;
+    experienceMin?: number; // Make sure this exists
+  experienceMax?: number; 
 }
 
 // --------- Base URLs ---------

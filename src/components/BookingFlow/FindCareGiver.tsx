@@ -7,6 +7,12 @@ import { YellowButton } from "../common/CustomButton";
 import { useAppDispatch } from "@/store/hooks";
 import { setServiceIds } from "@/store/slices/bookingSlice";
 import { useGetServiceNamesQuery, useGetServiceHighlightsQuery } from "@/store/api/bookingApi";
+import { Urbanist } from 'next/font/google'
+
+const urbanist = Urbanist({ 
+  subsets: ['latin'],
+  variable: '--font-urbanist',
+})
 
 const cardBase =
   "relative flex flex-col items-center text-center gap-4 bg-white rounded-xl shadow-sm p-8 w-full max-w-[340px] border transition hover:shadow-md";
@@ -156,9 +162,9 @@ const FindCareGiver: React.FC = () => {
                     <Image
                       src={imageUrl}
                       alt={service.name || "Service"}
-                      width={100}
-                      height={100}
-                      className="w-auto h-auto max-h-24"
+                      width={140}
+                      height={140}
+                      className="w-auto h-auto max-h-28"
                       priority
                       onError={(e) => {
                         console.error("Image failed to load:", imageUrl);
@@ -174,11 +180,11 @@ const FindCareGiver: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <h2 className="font-semibold text-sm md:text-base text-[#233D4D]">
+                <h2 className={`font-bold text-base  md:text-base text-[#233D4D] ${urbanist.className}`}>
                   {service.name || "Unknown Service"}
                 </h2>
                 {/* Use highlight from merged data (highlights API) */}
-                <p className="text-[11px] leading-relaxed whitespace-pre-line text-[#98A2B3] max-w-[270px] min-h-[3rem]">
+                <p className={`text-[15px] leading-relaxed whitespace-pre-line text-[#98A2B3] max-w-[270px] min-h-[2.5rem] ${urbanist.className}`}>
                   {highlight}
                 </p>
                 {active && (

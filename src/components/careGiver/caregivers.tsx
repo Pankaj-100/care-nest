@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation"; // Add usePathname
 import { IoFilter as FilterIcon } from "react-icons/io5";
 import FilterSidebar from "@/components/careGiver/FilterSidebar";
 import CaregiverCard from "@/components/careGiver/CaregiverCard";
@@ -31,7 +31,8 @@ interface CaregiverFilters {
   languages?: string[];
   prn?: string[];
   locationMiles?: number;
-  experience?: string;
+  experienceMin?: number; 
+  experienceMax?: number;
 }
 
 const CaregiversPage = () => {
@@ -67,7 +68,10 @@ const CaregiversPage = () => {
     if (filters.minPrice) baseParams.minPrice = filters.minPrice;
     if (filters.maxPrice) baseParams.maxPrice = filters.maxPrice;
     if (filters.locationMiles) baseParams.locationMiles = filters.locationMiles;
-    if (filters.experience) baseParams.experience = filters.experience;
+    
+    // UPDATED: Use experienceMin and experienceMax instead of experience
+    if (filters.experienceMin !== undefined) baseParams.experienceMin = filters.experienceMin;
+    if (filters.experienceMax !== undefined) baseParams.experienceMax = filters.experienceMax;
     
     // Convert arrays to comma-separated strings
     if (filters.languages && filters.languages.length > 0) {
@@ -179,6 +183,35 @@ const CaregiversPage = () => {
       console.error('Error loading selected caregivers:', error);
     }
   }, []);
+
+  // Clear selected caregivers when leaving this page
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Clear selections when user navigates away or closes tab
+      localStorage.removeItem('selectedCaregivers');
+    };
+
+    const handleVisibilityChange = () => {
+      // Optional: Clear when user switches tabs/apps
+      if (document.hidden) {
+        localStorage.removeItem('selectedCaregivers');
+      }
+    };
+
+    // Add event listeners
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      
+      // Clear when component unmounts (navigation to other pages)
+      localStorage.removeItem('selectedCaregivers');
+      window.dispatchEvent(new CustomEvent('caregiver-selection-changed'));
+    };
+  }, []); // Empty dependency array - runs once on mount
 
   const mappedCaregiversForCards = caregivers.map(c => ({
     id: c.id,
@@ -322,11 +355,17 @@ const CaregiversPage = () => {
 
           <div className="mt-10 lg:mb-0 mb-5 w-full text-center max-w-xl mx-auto">
             <button
-              disabled={mappedCaregiversForSchedule.length < 1}
-              onClick={() => setIsScheduleOpen(true)}
+              onClick={() => {
+                // Check if user has selected at least 3 caregivers
+                if (mappedCaregiversForSchedule.length < 3) {
+                  toast.error("Please select at least 3 caregivers to proceed with booking.");
+                  return;
+                }
+                setIsScheduleOpen(true);
+              }}
               className={`lg:w-[25rem] w-full px-4 py-2 text-[var(--navy)] text-lg rounded-full font-semibold transition ${
                 mappedCaregiversForSchedule.length >= 1
-                  ? "bg-[var(--yellow)] cursor-pointer"
+                  ? "bg-[var(--yellow)] cursor-pointer hover:bg-yellow-400"
                   : "bg-[#233D4D1A] hover:cursor-not-allowed"
               }`}
             >
@@ -344,6 +383,8 @@ const CaregiversPage = () => {
         isBookmarked={
           caregivers.find(c => c.id === selectedCaregiverId)?.isBookmarked ?? false
         }
+        // Add this prop to pass the current selection state
+        isSelected={selectedCaregiverId ? selectedCaregivers.includes(selectedCaregiverId) : false}
       />
 
       <ScheduleCare

@@ -6,6 +6,15 @@ import { useGetCaregiverDetailsQuery, useBookmarkCaregiverMutation } from "@/sto
 import { toast } from "react-toastify";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
+export interface CaregiverModalProps {
+  isOpen: boolean;
+  caregiverId: string | null;
+  onClose: () => void;
+  onAddCaregiver: (id: string) => void;
+  isBookmarked: boolean;
+  isSelected?: boolean; // Add this optional prop
+}
+
 interface CaregiverDetail {
   id: string;
   name: string;
@@ -22,14 +31,6 @@ interface CaregiverDetail {
   distanceMiles?: number;
 }
 
-interface CaregiverModalProps {
-  isOpen: boolean;
-  caregiverId: string | null;
-  onClose: () => void;
-  onAddCaregiver: (id: string) => void;
-  isBookmarked?: boolean;
-}
-
 const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com";
 
 const CaregiverModal: React.FC<CaregiverModalProps> = ({
@@ -38,6 +39,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
   onClose,
   onAddCaregiver,
   isBookmarked,
+  isSelected = false, // Add this prop with default value
 }) => {
   const { data, isLoading, isError } = useGetCaregiverDetailsQuery(
     caregiverId || "",
@@ -112,6 +114,8 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
             raw={data.data.details as CaregiverDetail | CaregiverDetail[]}
             onAddCaregiver={onAddCaregiver}
             isBookmarked={!!isBookmarked}
+            isSelected={isSelected}
+            caregiverId={caregiverId} // Add this line
           />
         )}
       </div>
@@ -123,18 +127,12 @@ const ModalContent: React.FC<{
   raw: CaregiverDetail | CaregiverDetail[];
   onAddCaregiver: (id: string) => void;
   isBookmarked: boolean;
-}> = ({ raw, onAddCaregiver, isBookmarked }) => {
+  isSelected: boolean;
+  caregiverId: string | null; // Add this prop
+}> = ({ raw, onAddCaregiver, isBookmarked, isSelected, caregiverId }) => {
   const caregiver: CaregiverDetail = Array.isArray(raw) ? raw[0] : raw;
   const [bookmarkCaregiver, { isLoading: bookmarking }] = useBookmarkCaregiverMutation();
   const [bookmarked, setBookmarked] = useState(isBookmarked);
-  const [isSelected, setIsSelected] = useState(false); // Initialize as false
-
-  // Check if caregiver is already selected (you might need to get this from your global state or localStorage)
-  useEffect(() => {
-    // Check if this caregiver is already in selected caregivers list
-    const selectedCaregivers = JSON.parse(localStorage.getItem('selectedCaregivers') || '[]');
-    setIsSelected(selectedCaregivers.includes(caregiver.id));
-  }, [caregiver.id]);
 
   const avatarSrc =
     caregiver.avatar && typeof caregiver.avatar === "string" && caregiver.avatar.trim() !== ""
@@ -151,26 +149,6 @@ const ModalContent: React.FC<{
       toast.success("Caregiver bookmarked successfully!");
     } catch {
       toast.error("login to bookmark caregiver.");
-    }
-  };
-
-  const handleAddRemoveCaregiver = () => {
-    if (caregiver.id) {
-      const selectedCaregivers = JSON.parse(localStorage.getItem('selectedCaregivers') || '[]');
-      
-      if (isSelected) {
-        // Remove caregiver
-        const updatedCaregivers = selectedCaregivers.filter((id: string) => id !== caregiver.id);
-        localStorage.setItem('selectedCaregivers', JSON.stringify(updatedCaregivers));
-        setIsSelected(false);
-      } else {
-        // Add caregiver
-        const updatedCaregivers = [...selectedCaregivers, caregiver.id];
-        localStorage.setItem('selectedCaregivers', JSON.stringify(updatedCaregivers));
-        setIsSelected(true);
-      }
-      
-      onAddCaregiver(caregiver.id);
     }
   };
 
@@ -236,11 +214,11 @@ const ModalContent: React.FC<{
             </button>
 
             <button
-              onClick={handleAddRemoveCaregiver}
-              className={`w-full h-12 rounded-xl cursor-pointer font-semibold transition flex items-center justify-center ${
+              onClick={() => caregiverId && onAddCaregiver(caregiverId)}
+              className={`w-full py-3 px-6 rounded-lg font-semibold transition ${
                 isSelected
                   ? "border-2 border-[#F2A307] text-[#F2A307] bg-white hover:bg-red-50"
-                  : "border-2 border-[#F2A307] text-[#233D4D] bg-[#F2A307] hover:bg-[#FF9800]"
+                  : "bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--navy)]"
               }`}
             >
               {isSelected ? "Remove Caregiver" : "+ Add Caregiver"}

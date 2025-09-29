@@ -1,5 +1,11 @@
 // components/FilterSidebar.tsx
 import React, { useState, useEffect } from "react";
+import { Urbanist } from 'next/font/google'
+
+const urbanist = Urbanist({ 
+  subsets: ['latin'],
+  variable: '--font-urbanist',
+})
 
 const GENDERS = ["Male", "Female", "Other"];
 const PRICES = [
@@ -23,6 +29,7 @@ const EXPERIENCES = [
   { label: "10+ years", min: 10, max: 99 },
 ];
 
+// Keep the original CaregiverFilters interface
 interface CaregiverFilters {
   gender?: string;
   minPrice?: number;
@@ -30,7 +37,8 @@ interface CaregiverFilters {
   languages?: string[];
   prn?: string[];
   locationMiles?: number;
-  experience?: string;
+  experienceMin?: number;
+  experienceMax?: number;
 }
 
 interface FilterSidebarProps {
@@ -39,111 +47,127 @@ interface FilterSidebarProps {
 }
 
 const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarProps) => {
-  const [gender, setGender] = useState<string>("");
-  const [price, setPrice] = useState<{ min: number; max: number } | null>(null);
+  // Update state to handle arrays for previously single-select filters
+  const [genders, setGenders] = useState<string[]>([]); // Changed from single string
+  const [prices, setPrices] = useState<{ min: number; max: number }[]>([]); // Changed from single object
   const [languages, setLanguages] = useState<string[]>([]);
   const [prn, setPrn] = useState<string[]>([]);
-  const [locationMiles, setLocationMiles] = useState<number | null>(null);
-  const [experience, setExperience] = useState<{ min: number; max: number } | null>(null);
+  const [locationMiles, setLocationMiles] = useState<number[]>([]); // Changed from single number
+  const [experiences, setExperiences] = useState<{ min: number; max: number }[]>([]); // Changed from single object
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Reset filters when initialFilters changes (used for "Clear All")
+  // Reset filters when initialFilters changes
   useEffect(() => {
-    setGender(initialFilters.gender || "");
+    // Convert single values to arrays for internal state
+    setGenders(initialFilters.gender ? [initialFilters.gender] : []);
     
-    // Reset price
-    if (initialFilters.minPrice && initialFilters.maxPrice) {
-      setPrice({ min: initialFilters.minPrice, max: initialFilters.maxPrice });
+    // Convert price range to array
+    if (initialFilters.minPrice !== undefined && initialFilters.maxPrice !== undefined) {
+      setPrices([{ min: initialFilters.minPrice, max: initialFilters.maxPrice }]);
     } else {
-      setPrice(null);
+      setPrices([]);
     }
     
     setLanguages(initialFilters.languages || []);
     setPrn(initialFilters.prn || []);
-    setLocationMiles(initialFilters.locationMiles || null);
     
-    // Reset experience
-    if (initialFilters.experience) {
-      const [min, max] = initialFilters.experience.split('-').map(Number);
-      setExperience({ min, max });
+    // Convert single location to array
+    setLocationMiles(initialFilters.locationMiles ? [initialFilters.locationMiles] : []);
+    
+    // Convert experience range to array
+    if (initialFilters.experienceMin !== undefined && initialFilters.experienceMax !== undefined) {
+      setExperiences([{ min: initialFilters.experienceMin, max: initialFilters.experienceMax }]);
     } else {
-      setExperience(null);
+      setExperiences([]);
     }
     
     setIsInitialized(true);
   }, [initialFilters]);
 
-  // Helper function to build current filter object
+  // Updated helper function to build current filter object
   const buildCurrentFilters = (overrides: Partial<{
-    gender: string;
-    price: { min: number; max: number } | null;
+    genders: string[];
+    prices: { min: number; max: number }[];
     languages: string[];
     prn: string[];
-    locationMiles: number | null;
-    experience: { min: number; max: number } | null;
+    locationMiles: number[];
+    experiences: { min: number; max: number }[];
   }> = {}) => {
-    const currentGender = overrides.gender !== undefined ? overrides.gender : gender;
-    const currentPrice = overrides.price !== undefined ? overrides.price : price;
+    const currentGenders = overrides.genders !== undefined ? overrides.genders : genders;
+    const currentPrices = overrides.prices !== undefined ? overrides.prices : prices;
     const currentLanguages = overrides.languages !== undefined ? overrides.languages : languages;
     const currentPrn = overrides.prn !== undefined ? overrides.prn : prn;
     const currentLocationMiles = overrides.locationMiles !== undefined ? overrides.locationMiles : locationMiles;
-    const currentExperience = overrides.experience !== undefined ? overrides.experience : experience;
+    const currentExperiences = overrides.experiences !== undefined ? overrides.experiences : experiences;
 
     return {
-      gender: currentGender || undefined,
-      minPrice: currentPrice?.min,
-      maxPrice: currentPrice?.max,
+      // Send first gender if any selected (for backward compatibility)
+      gender: currentGenders.length > 0 ? currentGenders[0] : undefined,
+      
+      // Send price range (you might want to send min of all mins and max of all maxes)
+      minPrice: currentPrices.length > 0 ? Math.min(...currentPrices.map(p => p.min)) : undefined,
+      maxPrice: currentPrices.length > 0 ? Math.max(...currentPrices.map(p => p.max)) : undefined,
+      
       languages: currentLanguages.length > 0 ? currentLanguages : undefined,
       prn: currentPrn.length > 0 ? currentPrn : undefined,
-      locationMiles: currentLocationMiles || undefined,
-      experience: currentExperience ? `${currentExperience.min}-${currentExperience.max}` : undefined,
+      
+      // Send first location if any selected (or you could modify API to accept multiple)
+      locationMiles: currentLocationMiles.length > 0 ? currentLocationMiles[0] : undefined,
+      
+      // Send experience range (min of all mins and max of all maxes)
+      experienceMin: currentExperiences.length > 0 ? Math.min(...currentExperiences.map(e => e.min)) : undefined,
+      experienceMax: currentExperiences.length > 0 ? Math.max(...currentExperiences.map(e => e.max)) : undefined,
     };
   };
 
-  // Handle gender selection/deselection
+  // Handle gender checkbox changes
   const handleGenderChange = (selectedGender: string) => {
-    const newGender = gender === selectedGender ? "" : selectedGender;
-    setGender(newGender);
+    const newGenders = genders.includes(selectedGender)
+      ? genders.filter(g => g !== selectedGender)
+      : [...genders, selectedGender];
+    setGenders(newGenders);
     
-
-    
-    // Call filter change with updated value
     if (isInitialized) {
-      const newFilters = buildCurrentFilters({ gender: newGender });
+      const newFilters = buildCurrentFilters({ genders: newGenders });
       onFilterChange(newFilters);
     }
   };
 
-  // Handle price selection/deselection
+  // Handle price checkbox changes
   const handlePriceChange = (range: { min: number; max: number }) => {
-    const newPrice = price?.min === range.min && price?.max === range.max ? null : range;
-    setPrice(newPrice);
+    const newPrices = prices.some(p => p.min === range.min && p.max === range.max)
+      ? prices.filter(p => !(p.min === range.min && p.max === range.max))
+      : [...prices, range];
+    setPrices(newPrices);
     
-    // Call filter change with updated value
     if (isInitialized) {
-      onFilterChange(buildCurrentFilters({ price: newPrice }));
+      onFilterChange(buildCurrentFilters({ prices: newPrices }));
     }
   };
 
-  // Handle location selection/deselection
+  // Handle location checkbox changes
   const handleLocationChange = (value: number) => {
-    const newLocationMiles = locationMiles === value ? null : value;
+    const newLocationMiles = locationMiles.includes(value)
+      ? locationMiles.filter(l => l !== value)
+      : [...locationMiles, value];
     setLocationMiles(newLocationMiles);
     
-    // Call filter change with updated value
     if (isInitialized) {
       onFilterChange(buildCurrentFilters({ locationMiles: newLocationMiles }));
     }
   };
 
-  // Handle experience selection/deselection
+  // Handle experience checkbox changes
   const handleExperienceChange = (exp: { min: number; max: number }) => {
-    const newExperience = experience?.min === exp.min && experience?.max === exp.max ? null : exp;
-    setExperience(newExperience);
+    const newExperiences = experiences.some(e => e.min === exp.min && e.max === exp.max)
+      ? experiences.filter(e => !(e.min === exp.min && e.max === exp.max))
+      : [...experiences, exp];
+    setExperiences(newExperiences);
     
-    // Call filter change with updated value
     if (isInitialized) {
-      onFilterChange(buildCurrentFilters({ experience: newExperience }));
+      const newFilters = buildCurrentFilters({ experiences: newExperiences });
+      console.log("Experience filter changed:", newFilters);
+      onFilterChange(newFilters);
     }
   };
 
@@ -174,19 +198,18 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
   };
 
   return (
-    <aside className="w-full md:w-[250px] border rounded-xl p-4 space-y-4">
-      <h2 className="text-md font-semibold mb-4 text-[var(--navy)]">Filters & Sort</h2>
+    <aside className={`w-full md:w-[250px] border rounded-xl p-4 space-y-4 ${urbanist.className}`}>
+      <h2 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Filters & Sort</h2>
       
-      {/* Gender */}
+      {/* Gender - Changed to checkboxes */}
       <div>
-        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Gender</h4>
+        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
         <div className="space-y-1 text-[#98A2B3]">
           {GENDERS.map((g) => (
-            <label key={g} className="block text-sm text-[var(--coolgray)] font-medium">
+            <label key={g} className={`block text-sm text-[var(--coolgray)] font-medium ${urbanist.className}`}>
               <input
-                type="radio"
-                name="gender"
-                checked={gender === g}
+                type="checkbox"
+                checked={genders.includes(g)}
                 onChange={() => handleGenderChange(g)}
                 className="mr-2 accent-[#233D4D]"
               />
@@ -196,15 +219,14 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         </div>
       </div>
 
-      {/* Price */}
+      {/* Price - Changed to checkboxes */}
       <div>
-        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Price (Hourly Rate)</h4>
+        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Price (Hourly Rate)</h4>
         {PRICES.map((range, idx) => (
-          <label key={idx} className="block text-sm text-[#98A2B3] font-medium">
+          <label key={idx} className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
             <input
-              type="radio"
-              name="price"
-              checked={price?.min === range.min && price?.max === range.max}
+              type="checkbox"
+              checked={prices.some(p => p.min === range.min && p.max === range.max)}
               onChange={() => handlePriceChange(range)}
               className="mr-2 accent-[#233D4D]"
             />
@@ -213,15 +235,14 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         ))}
       </div>
 
-      {/* Location */}
+      {/* Location - Changed to checkboxes */}
       <div>
-        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Location</h4>
+        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
         {LOCATIONS.map((loc) => (
-          <label key={loc.value} className="block text-sm text-[#98A2B3] font-medium">
+          <label key={loc.value} className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
             <input
-              type="radio"
-              name="location"
-              checked={locationMiles === loc.value}
+              type="checkbox"
+              checked={locationMiles.includes(loc.value)}
               onChange={() => handleLocationChange(loc.value)}
               className="mr-2 accent-[#233D4D]"
             />
@@ -230,10 +251,10 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         ))}
       </div>
 
-      {/* PRN (Pro rata) */}
+      {/* PRN - Remains checkboxes */}
       <div>
-        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">PRN (Pro re nata)</h4>
-        <label className="block text-sm text-[#98A2B3] font-medium">
+        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
+        <label className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
           <input
             type="checkbox"
             className="mr-2 accent-[#233D4D]"
@@ -242,7 +263,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
           />
           As Needed
         </label>
-        <label className="block text-sm text-[#98A2B3] font-medium">
+        <label className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
           <input
             type="checkbox"
             className="mr-2 accent-[#233D4D]"
@@ -253,16 +274,15 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         </label>
       </div>
       
-      {/* Experience */}
+      {/* Experience - Changed to checkboxes */}
       <div>
-        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Experience</h4>
-        <div className="space-y-1"> {/* Add this wrapper div */}
+        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
+        <div className="space-y-1">
           {EXPERIENCES.map((exp, idx) => (
-            <label key={idx} className="block text-sm text-[#98A2B3] font-medium">
+            <label key={idx} className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
               <input
-                type="radio"
-                name="experience"
-                checked={experience?.min === exp.min && experience?.max === exp.max}
+                type="checkbox"
+                checked={experiences.some(e => e.min === exp.min && e.max === exp.max)}
                 onChange={() => handleExperienceChange(exp)}
                 className="mr-2 accent-[#233D4D]"
               />
@@ -272,11 +292,11 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         </div>
       </div>
 
-      {/* Languages */}
+      {/* Languages - Remains checkboxes */}
       <div>
-        <h4 className="text-md font-semibold mb-4 text-[var(--navy)]">Language</h4>
+        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
         {LANGUAGES.map((lang) => (
-          <label key={lang} className="block text-sm text-[#98A2B3] font-medium">
+          <label key={lang} className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
             <input
               type="checkbox"
               checked={languages.includes(lang)}
@@ -287,8 +307,6 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
           </label>
         ))}
       </div>
-
-      
     </aside>
   );
 };

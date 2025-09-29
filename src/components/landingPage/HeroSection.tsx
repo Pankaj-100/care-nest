@@ -83,13 +83,13 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
   const [zipCode, setZipCode] = useState<string>("");
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const pathname = usePathname(); // Add this import
+  const pathname = usePathname();
   
   // Get the stored zipcode from Redux
   const storedZipcode = useAppSelector(state => state.booking.careseekerZipcode);
 
-  // Dynamic redirect path based on current page
-  // const redirectPath = pathname === "/care-giver" ? "/care-giver" : "/find-job";
+  // Check if we're on the caregivers page to apply different styling
+  const isCaregiversPage = pathname === "/care-giver";
 
   // Initialize zipcode from Redux state on component mount
   useEffect(() => {
@@ -101,11 +101,10 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
   function handleRedirect(e?: React.MouseEvent | React.FormEvent) {
     if (e) e.preventDefault();
     if (zipCode.trim()) {
-      dispatch(setCareseekerZipcode(Number(zipCode.trim()))); // Store in redux
+      dispatch(setCareseekerZipcode(Number(zipCode.trim())));
       
       if (pathname === "/care-giver") {
-        // If already on caregiver page, just update the zipcode - the page will auto-refresh
-        // No need to navigate, the useEffect in caregivers.tsx will handle the new search
+        // If already on caregiver page, just update the zipcode
         return;
       } else {
         // From landing page or other pages, go to find-job
@@ -116,16 +115,23 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
 
   return (
     <div
-      className={`bg-white rounded-xl shadow-sm p-5 lg:p-6 w-full mx-auto lg:w-[70vw] xl:max-w-6xl
+      className={`bg-white rounded-xl shadow-sm p-5 lg:p-6 w-full mx-auto
+      ${isCaregiversPage 
+        ? "lg:w-[60vw] xl:max-w-4xl items-center" // Smaller width for caregivers page
+        : "lg:w-[70vw] xl:max-w-6xl" // Original width for landing page
+      }
       ${noDescription ? "lg:grid lg:grid-cols-12 lg:gap-6" : "lg:grid lg:grid-cols-12 lg:gap-6"}`}
     >
       {!noDescription && (
         <div className="col-span-5 space-y-2">
           <h3 className="font-semibold text-lg">
-            {title ?? "Browse A Caregivers"}
+            {title ?? (isCaregiversPage ? "Select 3 Caregivers" : "Browse A Caregivers")}
           </h3>
           <p className="text-sm leading-relaxed text-gray-600">
-            {description ?? "Create your free profile to discover verified, compassionate caregivers."}
+            {description ?? (isCaregiversPage 
+              ? "Select up to three caregivers to continue with your booking." 
+              : "Create your free profile to discover verified, compassionate caregivers."
+            )}
           </p>
         </div>
       )}
@@ -142,7 +148,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
           }`}
         >
           <label className="mb-2 font-semibold text-base" htmlFor="zip-input">
-            Provide Zip code
+            {isCaregiversPage ? "Provide Zip code" : "Provide Zip code"}
           </label>
           <input
             id="zip-input"
@@ -166,7 +172,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
               bg-[#FFA726] text-[#233D4D]`}
             disabled={!zipCode.trim()}
           >
-            Search Caregiver
+            {isCaregiversPage ? "Search Caregiver" : "Search Caregiver"}
           </button>
         </div>
       </form>
