@@ -41,11 +41,6 @@ interface CaregiverDetails {
   whyChooseMe: Array<{ title: string; description: string }>;
 }
 
-interface Service {
-  id: string;
-  name: string;
-  zipcode: string;
-}
 
 interface ServiceName {
   id: string;
