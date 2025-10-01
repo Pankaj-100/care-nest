@@ -406,7 +406,8 @@ const ScheduleCare = ({
         });
       }
     }
-  }, [applyAll, selectedDays, schedule]); // Added schedule as dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [applyAll, selectedDays]); 
 
   if (!isOpen) return null;
 

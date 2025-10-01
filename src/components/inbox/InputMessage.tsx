@@ -1,32 +1,53 @@
+"use client";
 import React, { useState } from "react";
 import { LuSend as SendIcon } from "react-icons/lu";
-import { IoIosAttach as AttachmentIcon } from "react-icons/io";
+// import { IoIosAttach as AttachmentIcon } from "react-icons/io";
+import { Input } from "@/components/ui/input";
+import { chatMessageType } from "@/lib/interface-types";
 
-import { Input } from "../ui/input";
+interface Props {
+  userId: string;
+  addMessage: (msg: chatMessageType) => void;
+  sendMessage: (toUserId: string, message: string) => void;
+}
 
-function InputMessage() {
+const InputMessage = ({ userId, addMessage, sendMessage }: Props) => {
   const [message, setMessage] = useState("");
 
+  const handleSendMessage = () => {
+    if (!message.trim()) return;
+
+    const newMsg: chatMessageType = {
+      id: Date.now().toString(),
+      conversationId: "",
+      fromUserId: userId,
+      toUserId: userId, // or the recipient's userId if available
+      isOtherUserMessage: false,
+      message,
+      createdAt: new Date().toISOString(),
+      hasRead: true,
+    };
+
+    addMessage(newMsg);
+    sendMessage(userId, message); // send via socket
+    setMessage("");
+  };
+
   return (
-    <div className="flex items-center rounded-lg px-4 py-1 bg-[#F7F7F3]  ">
-      <div className="flex grow-1 gap-4 items-center">
-        <button>
-          <AttachmentIcon size={21} className="text-[var(--cool-gray)] " />
-        </button>
-
-        <Input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="ps-0 border-none focus-visible:ring-0  text-[var(--cool-gray)]"
-          placeholder="Write here..."
-        />
-      </div>
-
-      <button>
-        <SendIcon size={18} className="text-[var(--blue-gray)] " />
+    <div className="flex items-center rounded-lg px-4 py-2 bg-[#F7F7F3] gap-2">
+   
+      <Input
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Write a message..."
+        className="border-none focus-visible:ring-0 flex-grow"
+        onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+      />
+      <button onClick={handleSendMessage}>
+        <SendIcon size={18} className="text-blue-500" />
       </button>
     </div>
   );
-}
+};
 
 export default InputMessage;

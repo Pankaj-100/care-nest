@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 import { SearchIcon } from "lucide-react";
 
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import data from "@/lib/dummy_data/chats.json";
-import NoItems from "../common/NoItems";
-import DP from "../common/DP";
+import NoItems from "@/components/common/NoItems";
+import DP from "@/components/common/DP";
 import ProfilePic from "@/assets/profilepic1.png";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -28,7 +28,7 @@ function MessageList({ handleOpenMessages }: Props) {
   };
 
   return (
-    <div className="w-full flex flex-col flex-grow h-full  ">
+    <div className="w-full overflow-y-auto flex flex-col h-[45rem]">
       <div className="flex items-center rounded-full px-4 py-1 bg-[var(--light-gray)] mb-2 ">
         <Input
           value={search}
@@ -48,7 +48,7 @@ function MessageList({ handleOpenMessages }: Props) {
         >
           {chatList?.map((chat) => (
             <div
-              className="flex justify-between py-2 hover:cursor-pointer hover:bg-gray-100  px-4 rounded-md transition-all "
+              className="flex justify-between py-2 hover:cursor-pointer hover:bg-gray-100  px-2 rounded-md transition-all "
               key={chat.id}
             >
               <div className="flex gap-4">

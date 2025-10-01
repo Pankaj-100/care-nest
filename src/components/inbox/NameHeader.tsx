@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PiDotsThreeVerticalBold as OptionsIcon } from "react-icons/pi";
-import { binIcon } from "@/lib/svg_icons";
+import { binIconTheme } from "../icons/page";
 
 import {
   DropdownMenu,
@@ -9,8 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ProfilePic from "@/assets/profilepic1.png";
-import DP from "../common/DP";
-import ActionDialog from "../common/ActionDialog";
+import DP from "@/components/common/DP";
+import ActionDialog from "@/components/common/ActionDialog";
 
 function NameHeader() {
   const [openDeleteDialog, setOpenDialog] = useState(false);
@@ -24,7 +24,7 @@ function NameHeader() {
       <div className="flex justify-between items-center border-b border-dashed border-[#EEEEEE] pb-4">
         <div className="flex gap-3 items-center">
           <DP url={ProfilePic} alt="Me" />
-          <div className="text-lg font-medium">William James</div>
+          <div className="text-lg font-medium">Admin</div>
         </div>
         <div>
           <DropdownMenu>
@@ -48,7 +48,7 @@ function NameHeader() {
       <ActionDialog
         open={openDeleteDialog}
         handleOpen={handleOpen}
-        icon={binIcon}
+        icon={binIconTheme}
         confirmText="Delete"
         handleConfirm={() => {}}
         heading="Chat Deletion"

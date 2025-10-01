@@ -35,8 +35,8 @@ interface CaregiverFilters {
   minPrice?: number;
   maxPrice?: number;
   languages?: string[];
-  prn?: string[];
-  locationMiles?: number;
+  prn?: boolean; // Changed to boolean
+  locationRange?: string; // Changed to string
   experienceMin?: number;
   experienceMax?: number;
 }
@@ -47,169 +47,110 @@ interface FilterSidebarProps {
 }
 
 const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarProps) => {
-  // Update state to handle arrays for previously single-select filters
-  const [genders, setGenders] = useState<string[]>([]); // Changed from single string
-  const [prices, setPrices] = useState<{ min: number; max: number }[]>([]); // Changed from single object
-  const [languages, setLanguages] = useState<string[]>([]);
-  const [prn, setPrn] = useState<string[]>([]);
-  const [locationMiles, setLocationMiles] = useState<number[]>([]); // Changed from single number
-  const [experiences, setExperiences] = useState<{ min: number; max: number }[]>([]); // Changed from single object
+  // Update state to handle single selections (not arrays)
+  const [gender, setGender] = useState<string>(""); // Single selection
+  const [price, setPrice] = useState<{ min: number; max: number } | null>(null); // Single selection
+  const [languages, setLanguages] = useState<string[]>([]); // Keep multiple for languages
+  const [locationRange, setLocationRange] = useState<string>(""); // Use string for location
+  const [prn, setPrn] = useState<boolean | null>(null); // Use boolean for PRN
+  const [experience, setExperience] = useState<{ min: number; max: number } | null>(null); // Single selection
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Reset filters when initialFilters changes
   useEffect(() => {
-    // Convert single values to arrays for internal state
-    setGenders(initialFilters.gender ? [initialFilters.gender] : []);
-    
-    // Convert price range to array
+    setGender(initialFilters.gender || "");
     if (initialFilters.minPrice !== undefined && initialFilters.maxPrice !== undefined) {
-      setPrices([{ min: initialFilters.minPrice, max: initialFilters.maxPrice }]);
+      setPrice({ min: initialFilters.minPrice, max: initialFilters.maxPrice });
     } else {
-      setPrices([]);
+      setPrice(null);
     }
-    
     setLanguages(initialFilters.languages || []);
-    setPrn(initialFilters.prn || []);
-    
-    // Convert single location to array
-    setLocationMiles(initialFilters.locationMiles ? [initialFilters.locationMiles] : []);
-    
-    // Convert experience range to array
+    setPrn(initialFilters.prn === true ? true : initialFilters.prn === false ? false : null); // Convert to boolean
+    setLocationRange(initialFilters.locationRange || "");
     if (initialFilters.experienceMin !== undefined && initialFilters.experienceMax !== undefined) {
-      setExperiences([{ min: initialFilters.experienceMin, max: initialFilters.experienceMax }]);
+      setExperience({ min: initialFilters.experienceMin, max: initialFilters.experienceMax });
     } else {
-      setExperiences([]);
+      setExperience(null);
     }
-    
     setIsInitialized(true);
-  }, [initialFilters]);
+    // Only run once on mount!
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Updated helper function to build current filter object
-  const buildCurrentFilters = (overrides: Partial<{
-    genders: string[];
-    prices: { min: number; max: number }[];
-    languages: string[];
-    prn: string[];
-    locationMiles: number[];
-    experiences: { min: number; max: number }[];
-  }> = {}) => {
-    const currentGenders = overrides.genders !== undefined ? overrides.genders : genders;
-    const currentPrices = overrides.prices !== undefined ? overrides.prices : prices;
-    const currentLanguages = overrides.languages !== undefined ? overrides.languages : languages;
-    const currentPrn = overrides.prn !== undefined ? overrides.prn : prn;
-    const currentLocationMiles = overrides.locationMiles !== undefined ? overrides.locationMiles : locationMiles;
-    const currentExperiences = overrides.experiences !== undefined ? overrides.experiences : experiences;
+  const buildCurrentFilters = () => {
+    const filters: CaregiverFilters = {};
 
-    return {
-      // Send first gender if any selected (for backward compatibility)
-      gender: currentGenders.length > 0 ? currentGenders[0] : undefined,
-      
-      // Send price range (you might want to send min of all mins and max of all maxes)
-      minPrice: currentPrices.length > 0 ? Math.min(...currentPrices.map(p => p.min)) : undefined,
-      maxPrice: currentPrices.length > 0 ? Math.max(...currentPrices.map(p => p.max)) : undefined,
-      
-      languages: currentLanguages.length > 0 ? currentLanguages : undefined,
-      prn: currentPrn.length > 0 ? currentPrn : undefined,
-      
-      // Send first location if any selected (or you could modify API to accept multiple)
-      locationMiles: currentLocationMiles.length > 0 ? currentLocationMiles[0] : undefined,
-      
-      // Send experience range (min of all mins and max of all maxes)
-      experienceMin: currentExperiences.length > 0 ? Math.min(...currentExperiences.map(e => e.min)) : undefined,
-      experienceMax: currentExperiences.length > 0 ? Math.max(...currentExperiences.map(e => e.max)) : undefined,
-    };
+    if (gender) filters.gender = gender;
+    if (price) {
+      filters.minPrice = price.min;
+      filters.maxPrice = price.max;
+    }
+    if (languages.length > 0) filters.languages = languages;
+    if (prn !== null) filters.prn = prn; // boolean
+    if (locationRange) filters.locationRange = locationRange; // string
+    if (experience) {
+      filters.experienceMin = experience.min;
+      filters.experienceMax = experience.max;
+    }
+
+    return filters;
   };
 
-  // Handle gender checkbox changes
+  // Handle gender radio button changes (single selection)
   const handleGenderChange = (selectedGender: string) => {
-    const newGenders = genders.includes(selectedGender)
-      ? genders.filter(g => g !== selectedGender)
-      : [...genders, selectedGender];
-    setGenders(newGenders);
-    
-    if (isInitialized) {
-      const newFilters = buildCurrentFilters({ genders: newGenders });
-      onFilterChange(newFilters);
-    }
+    setGender(gender === selectedGender ? "" : selectedGender);
   };
 
-  // Handle price checkbox changes
+  // Handle price radio button changes (single selection)
   const handlePriceChange = (range: { min: number; max: number }) => {
-    const newPrices = prices.some(p => p.min === range.min && p.max === range.max)
-      ? prices.filter(p => !(p.min === range.min && p.max === range.max))
-      : [...prices, range];
-    setPrices(newPrices);
-    
-    if (isInitialized) {
-      onFilterChange(buildCurrentFilters({ prices: newPrices }));
-    }
+    setPrice(price && price.min === range.min && price.max === range.max ? null : range);
   };
 
-  // Handle location checkbox changes
-  const handleLocationChange = (value: number) => {
-    const newLocationMiles = locationMiles.includes(value)
-      ? locationMiles.filter(l => l !== value)
-      : [...locationMiles, value];
-    setLocationMiles(newLocationMiles);
-    
-    if (isInitialized) {
-      onFilterChange(buildCurrentFilters({ locationMiles: newLocationMiles }));
-    }
+  // Update location handler
+  const handleLocationChange = (label: string) => {
+    setLocationRange(locationRange === label ? "" : label);
   };
 
-  // Handle experience checkbox changes
+  // Update PRN handler
+  const handlePrnChange = (value: boolean) => {
+    setPrn(prn === value ? null : value);
+  };
+
+  // Handle experience radio button changes (single selection)
   const handleExperienceChange = (exp: { min: number; max: number }) => {
-    const newExperiences = experiences.some(e => e.min === exp.min && e.max === exp.max)
-      ? experiences.filter(e => !(e.min === exp.min && e.max === exp.max))
-      : [...experiences, exp];
-    setExperiences(newExperiences);
-    
-    if (isInitialized) {
-      const newFilters = buildCurrentFilters({ experiences: newExperiences });
-      console.log("Experience filter changed:", newFilters);
-      onFilterChange(newFilters);
-    }
+    setExperience(experience && experience.min === exp.min && experience.max === exp.max ? null : exp);
   };
 
-  // Handle PRN changes
-  const handlePrnChange = (value: string) => {
-    const newPrn = prn.includes(value)
-      ? prn.filter((v) => v !== value)
-      : [...prn, value];
-    setPrn(newPrn);
-    
-    // Call filter change with updated value
-    if (isInitialized) {
-      onFilterChange(buildCurrentFilters({ prn: newPrn }));
-    }
-  };
-
-  // Handle language changes
+  // Handle language checkbox changes (multiple selection)
   const handleLanguageChange = (lang: string) => {
-    const newLanguages = languages.includes(lang)
-      ? languages.filter((l) => l !== lang)
-      : [...languages, lang];
-    setLanguages(newLanguages);
-    
-    // Call filter change with updated value
-    if (isInitialized) {
-      onFilterChange(buildCurrentFilters({ languages: newLanguages }));
-    }
+    setLanguages((prev) =>
+      prev.includes(lang) ? prev.filter((l) => l !== lang) : [...prev, lang]
+    );
   };
+
+  // Only call onFilterChange here!
+  useEffect(() => {
+    if (isInitialized) {
+      onFilterChange(buildCurrentFilters());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gender, price, languages, prn, locationRange, experience, isInitialized]);
 
   return (
     <aside className={`w-full md:w-[250px] border rounded-xl p-4 space-y-4 ${urbanist.className}`}>
       <h2 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Filters & Sort</h2>
       
-      {/* Gender - Changed to checkboxes */}
+      {/* Gender - Changed to radio buttons */}
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
         <div className="space-y-1 text-[#767e8a]">
           {GENDERS.map((g) => (
             <label key={g} className={`block text-sm text-[var(--coolgray)] font-medium ${urbanist.className}`}>
               <input
-                type="checkbox"
-                checked={genders.includes(g)}
+                type="radio"
+                name="gender"
+                checked={gender === g}
                 onChange={() => handleGenderChange(g)}
                 className="mr-2 accent-[#233D4D]"
               />
@@ -219,14 +160,15 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         </div>
       </div>
 
-      {/* Price - Changed to checkboxes */}
+      {/* Price - Changed to radio buttons */}
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Price (Hourly Rate)</h4>
         {PRICES.map((range, idx) => (
           <label key={idx} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
             <input
-              type="checkbox"
-              checked={prices.some(p => p.min === range.min && p.max === range.max)}
+              type="radio"
+              name="price"
+              checked={price?.min === range.min && price?.max === range.max}
               onChange={() => handlePriceChange(range)}
               className="mr-2 accent-[#233D4D]"
             />
@@ -235,15 +177,16 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         ))}
       </div>
 
-      {/* Location - Changed to checkboxes */}
+      {/* Location - Changed to radio buttons */}
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
         {LOCATIONS.map((loc) => (
-          <label key={loc.value} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
+          <label key={loc.label} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
             <input
-              type="checkbox"
-              checked={locationMiles.includes(loc.value)}
-              onChange={() => handleLocationChange(loc.value)}
+              type="radio"
+              name="location"
+              checked={locationRange === loc.label}
+              onChange={() => handleLocationChange(loc.label)}
               className="mr-2 accent-[#233D4D]"
             />
             {loc.label}
@@ -251,38 +194,41 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         ))}
       </div>
 
-      {/* PRN - Remains checkboxes */}
+      {/* PRN - Changed to radio buttons */}
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
         <label className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
           <input
-            type="checkbox"
+            type="radio"
+            name="prn"
             className="mr-2 accent-[#233D4D]"
-            checked={prn.includes("as_needed")}
-            onChange={() => handlePrnChange("as_needed")}
+            checked={prn === true}
+            onChange={() => handlePrnChange(true)}
           />
           As Needed
         </label>
         <label className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
           <input
-            type="checkbox"
+            type="radio"
+            name="prn"
             className="mr-2 accent-[#233D4D]"
-            checked={prn.includes("fixed_schedule")}
-            onChange={() => handlePrnChange("fixed_schedule")}
+            checked={prn === false}
+            onChange={() => handlePrnChange(false)}
           />
           Fixed Schedule
         </label>
       </div>
       
-      {/* Experience - Changed to checkboxes */}
+      {/* Experience - Changed to radio buttons */}
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
         <div className="space-y-1">
           {EXPERIENCES.map((exp, idx) => (
             <label key={idx} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
               <input
-                type="checkbox"
-                checked={experiences.some(e => e.min === exp.min && e.max === exp.max)}
+                type="radio"
+                name="experience"
+                checked={experience?.min === exp.min && experience?.max === exp.max}
                 onChange={() => handleExperienceChange(exp)}
                 className="mr-2 accent-[#233D4D]"
               />
@@ -292,7 +238,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         </div>
       </div>
 
-      {/* Languages - Remains checkboxes */}
+      {/* Languages - Keep as checkboxes for multiple selection */}
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
         {LANGUAGES.map((lang) => (

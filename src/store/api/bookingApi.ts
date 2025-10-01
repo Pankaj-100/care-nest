@@ -128,7 +128,7 @@ export interface SearchCaregiversParams {
   maxPrice?: number;
   languages?: string; // Keep as string (comma-separated)
   prn?: string; // Keep as string (comma-separated) 
-  locationMiles?: number;
+  locationRange?: string;
     experienceMin?: number; // Make sure this exists
   experienceMax?: number; 
 }

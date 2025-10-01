@@ -34,9 +34,9 @@ interface CaregiverFilters {
   minPrice?: number;
   maxPrice?: number;
   languages?: string[];
-  prn?: string[];
-  locationMiles?: number;
-  experienceMin?: number; 
+  prn?: boolean; // <-- Use boolean for PRN everywhere
+  locationRange?: string;
+  experienceMin?: number;
   experienceMax?: number;
 }
 
@@ -53,6 +53,7 @@ const CaregiversPage = () => {
   const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
   const [filters, setFilters] = useState<CaregiverFilters>({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [sidebarKey, setSidebarKey] = useState(0);
 
   const careseekerZipcode = useAppSelector(state => state.booking.careseekerZipcode);
   const serviceIds = useAppSelector(state => state.booking.serviceIds);
@@ -73,7 +74,7 @@ const CaregiversPage = () => {
     }
     if (filters.minPrice) baseParams.minPrice = filters.minPrice;
     if (filters.maxPrice) baseParams.maxPrice = filters.maxPrice;
-    if (filters.locationMiles) baseParams.locationMiles = filters.locationMiles;
+    if (filters.locationRange) baseParams.locationRange = filters.locationRange;
     
     // UPDATED: Use experienceMin and experienceMax instead of experience
     if (filters.experienceMin !== undefined) baseParams.experienceMin = filters.experienceMin;
@@ -83,8 +84,8 @@ const CaregiversPage = () => {
     if (filters.languages && filters.languages.length > 0) {
       baseParams.languages = filters.languages.join(',');
     }
-    if (filters.prn && filters.prn.length > 0) {
-      baseParams.prn = filters.prn.join(',');
+    if (filters.prn !== undefined) {
+      baseParams.prn = filters.prn ? 'true' : 'false';
     }
     
     return baseParams;
@@ -156,6 +157,7 @@ const CaregiversPage = () => {
   // Clear all filters
   const clearAllFilters = () => {
     setFilters({});
+    setSidebarKey(prev => prev + 1); // Force remount
     toast.info("Filters cleared");
   };
 
@@ -289,8 +291,9 @@ const CaregiversPage = () => {
       <div className="flex flex-col md:flex-row gap-8">
         <div className="lg:block hidden">
           <FilterSidebar 
+            key={sidebarKey}
             onFilterChange={handleFilterChange}
-            initialFilters={filters}
+            initialFilters={{}} // Always empty unless restoring from saved state
           />
         </div>
 
@@ -301,9 +304,10 @@ const CaregiversPage = () => {
             showCrossButton
             className="w-2/3 rounded-l-xl lg:hidden"
           >
-            <FilterSidebar 
+            <FilterSidebar
+              key={sidebarKey}
               onFilterChange={handleFilterChange}
-              initialFilters={filters}
+              initialFilters={{}}
             />
           </CustomSheet>
         </div>
