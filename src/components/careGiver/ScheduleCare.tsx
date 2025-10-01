@@ -117,93 +117,69 @@ const ScheduleCare = ({
 
   // Change time with better UX - separate handlers for start and end (24-hour range)
   const changeStartTime = (d: Day, value: number) => {
-    // Change max from 23*60 to 23*60+45 (23:45) to prevent 24:00
     const v = Math.max(0, Math.min(23 * 60 + 45, value)); 
+    
     setSchedule((prev) => {
-      const updated = prev[d].map((r) => {
-        const next = { ...r, start: v };
-        // Ensure end is at least 1 hour after start, but cap at 23:59
-        if (next.end <= next.start + 30) {
-          next.end = Math.min(23 * 60 + 59, next.start + 60); // Cap at 23:59
-        }
-        return next;
-      });
+      let res = { ...prev };
       
-      let res = { ...prev, [d]: updated };
-      
-      // Apply to all selected days if toggle is on
-      if (applyAll) {
-        selectedDays
-          .filter((sd) => sd !== d) // Exclude current day
-          .forEach((sd) => {
-            // Apply the same time changes to other selected days
-            const updatedForOtherDay = (prev[sd] || []).map((r) => {
-              const next = { ...r, start: v };
-              // Ensure end is at least 1 hour after start
-              if (next.end <= next.start + 30) {
-                next.end = Math.min(24 * 60, next.start + 60);
-              }
-              return next;
-            });
-            
-            // If the day doesn't have a schedule, create one
-            if (!prev[sd] || prev[sd].length === 0) {
-              updatedForOtherDay.push({
-                id: `${sd}-0`,
-                start: v,
-                end: Math.min(24 * 60, v + 60),
-              });
-            }
-            
-            res = { ...res, [sd]: updatedForOtherDay };
-          });
+      if (applyAll && selectedDays.length > 1) {
+        // When applyAll is true, update ALL selected days with the same time
+        selectedDays.forEach((sd) => {
+          const currentEnd = prev[sd]?.[0]?.end || defaultEnd;
+          const newEnd = currentEnd <= v + 30 ? Math.min(23 * 60 + 59, v + 60) : currentEnd;
+          
+          res[sd] = [{
+            id: `${sd}-0`,
+            start: v,
+            end: newEnd,
+          }];
+        });
+      } else {
+        // When applyAll is false, only update the current day
+        const updated = prev[d].map((r) => {
+          const next = { ...r, start: v };
+          if (next.end <= next.start + 30) {
+            next.end = Math.min(23 * 60 + 59, next.start + 60);
+          }
+          return next;
+        });
+        res = { ...prev, [d]: updated };
       }
+      
       return res;
     });
   };
 
   const changeEndTime = (d: Day, value: number) => {
-    // Change max from 24*60 to 23*60+59 (23:59)
     const v = Math.max(1 * 60, Math.min(23 * 60 + 59, value));
+    
     setSchedule((prev) => {
-      const updated = prev[d].map((r) => {
-        const next = { ...r, end: v };
-        // Ensure start is at least 30 minutes before end
-        if (next.start >= next.end - 30) {
-          next.start = Math.max(0, next.end - 60);
-        }
-        return next;
-      });
+      let res = { ...prev };
       
-      let res = { ...prev, [d]: updated };
-      
-      // Apply to all selected days if toggle is on
-      if (applyAll) {
-        selectedDays
-          .filter((sd) => sd !== d) // Exclude current day
-          .forEach((sd) => {
-            // Apply the same time changes to other selected days
-            const updatedForOtherDay = (prev[sd] || []).map((r) => {
-              const next = { ...r, end: v };
-              // Ensure start is at least 30 minutes before end
-              if (next.start >= next.end - 30) {
-                next.start = Math.max(0, next.end - 60);
-              }
-              return next;
-            });
-            
-            // If the day doesn't have a schedule, create one
-            if (!prev[sd] || prev[sd].length === 0) {
-              updatedForOtherDay.push({
-                id: `${sd}-0`,
-                start: Math.max(0, v - 60),
-                end: v,
-              });
-            }
-            
-            res = { ...res, [sd]: updatedForOtherDay };
-          });
+      if (applyAll && selectedDays.length > 1) {
+        // When applyAll is true, update ALL selected days with the same time
+        selectedDays.forEach((sd) => {
+          const currentStart = prev[sd]?.[0]?.start || defaultStart;
+          const newStart = currentStart >= v - 30 ? Math.max(0, v - 60) : currentStart;
+          
+          res[sd] = [{
+            id: `${sd}-0`,
+            start: newStart,
+            end: v,
+          }];
+        });
+      } else {
+        // When applyAll is false, only update the current day
+        const updated = prev[d].map((r) => {
+          const next = { ...r, end: v };
+          if (next.start >= next.end - 30) {
+            next.start = Math.max(0, next.end - 60);
+          }
+          return next;
+        });
+        res = { ...prev, [d]: updated };
       }
+      
       return res;
     });
   };
@@ -221,9 +197,9 @@ const ScheduleCare = ({
     });
     
     setSchedule((prev) => {
-      // If removing a day, just return current state
+      // If removing a day, clear its schedule
       if (prev[d] && selectedDays.includes(d)) {
-        return prev;
+        return { ...prev, [d]: [] };
       }
       
       // If adding a new day, determine what time slots to use
@@ -406,6 +382,32 @@ const ScheduleCare = ({
     };
   }, [isDragging]);
 
+  // Add this useEffect to handle applyAll state changes
+  useEffect(() => {
+    // When applyAll is toggled ON, sync all selected days with the first day's time
+    if (applyAll && selectedDays.length > 1) {
+      const firstDay = selectedDays[0];
+      const firstDaySchedule = schedule[firstDay]?.[0];
+      
+      if (firstDaySchedule) {
+        setSchedule((prev) => {
+          const newSchedule = { ...prev };
+          
+          // Apply first day's time to all other selected days
+          selectedDays.slice(1).forEach((day) => {
+            newSchedule[day] = [{
+              id: `${day}-0`,
+              start: firstDaySchedule.start,
+              end: firstDaySchedule.end,
+            }];
+          });
+          
+          return newSchedule;
+        });
+      }
+    }
+  }, [applyAll, selectedDays]); // Add selectedDays as dependency
+
   if (!isOpen) return null;
 
   if (isSuccessModalOpen) {
@@ -450,34 +452,57 @@ const ScheduleCare = ({
           <div className="space-y-3">
             {selectedCaregivers.map((c, idx) => (
               <div key={c.id}>
-                <div className="flex items-center gap-3">
-                  <Image
-                    src={
-                      c.avatar && c.avatar.trim() !== "/care-giver/boy-icon.png"
-                        ? c.avatar.startsWith("http")
-                          ? c.avatar
-                          : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.avatar.replace(/^\/+/, "")}`
-                        : "/care-giver/boy-icon.png"
-                    }
-                    alt={c.name}
-                    width={44}
-                    height={44}
-                    className="w-11 h-11 rounded-full"
-                    onError={() => {
-                      // Fallback to default image if local image fails to load
-                      console.error("Image failed to load");
-                    }}
-                  />
-                  <div className="flex-1 flex items-center justify-between gap-4">
-                    <div className="min-w-32">
-                      <p className="text-[var(--navy)] font-semibold text-sm leading-tight">
-                        {c.name}
-                      </p>
-                      <p className="text-[#7B8A9C] text-xs leading-tight">{c.specialty}</p>
+                <div className="flex justify-between items-start">
+                  {/* Left side - Avatar and Info */}
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                      <Image
+                        src={
+                          c.avatar && c.avatar.trim() !== "/care-giver/boy-icon.png"
+                            ? c.avatar.startsWith("http")
+                              ? c.avatar
+                              : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.avatar.replace(/^\/+/, "")}`
+                            : "/care-giver/boy-icon.png"
+                        }
+                        alt={c.name}
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-cover"
+                        onError={() => {
+                          // Fallback to default image if local image fails to load
+                          console.error("Image failed to load");
+                        }}
+                      />
                     </div>
-                    <span className="border border-[#2F3C51] text-[#2F3C51] rounded-full px-3 py-[6px] text-xs">
-                      {c.experience && c.experience !== "null" ? c.experience : "0+ Years"}
-                    </span>
+                    
+                    <div className="flex-1 min-w-0"> {/* Added min-w-0 to prevent overflow */}
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-semibold text-gray-900 truncate">
+                          {c.name}
+                        </h3>
+                        {c.isBookmarked && (
+                          <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-white text-xs">✓</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Services - with proper text wrapping */}
+                      {c.specialty && (
+                        <p className="text-sm text-gray-600 leading-relaxed break-words">
+                          {c.specialty}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Right side - Experience Badge (always aligned to top-right) */}
+                  <div className="flex-shrink-0 ml-3 mt-1"> {/* Added mt-1 for consistent top alignment */}
+                    <div className="border border-gray-300 rounded-full px-3 py-1">
+                      <span className="text-sm text-gray-700 whitespace-nowrap">
+                        {c.experience && c.experience !== "null" ? c.experience : "0+ Years"}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 {idx < selectedCaregivers.length - 1 && (

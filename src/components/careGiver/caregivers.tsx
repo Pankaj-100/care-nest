@@ -8,7 +8,12 @@ import CaregiverCard from "@/components/careGiver/CaregiverCard";
 import CaregiverModal from "@/components/careGiver/CaregiverModal";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import CustomSheet from "../common/CustomSheet";
-import { useSearchCaregiversQuery, useBookmarkCaregiverMutation, SearchCaregiversParams } from "@/store/api/bookingApi";
+import { 
+  useSearchCaregiversQuery, 
+  useBookmarkCaregiverMutation, 
+  useTrackCaregiverViewMutation, // Add this
+  SearchCaregiversParams 
+} from "@/store/api/bookingApi";
 import { useAppSelector } from "@/store/hooks";
 import { toast } from "react-toastify";
 import BookSuccessful from "@/components/careGiver/BookSuccessful";
@@ -53,7 +58,8 @@ const CaregiversPage = () => {
   const serviceIds = useAppSelector(state => state.booking.serviceIds);
   const requiredBy = useAppSelector(state => state.booking.requiredBy); // Add this
 
-
+  // Get authentication status
+  const isAuthenticated = useAppSelector(state => !!state.auth.accessToken);
 
   // Build the search parameters including filters - properly typed
   const searchApiParams: SearchCaregiversParams = React.useMemo(() => {
@@ -108,6 +114,7 @@ const CaregiversPage = () => {
   }, [data, zipcode]);
 
   const [bookmarkCaregiver] = useBookmarkCaregiverMutation();
+  const [trackCaregiverView] = useTrackCaregiverViewMutation();
 
   const handleBookmarkToggle = async (id: string) => {
     try {
@@ -121,9 +128,22 @@ const CaregiversPage = () => {
     }
   };
 
-  const handleCardClick = (caregiverId: string) => {
+  const handleCardClick = async (caregiverId: string) => {
     setSelectedCaregiverId(caregiverId);
     setIsModalOpen(true);
+    
+    // Only track profile view if user is authenticated
+    if (isAuthenticated) {
+      try {
+        await trackCaregiverView(caregiverId).unwrap();
+        console.log(`Profile view tracked for caregiver: ${caregiverId}`);
+      } catch (error) {
+        console.error('Failed to track profile view:', error);
+        // Don't show error to user - this is just analytics
+      }
+    } else {
+      console.log('User not authenticated - skipping profile view tracking');
+    }
   };
 
   // This is the key function - it updates filters which triggers API refetch

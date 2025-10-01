@@ -218,6 +218,11 @@ export interface GetBookmarksResponse {
   };
 }
 
+interface ProfileViewResponse {
+  success: boolean;
+  message: string;
+}
+
 export const bookingApi = createApi({
   reducerPath: 'bookingApi',
   baseQuery: baseQueryWithReauth,
@@ -302,6 +307,13 @@ export const bookingApi = createApi({
       }),
     }),
 
+    trackCaregiverView: builder.mutation<ProfileViewResponse, string>({
+      query: (caregiverId) => ({
+        url: `/api/v1/views/${caregiverId}`,
+        method: 'POST',
+      }),
+    }),
+
   }),
 });
 
@@ -315,4 +327,5 @@ export const {
   useGetServiceHighlightsQuery,
   useBookmarkCaregiverMutation,
   useGetBookmarkedCaregiversQuery,
+  useTrackCaregiverViewMutation,
 } = bookingApi;

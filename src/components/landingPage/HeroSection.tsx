@@ -5,42 +5,65 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCareseekerZipcode } from "@/store/slices/bookingSlice";
 import Image from "next/image";
 import { RedirectButton } from "../common/CustomButton";
+import { DesignIcon1, DesignIcon2, DesignIcon3 } from "../icons/page";
 
 
 const HeroSection = () => {
   return (
-    <div className="relative h-[550px]">
-      <div className="h-full w-full relative ">
-        <div className="w-full h-[550px] absolute right-0 ">
-          <div className=" w-3/4 h-[550px] absolute right-0 ">
+    <div className="relative h-[550px] bg-[#233D4D]">
+      <div className="h-full w-full relative">
+        {/* Removed the image and gradient - now just solid background color */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          {/* Main background ellipse */}
+          <div className="relative w-full h-full max-w-[1400px] max-h-[500px] mx-auto my-8">
             <Image
-              src={"/hero-background.png"}
-              alt="hero background"
+              src="/background-ellipse.png" // Your background ellipse image
+              alt="ellipse background design"
               fill
-              style={{ objectFit: "cover" }}
+              className="object-cover"
+              priority
             />
           </div>
-          <div
-            className="absolute top-0 left-0 h-full w-2/3 pointer-events-none "
-            style={{
-              background:
-                "linear-gradient(to left, #233d4d00 0%, #233d4d 50%, #233d4d 100%)",
-            }}
-          />
+         </div>
+
+
+         <div className="absolute top-0 left-3 w-15 h-15 text-[#FFA726] opacity-80">
+          <DesignIcon1 />
         </div>
 
-        <div className="absolute lg:left-28 left-8 sm:top-1/7 top-1/2 sm:-translate-y-0 -translate-y-1/2 hyphens-auto text-white sm:w-[500px] break-words w-[calc(100vw-8rem)]">
-          <h1 className="font-semibold sm:text-4xl text-4xl sm:leading-11 ">
-            Find Trusted, Compassionate Home Care Services for Your Loved Ones.
+        <div className="absolute bottom-16 left-0 w-16 h-16 text-[#FFA726] opacity-80">
+          <DesignIcon2 />
+        </div>
+        
+        <div className="absolute lg:left-28 left-8 sm:top-[8%] top-[8%] sm:-translate-y-0 -translate-y-1/2 hyphens-auto text-white sm:w-[700px] lg:w-[1050px] break-words w-[calc(100vw-8rem)]">
+          <h1 className="font-semibold sm:text-3xl text-5xl lg:text-6xl sm:leading-tight lg:leading-tight">
+            Find compassionate{" "}
+            <span className="relative inline-block">
+              <span className="text-[#FFA726]">home care services</span>
+              {/* Yellow underline vector */}
+              <div className="absolute -bottom-3 left-0 w-full">
+                <Image
+                  src="/home-care-underline.png" // Your yellow underline vector
+                  alt=""
+                  width={400}
+                  height={20}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+            </span>{" "}
+            <br className="mb-2" />
+            <span className="block mt-3">
+            for your loved one</span>
           </h1>
-          <div className="my-5">
-            <p className="font-light">
-              Easily connect with trusted professionals in the Houston community who provide personal care and support tailored to your family’s needs.
+          <div className="my-4">
+            <p className="font-light ">
+              Easily connect with trusted professionals in the Houston community who <br/> provide personal care and support tailored to your family's needs.
             </p>
           </div>
 
-          {/* Button + Reviews Badge */}
-          <div className="flex flex-col items-start gap-5">
+          {/* Button + Reviews Badge - Made Inline */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
             <a
               href="#"
               target="_blank"
@@ -64,7 +87,23 @@ const HeroSection = () => {
             />
           </div>
         </div>
+
+        {/* Right side hero image */}
+        <div className="absolute right-23 lg:right-45 top-[43%] -translate-y-1/2 w-[350px] h-[350px] lg:w-[420px] lg:h-[420px] z-10 hidden lg:block">
+          <div className="relative w-full h-full">
+            <Image
+              src="/main-hero-section.png" // Your caregiver and elderly person image
+              alt="Compassionate home care services"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+        </div>
       </div>
+       <div className="absolute -top-3 -right-4 w-10 h-10 text-[#FFA726]">
+          <DesignIcon3 />
+        </div>
 
       <div className="lg:flex hidden items-center justify-center absolute sm:-bottom-12 -bottom-[18rem] -translate-x-1/2 left-1/2">
         <BrowseCaregiver />

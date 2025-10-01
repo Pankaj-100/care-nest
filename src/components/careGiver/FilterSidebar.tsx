@@ -204,7 +204,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
       {/* Gender - Changed to checkboxes */}
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
-        <div className="space-y-1 text-[#98A2B3]">
+        <div className="space-y-1 text-[#767e8a]">
           {GENDERS.map((g) => (
             <label key={g} className={`block text-sm text-[var(--coolgray)] font-medium ${urbanist.className}`}>
               <input
@@ -223,7 +223,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Price (Hourly Rate)</h4>
         {PRICES.map((range, idx) => (
-          <label key={idx} className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
+          <label key={idx} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
             <input
               type="checkbox"
               checked={prices.some(p => p.min === range.min && p.max === range.max)}
@@ -239,7 +239,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
         {LOCATIONS.map((loc) => (
-          <label key={loc.value} className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
+          <label key={loc.value} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
             <input
               type="checkbox"
               checked={locationMiles.includes(loc.value)}
@@ -254,7 +254,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
       {/* PRN - Remains checkboxes */}
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
-        <label className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
+        <label className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
           <input
             type="checkbox"
             className="mr-2 accent-[#233D4D]"
@@ -263,7 +263,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
           />
           As Needed
         </label>
-        <label className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
+        <label className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
           <input
             type="checkbox"
             className="mr-2 accent-[#233D4D]"
@@ -279,7 +279,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
         <div className="space-y-1">
           {EXPERIENCES.map((exp, idx) => (
-            <label key={idx} className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
+            <label key={idx} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
               <input
                 type="checkbox"
                 checked={experiences.some(e => e.min === exp.min && e.max === exp.max)}
@@ -296,7 +296,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
       <div>
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
         {LANGUAGES.map((lang) => (
-          <label key={lang} className={`block text-sm text-[#98A2B3] font-medium ${urbanist.className}`}>
+          <label key={lang} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
             <input
               type="checkbox"
               checked={languages.includes(lang)}

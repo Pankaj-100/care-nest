@@ -182,8 +182,8 @@ const ModalContent: React.FC<{
           <div className="mt-7 space-y-4 w-full">
             <InfoRow label="Experience" value={`${caregiver.experience ?? 0}+ Years`} />
             <InfoRow
-              label="Price"
-              value={caregiver.price ? `₹${caregiver.price}` : "—"}
+              label="Available Distance"
+              value={caregiver.location ? `${caregiver.location}` : "—"}
             />
             <InfoRow
               label="Gender"
@@ -345,10 +345,16 @@ const CollapsibleSection: React.FC<{
   );
 };
 
-const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
-  <div className="flex justify-between text-sm text-[#6B778C]">
-    <span>{label}</span>
-    <span className="font-medium text-[#233D4D]">{value}</span>
+const InfoRow: React.FC<{ 
+  label: string; 
+  value: string; 
+  isMultiline?: boolean;
+}> = ({ label, value, isMultiline = false }) => (
+  <div className={`text-sm text-[#6B778C] ${isMultiline ? 'space-y-1' : 'flex justify-between'}`}>
+    <span className={isMultiline ? 'block font-medium' : ''}>{label}</span>
+    <span className={`font-medium text-[#233D4D] ${isMultiline ? 'block text-xs leading-relaxed' : ''}`}>
+      {value}
+    </span>
   </div>
 );
 
