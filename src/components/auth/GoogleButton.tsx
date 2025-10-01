@@ -20,7 +20,7 @@ interface GoogleButtonProps {
 
 const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/+$/, "");
 
-function GoogleButton({ role = "user", redirectPath = "/profile" }: GoogleButtonProps) {
+function GoogleButton({ role = "user", redirectPath = "/" }: GoogleButtonProps) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(false);

@@ -26,6 +26,7 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [isLoggedInUser, setIsLoggedIn] = useState(false);
+  const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
 
   const isValidToken = Cookies.get("authToken") ? true : false;
 
@@ -42,6 +43,10 @@ const Header = () => {
   useEffect(() => {
     setIsLoggedIn(isValidToken);
   }, [isValidToken]);
+
+  useEffect(() => {
+    setOpenDropdownIndex(null);
+  }, [path]);
 
   const unseenNotifications = true;
 
@@ -95,6 +100,9 @@ const Header = () => {
             link={item.link}
             path={path}
             services={item?.services}
+            index={index}
+            openDropdownIndex={openDropdownIndex}
+            setOpenDropdownIndex={setOpenDropdownIndex}
           />
         ))}
       </nav>
@@ -171,17 +179,29 @@ const Header = () => {
   );
 };
 
-const NavbarMenu = ({ title, link, path, services }: NavbarTypes) => {
-  const [openDropdown, setOpenDropdown] = React.useState(false);
-
+// Add index, openDropdownIndex, setOpenDropdownIndex to props
+const NavbarMenu = ({
+  title,
+  link,
+  path,
+  services,
+  index,
+  openDropdownIndex,
+  setOpenDropdownIndex,
+}: NavbarTypes & {
+  index: number;
+  openDropdownIndex: number | null;
+  setOpenDropdownIndex: React.Dispatch<React.SetStateAction<number | null>>;
+}) => {
   const isActive = path === link;
+  const isDropdownOpen = openDropdownIndex === index;
 
   return (
     <div
       className="flex items-center gap-x-1 cursor-pointer relative"
       onClick={() => {
         if (title === "Services" || title === "Login" || title === "Who we are") {
-          setOpenDropdown(!openDropdown);
+          setOpenDropdownIndex(isDropdownOpen ? null : index);
         }
       }}
     >
@@ -202,24 +222,10 @@ const NavbarMenu = ({ title, link, path, services }: NavbarTypes) => {
         <ChevronDown size={19} />
       )}
 
-      {/* Dropdown for Services */}
-      {title === "Services" && (
+      {/* Dropdowns */}
+      {(title === "Services" || title === "Who we are" || title === "Login") && (
         <div className="mt-5 absolute -right-10 z-50">
-          <NavbarDropdown isOpen={openDropdown} items={services || []} />
-        </div>
-      )}
-
-      {/* Dropdown for Who we are */}
-      {title === "Who we are" && (
-        <div className="mt-5 absolute -right-10 z-50">
-          <NavbarDropdown isOpen={openDropdown} items={services || []} />
-        </div>
-      )}
-
-      {/* Dropdown for Login */}
-      {title === "Login" && (
-        <div className="mt-5 absolute -right-10 z-50">
-          <NavbarDropdown isOpen={openDropdown} items={services || []} />
+          <NavbarDropdown isOpen={isDropdownOpen} items={services || []} />
         </div>
       )}
     </div>
