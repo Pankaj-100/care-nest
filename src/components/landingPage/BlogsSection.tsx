@@ -28,7 +28,7 @@ const BLOGS: Blog[] = [
     title: "Assisted Care/Home Care: How to Ensure Comfort & Safety",
     author: "Alex Morgan",
     date: "05 January 2025",
-    image: "/blog/blog2.png",
+    image: "/Blog/blog2.png",
     excerpt: "Assisted home care provides daily support for comfort and safety.",
   },
   {
@@ -36,7 +36,7 @@ const BLOGS: Blog[] = [
     title: "Memory Care: How to Ensure Comfort & Safety",
     author: "Jordan Lee",
     date: "02 January 2025",
-    image: "/blog/blog3.png",
+    image: "/Blog/blog3.png",
     excerpt: "Specialized support for dementia or Alzheimer's with compassion.",
   },
 ];
