@@ -406,7 +406,7 @@ const ScheduleCare = ({
         });
       }
     }
-  }, [applyAll, selectedDays]); // Add selectedDays as dependency
+  }, [applyAll, selectedDays, schedule]); // Added schedule as dependency
 
   if (!isOpen) return null;
 
