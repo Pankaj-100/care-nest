@@ -242,13 +242,18 @@ const ScheduleCare = ({
   // Get time markers for the slider (24-hour format) - FIXED
   const getTimeMarkers = () => {
     const markers = [];
-    // Show markers every 4 hours, but stop at 20 (8 PM) to avoid 24:00
-    for (let hour = 0; hour <= 20; hour += 4) {
+    // Show markers every 4 hours, starting at 0 (12:00 AM)
+    for (let hour = 0; hour < 24; hour += 4) {
       markers.push({
         value: hour * 60,
         label: formatTime12Hour(hour * 60)
       });
     }
+    // Add final marker for 11:59 PM
+    markers.push({
+      value: 23 * 60 + 59,
+      label: formatTime12Hour(23 * 60 + 59)
+    });
     return markers;
   };
 
