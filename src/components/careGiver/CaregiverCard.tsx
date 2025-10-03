@@ -11,7 +11,6 @@ export type CaregiverProps = {
   heightClass?: string;
   onClick?: () => void;
   onBookmarkToggle?: () => void;
-  onBookmarkClick?: () => void; // NEW
   isVerified?: boolean;                 // NEW
   verifiedIconSrc?: string;             // NEW (override icon path)
 };
@@ -23,7 +22,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   experience,
   isBookmarked = false,
   onClick,
-  onBookmarkClick, // NEW
+  onBookmarkToggle,
   isSelected = false,
   isVerified = true,                     // default to true (show badge)
   verifiedIconSrc = "/care-giver/verified.png", // place this in /public
@@ -36,10 +35,15 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
       className={`relative ${heightClass ?? "h-40"} flex items-center gap-6 rounded-xl p-4 bg-white shadow border cursor-pointer hover:shadow-lg transition`}
     >
       {/* Bookmark Icon */}
-      <button
-        type="button"
-        onClick={onBookmarkClick}
+      <div
+      
         className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-[#233D4D1A] shadow cursor-pointer"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (onBookmarkToggle) {
+            onBookmarkToggle();
+          }
+        }}
       >
         <Image
           src={
@@ -52,7 +56,8 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
           height={16}
           className="w-4 h-4"
         />
-      </button>
+      </div>
+
 
       <div className="relative w-24 h-24 rounded-full">
         <Image
