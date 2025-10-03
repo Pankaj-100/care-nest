@@ -368,7 +368,6 @@ const CaregiversPage = () => {
           <div className="mt-10 lg:mb-0 mb-5 w-full text-center max-w-xl mx-auto">
             <button
               onClick={() => {
-                // Check if user has selected at least 3 caregivers
                 if (mappedCaregiversForSchedule.length < 3) {
                   toast.error("Please select at least 3 caregivers to proceed with booking.");
                   return;
@@ -381,7 +380,7 @@ const CaregiversPage = () => {
                   : "bg-[#233D4D1A] hover:cursor-not-allowed"
               }`}
             >
-              Proceed
+              Proceed ({mappedCaregiversForSchedule.length}/3)
             </button>
           </div>
         </div>
