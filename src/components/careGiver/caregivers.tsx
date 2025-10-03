@@ -123,7 +123,12 @@ const CaregiversPage = () => {
       setCaregivers(prev =>
         prev.map(cg => (cg.id === id ? { ...cg, isBookmarked: !cg.isBookmarked } : cg))
       );
-      toast.success("Caregiver bookmarked successfully!");
+      const isNowBookmarked = caregivers.find(cg => cg.id === id)?.isBookmarked;
+      toast.success(
+        isNowBookmarked
+          ? "Caregiver removed successfully!"
+          : "Caregiver bookmarked successfully!"
+      );
     } catch {
       toast.error("Login to bookmark caregiver.");
     }

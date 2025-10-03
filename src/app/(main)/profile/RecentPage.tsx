@@ -12,12 +12,14 @@ import CaregiverCard from "@/components/careGiver/CaregiverCard";
 import Image from "next/image";
 import emptyCaregiverImage from "@/assets/care.svg";
 import type { Booking } from "@/types/Booking";
-import { useGetBookmarkedCaregiversQuery } from "@/store/api/bookingApi";
+import { useGetBookmarkedCaregiversQuery, useBookmarkCaregiverMutation } from "@/store/api/bookingApi";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import BookSuccessful from "@/components/careGiver/BookSuccessful";
+import { toast } from "react-toastify";
 
 const SavedCaregiversPanel = () => {
-  const { data, isLoading, isError } = useGetBookmarkedCaregiversQuery();
+  const { data, isLoading, isError, refetch } = useGetBookmarkedCaregiversQuery();
+  const [removeBookmarkedCaregiver] = useBookmarkCaregiverMutation();
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
   const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
@@ -46,6 +48,17 @@ const SavedCaregiversPanel = () => {
           : prev
     );
     setSelectedCaregiverId(null); // Close modal after adding
+  };
+
+  // Handler to remove caregiver from bookmarks
+  const handleRemoveBookmark = async (id: string) => {
+    try {
+      await removeBookmarkedCaregiver(id).unwrap();
+      toast.success("Caregiver removed successfully!");
+      refetch(); // Refetch to update the UI
+    } catch {
+      toast.error("Failed to remove caregiver. Please try again.");
+    }
   };
 
   return (
@@ -95,6 +108,7 @@ const SavedCaregiversPanel = () => {
                         : prev
                   );
                 }}
+                onBookmarkToggle={() => handleRemoveBookmark(giver.id)} // <-- Add this
               />
             ))}
           </div>

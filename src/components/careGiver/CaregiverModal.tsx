@@ -145,8 +145,12 @@ const ModalContent: React.FC<{
     if (!caregiver.id) return;
     try {
       await bookmarkCaregiver(caregiver.id).unwrap();
-      setBookmarked(true);
-      toast.success("Caregiver bookmarked successfully!");
+      setBookmarked((prev) => !prev);
+      toast.success(
+        bookmarked
+          ? "Caregiver removed successfully!"
+          : "Caregiver bookmarked successfully!"
+      );
     } catch {
       toast.error("login to bookmark caregiver.");
     }
@@ -210,7 +214,11 @@ const ModalContent: React.FC<{
                 height={18}
                 className={bookmarked ? "filter brightness-0 invert" : ""}
               />
-              {bookmarking ? "Saving..." : bookmarked ? "Saved Caregiver" : "Save Caregiver"}
+              {bookmarking
+                ? "Saving..."
+                : bookmarked
+                  ? "Saved Caregiver"
+                  : "Save Caregiver"}
             </button>
 
             <button
