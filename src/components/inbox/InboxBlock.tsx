@@ -15,13 +15,10 @@ function InboxBlock() {
   };
 
   return (
-    <div className="  ms-10">
-   
-
-      <div className=" card md:flex flex-grow overflow-y-auto hidden  ">
+    <div className="flex justify-center items-center min-h-screen bg-[#F7F7F3]">
+      <div className="w-full max-w-5xl mx-auto card md:flex flex-grow overflow-y-auto hidden">
         {myMessages}
       </div>
-
       <div>
         <CustomSheet
           open={openMessages}

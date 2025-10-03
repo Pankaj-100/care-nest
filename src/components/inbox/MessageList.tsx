@@ -27,6 +27,8 @@ function MessageList({ handleOpenMessages }: Props) {
     }
   };
 
+  const cdnURL = "https://dev-carenest.s3.ap-south-1.amazonaws.com/";
+
   return (
     <div className="w-full overflow-y-auto flex flex-col h-[45rem]">
       <div className="flex items-center rounded-full px-4 py-1 bg-[var(--light-gray)] mb-2 ">
@@ -53,12 +55,21 @@ function MessageList({ handleOpenMessages }: Props) {
             >
               <div className="flex gap-4">
                 <div className=" relative rounded-full flex w-12 h-12">
-                  <DP url={chat?.profilePic || ProfilePic} alt={chat?.name} />
+                  <DP
+                    url={
+                      chat?.profilePic
+                        ? chat.profilePic.startsWith("http")
+                          ? chat.profilePic
+                          : `${cdnURL}${chat.profilePic.replace(/^\/+/, "")}`
+                        : ProfilePic
+                    }
+                    alt={chat?.name}
+                  />
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <div className="font-semibold"> {chat?.name}</div>
-                  <div className="text-sm text-[var(--cool-gray)]">
+                  <div className="text-sm text-[#233D4D33]">
                     {" "}
                     {chat?.message?.content}
                   </div>

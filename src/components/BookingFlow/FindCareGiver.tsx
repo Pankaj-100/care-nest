@@ -131,7 +131,7 @@ const FindCareGiver: React.FC = () => {
           <p>Failed to load services.</p>
         </div>
       ) : (
-        <div className="max-w-6xl mx-auto grid gap-8 md:gap-x-10 md:gap-y-12 md:grid-cols-3 lg:grid-cols-3 place-items-start">
+        <div className="max-w-4xl mx-auto grid gap-8 md:gap-x-10 md:gap-y-12 md:grid-cols-3 lg:grid-cols-3 place-items-start">
           {mergedServices.map((service) => {
             // Add validation for service data
             if (!service || !service.id || !service.name) {
@@ -157,14 +157,14 @@ const FindCareGiver: React.FC = () => {
                 }`}
                 aria-pressed={active}
               >
-                <div className="h-28 flex items-center">
+                <div className="h-22 flex items-center">
                   {imageUrl ? (
                     <Image
                       src={imageUrl}
                       alt={service.name || "Service"}
-                      width={140}
-                      height={140}
-                      className="w-auto h-auto max-h-28"
+                      width={160}
+                      height={160}
+                      className="w-auto h-auto max-h-30"
                       priority
                       onError={(e) => {
                         console.error("Image failed to load:", imageUrl);
@@ -180,11 +180,11 @@ const FindCareGiver: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <h2 className={`font-bold text-base  md:text-base text-[#233D4D] ${urbanist.className}`}>
+                <h2 className={`font-bold text-2xl md:text-2xl text-[#233D4D]  ${urbanist.className}`}>
                   {service.name || "Unknown Service"}
                 </h2>
                 {/* Use highlight from merged data (highlights API) */}
-                <p className={`text-[15px] leading-relaxed whitespace-pre-line text-[#98A2B3] max-w-[270px] min-h-[2.5rem] ${urbanist.className}`}>
+                <p className={`text-[15px] leading-relaxed whitespace-pre-line text-[#969faf] max-w-[270px] min-h-[2.5rem] ${urbanist.className}`}>
                   {highlight}
                 </p>
                 {active && (

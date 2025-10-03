@@ -6,6 +6,7 @@ import { setCareseekerZipcode } from "@/store/slices/bookingSlice";
 import Image from "next/image";
 import { RedirectButton } from "../common/CustomButton";
 import { DesignIcon1, DesignIcon2, DesignIcon3 } from "../icons/page";
+import { toast } from "react-toastify"; // Add this import at the top
 
 
 const HeroSection = () => {
@@ -137,18 +138,28 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
     }
   }, [storedZipcode]);
 
+  useEffect(() => {
+  // Clear zipcode when landing page loads
+  if (pathname !== "/care-giver") {
+    dispatch(setCareseekerZipcode(0));
+    setZipCode("");
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [pathname]);
+
   function handleRedirect(e?: React.MouseEvent | React.FormEvent) {
     if (e) e.preventDefault();
-    if (zipCode.trim()) {
-      dispatch(setCareseekerZipcode(Number(zipCode.trim())));
-      
-      if (pathname === "/care-giver") {
-        // If already on caregiver page, just update the zipcode
-        return;
-      } else {
-        // From landing page or other pages, go to find-job
-        router.push("/find-job");
-      }
+    if (!zipCode.trim()) {
+      toast.error("You need to enter zipcode");
+      return;
+    }
+    dispatch(setCareseekerZipcode(Number(zipCode.trim())));
+    if (pathname === "/care-giver") {
+      // If already on caregiver page, just update the zipcode
+      return;
+    } else {
+      // From landing page or other pages, go to find-job
+      router.push("/find-job");
     }
   }
 
@@ -156,7 +167,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
     <div
       className={`bg-white rounded-xl shadow-sm p-5 lg:p-6 w-full mx-auto
       ${isCaregiversPage 
-        ? "lg:w-[60vw] xl:max-w-4xl items-center" // Smaller width for caregivers page
+        ? "lg:w-[65vw] xl:max-w-6xl items-center" // Smaller width for caregivers page
         : "lg:w-[70vw] xl:max-w-6xl" // Original width for landing page
       }
       ${noDescription ? "lg:grid lg:grid-cols-12 lg:gap-6" : "lg:grid lg:grid-cols-12 lg:gap-6"}`}
@@ -207,9 +218,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
           <button
             type="submit"
             className={`w-full justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-base font-semibold transition whitespace-nowrap
-              ${!zipCode.trim() ? " cursor-not-allowed pointer-events-none" : ""}
               bg-[#FFA726] text-[#233D4D]`}
-            disabled={!zipCode.trim()}
           >
             {isCaregiversPage ? "Search Caregiver" : "Search Caregiver"}
           </button>

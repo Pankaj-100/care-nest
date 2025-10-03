@@ -78,8 +78,14 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
     selectedStatus === "All"
       ? bookings
       : bookings.filter(
-          (b) =>
-            apiToUiStatus[b?.status?.toLowerCase?.()] === selectedStatus
+          (b) => {
+            const uiStatus = apiToUiStatus[b?.status?.toLowerCase?.()];
+            // Show both "Active" and "Accepted" for active tab if needed
+            if (selectedStatus === "Active") {
+              return uiStatus === "Active" || uiStatus === "Accepted";
+            }
+            return uiStatus === selectedStatus;
+          }
         );
 
   const handleConfirmCancel = async () => {

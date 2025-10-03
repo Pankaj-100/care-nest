@@ -50,7 +50,7 @@ const CaregiversPage = () => {
   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [caregivers, setCaregivers] = useState<Caregiver[]>([]);
-  const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
+  const [selectedCaregivers, setSelectedCaregivers] = useState<Caregiver[]>([]);
   const [filters, setFilters] = useState<CaregiverFilters>({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [sidebarKey, setSidebarKey] = useState(0);
@@ -164,33 +164,23 @@ const CaregiversPage = () => {
   // Toggle selection (add/remove) inside modal action
   const handleAddCaregiver = (id: string) => {
     setSelectedCaregivers(prev => {
-      console.log("Current selected caregivers:", prev);
-      console.log("Trying to add/remove:", id);
-      console.log("Current count:", prev.length);
-      
       // If caregiver is already selected, remove it
-      if (prev.includes(id)) {
-        const updated = prev.filter(c => c !== id);
-        console.log("Removing caregiver. New list:", updated);
-        
-        // Update localStorage
+      if (prev.some(cg => cg.id === id)) {
+        const updated = prev.filter(cg => cg.id !== id);
         localStorage.setItem('selectedCaregivers', JSON.stringify(updated));
         window.dispatchEvent(new CustomEvent('caregiver-selection-changed'));
-        
         return updated;
       }
-      
-      // Add the new caregiver (NO LIMIT CHECK)
-      const updated = [...prev, id];
-      console.log("Adding caregiver. New list:", updated);
-      
-      // Update localStorage
-      localStorage.setItem('selectedCaregivers', JSON.stringify(updated));
-      window.dispatchEvent(new CustomEvent('caregiver-selection-changed'));
-      
-      return updated;
+      // Add the full caregiver object
+      const caregiverObj = caregivers.find(cg => cg.id === id);
+      if (caregiverObj) {
+        const updated = [...prev, caregiverObj];
+        localStorage.setItem('selectedCaregivers', JSON.stringify(updated));
+        window.dispatchEvent(new CustomEvent('caregiver-selection-changed'));
+        return updated;
+      }
+      return prev;
     });
-    
     setIsModalOpen(false);
   };
 
@@ -246,16 +236,14 @@ const CaregiversPage = () => {
   }));
 
   // When passing data to ScheduleCare component, include Redux data
-  const mappedCaregiversForSchedule = caregivers
-    .filter(c => selectedCaregivers.includes(c.id))
-    .map(c => ({
-      id: c.id,
-      name: c.name,
-      avatar: c.avatar ?? "/care-giver/boy-icon.png",
-      specialty: c.services.join(", "),
-      experience: `${c.experience} Years`,
-      price: c.price ? `$${c.price}/hr` : "N/A",
-    }));
+  const mappedCaregiversForSchedule = selectedCaregivers.map(c => ({
+    id: c.id,
+    name: c.name,
+    avatar: c.avatar ?? "/care-giver/boy-icon.png",
+    specialty: c.services.join(", "),
+    experience: `${c.experience} Years`,
+    price: c.price ? `$${c.price}/hr` : "N/A",
+  }));
 
   useEffect(() => {
     if (bookingSuccess) {
@@ -287,9 +275,9 @@ const CaregiversPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 lg:pt-28 px-4 md:px-16">
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="lg:block hidden">
+    <div className="min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 lg:pt-28 px-4 md:px-30">
+      <div className="flex flex-row gap-8 items-start">
+        <div className="lg:block  hidden ">
           <FilterSidebar 
             key={sidebarKey}
             onFilterChange={handleFilterChange}
@@ -370,7 +358,7 @@ const CaregiversPage = () => {
                 specialty={c.specialty}
                 experience={c.experience}
                 isBookmarked={c.isBookmarked}
-                isSelected={selectedCaregivers.includes(c.id)}
+                isSelected={selectedCaregivers.some(cg => cg.id === c.id)}
                 onClick={() => handleCardClick(c.id)}
                 onBookmarkToggle={() => handleBookmarkToggle(c.id)}
               />
@@ -408,7 +396,7 @@ const CaregiversPage = () => {
           caregivers.find(c => c.id === selectedCaregiverId)?.isBookmarked ?? false
         }
         // Add this prop to pass the current selection state
-        isSelected={selectedCaregiverId ? selectedCaregivers.includes(selectedCaregiverId) : false}
+        isSelected={selectedCaregiverId ? selectedCaregivers.some(cg => cg.id === selectedCaregiverId) : false}
       />
 
       <ScheduleCare

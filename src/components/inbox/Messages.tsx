@@ -7,18 +7,13 @@ import Chat from "./Chat";
 import InputMessage from "./InputMessage";
 import { useSocket } from "@/hooks/use-socket";
 import { chatMessageType } from "@/lib/interface-types";
-import { SocketMessage } from "@/hooks/use-socket"; // Import the type
 
 const ADMIN_ID = "Q5jvPEYY22YTV1Ut3kROw"; // Admin ID for chat
 
-interface OtherUserDetails {
-  name: string;
-  avatar: string | null;
-}
-
 function Messages() {
   const [messages, setMessages] = useState<chatMessageType[]>([]);
-  const [otherUserDetails, setOtherUserDetails] = useState<OtherUserDetails | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [otherUserDetails, setOtherUserDetails] = useState<any>(null);
 
   const token = Cookies.get("authToken");
   const { sendMessage, onNewMessage } = useSocket(token);
@@ -34,15 +29,14 @@ function Messages() {
         );
         const data = await res.json();
 
-        setOtherUserDetails(data.data.otherUserDetails as OtherUserDetails || { name: "Admin", avatar: null });
+        setOtherUserDetails(data.data.otherUserDetails || { name: "Admin", avatar: null });
 
         setMessages(
-          (data.data.messages || []).map((msg: chatMessageType) => ({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (data.data.messages || []).map((msg: any) => ({
             id: msg.id || Date.now().toString(),
             conversationId: msg.conversationId || "",
-            fromUserId: msg.fromUserId || "",
-            toUserId: msg.toUserId || "",
-            isOtherUserMessage: msg.fromUserId === ADMIN_ID,
+            isOtherUserMessage: msg.isOtherUserMessage,
             message: msg.message,
             createdAt: msg.createdAt || new Date().toISOString(),
             hasRead: msg.hasRead ?? false,
@@ -56,8 +50,11 @@ function Messages() {
   }, [token]);
 
   // Listen for new socket messages
+
   useEffect(() => {
-    const handleNewMessage = (data: SocketMessage) => {
+    const currentUserId = Cookies.get("userId");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleNewMessage = (data: any) => {
       if (!data) return;
 
       if (data.fromUserId === ADMIN_ID || data.toUserId === ADMIN_ID) {
@@ -67,8 +64,8 @@ function Messages() {
             ...prev,
             {
               ...data,
-              isOtherUserMessage: data.fromUserId === ADMIN_ID,
-            },
+              isOtherUserMessage: data.fromUserId !== currentUserId,
+            } as chatMessageType,
           ];
         });
       }
@@ -87,10 +84,7 @@ function Messages() {
   return (
     <div className="flex-grow flex flex-col h-[calc(100vh-3.5rem)]">
       <NameHeader />
-      <Chat
-        messages={messages}
-        otherUserDetails={otherUserDetails ?? { name: "", avatar: null }}
-      />
+      <Chat messages={messages} otherUserDetails={otherUserDetails} />
       <InputMessage userId={ADMIN_ID} addMessage={addMessage} sendMessage={sendMessage} />
     </div>
   );

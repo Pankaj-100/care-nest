@@ -18,7 +18,7 @@ export const CareGiverHero = () => {
     <div className="relative  ">
       <HeroSectionProtected title="Find A Caregiver" />
 
-      <div className="lg:flex items-center justify-center lg:absolute sm:-bottom-20  bottom-0 lg:-translate-x-1/2 lg:left-1/2 lg:m-0 m-4">
+      <div className="lg:flex items-center justify-center lg:absolute sm:-bottom-20  bottom-0 lg:-translate-x-1/2 lg:left-[890px] lg:m-0 m-4">
         <BrowseCaregiver
           // show heading + helper text in the hero box
           title="Select 3 Caregivers"

@@ -533,7 +533,7 @@ const ScheduleCare = ({
                 dateFormat="dd-MM-yyyy"
                 className="!w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
-              <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px]" />
+              <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
             </div>
           </div>
           <div>
@@ -549,7 +549,7 @@ const ScheduleCare = ({
                 placeholderText="Select Date"
                 className="!w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
-              <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px]" />
+              <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
             </div>
           </div>
         </div>

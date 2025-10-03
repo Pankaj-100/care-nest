@@ -39,10 +39,10 @@ function SigninForm() {
       const response = await signin({
         email,
         password,
-        role: "user" // or "receiver" based on your application
+        role: "user"
       }).unwrap();
 
-      if (response.success) {
+      if (response && response.success) {
         // Set tokens with appropriate expiration
         if (rememberMe === "true") {
           Cookies.set("authToken", response.data.accessToken, { expires: 7 }); // 1 week
@@ -66,18 +66,22 @@ function SigninForm() {
         }
         router.push("/");
       } else {
-       
-        toast.error(response.message || "Login failed. Please try again.");
+        toast.error(response?.message || "Login failed. Please check your credentials and try again.");
       }
-    } catch (error) {
-  if (error instanceof Error) {
-    console.error(error.message);
-    // Use error.message in your UI
-  } else {
-    console.error("An unknown error occurred");
-    // Fallback error message
-  }
-} 
+    } catch (error: unknown) {
+      if (typeof error === "object" && error !== null) {
+        const err = error as { data?: { message?: string }; message?: string };
+        toast.error(
+          err.data?.message ||
+          err.message ||
+          "Login failed. Please check your credentials and try again."
+        );
+        console.error("Login failed:", error);
+      } else {
+        toast.error("Login failed. Please check your credentials and try again.");
+        console.error("Login failed:", error);
+      }
+    } 
   };
 
   return (
