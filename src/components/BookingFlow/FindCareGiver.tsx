@@ -184,7 +184,7 @@ const FindCareGiver: React.FC = () => {
                   {service.name || "Unknown Service"}
                 </h2>
                 {/* Use highlight from merged data (highlights API) */}
-                <p className={`text-[15px] leading-relaxed whitespace-pre-line text-[#969faf] max-w-[270px] min-h-[2.5rem] ${urbanist.className}`}>
+                <p className={`text-[15px] leading-relaxed whitespace-pre-line text-[#838b99] max-w-[270px] min-h-[2.5rem] ${urbanist.className}`}>
                   {highlight}
                 </p>
                 {active && (
@@ -216,7 +216,7 @@ const FindCareGiver: React.FC = () => {
       <div className="flex justify-center mt-12">
         <YellowButton
           onClick={handleNext}
-          className={`px-24 py-6 text-md font-medium rounded-full transition-opacity ${
+          className={`px-24 py-6 text-lg font-semibold rounded-full transition-opacity ${
             !selected.length
               ? "opacity-50 cursor-not-allowed pointer-events-none"
               : "hover:opacity-90"

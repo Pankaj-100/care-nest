@@ -8,13 +8,12 @@ function page() {
   return (
     <AuthLayout image="/auth/signin.png">
       <div className="mt-6">
-        <div className="font-semibold text-2xl">Welcome back!</div>
-        <div className="mt-1">
-          Join the caregiving community—log in and start supporting those in
-          need.
+        <div className="font-semibold text-3xl">Welcome back!</div>
+        <div className="mt-1 font-medium">
+          Sign in to find your ideal caregiver and start receiving personalized care.
         </div>
 
-        <div className="flex items-center gap-1 mt-5">
+        <div className="flex font-medium items-center gap-1 mt-5">
           <div>Don’t have an account?</div>
           <Link
             href="/signup"

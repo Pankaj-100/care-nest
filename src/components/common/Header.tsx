@@ -120,7 +120,7 @@ const Header = () => {
         {/* Phone badge (always visible on large screens) */}
         <Link
           href="tel:9876543210"
-          className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-3 py-2 text-sm font-medium"
+          className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-3 py-2 text-lg font-semibold"
         >
           <PhoneIcon />
           <span>987 654 3210</span>
@@ -129,7 +129,7 @@ const Header = () => {
         {!isLoggedInUser && (
           <Link
             href="/choose-path"
-            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-medium px-6 py-3 text-sm hover:brightness-105 transition"
+            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-semibold px-6 py-3 text-lg hover:brightness-105 transition"
           >
             Get Started
           </Link>
@@ -143,7 +143,7 @@ const Header = () => {
             className="flex items-center gap-2"
           >
             {profileIcon()}
-            <span className="text-[var(--navy)] font-semibold">My Profile</span>
+            <span className="text-[var(--navy)] font-semibold ">My Profile</span>
           </YellowButton>
         )}
       </div>
@@ -152,13 +152,15 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex lg:px-28 px-10 py-6 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
-        <div className="flex items-center gap-2">
-          <Image src={"/Logo_1.svg"} alt="logo" width={100} height={100} />
+      <div className="flex lg:px-18 px-10 py-6 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
+        <div className="flex items-center gap-3">
+          <Link href="/">
+            <Image src={"/Logo_1.svg"} alt="logo" width={160} height={160} />
+          </Link>
         </div>
 
         <button onClick={handleOpenMenu} className="lg:hidden">
-          <MenuIcon size={30} />
+          <MenuIcon size={40} />
         </button>
 
         <div className="lg:block hidden"> {navContent}</div>
@@ -209,17 +211,17 @@ const NavbarMenu = ({
         <Link
           href={link}
           className={`${
-            isActive ? "text-[var(--yellow)] font-medium" : ""
-          } text-sm`}
+            isActive ? "text-[var(--yellow)]" : ""
+          } text-lg`}
         >
           {title}
         </Link>
       ) : (
-        <span className="text-sm">{title}</span>
+        <span className="text-lg ">{title}</span>
       )}
 
       {(title === "Services" || title === "Who we are" || title === "Login") && (
-        <ChevronDown size={19} />
+        <ChevronDown size={22} />
       )}
 
       {/* Dropdowns */}

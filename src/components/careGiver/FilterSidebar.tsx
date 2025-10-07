@@ -9,13 +9,16 @@ const urbanist = Urbanist({
 })
 
 const GENDERS = ["Male", "Female", "Other"];
-const PRICES = [
+
+{/*const PRICES = [
   { label: "$100 - $200", min: 100, max: 200 },
   { label: "$200 - $300", min: 200, max: 300 },
   { label: "$300 - $400", min: 300, max: 400 },
   { label: "$400- $500 ", min: 400, max: 700 },
 ];
-const LANGUAGES = ["English", "Spanish","French","Italian","Vietnamese","Urdu"];
+*/}
+
+const LANGUAGES = ["English", "Spanish","French","Italian","Vietnamese","Urdu", "Hindi"];
 const LOCATIONS = [
   { label: "Within 2 miles from my current location", value: 2 },
   { label: "Within 10 miles", value: 10 },
@@ -104,9 +107,9 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
   };
 
   // Handle price radio button changes (single selection)
-  const handlePriceChange = (range: { min: number; max: number }) => {
-    setPrice(price && price.min === range.min && price.max === range.max ? null : range);
-  };
+  // const handlePriceChange = (range: { min: number; max: number }) => {
+    // setPrice(price && price.min === range.min && price.max === range.max ? null : range);
+  // };
 
   // Update location handler
   const handleLocationChange = (label: string) => {
@@ -140,14 +143,14 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
 
   return (
     <aside className={`w-full md:w-[250px] border rounded-xl p-4 space-y-4 ${urbanist.className}`}>
-      <h2 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Filters & Sort</h2>
+      <h2 className={`text-xl font-bold mb-4 text-[var(--navy)] ${urbanist.className}`}>Filters & Sort</h2>
       
       {/* Gender - Changed to radio buttons */}
       <div>
-        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
+        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
         <div className="space-y-1 text-[#767e8a]">
           {GENDERS.map((g) => (
-            <label key={g} className={`block text-sm text-[var(--coolgray)] font-medium ${urbanist.className}`}>
+            <label key={g} className={`block text-md text-[var(--coolgray)] font-medium ${urbanist.className}`}>
               <input
                 type="radio"
                 name="gender"
@@ -161,8 +164,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
         </div>
       </div>
 
-      {/* Price - Changed to radio buttons */}
-      <div>
+      {/* Price - Changed to radio buttons 
         <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Price (Hourly Rate)</h4>
         {PRICES.map((range, idx) => (
           <label key={idx} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
@@ -176,13 +178,14 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
             {range.label}
           </label>
         ))}
-      </div>
+      </div>  */}
+
 
       {/* Location - Changed to radio buttons */}
       <div>
-        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
+        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
         {LOCATIONS.map((loc) => (
-          <label key={loc.label} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
+          <label key={loc.label} className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
             <input
               type="radio"
               name="location"
@@ -197,8 +200,8 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
 
       {/* PRN - Changed to radio buttons */}
       <div>
-        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
-        <label className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
+        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
+        <label className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
           <input
             type="radio"
             name="prn"
@@ -208,7 +211,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
           />
           As Needed
         </label>
-        <label className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
+        <label className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
           <input
             type="radio"
             name="prn"
@@ -222,10 +225,10 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
       
       {/* Experience - Changed to radio buttons */}
       <div>
-        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
+        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
         <div className="space-y-1">
           {EXPERIENCES.map((exp, idx) => (
-            <label key={idx} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
+            <label key={idx} className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
               <input
                 type="radio"
                 name="experience"
@@ -241,9 +244,9 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
 
       {/* Languages - Keep as checkboxes for multiple selection */}
       <div>
-        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
+        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
         {LANGUAGES.map((lang) => (
-          <label key={lang} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
+          <label key={lang} className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
             <input
               type="checkbox"
               checked={languages.includes(lang)}

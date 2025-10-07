@@ -8,14 +8,14 @@ function page() {
   return (
     <AuthLayout image="/auth/signup.png">
       <div>
-        <div className="text-[var(--blue-gray)] font-semibold text-2xl">
+        <div className="text-[var(--blue-gray)] font-semibold text-3xl">
           Join Now!
         </div>
-        <div className="text-[var(--blue-gray)] mt-2">
-          Sign up to find trusted caregivers tailored to your loved one’s needs.
+        <div className="text-[var(--blue-gray)] font-medium mt-2">
+          Create your free account to schedule meetings with caregivers
         </div>
 
-        <div className="flex items-center gap-1 mt-3">
+        <div className="flex items-center font-medium gap-1 mt-3">
           <div>Already have an account?</div>
           <Link
             href="signin"

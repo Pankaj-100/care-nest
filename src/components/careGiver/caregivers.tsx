@@ -308,7 +308,7 @@ const CaregiversPage = () => {
         <div className="flex-1 flex flex-col">
           <div className="flex lg:flex-row flex-col justify-between lg:items-center mb-4 text-sm gap-y-4">
             <div className="flex gap-4 items-center">
-              <h2 className="text-sm h-max text-gray-500">
+              <h2 className="text-md font-medium h-max text-gray-600">
                 <span className="text-[var(--yellow)]">
                   {isLoading ? "Loading..." : caregivers.length + " Results"}
                 </span>{" "}

@@ -118,7 +118,7 @@ const NeedService: React.FC = () => {
                 role="radio"
                 aria-checked={isActive}
                 onClick={() => handleSelect(item)}
-                className={`w-full h-14 rounded-full px-6 flex items-center justify-between text-[15px] font-medium transition outline-none
+                className={`w-full h-14 rounded-full px-6 flex items-center justify-between text-[18px] font-medium transition outline-none
                   ${
                     isActive
                       ? "bg-white border border-[#233D4D] text-[#233D4D] shadow-sm"
@@ -138,7 +138,7 @@ const NeedService: React.FC = () => {
           <YellowButton
             onClick={handleNext}
             disabled={submitting}
-            className={`px-65 py-6 text-md font-medium rounded-full ${
+            className={`px-65 py-6 text-xl font-medium rounded-full ${
               !selected.length
                 ? "opacity-50 cursor-not-allowed pointer-events-none"
                 : ""

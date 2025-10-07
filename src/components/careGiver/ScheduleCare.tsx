@@ -436,20 +436,20 @@ const ScheduleCare = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <h1 className="text-center text-[var(--navy)] font-bold text-[22px]">
-          Schedule Your Care
+        <h1 className="text-center text-[var(--navy)] font-bold text-[26px]">
+          Schedule your meeting with caregivers
         </h1>
-        <p className="text-center text-[var(--cool-gray)] text-sm mt-1 mb-6">
-          Pick a preferred date and set the duration to continue booking.
+        <p className="text-center text-[var(--cool-gray)] text-base mt-1 mb-6">
+          Pick a preferred date and set the duration to continue .
         </p>
 
         {/* Selected caregivers */}
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-[var(--navy)] font-semibold text-sm">Selected Caregivers</h2>
+          <h2 className="text-[var(--navy)] font-semibold text-base">Selected Caregivers</h2>
           <button
             type="button"
             onClick={OnClose}
-            className="text-[var(--yellow)] font-semibold text-sm hover:opacity-80"
+            className="text-[var(--yellow)] font-semibold text-base hover:opacity-80"
           >
             Change
           </button>
@@ -522,8 +522,8 @@ const ScheduleCare = ({
         {/* Dates */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-[var(--navy)] font-semibold text-sm mb-1">
-              Preferred Meeting Date
+            <label className="block text-[var(--navy)] font-semibold text-base mb-1">
+              Service Start Date
             </label>
             <div className="relative">
               <DatePicker
@@ -531,13 +531,13 @@ const ScheduleCare = ({
                 onChange={(date) => setStartDate(date)}
                 minDate={new Date()}
                 dateFormat="dd-MM-yyyy"
-                className="!w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
-              <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+              <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
             </div>
           </div>
           <div>
-            <label className="block text-[var(--navy)] font-semibold text-sm mb-1">
+            <label className="block text-[var(--navy)] font-semibold text-base mb-1">
               Service End Date (Optional)
             </label>
             <div className="relative">
@@ -547,7 +547,7 @@ const ScheduleCare = ({
                 minDate={startDate || new Date()}
                 dateFormat="dd-MM-yyyy"
                 placeholderText="Select Date"
-                className="!w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
               <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
             </div>
@@ -557,8 +557,8 @@ const ScheduleCare = ({
 
         {/* Service Days And Times */}
         <div className="mb-3">
-          <label className="block text-[var(--navy)] font-semibold text-sm mb-2">
-            Service Days And Times
+          <label className="block text-[var(--navy)] font-semibold text-base mb-2">
+            Set Duration
           </label>
           <div className="flex flex-wrap gap-2 mb-4">
             {DAYS.map((d) => {
@@ -705,7 +705,7 @@ const ScheduleCare = ({
             disabled={isBooking}
             className="flex-1 rounded-full font-semibold text-sm py-5 hover:opacity-90"
           >
-            {isBooking ? "Booking..." : "Book Your Meeting"}
+            {isBooking ? "Scheduling..." : "Schedule Your Meeting"}
           </CustomButton>
         </div>
       </div>

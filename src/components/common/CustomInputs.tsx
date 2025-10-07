@@ -28,7 +28,7 @@ export const TextInput = ({
   return (
     <div className="w-full">
       <div
-        className={`flex items-center rounded-full bg-[#ffffff] py-2 px-4 ${
+        className={`flex items-center rounded-full font-medium bg-[#ffffff] py-2 px-4 ${
           error ? "border border-red-500" : ""
         } ${divClassName}`}
       >
@@ -62,7 +62,7 @@ export const PasswordInput = ({
   return (
     <div className="w-full">
       <div
-        className={`flex items-center rounded-full bg-[#ffffff] py-2 px-4 ${
+        className={`flex items-center rounded-full font-medium bg-[#ffffff] py-2 px-4 ${
           error ? "border border-red-500" : ""
         }`}
       >
@@ -100,7 +100,7 @@ export const CustomButton = ({
   className,
   disabled,
 }: ButtonProps) => {
-  const classes = `bg-[var(--golden-yellow)] text-[var(--blue-gray)] py-6 rounded-full hover:bg-[var(--golden-yellow)] hover:opacity-90 hover:cursor-pointer transition-all ${className}`;
+  const classes = `bg-[var(--golden-yellow)] text-md font-semibold text-[var(--blue-gray)] py-6 rounded-full hover:bg-[var(--golden-yellow)] hover:opacity-90 hover:cursor-pointer transition-all ${className}`;
   return (
     <Button className={classes} onClick={onClick} disabled={disabled}>
       {children}

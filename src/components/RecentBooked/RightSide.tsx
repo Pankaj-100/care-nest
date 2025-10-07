@@ -1,5 +1,5 @@
 "use client";
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import {
   useGetRecentBookingsQuery,
   useCancelBookingMutation,
@@ -11,7 +11,6 @@ import Image from "next/image";
 import emptyCaregiverImage from "@/assets/care.svg";
 import { toast } from "react-toastify";
 import type { Booking } from "@/types/Booking";
-
 
 const statusColor: Record<string, string> = {
   requested: "bg-[#E7A200] text-white",
@@ -58,6 +57,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
     id: string;
     caregiverId: string;
   } | null>(null);
+  const [serviceIds, setServiceIds] = useState<string[]>([]);
 
   // initialize mutation
   const [cancelBooking, { isLoading: isCancelling }] =
@@ -118,6 +118,27 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
     setOpenDialog(false);
     setSelectedBooking(null);
   };
+
+  // Inside your reschedule handler/component:
+  const booking = filteredBookings.find(b => b.bookingId === selectedBooking?.id);
+ ;
+
+  useEffect(() => {
+    const booking = filteredBookings.find(b => b.bookingId === selectedBooking?.id);
+    const caregiverIds = booking?.caregivers?.filter(c => !c.isDeleted).map(c => c.id) || [];
+
+    async function fetchServices() {
+      let allServices: string[] = [];
+      for (const id of caregiverIds) {
+        const data = await fetchCaregiverDetails(id);
+        if (data?.details?.[0]?.services) {
+          allServices = [...allServices, ...data.details[0].services];
+        }
+      }
+      setServiceIds([...new Set(allServices)]);
+    }
+    if (caregiverIds.length) fetchServices();
+  }, [filteredBookings, selectedBooking]);
 
   if (isLoading)
     return <div className="p-6 text-gray-500">Loading bookings...</div>;
@@ -227,6 +248,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                       className="w-14 h-14 flex items-center justify-center bg-[#F2A307] rounded-full text-lg leading-none"
                       onClick={(e) => {
                         e.stopPropagation();
+                        setSelectedBooking({ id: booking.bookingId, caregiverId: "" });
                         setIsScheduleCareOpen(true);
                       }}
                     >
@@ -304,20 +326,29 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
       <ScheduleCare
         isOpen={isScheduleCareOpen}
         OnClose={() => setIsScheduleCareOpen(false)}
-        selectedCaregivers={[
-          {
-            id: "12345",
-            name: "Joe Doe",
-            specialty: "Elderly Care",
-            price: "$100/hr", // <-- use price only
-            experience: "12+ Years",
-            avatar: "/care-giver/boy-icon.png", // <-- use avatar
-          },
-        ]}
+        selectedCaregivers={
+          filteredBookings
+            .find(b => b.bookingId === selectedBooking?.id)
+            ?.caregivers
+            ?.filter(c => !c.isDeleted)
+            .map(c => ({
+              id: c.id,
+              name: c.name,
+              specialty: c.status || "General Care",
+              status: c.status || "General Care",
+              price: typeof c.price === "string" ? c.price : c.price !== undefined ? String(c.price) : "",
+              experience: typeof c.experience === "string" ? c.experience : c.experience ? `${c.experience} Years` : "0+ Years",
+              avatar: c.avatar
+                ? c.avatar.startsWith("http")
+                  ? c.avatar
+                  : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.avatar.replace(/^\/+/, "")}`
+                : "/care-giver/boy-icon.png",
+            })) || []
+        }
+        serviceIds={serviceIds}
+        requiredBy={booking?.requiredBy || ""}
         onBookingSuccess={() => {
-          // Handle booking success
           setIsScheduleCareOpen(false);
-          // Add any other success handling logic you need
           console.log("Booking successful from RightSide component");
         }}
       />
@@ -326,3 +357,8 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
 };
 
 export default RightBookingsPanel;
+
+async function fetchCaregiverDetails(id: string) {
+  const res = await fetch(`/api/v1/giver/search/${id}`); // Use your actual API endpoint
+  return await res.json();
+}

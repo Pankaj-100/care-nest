@@ -106,7 +106,7 @@ function SigninForm() {
         onValueChange={setRememberMe}
         className="gap-2"
       >
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center font-medium space-x-2">
           <RadioGroupItem value="true" id="option-one" />
           <Label htmlFor="option-one">Remember me</Label>
         </div>
@@ -119,7 +119,7 @@ function SigninForm() {
       </CustomButton>
 
       <div className="text-center">
-        <Link href="/forgot-password" className="text-[#667085]">
+        <Link href="/forgot-password" className="text-[#667085] font-medium">
           Forgot your password?
         </Link>
       </div>

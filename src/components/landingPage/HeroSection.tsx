@@ -46,19 +46,19 @@ const HeroSection = () => {
                 <Image
                   src="/home-care-underline.png" // Your yellow underline vector
                   alt=""
-                  width={400}
-                  height={20}
+                  width={410}
+                  height={22}
                   className="w-full h-auto"
                   priority
                 />
               </div>
             </span>{" "}
             <br className="mb-2" />
-            <span className="block mt-3">
+            <span className="block mt-4">
             for your loved one</span>
           </h1>
-          <div className="my-4">
-            <p className="font-light ">
+          <div className="my-3">
+            <p className="font-light text-lg ">
               Easily connect with trusted professionals in the Houston community who <br/> provide personal care and support tailored to your family&apos;s needs.
             </p>
           </div>
@@ -74,15 +74,15 @@ const HeroSection = () => {
               <Image
                 src="/google-reviews-badge.png"
                 alt="5.0 rating - 20+ Google Reviews"
-                width={200}
-                height={48}
-                className="h-auto w-[200px] object-contain"
+                width={250}
+                height={54}
+                className="h-auto w-[230px] object-contain"
                 priority
               />
             </a>
             {/* Button with arrow after text (hover slides arrow) */}
             <RedirectButton
-              className="px-6 py-6 text-sm after:content-['→'] after:ml-2 after:inline-block after:transition-transform hover:after:translate-x-1"
+              className="px-7 py-7 text-lg rounded-4xl font-semibold after:content-['→'] after:ml-2 after:inline-block after:transition-transform hover:after:translate-x-1"
               path="/contact"
               title="Contact Us"
             />
@@ -90,7 +90,7 @@ const HeroSection = () => {
         </div>
 
         {/* Right side hero image */}
-        <div className="absolute right-23 lg:right-45 top-[43%] -translate-y-1/2 w-[350px] h-[350px] lg:w-[420px] lg:h-[420px] z-10 hidden lg:block">
+        <div className="absolute right-23 lg:right-45 top-[43%] -translate-y-1/2 w-[370px] h-[370px] lg:w-[430px] lg:h-[430px] z-10 hidden lg:block">
           <div className="relative w-full h-full">
             <Image
               src="/main-hero-section.png" // Your caregiver and elderly person image
@@ -174,10 +174,10 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
     >
       {!noDescription && (
         <div className="col-span-5 space-y-2">
-          <h3 className="font-semibold text-lg">
-            {title ?? (isCaregiversPage ? "Select 3 Caregivers" : "Browse A Caregivers")}
+          <h3 className="font-semibold text-xl">
+            {title ?? (isCaregiversPage ? "Select 3 Caregivers" : "Browse Caregivers")}
           </h3>
-          <p className="text-sm leading-relaxed text-gray-600">
+          <p className="text-md font-medium leading-relaxed text-gray-500">
             {description ?? (isCaregiversPage 
               ? "Select up to three caregivers to continue with your booking." 
               : "Create your free profile to discover verified, compassionate caregivers."
@@ -197,7 +197,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
             !noDescription ? "lg:col-span-7" : "lg:col-span-8"
           }`}
         >
-          <label className="mb-2 font-semibold text-base" htmlFor="zip-input">
+          <label className="mb-2 font-semibold text-lg" htmlFor="zip-input">
             {isCaregiversPage ? "Provide Zip code" : "Provide Zip code"}
           </label>
           <input
@@ -206,7 +206,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
             placeholder="Enter Zip Code"
             value={zipCode}
             onChange={(e) => setZipCode(e.target.value)}
-            className="w-full rounded-full outline-none border border-gray-300 py-3 px-5 text-gray-900 text-sm focus:border-gray-400 focus:ring-0"
+            className="w-full rounded-full outline-none border border-gray-400 py-4 px-6 text-gray-900 text-md focus:border-gray-400 focus:ring-0"
             maxLength={10}
           />
         </div>
@@ -217,7 +217,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         >
           <button
             type="submit"
-            className={`w-full justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-base font-semibold transition whitespace-nowrap
+            className={`w-full justify-center px-5 py-4 cursor-pointer rounded-4xl text-lg font-semibold transition whitespace-nowrap
               bg-[#FFA726] text-[#233D4D]`}
           >
             {isCaregiversPage ? "Search Caregiver" : "Search Caregiver"}
