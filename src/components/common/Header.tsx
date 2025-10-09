@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { NavbarDropdown } from "./CustomDropdown";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Notification from "../Notification";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
 import CustomDrawer from "./CustomDrawer";
