@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { YellowButton } from "./CustomButton";
 import { ChevronDown } from "lucide-react";
 import { NavbarDropdown } from "./CustomDropdown";
 import { usePathname, useRouter } from "next/navigation";
@@ -31,7 +30,6 @@ const Header = () => {
   const isValidToken = Cookies.get("authToken") ? true : false;
 
   const path = usePathname();
-  const router = useRouter();
 
   const handleOpenMenu = () => {
     setOpenMenu((prev) => !prev);
@@ -123,7 +121,7 @@ const Header = () => {
           className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-3 py-2 text-lg font-semibold"
         >
           <PhoneIcon />
-          <span>987 654 3210</span>
+          <span >987 654 3210</span>
         </Link>
 
         {!isLoggedInUser && (
@@ -136,15 +134,13 @@ const Header = () => {
         )}
 
         {isLoggedInUser && (
-          <YellowButton
-            onClick={() => {
-              router.push("/profile");
-            }}
-            className="flex items-center gap-2"
+          <Link
+            href="/profile"
+            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-semibold px-6 py-3 text-lg hover:brightness-105 transition flex items-center gap-2"
           >
             {profileIcon()}
-            <span className="text-[var(--navy)] font-semibold ">My Profile</span>
-          </YellowButton>
+            <span>My Profile</span>
+          </Link>
         )}
       </div>
     </div>
@@ -152,8 +148,8 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex lg:px-18 px-10 py-6 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
-        <div className="flex items-center gap-3">
+      <div className="flex lg:px-13 px-10 py-6 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
+        <div className="flex items-center gap-3 ">
           <Link href="/">
             <Image src={"/Logo_1.svg"} alt="logo" width={160} height={160} />
           </Link>

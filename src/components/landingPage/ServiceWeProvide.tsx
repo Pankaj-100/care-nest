@@ -78,13 +78,13 @@ const Services = ({ title, desc, image, path }: ServiceProps) => {
       </div>
 
       <div className="flex-grow">
-        <h3 className="font-semibold text-lg mb-2">{title}</h3>
+        <h3 className="font-semibold text-xl mb-2">{title}</h3>
         <p className="text-base text-gray-600 mb-3">{desc}</p>
       </div>
 
       <RedirectButton
         ButtonCompo={TransparentButton}
-        className="w-full"
+        className="w-full text-md"
         title="View More"
         path={path}
       />

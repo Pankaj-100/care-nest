@@ -90,18 +90,18 @@ const BlogCard = ({ id, title, author, date, image, excerpt }: Blog) => {
                 className="object-cover"
               />
             </div>
-            <p className="text-[var(--navy)] text-sm">{author}</p>
+            <p className="text-[var(--navy)] text-base">{author}</p>
           </div>
 
-          <p className="text-[var(--navy)] text-sm">{date}</p>
+          <p className="text-[var(--navy)] text-base">{date}</p>
         </div>
-        <h3 className=" font-medium text-2xl my-2 text-[var(--navy)]">
+        <h3 className=" font-semibold text-2xl my-2 text-[var(--navy)]">
           {title}
         </h3>
-        <p className="w-full text-sm text-[var(--navy)] mb-3">{excerpt}</p>
+        <p className="w-full text-md text-[var(--navy)] mb-3">{excerpt}</p>
       </div>
-      <TransparentButton className="w-full" onClick={handleLearnMore}>
-        Learn more
+      <TransparentButton className="w-full text-md" onClick={handleLearnMore}>
+        Learn More
       </TransparentButton>
     </div>
   );
