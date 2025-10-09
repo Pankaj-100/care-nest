@@ -173,13 +173,13 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
       ${noDescription ? "lg:grid lg:grid-cols-12 lg:gap-6" : "lg:grid lg:grid-cols-12 lg:gap-6"}`}
     >
       {!noDescription && (
-        <div className="col-span-5 space-y-2">
+        <div className="col-span-5 space-y-2 ml-8">
           <h3 className="font-semibold text-xl">
             {title ?? (isCaregiversPage ? "Select 3 Caregivers" : "Browse Caregivers")}
           </h3>
           <p className="text-md font-medium leading-relaxed text-gray-500">
             {description ?? (isCaregiversPage 
-              ? "Select up to three caregivers to continue with your booking." 
+              ? "Select up to three caregivers to continue with your Schedule Your Meeting."
               : "Create your free profile to discover verified, compassionate caregivers."
             )}
           </p>
@@ -197,7 +197,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
             !noDescription ? "lg:col-span-7" : "lg:col-span-8"
           }`}
         >
-          <label className="mb-2 font-semibold text-lg" htmlFor="zip-input">
+          <label className="mb-2 font-semibold text-xl" htmlFor="zip-input">
             {isCaregiversPage ? "Provide Zip code" : "Provide Zip code"}
           </label>
           <input
@@ -217,7 +217,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         >
           <button
             type="submit"
-            className={`w-full justify-center px-5 py-4 cursor-pointer rounded-4xl text-lg font-semibold transition whitespace-nowrap
+            className={`w-full justify-center ml-8 px-5 py-4 cursor-pointer rounded-4xl text-lg font-semibold transition whitespace-nowrap
               bg-[#FFA726] text-[#233D4D]`}
           >
             {isCaregiversPage ? "Search Caregiver" : "Search Caregiver"}

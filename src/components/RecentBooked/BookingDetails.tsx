@@ -4,9 +4,10 @@ import Image from "next/image";
 import { useState } from "react";
 import ActionDialog from "../common/ActionDialog";
 import CaregiverModal from "../careGiver/CaregiverModal";
+import ScheduleCare from "../careGiver/ScheduleCare";
 import { binIcon } from "@/lib/svg_icons";
 import type { Booking, WeeklyScheduleSlot } from "@/types/Booking";
-import { useCancelBookingMutation } from "@/store/api/bookingApi";
+import { useCancelBookingMutation, useEditBookingMutation } from "@/store/api/bookingApi";
 import { toast } from "react-toastify";
 
 interface BookingDetailsProps {
@@ -17,12 +18,15 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
   const [openDeleteDialog, setOpenDialog] = useState(false);
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
   const [cancelBooking, { isLoading: isCancelling }] = useCancelBookingMutation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [editBooking, { isLoading: isSaving }] = useEditBookingMutation();
+  const [isEditing, setIsEditing] = useState(false);
+  const [bookingDetails, setBookingDetails] = useState(booking);
 
   const handleOpen = () => setOpenDialog(false);
+
   const handleCancelBooking = async () => {
     if (!booking.bookingId || !booking.caregivers?.length) return;
-    // You may want to cancel for the selected caregiver, or for all
-    // Here, we'll use the first caregiver as an example
     const caregiverId = booking.caregivers[0].id;
     try {
       await cancelBooking({ bookingId: booking.bookingId, caregiverId }).unwrap();
@@ -31,6 +35,37 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
     } catch {
       toast.error("Failed to cancel booking");
       setOpenDialog(false);
+    }
+  };
+
+  // This function is passed to ScheduleCare for editing
+  const handleEditBooking = async (updatedValues: {
+    startDate: string;
+    meetingDate: string;
+    endDate: string | null;
+    weeklySchedule: WeeklyScheduleSlot[];
+  }) => {
+    try {
+      const payload = {
+        startDate: updatedValues.startDate,
+        meetingDate: updatedValues.meetingDate,
+        endDate: updatedValues.endDate || null,
+        weeklySchedule: updatedValues.weeklySchedule,
+      };
+      const result = await editBooking({ bookingId: booking.bookingId, payload }).unwrap();
+      if (result.success) {
+        toast.success("Meeting details updated successfully!");
+        setIsEditing(false);
+        setBookingDetails(prev => ({
+          ...prev,
+          ...payload,
+          endDate: payload.endDate ?? "",
+        }));
+      } else {
+        toast.error(result.message || "Update failed. Please try again.");
+      }
+    } catch {
+      toast.error("Update failed. Please try again.");
     }
   };
 
@@ -49,19 +84,26 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
 
   return (
     <div className="flex gap-8 max-w-7xl mx-auto px-6 py-10 bg-[#F8F9FA]">
-      {/* Main Content */}
       <main className="flex-1">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold text-[#2F3C51]">
             Recent Bookings / <span className="text-[#2F3C51]">#{booking.bookingId}</span>
           </h2>
-          <button
-            onClick={() => setOpenDialog(true)}
-            className="border border-[#98A2B3] text-[#2F3C51] px-4 py-2 rounded-lg hover:bg-[#F7F7F7] transition"
-            disabled={isCancelling}
-          >
-            {isCancelling ? "Cancelling..." : "Cancel Booking"}
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={() => setOpenDialog(true)}
+              className="border border-[#98A2B3] text-[#2F3C51] px-4 py-2 rounded-lg hover:bg-[#F7F7F7] transition"
+              disabled={isCancelling}
+            >
+              {isCancelling ? "Cancelling..." : "Cancel Booking"}
+            </button>
+            <button
+              onClick={() => setIsEditing(true)}
+              className="border border-[#FFA726] text-[#FFA726] px-4 py-2 rounded-lg hover:bg-[#FFF3E0] transition"
+            >
+              Edit
+            </button>
+          </div>
         </div>
 
         {/* Booking Details Card */}
@@ -75,42 +117,50 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             <div className="min-w-0">
               <span className="block text-[#233D4D] text-base mb-1">Booked On:</span>
               <span className="font-sm text-[#98A2B3] block">
-                {booking.bookedOn
-                  ? new Date(booking.bookedOn).toLocaleDateString()
+                {bookingDetails.bookedOn
+                  ? new Date(bookingDetails.bookedOn).toLocaleDateString()
                   : "N/A"}
               </span>
             </div>
             <div className="min-w-0">
               <span className="block text-[#233D4D] text-base mb-1">Preferred Meeting Date:</span>
               <span className="font-sm text-[#98A2B3] block">
-                {booking.startDate
-                  ? new Date(booking.startDate).toLocaleDateString()
+                {bookingDetails.meetingDate
+                  ? new Date(bookingDetails.meetingDate).toLocaleDateString()
                   : "N/A"}
               </span>
             </div>
             <div className="min-w-0">
-              <span className="block text-[#233D4D] text-base mb-1">Service End Date:</span>
+              <span className="block text-[#233D4D] text-base mb-1">Service start Date:</span>
               <span className="font-sm text-[#98A2B3] block">
-                {booking.endDate
-                  ? new Date(booking.endDate).toLocaleDateString()
+                {bookingDetails.startDate
+                  ? new Date(bookingDetails.startDate).toLocaleDateString()
                   : "N/A"}
               </span>
             </div>
           </div>
-          {/* Second row: Care Type and Service Date and Times */}
-          <div className="grid grid-cols-2">
-            <div className="min-w-1">
-              <span className="block text-[#233D4D] text-base mb-1">Care Type:</span>
+          {/* Second row: Care Type, Service End Date, Service Date and Times */}
+          <div className="grid grid-cols-3 gap-6 mb-4">
+            <div className="min-w-0">
+              <span className="block text-[#233D4D] text-base mb-1">Service End Date:</span>
               <span className="font-sm text-[#98A2B3] block">
-                {booking.careType ?? "Personal Care"}
+                {bookingDetails.endDate
+                  ? new Date(bookingDetails.endDate).toLocaleDateString()
+                  : "N/A"}
               </span>
             </div>
             <div className="min-w-0">
-              <span className=" text-[#233D4D] text-base mb-1">Service Date and Times:</span>
+              <span className="block text-[#233D4D] text-base mb-1">Care Type:</span>
               <span className="font-sm text-[#98A2B3] block">
-                {formatWeeklySchedule(booking.weeklySchedule)}
+                {bookingDetails.careType ?? "Personal Care"}
               </span>
-              <button className="text-[#FFA726] text-left text-sm mt-1">View more &darr;</button>
+              <button className="text-[#FFA726] text-left text-sm mt-2">View more &darr;</button>
+            </div>
+            <div className="min-w-0">
+              <span className="block text-[#233D4D] text-base mb-1">Service Date and Times:</span>
+              <span className="font-sm text-[#98A2B3] block">
+                {formatWeeklySchedule(bookingDetails.weeklySchedule)}
+              </span>
             </div>
           </div>
         </div>
@@ -146,7 +196,6 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
                   </span>
                 </div>
               </div>
-              {/* Show badge if booking.status is accepted & cg.status is hired OR booking.status is completed & cg.status is completed */}
               {(booking.status === "accepted" && cg.status === "hired") ||
                 (booking.status === "completed" && cg.status === "completed") ? (
                 <span className="bg-[#2F3C51] text-white px-4 py-1 rounded-full text-sm flex items-center gap-2 ml-auto">
@@ -179,6 +228,29 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
           heading="Confirm Cancellation"
           subheading="Are you sure you want to cancel this booking?"
         />
+
+        {/* Edit Booking Schedule */}
+        {isEditing && (
+          <ScheduleCare
+            isOpen={isEditing}
+            OnClose={() => setIsEditing(false)}
+            selectedCaregivers={booking.caregivers.map(cg => ({
+              id: cg.id,
+              name: cg.name,
+              specialty: cg.status || "General Care",
+              price: "",
+              experience: cg.experience ? `${cg.experience} Years` : "0+ Years",
+              avatar: cg.avatar || "/care-giver/boy-icon.png",
+            }))}
+            onBookingSuccess={handleEditBooking}
+            initialStartDate={booking.startDate ? new Date(booking.startDate) : null}
+            initialEndDate={booking.endDate ? new Date(booking.endDate) : null}
+            initialMeetingDate={booking.meetingDate ? new Date(booking.meetingDate) : null}
+            initialWeeklySchedule={booking.weeklySchedule}
+            isEditMode={true}
+            bookingId={booking.bookingId}
+          />
+        )}
       </main>
     </div>
   );

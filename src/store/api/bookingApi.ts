@@ -263,6 +263,22 @@ export const bookingApi = createApi({
       }),
     }),
 
+    editBooking: builder.mutation<BookingResponse, {
+      bookingId: string;
+      payload: {
+        startDate: string;
+        meetingDate: string;
+        endDate?: string | null;
+        weeklySchedule: { weekDay: number; startTime: string; endTime: string }[];
+      };
+    }>({
+      query: ({ bookingId, payload }) => ({
+        url: `/api/v1/booking/${bookingId}/edit`,
+        method: "PUT",
+        body: payload,
+      }),
+    }),
+
     getServiceNames: builder.query<ServiceNamesResponse, void>({
       query: () => ({
         url: '/api/v1/service/names',
@@ -323,6 +339,7 @@ export const {
   useCreateBookingMutation,
   useGetServiceNamesQuery,
   useGetRecentBookingsQuery,
+  useEditBookingMutation,
   useCancelBookingMutation,
   useGetServiceHighlightsQuery,
   useBookmarkCaregiverMutation,

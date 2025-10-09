@@ -8,7 +8,7 @@ interface Props {
 
 function AuthLayout({ image, children }: Props) {
   return (
-    <div className="w-full h-screen py-8 md:px-20 px-5 bg-[#F7F7F3] flex flex-col text-[var(--blue-gray)] ">
+    <div className="w-full min-h-screen py-8 md:px-20 px-5 bg-[#F7F7F3] flex flex-col text-[var(--blue-gray)] ">
       <div className="mb-4">
         <Image src={"/auth/logo-1.png"} alt="Logo" width={150} height={150} />
       </div>
@@ -30,7 +30,7 @@ function AuthLayout({ image, children }: Props) {
               <div className="mt-6 mb-3 items-center text-[var(--blue-gray)] text-center font-semibold text-4xl">
                 Find Trusted Caregivers for Your Loved Ones at Home
               </div>
-              <div className="text-[#98A2B3] text-sm text-center px-0">
+              <div className="text-[#6e747e] text-base font-medium text-center px-0">
                 Connect with verified professionals who provide compassionate,
                 personalized care for seniors—right where they feel safest.
               </div>

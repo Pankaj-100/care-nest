@@ -328,7 +328,7 @@ const CaregiversPage = () => {
               const value = filters[key as keyof CaregiverFilters];
               return value && (Array.isArray(value) ? value.length > 0 : true);
             }) && (
-              <div className="flex items-center gap-2 text-xs">
+              <div className="flex items-center gap-2 text-medium">
                 <span className="text-gray-500">
                   Filters active
                 </span>

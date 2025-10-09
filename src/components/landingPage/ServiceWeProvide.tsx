@@ -67,7 +67,7 @@ type ServiceProps = {
 
 const Services = ({ title, desc, image, path }: ServiceProps) => {
   return (
-    <div className="p-4">
+    <div className="p-4 h-full flex flex-col">
       <div className="h-70 rounded mb-2 relative">
         <Image
           src={image}
@@ -77,15 +77,15 @@ const Services = ({ title, desc, image, path }: ServiceProps) => {
         />
       </div>
 
-      <div>
+      <div className="flex-grow">
         <h3 className="font-semibold text-lg mb-2">{title}</h3>
-        <p className="text-sm text-gray-600 mb-3">{desc}</p>
+        <p className="text-base text-gray-600 mb-3">{desc}</p>
       </div>
 
       <RedirectButton
         ButtonCompo={TransparentButton}
         className="w-full"
-        title="View more"
+        title="View More"
         path={path}
       />
     </div>

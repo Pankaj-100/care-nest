@@ -6,6 +6,7 @@ import Image from "next/image";
 import BookSuccessful from "./BookSuccessful";
 import {
   useCreateBookingMutation,
+  useEditBookingMutation,
 } from "@/store/api/bookingApi";
 import { CustomButton } from "@/components/common/CustomInputs";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
@@ -27,11 +28,26 @@ export interface SelectedCaregiver {
 export interface ScheduleCareProps {
   isOpen: boolean;
   OnClose: () => void;
-  selectedCaregivers: SelectedCaregiver[]; 
-  onBookingSuccess: () => void;
+  selectedCaregivers: SelectedCaregiver[];
+  onBookingSuccess?: (updatedValues: {
+    startDate: string;
+    meetingDate: string;
+    endDate: string | null;
+    weeklySchedule: { weekDay: number; startTime: string; endTime: string }[];
+  }) => void;
   serviceIds?: string[];
   requiredBy?: string;
   zipcode?: number;
+  initialStartDate?: Date | null;
+  initialEndDate?: Date | null;
+  initialMeetingDate?: Date | null;
+  initialWeeklySchedule?: {
+    weekDay: number;
+    startTime: string;
+    endTime: string;
+  }[];
+  isEditMode?: boolean;
+  bookingId?: string;
 }
 
 interface BookingResponse {
@@ -47,48 +63,64 @@ const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
 type Day = (typeof DAYS)[number];
 
 const defaultStart = 9 * 60; // 09:00 AM
-const defaultEnd = 17 * 60;  // 05:00 PM (changed to 24-hour range)
-
-
+const defaultEnd = 17 * 60; // 05:00 PM (changed to 24-hour range)
 
 // Convert minutes to 12-hour format
 const formatTime12Hour = (minutes: number) => {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
-  const period = hours >= 12 ? 'PM' : 'AM';
+  const period = hours >= 12 ? "PM" : "AM";
   const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-  return `${displayHours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')} ${period}`;
+  return `${displayHours.toString().padStart(2, "0")}:${mins
+    .toString()
+    .padStart(2, "0")} ${period}`;
 };
 
 const defaultRanges: { id: string; start: number; end: number }[] = [
   { id: "r1", start: 9 * 60, end: 17 * 60 }, // 09:00 AM - 05:00 PM
 ];
 
-const initialSchedule: Record<Day, { id: string; start: number; end: number }[]> = DAYS.reduce((acc, d) => {
-  acc[d] = d === "Sun" || d === "Mon" ? defaultRanges.map(r => ({ ...r, id: `${d}-${r.id}` })) : [];
-  return acc;
-}, {} as Record<Day, { id: string; start: number; end: number }[]>);
+const initialSchedule: Record<Day, { id: string; start: number; end: number }[]> = DAYS.reduce(
+  (acc, d) => {
+    acc[d] = d === "Sun" || d === "Mon" ? defaultRanges.map((r) => ({ ...r, id: `${d}-${r.id}` })) : [];
+    return acc;
+  },
+  {} as Record<Day, { id: string; start: number; end: number }[]>
+);
 
-const ScheduleCare = ({ 
-  isOpen, 
-  OnClose, 
-  selectedCaregivers, 
+const ScheduleCare = ({
+  isOpen,
+  OnClose,
+  selectedCaregivers,
   onBookingSuccess,
   serviceIds,
   requiredBy,
-  zipcode
+  zipcode,
+  initialStartDate,
+  initialEndDate,
+  initialMeetingDate,
+  initialWeeklySchedule,
+  isEditMode,
+  bookingId,
 }: ScheduleCareProps) => {
-
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
+  const [editBooking, { isLoading: isEditing }] = useEditBookingMutation();
 
-  const requiredByRedux = useAppSelector(state => state.booking.requiredBy);
+  const requiredByRedux = useAppSelector((state) => state.booking.requiredBy);
   const serviceIdsRedux = useAppSelector((state) => state.booking.serviceIds);
-  const careseekerZipcodeRedux = useAppSelector(state => state.booking.careseekerZipcode);
+  const careseekerZipcodeRedux = useAppSelector((state) => state.booking.careseekerZipcode);
 
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(initialStartDate || new Date());
+  const [endDate, setEndDate] = useState<Date | null>(initialEndDate || null);
+  const [meetingDate, setMeetingDate] = useState<Date | null>(initialMeetingDate || new Date());
 
-  const [selectedDays, setSelectedDays] = useState<Day[]>(["Sun", "Mon"]);
+  // Helper to convert "09:00" to minutes
+  const timeStrToMinutes = (str: string) => {
+    const [h, m] = str.split(":").map(Number);
+    return h * 60 + m;
+  };
+
+  const [selectedDays, setSelectedDays] = useState<Day[]>([]);
   const [schedule, setSchedule] = useState<Record<Day, { id: string; start: number; end: number }[]>>(initialSchedule);
   const [applyAll, setApplyAll] = useState(true);
   const [varySchedule, setVarySchedule] = useState(false);
@@ -96,7 +128,7 @@ const ScheduleCare = ({
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
-  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -115,24 +147,67 @@ const ScheduleCare = ({
     return () => window.removeEventListener("keydown", onEsc);
   }, [isOpen, OnClose]);
 
+  useEffect(() => {
+    if (isOpen) {
+      if (isEditMode && initialWeeklySchedule && initialWeeklySchedule.length > 0) {
+        // Build days and schedule from initialWeeklySchedule
+        const days: Day[] = [];
+        const sched: Record<Day, { id: string; start: number; end: number }[]> = {
+          Sun: [],
+          Mon: [],
+          Tue: [],
+          Wed: [],
+          Thu: [],
+          Fri: [],
+          Sat: [],
+        };
+        initialWeeklySchedule.forEach((slot) => {
+          const day = DAYS[slot.weekDay];
+          if (!days.includes(day)) days.push(day);
+          sched[day] = [{
+            id: `${day}-0`,
+            start: timeStrToMinutes(slot.startTime),
+            end: timeStrToMinutes(slot.endTime),
+          }];
+        });
+        setSelectedDays(days);
+        setSchedule(sched);
+        setApplyAll(false);
+      } else {
+        // Default for new booking or no previous schedule
+        setSelectedDays(["Sun", "Mon"]);
+        setSchedule(initialSchedule);
+        setApplyAll(true);
+      }
+    }
+    // Reset dragging state if modal is closed
+    if (!isOpen) {
+      setSelectedDays([]);
+      setSchedule(initialSchedule);
+      setApplyAll(true);
+    }
+  }, [isOpen, isEditMode, initialWeeklySchedule]);
+
   // Change time with better UX - separate handlers for start and end (24-hour range)
   const changeStartTime = (d: Day, value: number) => {
-    const v = Math.max(0, Math.min(23 * 60 + 45, value)); 
-    
+    const v = Math.max(0, Math.min(23 * 60 + 45, value));
+
     setSchedule((prev) => {
       let res = { ...prev };
-      
+
       if (applyAll && selectedDays.length > 1) {
         // When applyAll is true, update ALL selected days with the same time
         selectedDays.forEach((sd) => {
           const currentEnd = prev[sd]?.[0]?.end || defaultEnd;
           const newEnd = currentEnd <= v + 30 ? Math.min(23 * 60 + 59, v + 60) : currentEnd;
-          
-          res[sd] = [{
-            id: `${sd}-0`,
-            start: v,
-            end: newEnd,
-          }];
+
+          res[sd] = [
+            {
+              id: `${sd}-0`,
+              start: v,
+              end: newEnd,
+            },
+          ];
         });
       } else {
         // When applyAll is false, only update the current day
@@ -145,28 +220,30 @@ const ScheduleCare = ({
         });
         res = { ...prev, [d]: updated };
       }
-      
+
       return res;
     });
   };
 
   const changeEndTime = (d: Day, value: number) => {
     const v = Math.max(1 * 60, Math.min(23 * 60 + 59, value));
-    
+
     setSchedule((prev) => {
       let res = { ...prev };
-      
+
       if (applyAll && selectedDays.length > 1) {
         // When applyAll is true, update ALL selected days with the same time
         selectedDays.forEach((sd) => {
           const currentStart = prev[sd]?.[0]?.start || defaultStart;
           const newStart = currentStart >= v - 30 ? Math.max(0, v - 60) : currentStart;
-          
-          res[sd] = [{
-            id: `${sd}-0`,
-            start: newStart,
-            end: v,
-          }];
+
+          res[sd] = [
+            {
+              id: `${sd}-0`,
+              start: newStart,
+              end: v,
+            },
+          ];
         });
       } else {
         // When applyAll is false, only update the current day
@@ -179,7 +256,7 @@ const ScheduleCare = ({
         });
         res = { ...prev, [d]: updated };
       }
-      
+
       return res;
     });
   };
@@ -188,32 +265,32 @@ const ScheduleCare = ({
   const toggleDay = (d: Day) => {
     setSelectedDays((prev) => {
       const isRemoving = prev.includes(d);
-      
+
       if (isRemoving) {
         return prev.filter((x) => x !== d);
       } else {
         return [...prev, d];
       }
     });
-    
+
     setSchedule((prev) => {
       // If removing a day, clear its schedule
       if (prev[d] && selectedDays.includes(d)) {
         return { ...prev, [d]: [] };
       }
-      
+
       // If adding a new day, determine what time slots to use
       let timeSlotToUse = {
         start: defaultStart,
         end: defaultEnd,
       };
-      
-      // If "Apply to all days" is enabled and there are existing selected days, 
+
+      // If "Apply to all days" is enabled and there are existing selected days,
       // use the time from the first selected day
       if (applyAll && selectedDays.length > 0) {
         const firstSelectedDay = selectedDays[0];
         const firstDaySchedule = prev[firstSelectedDay]?.[0];
-        
+
         if (firstDaySchedule) {
           timeSlotToUse = {
             start: firstDaySchedule.start,
@@ -221,15 +298,17 @@ const ScheduleCare = ({
           };
         }
       }
-      
+
       // Add the new day with the determined time slot
-      return { 
-        ...prev, 
-        [d]: [{
-          id: `${d}-0`,
-          start: timeSlotToUse.start,
-          end: timeSlotToUse.end,
-        }] 
+      return {
+        ...prev,
+        [d]: [
+          {
+            id: `${d}-0`,
+            start: timeSlotToUse.start,
+            end: timeSlotToUse.end,
+          },
+        ],
       };
     });
   };
@@ -246,13 +325,13 @@ const ScheduleCare = ({
     for (let hour = 0; hour < 24; hour += 4) {
       markers.push({
         value: hour * 60,
-        label: formatTime12Hour(hour * 60)
+        label: formatTime12Hour(hour * 60),
       });
     }
     // Add final marker for 11:59 PM
     markers.push({
       value: 23 * 60 + 59,
-      label: formatTime12Hour(23 * 60 + 59)
+      label: formatTime12Hour(23 * 60 + 59),
     });
     return markers;
   };
@@ -263,11 +342,54 @@ const ScheduleCare = ({
     e.preventDefault();
     setFormError(null);
 
+    // Only validate startDate in edit mode
+    if (isEditMode) {
+      if (!startDate) return setFormError("Select start date.");
+
+      // Build weeklySchedule array
+      const weeklySchedule: { weekDay: number; startTime: string; endTime: string }[] = [];
+      selectedDays.forEach((d) => {
+        const slot = schedule[d]?.[0];
+        if (slot) {
+          weeklySchedule.push({
+            weekDay: DAYS.indexOf(d),
+            startTime: fmtTime(slot.start),
+            endTime: fmtTime(slot.end),
+          });
+        }
+      });
+
+      const payload = {
+        startDate: startDate ? startDate.toISOString().slice(0, 10) : "",
+        meetingDate: meetingDate ? meetingDate.toISOString().slice(0, 10) : "",
+        endDate: endDate ? endDate.toISOString().slice(0, 10) : null,
+        weeklySchedule,
+      };
+
+      try {
+        if (bookingId) {
+          const result = await editBooking({ bookingId, payload }).unwrap();
+          if (isBookingResponse(result) && result.success) {
+            OnClose();
+            if (onBookingSuccess) {
+              onBookingSuccess(payload);
+            }
+          } else {
+            setFormError(result.message || "Update failed. Please try again.");
+          }
+        }
+      } catch {
+        setFormError("Update failed. Please try again.");
+      }
+      return;
+    }
+
+    // --- Existing validations for new booking ---
     if (!startDate) return setFormError("Select start date.");
-    
-    // Check if serviceIds exists and has length
+
     const effectiveServiceIds = serviceIds || serviceIdsRedux || [];
-    if (effectiveServiceIds.length === 0) return setFormError("You missed service selection, start the booking from home page.");
+    if (effectiveServiceIds.length === 0)
+      return setFormError("You missed service selection, start the booking from home page.");
 
     if (selectedCaregivers.length < 3) return setFormError("Select at least three caregivers.");
     if (selectedDays.length === 0) return setFormError("Select at least one meeting day.");
@@ -287,7 +409,7 @@ const ScheduleCare = ({
     });
 
     // Prepare shortlistedCaregiversIds from selectedCaregivers
-    const shortlistedCaregiversIds = selectedCaregivers.map(c => c.id);
+    const shortlistedCaregiversIds = selectedCaregivers.map((c) => c.id);
 
     // Use effective values (prop or Redux fallback)
     const effectiveRequiredBy = requiredBy || requiredByRedux;
@@ -296,6 +418,7 @@ const ScheduleCare = ({
     // API payload
     const payload = {
       startDate: startDate ? startDate.toISOString().slice(0, 10) : "",
+      meetingDate: meetingDate ? meetingDate.toISOString().slice(0, 10) : "",
       endDate: endDate ? endDate.toISOString().slice(0, 10) : undefined,
       serviceIds: effectiveServiceIds,
       careseekerZipcode: Number(effectiveZipcode),
@@ -314,14 +437,36 @@ const ScheduleCare = ({
 
     // Proceed with booking API call if authenticated
     try {
-      const result = await createBooking(payload).unwrap();
-      if (isBookingResponse(result) && result.success) {
-        setIsSuccessModalOpen(true);
-        if (onBookingSuccess) {
-          onBookingSuccess();
+      if (isEditMode && bookingId) {
+        const result = await editBooking({ bookingId, payload }).unwrap();
+        if (isBookingResponse(result) && result.success) {
+          OnClose();
+          if (onBookingSuccess) {
+            onBookingSuccess({
+              startDate: payload.startDate,
+              meetingDate: payload.meetingDate,
+              endDate: payload.endDate ?? "",
+              weeklySchedule: payload.weeklySchedule,
+            });
+          }
+        } else {
+          setFormError(result.message || "Update failed. Please try again.");
         }
       } else {
-        setFormError(result.message || "Booking failed. Please try again.");
+        const result = await createBooking(payload).unwrap();
+        if (isBookingResponse(result) && result.success) {
+          setIsSuccessModalOpen(true);
+          if (onBookingSuccess) {
+            onBookingSuccess({
+              startDate: startDate ? startDate.toISOString().slice(0, 10) : "",
+              meetingDate: meetingDate ? meetingDate.toISOString().slice(0, 10) : "",
+              endDate: endDate ? endDate.toISOString().slice(0, 10) : "",
+              weeklySchedule,
+            });
+          }
+        } else {
+          setFormError(result.message || "Booking failed. Please try again.");
+        }
       }
     } catch (err: unknown) {
       if (typeof err === "object" && err !== null && "data" in err && typeof (err as { data?: { message?: string } }).data?.message === "string") {
@@ -338,34 +483,34 @@ const ScheduleCare = ({
   function fmtTime(minutes: number) {
     // Clamp minutes to valid 24-hour range (0-1439)
     const clampedMinutes = Math.max(0, Math.min(1439, minutes));
-    
+
     const h = Math.floor(clampedMinutes / 60);
     const m = clampedMinutes % 60;
-    
+
     // Ensure hours are in 0-23 range
     const validHours = h >= 24 ? 23 : h;
-    
+
     return `${validHours.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
   }
 
-  const [isDragging, setIsDragging] = useState<'start' | 'end' | null>(null);
+  const [isDragging, setIsDragging] = useState<"start" | "end" | null>(null);
 
   // Add mouse event handlers
-  const handleMouseDown = (type: 'start' | 'end') => (e: React.MouseEvent) => {
+  const handleMouseDown = (type: "start" | "end") => (e: React.MouseEvent) => {
     e.preventDefault();
     setIsDragging(type);
   };
 
   const handleMouseMove = (d: Day) => (e: React.MouseEvent) => {
     if (!isDragging) return;
-    
+
     const rect = e.currentTarget.getBoundingClientRect();
     const percentage = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
     const minutes = Math.round(percentage * 24 * 60 / 15) * 15; // Round to 15-minute intervals
-    
-    if (isDragging === 'start') {
+
+    if (isDragging === "start") {
       changeStartTime(d, minutes);
-    } else if (isDragging === 'end') {
+    } else if (isDragging === "end") {
       changeEndTime(d, minutes);
     }
   };
@@ -379,11 +524,11 @@ const ScheduleCare = ({
     const handleGlobalMouseUp = () => setIsDragging(null);
 
     if (isDragging) {
-      document.addEventListener('mouseup', handleGlobalMouseUp);
+      document.addEventListener("mouseup", handleGlobalMouseUp);
     }
 
     return () => {
-      document.removeEventListener('mouseup', handleGlobalMouseUp);
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
     };
   }, [isDragging]);
 
@@ -393,30 +538,32 @@ const ScheduleCare = ({
     if (applyAll && selectedDays.length > 1) {
       const firstDay = selectedDays[0];
       const firstDaySchedule = schedule[firstDay]?.[0];
-      
+
       if (firstDaySchedule) {
         setSchedule((prev) => {
           const newSchedule = { ...prev };
-          
+
           // Apply first day's time to all other selected days
           selectedDays.slice(1).forEach((day) => {
-            newSchedule[day] = [{
-              id: `${day}-0`,
-              start: firstDaySchedule.start,
-              end: firstDaySchedule.end,
-            }];
+            newSchedule[day] = [
+              {
+                id: `${day}-0`,
+                start: firstDaySchedule.start,
+                end: firstDaySchedule.end,
+              },
+            ];
           });
-          
+
           return newSchedule;
         });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [applyAll, selectedDays]); 
+  }, [applyAll, selectedDays]);
 
   if (!isOpen) return null;
 
-  if (isSuccessModalOpen) {
+  if (!isEditMode && isSuccessModalOpen) {
     return (
       <BookSuccessful
         isModalOpen={isSuccessModalOpen}
@@ -437,10 +584,10 @@ const ScheduleCare = ({
       >
         {/* Header */}
         <h1 className="text-center text-[var(--navy)] font-bold text-[26px]">
-          Schedule your meeting with caregivers
+          Schedule Your Meeting With Caregivers
         </h1>
         <p className="text-center text-[var(--cool-gray)] text-base mt-1 mb-6">
-          Pick a preferred date and set the duration to continue .
+          Pick a preferred date and set the duration to continue with schedule your meeting.
         </p>
 
         {/* Selected caregivers */}
@@ -480,7 +627,7 @@ const ScheduleCare = ({
                         }}
                       />
                     </div>
-                    
+
                     <div className="flex-1 min-w-0"> {/* Added min-w-0 to prevent overflow */}
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-semibold text-gray-900 truncate">
@@ -492,7 +639,7 @@ const ScheduleCare = ({
                           </div>
                         )}
                       </div>
-                      
+
                       {/* Services - with proper text wrapping */}
                       {c.specialty && (
                         <p className="text-sm text-gray-600 leading-relaxed break-words">
@@ -501,7 +648,7 @@ const ScheduleCare = ({
                       )}
                     </div>
                   </div>
-                  
+
                   {/* Right side - Experience Badge (always aligned to top-right) */}
                   <div className="flex-shrink-0 ml-3 mt-1"> {/* Added mt-1 for consistent top alignment */}
                     <div className="border border-gray-300 rounded-full px-3 py-1">
@@ -521,6 +668,21 @@ const ScheduleCare = ({
 
         {/* Dates */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block text-[var(--navy)] font-semibold text-base mb-1">
+              Preferred Meeting Date
+            </label>
+            <div className="relative">
+              <DatePicker
+                selected={meetingDate}
+                onChange={(date) => setMeetingDate(date)}
+                minDate={new Date()}
+                dateFormat="dd-MM-yyyy"
+                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+              />
+              <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+            </div>
+          </div>
           <div>
             <label className="block text-[var(--navy)] font-semibold text-base mb-1">
               Service Start Date
@@ -554,7 +716,6 @@ const ScheduleCare = ({
           </div>
         </div>
 
-
         {/* Service Days And Times */}
         <div className="mb-3">
           <label className="block text-[var(--navy)] font-semibold text-base mb-2">
@@ -579,7 +740,7 @@ const ScheduleCare = ({
               );
             })}
           </div>
-          
+
           {/* Show only one slot per selected day */}
           {selectedDays.map((d, idx) => (
             <div key={d} className="rounded-2xl border border-[#EBEBEB] p-4 mb-4">
@@ -597,24 +758,24 @@ const ScheduleCare = ({
                   ✕
                 </button>
               </div>
-              
+
               <div className="mt-4 space-y-4">
                 {schedule[d]?.slice(0, 1).map((r) => (
                   <div key={r.id} className="space-y-4">
                     {/* Time markers */}
                     <div className="flex items-center justify-between text-xs text-[#7B8A9C] px-1">
-                      {timeMarkers.map(marker => (
+                      {timeMarkers.map((marker) => (
                         <span key={marker.value} className="text-center">
-                          {marker.label.split(' ')[0]}<br/>
-                          <span className="text-[10px]">{marker.label.split(' ')[1]}</span>
+                          {marker.label.split(" ")[0]}<br />
+                          <span className="text-[10px]">{marker.label.split(" ")[1]}</span>
                         </span>
                       ))}
                     </div>
-                    
+
                     {/* Custom dual-handle slider - MOUSE EVENT VERSION */}
                     <div className="relative px-2 mb-4">
                       {/* Slider container */}
-                      <div 
+                      <div
                         className="relative h-8 flex items-center cursor-pointer"
                         onMouseMove={handleMouseMove(d)}
                         onMouseUp={handleMouseUp}
@@ -622,7 +783,7 @@ const ScheduleCare = ({
                       >
                         {/* Background track */}
                         <div className="w-full h-1 bg-gray-300 rounded-full"></div>
-                        
+
                         {/* Active track */}
                         <div
                           className="absolute h-1 bg-[#233D4D] rounded-full"
@@ -631,37 +792,35 @@ const ScheduleCare = ({
                             width: `${((r.end - r.start) / (24 * 60)) * 100}%`,
                           }}
                         ></div>
-                        
+
                         {/* Start handle */}
                         <div
                           className="absolute w-4 h-4 bg-white border-2 border-[#233D4D] rounded-full shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow"
                           style={{
                             left: `calc(${(r.start / (24 * 60)) * 100}% - 8px)`,
-                            top: '50%',
-                            transform: 'translateY(-50%)',
+                            top: "50%",
+                            transform: "translateY(-50%)",
                             zIndex: 40,
                           }}
-                          onMouseDown={handleMouseDown('start')}
+                          onMouseDown={handleMouseDown("start")}
                         ></div>
-                        
+
                         {/* End handle */}
                         <div
                           className="absolute w-4 h-4 bg-white border-2 border-[#233D4D] rounded-full shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow"
                           style={{
                             left: `calc(${(r.end / (24 * 60)) * 100}% - 8px)`,
-                            top: '50%',
-                            transform: 'translateY(-50%)',
+                            top: "50%",
+                            transform: "translateY(-50%)",
                             zIndex: 40,
                           }}
-                          onMouseDown={handleMouseDown('end')}
+                          onMouseDown={handleMouseDown("end")}
                         ></div>
                       </div>
                     </div>
-                    
-                  
                   </div>
                 ))}
-                
+
                 {/* Apply to all days checkbox - only show for first card */}
                 {idx === 0 && selectedDays.length > 1 && (
                   <label className="flex items-center justify-center gap-2 text-sm text-[#233D4D] mt-4 cursor-pointer">
@@ -702,10 +861,12 @@ const ScheduleCare = ({
           </button>
           <CustomButton
             onClick={() => handleBooking(new Event("submit") as unknown as React.FormEvent)}
-            disabled={isBooking}
+            disabled={isBooking || isEditing}
             className="flex-1 rounded-full font-semibold text-sm py-5 hover:opacity-90"
           >
-            {isBooking ? "Scheduling..." : "Schedule Your Meeting"}
+            {isEditMode
+              ? isEditing ? "Saving..." : "Save Changes"
+              : isBooking ? "Scheduling..." : "Schedule Your Meeting"}
           </CustomButton>
         </div>
       </div>

@@ -20,6 +20,7 @@ export interface Booking {
   bookingId: string;
   bookedOn: string;
   startDate: string;
+  meetingDate: string;
   endDate: string;
   zipcode: number;
   requiredBy: string;
