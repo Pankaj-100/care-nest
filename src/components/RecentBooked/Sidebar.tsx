@@ -192,23 +192,20 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
           <h2 className="text-2xl font-bold text-[var(--navy)]">
             {name || "Your Name"}
           </h2>
-          <p className="text-sm text-gray-500">
-            {email || "email@example.com"}
-          </p>
         </div>
       </div>
 
       {/* Menu Items */}
       <ul className="space-y-7">
-        {profileItem.map((item) => (
+        {profileItem.map((item, idx) => (
           <li
             key={item.id}
             onClick={() => onSelect(item.name)}
-            className={`cursor-pointer flex items-center justify-between gap-2 px-4 py-2 font-Urbanist text-[var(--navy)] border-b border-[#00000033] transition duration-200 ease-in-out ${
+            className={`cursor-pointer flex items-center justify-between gap-2 px-4 py-2 font-Urbanist text-[var(--navy)] transition duration-200 ease-in-out ${
               selected === item.name
                 ? "bg-yellow-400 rounded-full font-semibold"
                 : "hover:bg-[#F2A307] hover:rounded-full"
-            }`}
+            } ${idx !== profileItem.length - 1 ? "border-b border-[#00000033]" : ""}`}
           >
             <span>{item.name}</span>
             <Image

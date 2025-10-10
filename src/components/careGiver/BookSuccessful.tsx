@@ -38,13 +38,12 @@ const BookSuccessful = ({ isModalOpen, onClose }: BookSuccessfulProps) => {
 
         {/* Title */}
         <h2 className="text-2xl font-bold text-center text-[var(--navy)] mb-3">
-          Booked Successfully
+          Thank you for booking with us
         </h2>
 
         {/* Message */}
         <p className="text-gray-500 text-center mb-6 text-sm leading-relaxed">
-          You have booked caregivers. We will choose the best one for you and
-          let you know.
+          You have booked caregivers; You will receive an email shortly. we will choose the best one for you and let you know.
         </p>
 
         {/* Action Button */}

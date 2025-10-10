@@ -206,7 +206,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
             placeholder="Enter Zip Code"
             value={zipCode}
             onChange={(e) => setZipCode(e.target.value)}
-            className="w-full rounded-full outline-none border border-gray-400 py-4 px-6 text-gray-900 text-md focus:border-gray-400 focus:ring-0"
+            className="w-full lg:w-[350px] rounded-full outline-none border border-gray-400 py-4 px-6 text-gray-900 text-md focus:border-gray-400 focus:ring-0"
             maxLength={10}
           />
         </div>

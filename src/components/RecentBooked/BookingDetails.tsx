@@ -22,6 +22,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
   const [editBooking, { isLoading: isSaving }] = useEditBookingMutation();
   const [isEditing, setIsEditing] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(booking);
+  const [showAllTimings, setShowAllTimings] = useState(false);
 
   const handleOpen = () => setOpenDialog(false);
 
@@ -71,15 +72,14 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
 
   if (!booking) return <div className="p-4">No booking selected</div>;
 
-  // Format weekly schedule for display
-  const formatWeeklySchedule = (schedule: WeeklyScheduleSlot[]) => {
-    if (!schedule?.length) return "N/A";
-    return schedule
-      .map(
-        (slot) =>
-          `${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][slot.weekDay]} - ${slot.startTime} to ${slot.endTime}`
-      )
-      .join(", ");
+
+  // Helper to format weekly schedule as array
+  const formatWeeklyScheduleArr = (schedule: WeeklyScheduleSlot[]) => {
+    if (!schedule?.length) return [];
+    return schedule.map(
+      (slot) =>
+        `${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][slot.weekDay]} - ${slot.startTime} to ${slot.endTime}`
+    );
   };
 
   return (
@@ -92,7 +92,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
           <div className="flex gap-4">
             <button
               onClick={() => setOpenDialog(true)}
-              className="border border-[#98A2B3] text-[#2F3C51] px-4 py-2 rounded-lg hover:bg-[#F7F7F7] transition"
+              className="border border-[#ee4a47] text-[#ee4a47] px-4 py-2 rounded-lg hover:bg-[#f0eaea] transition"
               disabled={isCancelling}
             >
               {isCancelling ? "Cancelling..." : "Cancel Booking"}
@@ -123,7 +123,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
               </span>
             </div>
             <div className="min-w-0">
-              <span className="block text-[#233D4D] text-base mb-1">Preferred Meeting Date:</span>
+              <span className="block text-[#233D4D] text-base mb-1">Meeting Date:</span>
               <span className="font-sm text-[#98A2B3] block">
                 {bookingDetails.meetingDate
                   ? new Date(bookingDetails.meetingDate).toLocaleDateString()
@@ -154,12 +154,33 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
               <span className="font-sm text-[#98A2B3] block">
                 {bookingDetails.careType ?? "Personal Care"}
               </span>
-              <button className="text-[#FFA726] text-left text-sm mt-2">View more &darr;</button>
+              
             </div>
             <div className="min-w-0">
               <span className="block text-[#233D4D] text-base mb-1">Service Date and Times:</span>
               <span className="font-sm text-[#98A2B3] block">
-                {formatWeeklySchedule(bookingDetails.weeklySchedule)}
+                {(() => {
+                  const scheduleArr = formatWeeklyScheduleArr(bookingDetails.weeklySchedule);
+                  const visibleArr = showAllTimings ? scheduleArr : scheduleArr.slice(0, 2);
+                  return (
+                    <>
+                      {visibleArr.length === 0 ? (
+                        <span>N/A</span>
+                      ) : (
+                        visibleArr.map((item, idx) => <div key={idx}>{item}</div>)
+                      )}
+                      {scheduleArr.length > 2 && (
+                        <button
+                          className="text-[#FFA726] text-left text-sm mt-2"
+                          type="button"
+                          onClick={() => setShowAllTimings((prev) => !prev)}
+                        >
+                          {showAllTimings ? "View less ↑" : "View more ↓"}
+                        </button>
+                      )}
+                    </>
+                  );
+                })()}
               </span>
             </div>
           </div>
@@ -223,7 +244,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
           open={openDeleteDialog}
           handleOpen={handleOpen}
           icon={binIcon}
-          confirmText="Cancel"
+          confirmText="Confirm"
           handleConfirm={handleCancelBooking}
           heading="Confirm Cancellation"
           subheading="Are you sure you want to cancel this booking?"

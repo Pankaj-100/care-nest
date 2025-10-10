@@ -240,14 +240,29 @@ export default function ManageProfile() {
                 type="email"
                 disabled={true}
               />
-              <InputField
-                name="gender"
-                value={form.gender}
-                onChange={handleChange}
-                placeholder="Gender"
-                icon={UserIcon()}
-                error={errors.gender}
-              />
+              <div className="space-y-1">
+                <div
+                  className={`flex items-center bg-white px-4 py-4 rounded-full border ${
+                    errors.gender ? "border-red-500 ring-2 ring-red-400" : "focus-within:ring-2 ring-yellow-400"
+                  }`}
+                >
+                  <select
+                    name="gender"
+                    value={form.gender}
+                    onChange={handleChange}
+                    className="flex-1 bg-transparent outline-none text-lg text-[#2B384C]/60"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <span className="text-xl ml-12 text-gray-500">
+                    {UserIcon()}
+                  </span>
+                </div>
+                {errors.gender && <p className="text-red-500 text-sm ml-4">{errors.gender}</p>}
+              </div>
               <InputField
                 name="address"
                 value={form.address}

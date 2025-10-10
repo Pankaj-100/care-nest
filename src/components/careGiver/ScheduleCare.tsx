@@ -586,7 +586,7 @@ const ScheduleCare = ({
         <h1 className="text-center text-[var(--navy)] font-bold text-[26px]">
           Schedule Your Meeting With Caregivers
         </h1>
-        <p className="text-center text-[var(--cool-gray)] text-base mt-1 mb-6">
+        <p className="text-center text-gray-500 text-base mt-1 mb-6">
           Pick a preferred date and set the duration to continue with schedule your meeting.
         </p>
 
@@ -678,7 +678,7 @@ const ScheduleCare = ({
                 onChange={(date) => setMeetingDate(date)}
                 minDate={new Date()}
                 dateFormat="dd-MM-yyyy"
-                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
               <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
             </div>
@@ -693,27 +693,29 @@ const ScheduleCare = ({
                 onChange={(date) => setStartDate(date)}
                 minDate={new Date()}
                 dateFormat="dd-MM-yyyy"
-                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
               />
               <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
             </div>
           </div>
-          <div>
-            <label className="block text-[var(--navy)] font-semibold text-base mb-1">
-              Service End Date (Optional)
-            </label>
-            <div className="relative">
-              <DatePicker
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-                minDate={startDate || new Date()}
-                dateFormat="dd-MM-yyyy"
-                placeholderText="Select Date"
-                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-10 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
-              />
-              <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+          {isEditMode && (
+            <div>
+              <label className="block text-[var(--navy)] font-semibold text-base mb-1">
+                Service End Date (Optional)
+              </label>
+              <div className="relative">
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  minDate={startDate || new Date()}
+                  dateFormat="dd-MM-yyyy"
+                  placeholderText="Select Date"
+                  className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                />
+                <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Service Days And Times */}

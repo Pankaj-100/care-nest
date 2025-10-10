@@ -186,7 +186,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
           {filteredBookings.map((booking) => {
             const apiStatus = booking.status?.toLowerCase?.() || "";
             const uiStatus =

@@ -42,12 +42,12 @@ const SavedCaregiversPanel = () => {
   const handleAddCaregiver = (id: string) => {
     setSelectedCaregivers(prev =>
       prev.includes(id)
-        ? prev // Already selected, do nothing
+        ? prev.filter(cgId => cgId !== id) // Remove caregiver if already selected
         : prev.length < 3
-          ? [...prev, id]
+          ? [...prev, id] // Add caregiver if not already selected
           : prev
     );
-    setSelectedCaregiverId(null); // Close modal after adding
+    setSelectedCaregiverId(null); // Close modal after action
   };
 
   // Handler to remove caregiver from bookmarks
@@ -98,17 +98,8 @@ const SavedCaregiversPanel = () => {
                 isBookmarked={true}
                 heightClass="h-30"
                 isSelected={selectedCaregivers.includes(giver.id)}
-                onClick={() => {
-                  setSelectedCaregiverId(giver.id);
-                  setSelectedCaregivers(prev =>
-                    prev.includes(giver.id)
-                      ? prev.filter(id => id !== giver.id)
-                      : prev.length < 3
-                        ? [...prev, giver.id]
-                        : prev
-                  );
-                }}
-                onBookmarkToggle={() => handleRemoveBookmark(giver.id)} // <-- Add this
+                onClick={() => setSelectedCaregiverId(giver.id)} // <-- Only open modal
+                onBookmarkToggle={() => handleRemoveBookmark(giver.id)}
               />
             ))}
           </div>
@@ -131,6 +122,7 @@ const SavedCaregiversPanel = () => {
         onClose={() => setSelectedCaregiverId(null)}
         onAddCaregiver={handleAddCaregiver}
         isBookmarked={true}
+         isSelected={selectedCaregivers.includes(selectedCaregiverId ?? "")} // <-- Add this line
       />
 
       {/* ScheduleCare Modal */}
