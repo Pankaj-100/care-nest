@@ -378,8 +378,13 @@ const ScheduleCare = ({
             setFormError(result.message || "Update failed. Please try again.");
           }
         }
-      } catch {
-        setFormError("Update failed. Please try again.");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any){
+        const apiMessage =
+    err?.data?.message ||
+    err?.message ||
+    "Update failed. Please try again.";
+  setFormError(apiMessage);
       }
       return;
     }
