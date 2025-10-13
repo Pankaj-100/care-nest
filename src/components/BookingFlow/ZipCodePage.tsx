@@ -73,7 +73,7 @@ const ZipCodePage: React.FC = () => {
 
         <button
             type="submit"
-            className={`w-full bg-[#FFA726] text-[#233D4D] justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-sm font-semibold transition whitespace-nowrap`}
+            className={`w-full bg-[#FFA726] text-[#233D4D] justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-lg font-bold transition whitespace-nowrap`}
             disabled={!isValid}
         >
           Continue

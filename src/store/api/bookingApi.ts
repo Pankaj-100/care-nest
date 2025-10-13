@@ -101,6 +101,13 @@ interface BookingResponse {
   };
 }
 
+interface BookingDetailsResponse {
+  success: boolean;
+  message: string;
+  data: {
+    booking: Booking;
+  };
+}
 
 interface RecentBookingsResponse {
   success: boolean;
@@ -330,6 +337,13 @@ export const bookingApi = createApi({
       }),
     }),
 
+    getBookingDetails: builder.query<BookingDetailsResponse, string>({
+      query: (bookingId) => ({
+        url: `/api/v1/booking/${bookingId}`,
+        method: 'GET',
+      }),
+    }),
+
   }),
 });
 
@@ -345,4 +359,5 @@ export const {
   useBookmarkCaregiverMutation,
   useGetBookmarkedCaregiversQuery,
   useTrackCaregiverViewMutation,
+  useGetBookingDetailsQuery,
 } = bookingApi;

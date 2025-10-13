@@ -344,7 +344,7 @@ const CaregiversPage = () => {
 
           {error && <div className="text-red-500 mb-4">Error loading caregivers.</div>}
 
-          <div className="sm:mt-0 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="sm:mt-0 mt-4 max-h-[800px] overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-6 pr-2">
             {!isLoading && caregivers.length === 0 && (
               <div className="col-span-2 text-center py-8">
                 <p className="text-gray-500">No caregivers found matching your criteria.</p>

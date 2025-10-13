@@ -54,10 +54,10 @@ const Header = () => {
     {
       title: "Who we are",
       services: [
-        { title: "About Us", link: "/about" },
-        { title: "Our Team", link: "/team" },
-        { title: "Our Mission", link: "/mission" },
-        { title: "Contact Us", link: "/contact" },
+        { title: "About Us", link: "/aboutUs" },
+        { title: "Privacy Policy", link: "/privacy" },
+        { title: "Resources", link: "/resources" },
+        { title: "FAQ", link: "/faq" },
       ],
     },
     { title: "Become A Caregiver", link: "/care-provider" },
@@ -118,7 +118,7 @@ const Header = () => {
         {/* Phone badge (always visible on large screens) */}
         <Link
           href="tel:9876543210"
-          className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-3 py-2 text-lg font-semibold"
+          className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-3 py-3 text-lg font-semibold transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg"
         >
           <PhoneIcon />
           <span >987 654 3210</span>

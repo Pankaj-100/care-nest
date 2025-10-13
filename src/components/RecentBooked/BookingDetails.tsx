@@ -140,7 +140,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             </div>
           </div>
           {/* Second row: Care Type, Service End Date, Service Date and Times */}
-          <div className="grid grid-cols-3 gap-6 mb-4">
+          <div className="grid grid-cols-4 gap-6 mb-2">
             <div className="min-w-0">
               <span className="block text-[#233D4D] text-base mb-1">Service End Date:</span>
               <span className="font-sm text-[#98A2B3] block">
@@ -158,7 +158,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             </div>
             <div className="min-w-0">
               <span className="block text-[#233D4D] text-base mb-1">Service Date and Times:</span>
-              <span className="font-sm text-[#98A2B3] block">
+              <span className="font-sm text-[#98A2B3] flex flex-col gap-1">
                 {(() => {
                   const scheduleArr = formatWeeklyScheduleArr(bookingDetails.weeklySchedule);
                   const visibleArr = showAllTimings ? scheduleArr : scheduleArr.slice(0, 2);
@@ -167,11 +167,13 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
                       {visibleArr.length === 0 ? (
                         <span>N/A</span>
                       ) : (
-                        visibleArr.map((item, idx) => <div key={idx}>{item}</div>)
+                        visibleArr.map((item, idx) => (
+                          <span key={idx} className="whitespace-nowrap">{item}</span>
+                        ))
                       )}
                       {scheduleArr.length > 2 && (
                         <button
-                          className="text-[#FFA726] text-left text-sm mt-2"
+                          className="text-[#FFA726] text-left text-sm"
                           type="button"
                           onClick={() => setShowAllTimings((prev) => !prev)}
                         >

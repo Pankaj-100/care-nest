@@ -684,6 +684,7 @@ const ScheduleCare = ({
                 minDate={new Date()}
                 dateFormat="dd-MM-yyyy"
                 className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                popperClassName="!z-[9999]"
               />
               <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
             </div>
@@ -715,6 +716,7 @@ const ScheduleCare = ({
                   minDate={startDate || new Date()}
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Select Date"
+                  popperClassName="!z-[9999]"
                   className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
                 />
                 <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />

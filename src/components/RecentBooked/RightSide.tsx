@@ -186,7 +186,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
           </p>
         </div>
       ) : (
-        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 w-full">
           {filteredBookings.map((booking) => {
             const apiStatus = booking.status?.toLowerCase?.() || "";
             const uiStatus =
@@ -198,7 +198,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
               <div
                 key={booking.bookingId}
                 onClick={() => onBookingClick(booking)}
-                className="flex items-center justify-between bg-white p-4 rounded-xl shadow-md"
+                className="flex items-center justify-between bg-white p-4 rounded-xl shadow-md  w-[700px] mx-auto"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 bg-[var(--navy)] rounded-full flex items-center justify-center">
