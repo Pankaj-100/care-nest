@@ -7,13 +7,13 @@ import Link from "next/link";
 function page() {
   return (
     <AuthLayout image="/auth/signin.png">
-      <div className="mt-6">
-        <div className="font-semibold text-3xl">Welcome back!</div>
-        <div className="mt-1 font-medium">
+      <div className="mt-2">
+        <div className="font-semibold text-4xl">Welcome back!</div>
+        <div className="mt-1 font-md text-lg">
           Sign in to find your ideal caregiver and start receiving personalized care.
         </div>
 
-        <div className="flex font-medium items-center gap-1 mt-5">
+        <div className="flex font-medium text-lg items-center gap-1 mt-5">
           <div>Don’t have an account?</div>
           <Link
             href="/signup"

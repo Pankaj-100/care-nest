@@ -28,7 +28,7 @@ export const TextInput = ({
   return (
     <div className="w-full">
       <div
-        className={`flex items-center rounded-full font-medium bg-[#ffffff] py-2 px-4 ${
+        className={`flex items-center rounded-full bg-[#ffffff] py-2 px-4 ${
           error ? "border border-red-500" : ""
         } ${divClassName}`}
       >
@@ -37,7 +37,7 @@ export const TextInput = ({
           value={text}
           onChange={handleChange}
           {...props}
-          className={`w-full border-none focus-visible:ring-0 shadow-none ${className}`}
+          className={`w-full border-none text-lg focus-visible:ring-0 shadow-none placeholder:text-lg placeholder:text-gray-400 ${className}`}
         />
       </div>
       {error && <p className="text-red-500 text-sm mt-1 ml-3">{error}</p>}
@@ -62,7 +62,7 @@ export const PasswordInput = ({
   return (
     <div className="w-full">
       <div
-        className={`flex items-center rounded-full font-medium bg-[#ffffff] py-2 px-4 ${
+        className={`flex items-center rounded-full bg-[#ffffff] py-2 px-4 ${
           error ? "border border-red-500" : ""
         }`}
       >
@@ -71,7 +71,7 @@ export const PasswordInput = ({
           type={showPassword ? "text" : "password"}
           value={text}
           onChange={handleChange}
-          className={`w-full border-none focus-visible:ring-0 shadow-none ${className}`}
+          className={`w-full border-none focus-visible:ring-0 shadow-none placeholder:text-lg placeholder:text-gray-400 ${className}`}
           {...props}
         />
         <button

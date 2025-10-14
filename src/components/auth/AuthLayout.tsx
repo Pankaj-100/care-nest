@@ -10,7 +10,7 @@ function AuthLayout({ image, children }: Props) {
   return (
     <div className="w-full min-h-screen py-8 md:px-20 px-5 bg-[#F7F7F3] flex flex-col text-[var(--blue-gray)] ">
       <div className="mb-4">
-        <Image src={"/auth/logo-1.png"} alt="Logo" width={150} height={150} />
+        <Image src={"/auth/logo-1.png"} alt="Logo" width={180} height={180} />
       </div>
 
       <div className="grid grid-cols-12 h-full flex-1 min-h-0">
@@ -20,7 +20,7 @@ function AuthLayout({ image, children }: Props) {
 
         <div className=" md:block hidden relative col-start-6 col-end-13 bg-[#fff] h-max z-[1000] ">
           <div className="absolute left-[-3rem] top-[-1.2rem] z-[0] ">
-            <Image src="/auth/design.png" alt="Logo" width={100} height={100} />
+            <Image src="/auth/design.png" alt="Logo" width={100} height={100}  />
           </div>
 
           <div className="p-8 flex flex-col ">
@@ -30,7 +30,7 @@ function AuthLayout({ image, children }: Props) {
               <div className="mt-6 mb-3 items-center text-[var(--blue-gray)] text-center font-semibold text-4xl">
                 Find Trusted Caregivers for Your Loved Ones at Home
               </div>
-              <div className="text-[#6e747e] text-base font-medium text-center px-0">
+              <div className="text-[#888d97] text-xl text-center px-0">
                 Connect with verified professionals who provide compassionate,
                 personalized care for seniors—right where they feel safest.
               </div>
@@ -38,7 +38,7 @@ function AuthLayout({ image, children }: Props) {
           </div>
 
           <div className="absolute right-[-3rem] bottom-[-1.2rem] z-[0] ">
-            <Image src="/auth/design.png" alt="Logo" width={100} height={100} />
+            <Image src="/auth/design.png" alt="Logo" width={100} height={100}  />
           </div>
         </div>
       </div>

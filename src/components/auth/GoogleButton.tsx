@@ -103,7 +103,7 @@ function GoogleButton({ role = "user", redirectPath = "/" }: GoogleButtonProps) 
       className="bg-white hover:bg-white text-[var(--blue-gray)]"
       onClick={() => googleLogin()}
     >
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 text-lg items-center">
         <div className={loading ? "opacity-50" : ""}>{googleIcon}</div>
         <div>{loading ? "Signing in..." : "Continue with Google"}</div>
       </div>

@@ -206,7 +206,7 @@ function SignupForm() {
         error={touched.confirmPassword ? errors.confirmPassword : ""}
         onBlur={() => handleBlur("confirmPassword", confirmPassword)}
       />
-      <CustomButton onClick={handleSubmit} disabled={isLoading}>
+      <CustomButton onClick={handleSubmit} className="text-lg" disabled={isLoading}>
         {isLoading ? "Signing Up..." : "Sign Up"}
       </CustomButton>
       <TextWithLines text="or" />
