@@ -28,10 +28,10 @@ export const CareGiverHero = () => {
               <span className="text-[var(--yellow)] font-semibold">
                 three caregivers
               </span>{" "}
-              to continue with your schedule your meeting.
+              to schedule your meeting.
             </>
           }
-        />
+        /> 
       </div>
     </div>
   );

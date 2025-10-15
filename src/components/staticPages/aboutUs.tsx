@@ -17,7 +17,7 @@ export default function AboutUs() {
             </h1>
           </div>
           <div>
-            <p className="text-[#6B7280] text-xl leading-relaxed">
+            <p className="text-[#6B7280] text-xl mb-10leading-relaxed">
               CareWorks delivers trusted, high-quality home care across Houston and surrounding communities, tailored to each individual&apos;s needs. We take a holistic, personalized approach to ensure compassionate support for every patient. Our team of skilled caregivers, nurses, and aides brings warmth and professionalism to every home. We empower seniors and those recovering to live independently with dignity and comfort. With CareWorks, families gain peace of mind knowing their loved ones are in caring hands.
             </p>
           </div>
@@ -29,8 +29,8 @@ export default function AboutUs() {
         src="/aboutUs/design.png"
         alt="Wave Top"
         width={1920}
-        height={1700}
-        className="absolute top-100 left-0 w-full h-[1800px] pointer-events-none"
+        height={2000}
+        className="absolute top-90 left-0 w-full h-[2000px] pointer-events-none"
         style={{ zIndex: 1 }}
       />
 
@@ -41,13 +41,13 @@ export default function AboutUs() {
           <div>
             <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Owner Of CareWorks</h4>
             <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">Ruby Agrawal</h2>
-            <p className="text-gray-700 text-lg mb-4">
+            <p className="text-gray-700 text-xl mb-4">
               The dedicated owner of CareWorks in Houston, brings over 25 years of management expertise and a deep-rooted connection to the community she&apos;s called home for three decades.
             </p>
-            <p className="text-gray-700 text-lg mb-4">
+            <p className="text-gray-700 text-xl mb-4">
               As a mother of four and a hands-on caregiver to her own mother during years of complex health challenges, Ruby understands firsthand the emotional and physical demands of caregiving.
             </p>
-            <p className="text-gray-700 text-lg">
+            <p className="text-gray-700 text-xl">
               Her experience fuels her passion for supporting seniors and honoring the vital role of both family and professional caregivers. With strong leadership and a heart for service, Ruby ensures CareWorks delivers compassionate, reliable care to every home it touches.
             </p>
           </div>
@@ -55,9 +55,9 @@ export default function AboutUs() {
             <Image
               src="/aboutUs/ruby.png"
               alt="Ruby Agrawal"
-              width={300}
-              height={300}
-              className="rounded-xl w-[300px] h-[300px] object-cover"
+              width={350}
+              height={350}
+              className="rounded-xl w-[350px] h-[350px] object-cover"
             />
           </div>
         </div>
@@ -68,21 +68,21 @@ export default function AboutUs() {
             <Image
               src="/aboutUs/founder.png"
               alt="William Hardy"
-              width={300}
-              height={300}
-              className="rounded-xl w-[300px] h-[300px] object-cover"
+              width={350}
+              height={350}
+              className="rounded-xl w-[350px] h-[350px ] object-cover"
             />
           </div>
           <div className="md:order-2">
             <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Founder Of CareWorks</h4>
             <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">William Hardy</h2>
-            <p className="text-gray-700 text-lg mb-4">
+            <p className="text-gray-700 text-xl mb-4">
               He is former president of CareWorks, is a respected leader in Houston&apos;s eldercare community. He&apos;s a passionate advocate for senior dignity and well-being, with decades of service and outreach. William has actively contributed to organizations like the Alzheimer&apos;s Association, Elder Service Providers Network, and United Way.
             </p>
-            <p className="text-gray-700 text-lg mb-4">
+            <p className="text-gray-700 text-xl mb-4">
               His commitment spans from advisory roles to leading Bible study groups and volunteering at Kinsmen Lutheran Church. Before launching CareWorks, he built a 17-year career in management at the Houston Chronicle.
             </p>
-            <p className="text-gray-700 text-lg">
+            <p className="text-gray-700 text-xl">
               He&apos;s also served as a consultant and mentor, guiding companies and young professionals alike. William&apos;s legacy blends business acumen with heartfelt community service. His vision continues to inspire compassionate care across the Houston area.
             </p>
           </div>
@@ -93,13 +93,13 @@ export default function AboutUs() {
           <div>
             <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Co-Founder Of CareWorks</h4>
             <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">Holly Hardy</h2>
-            <p className="text-gray-700 text-lg mb-4">
+            <p className="text-gray-700 text-xl mb-4">
               He is vice president of CareWorks in Houston, Texas is a person that has a special place in her heart for those dealing with a loved one that is suffering from Dementia. Her dad was diagnosed with Dementia in 2000. She is
             </p>
-            <p className="text-gray-700 text-lg mb-4">
+            <p className="text-gray-700 text-xl mb-4">
               Holly keeps active in the community by serving in the following areas: Volunteer Women Helping Women (2006), Active in Elder Service Providers Network (2006 to present), Active member and volunteer Kinsmen Lutheran Church (1996 to present).
             </p>
-            <p className="text-gray-700 text-lg">
+            <p className="text-gray-700 text-xl">
               Upon graduating from the University of Houston in 1983, Holly enjoyed 14 years of successful and meaningful career working in the Accounting Department for Curtin Matheson Scientific, Inc., a distributor of scientific and medical products.
             </p>
           </div>
@@ -107,9 +107,9 @@ export default function AboutUs() {
             <Image
               src="/aboutUs/founder.png"
               alt="Holly Hardy"
-              width={300}
-              height={300}
-              className="rounded-xl w-[300px] h-[300px] object-cover"
+              width={350}
+              height={350}
+              className="rounded-xl w-[350px] h-[350px] object-cover"
             />
           </div>
         </div>
@@ -122,22 +122,22 @@ export default function AboutUs() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div>
               <Image src="/aboutUs/compassion.png" alt="Compassion" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
-              <h3 className="text-[var(--navy)] font-bold text-2xl mb-4">Compassion</h3>
-              <p className="text-[#2B384C] text-lg">
+              <h3 className="text-[var(--navy)] font-bold text-3xl mb-4">Compassion</h3>
+              <p className="text-[#2B384C] text-xl">
                 We lead with empathy, treating every individual with kindness and respect.
               </p>
             </div>
             <div>
               <Image src="/aboutUs/reliability.png" alt="Reliability" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
-              <h3 className="text-[var(--navy)] font-bold text-2xl mb-4">Reliability</h3>
-              <p className="text-[#2B384C] text-lg">
+              <h3 className="text-[var(--navy)] font-bold text-3xl mb-4">Reliability</h3>
+              <p className="text-[#2B384C] text-xl">
                 Families trust us because we consistently deliver dependable, high-quality care.
               </p>
             </div>
             <div>
               <Image src="/aboutUs/home.png" alt="Dignity at Home" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
-              <h3 className="text-[var(--navy)] font-bold text-2xl mb-4">Dignity at Home</h3>
-              <p className="text-[#2B384C] text-lg">
+              <h3 className="text-[var(--navy)] font-bold text-3xl mb-4">Dignity at Home</h3>
+              <p className="text-[#2B384C] text-xl">
                 We help clients maintain independence and comfort in the place they love most their home.
               </p>
             </div>

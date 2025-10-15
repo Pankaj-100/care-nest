@@ -200,7 +200,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
               <div
                 key={booking.bookingId}
                 onClick={() => onBookingClick(booking)}
-                className="flex items-center justify-between bg-white p-4 rounded-xl shadow-md  w-[700px] mx-auto"
+                className="flex items-center justify-between bg-white p-4 rounded-xl shadow-md mx-auto"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 bg-[var(--navy)] rounded-full flex items-center justify-center">

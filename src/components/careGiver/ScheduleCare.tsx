@@ -592,7 +592,7 @@ const ScheduleCare = ({
           Schedule Your Meeting With Caregivers
         </h1>
         <p className="text-center text-gray-500 text-base mt-1 mb-6">
-          Pick a preferred date and set the duration to continue with schedule your meeting.
+          Pick a preferred date and set the duration to schedule your meeting
         </p>
 
         {/* Selected caregivers */}
@@ -700,6 +700,7 @@ const ScheduleCare = ({
                 minDate={new Date()}
                 dateFormat="dd-MM-yyyy"
                 className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                 popperClassName="!z-[9999]"
               />
               <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
             </div>

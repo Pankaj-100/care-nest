@@ -68,46 +68,46 @@ const Footer = () => {
     <div className="pt-1 pb-1 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-12 items-center">
         {/* Logo and Description */}
-        <div className="lg:col-span-2 mt-8">
-          <Link href="/" aria-label="Go to home" className="relative w-45 h-40 block cursor-pointer mb-4">
+        <div className="lg:col-span-2 mt-1">
+          <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-4">
             <Image src="/Logo_1.svg" alt="Carenest logo" fill priority />
           </Link>
-          <p className={`text-base text-[#FFFFFF] font-light`}>
+          <p className={`text-lg text-[#FFFFFF] font-light`}>
             CareWorks provides compassionate, <br /> personalized eldercare services that <br/> support seniors and their families with <br/> dignity and respect.
           </p>
         </div>
 
         {/* Company Links */}
-        <div className="mt-8">
+        <div className="mt-8 text-xl">
           <FooterLink title="Company" links={link[0]["Company"]} />
         </div>
         
         {/* Other Services */}
-        <div className="mt-8">
+        <div className="mt-8 text-xl">
           <FooterLink title="Other Services" links={link[0]["Other Services"]} />
         </div>
         
         {/* Locations we cover */}
-        <div className="mt-8">
+        <div className="mt-8 text-xl">
           <FooterLink title="Locations we cover" links={link[0]["Locations we cover"]} />
         </div>
         
         {/* Quick Links */}
-        <div className="mt-8">
+        <div className="mt-14 text-xl">
           <FooterLink title="Quick Links" links={link[0]["Quick Links"]} />
         </div>
       </div>
 
       <div className="my-7 flex items-center justify-between flex-wrap gap-y-5">
         <div>
-          <h3 className="text-lg font-medium lg:mb-3">
+          <h3 className="text-xl font-medium lg:mb-3">
             Subscribe to our newsletter
           </h3>
           <div className="flex">
             <input
               type="text"
               placeholder="Email address"
-              className="outline-none border-b py-2 sm:w-60 w-70 bg-transparent text-white placeholder-gray-300"
+              className="outline-none border-b py-2 sm:w-60 w-70 text-lg bg-transparent text-white placeholder-gray-300"
             />
             <button className="bg-[var(--yellow)] text-black px-4 py-4 rounded-t-lg cursor-pointer">
               <ChevronRight />
@@ -127,14 +127,14 @@ const Footer = () => {
       <div className="flex flex-wrap gap-y-4 items-center justify-between sm:my-4 sm:mt-4 mt-8">
         <div className="flex items-center justify-around sm:w-auto w-full gap-x-5">
           {footerLink.map((item, i) => (
-            <Link href={item.link} key={i} className="text-sm text-gray-200">
+            <Link href={item.link} key={i} className="text-lg text-gray-200">
               {item.title}
             </Link>
           ))}
         </div>
 
         <div className="sm:w-auto w-full flex justify-center sm:order-0 order-1">
-          <p className="text-sm text-[#FFFFFF] font-medium">
+          <p className="text-lg text-[#FFFFFF] font-medium">
             © 2024 Copyright | All rights reserved
           </p>
         </div>
@@ -144,7 +144,7 @@ const Footer = () => {
             <Link
               href={item.link}
               key={i}
-              className="text-sm text-gray-200 p-2 rounded-full border border-gray-200"
+              className="text-lg text-gray-200 p-2 rounded-full border border-gray-200"
             >
               <div className="relative w-4 h-4">
                 <Image src={item.icons || ""} alt="icons" fill />
@@ -172,7 +172,7 @@ const FooterLink = ({
           <li key={index}>
             <Link 
               href={item.link} 
-              className="text-sm font-light text-gray-300 hover:text-white transition-colors"
+              className="text-lg font-light text-gray-300 hover:text-white transition-colors"
             >
               {item.title}
             </Link>
