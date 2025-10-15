@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 
+
+
 export default function AboutUs() {
   return (
     <div className="bg-[#ffffff] min-h-screen w-full relative font-urbanist">
@@ -28,7 +30,7 @@ export default function AboutUs() {
         alt="Wave Top"
         width={1920}
         height={1700}
-        className="absolute top-100 left-0 w-full h-[1700px] pointer-events-none"
+        className="absolute top-100 left-0 w-full h-[1800px] pointer-events-none"
         style={{ zIndex: 1 }}
       />
 
@@ -53,9 +55,9 @@ export default function AboutUs() {
             <Image
               src="/aboutUs/ruby.png"
               alt="Ruby Agrawal"
-              width={260}
-              height={260}
-              className="rounded-xl w-[260px] h-[260px] object-cover"
+              width={300}
+              height={300}
+              className="rounded-xl w-[300px] h-[300px] object-cover"
             />
           </div>
         </div>
@@ -66,9 +68,9 @@ export default function AboutUs() {
             <Image
               src="/aboutUs/founder.png"
               alt="William Hardy"
-              width={260}
-              height={260}
-              className="rounded-xl w-[260px] h-[260px] object-cover"
+              width={300}
+              height={300}
+              className="rounded-xl w-[300px] h-[300px] object-cover"
             />
           </div>
           <div className="md:order-2">
@@ -105,9 +107,9 @@ export default function AboutUs() {
             <Image
               src="/aboutUs/founder.png"
               alt="Holly Hardy"
-              width={260}
-              height={260}
-              className="rounded-xl w-[260px] h-[260px] object-cover"
+              width={300}
+              height={300}
+              className="rounded-xl w-[300px] h-[300px] object-cover"
             />
           </div>
         </div>
@@ -115,7 +117,7 @@ export default function AboutUs() {
 
       {/* Our Values Section - OUTSIDE the wave */}
       <div className="w-full bg-[#ffffff] ">
-        <div className="max-w-5xl mx-auto py-20 px-4">
+        <div className="max-w-5xl mx-auto py-10 px-4">
           <h2 className="text-center text-[var(--navy)] font-bold text-5xl mb-16">Our Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div>
@@ -149,8 +151,8 @@ export default function AboutUs() {
           <div className="mb-6">
             <span className="text-6xl text-[#2B384C] opacity-30 font-bold">&quot;</span>
           </div>
-          <h2 className="text-[#F2A307] font-bold text-4xl mb-8">Our Mission</h2>
-          <div className="text-[#BFCAD6] text-3xl font-light leading-relaxed">
+          <h2 className="text-[#F2A307] ml-6 font-semibold text-6xl mb-4">Our Mission</h2>
+          <div className="text-[#BFCAD6] ml-30 text-2xl font-light leading-relaxed">
             <p>To Bring Compassionate Care To Every Doorstep,</p>
             <p>Empowering Families And Caregivers With Trust, Dignity,</p>
             <p>And Support.</p>
@@ -172,7 +174,7 @@ export default function AboutUs() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
             <div>
-              <h2 className="text-[var(--navy)] font-bold text-5xl mb-8">Meet Our Team Members</h2>
+              <h2 className="text-[var(--navy)] font-bold text-5xl mb-4">Meet Our Team Members</h2>
             </div>
             <div>
               <p className="text-[#6B7280] text-xl mb-6">
@@ -227,21 +229,21 @@ export default function AboutUs() {
       {/* Compassionate Care Banner */}
       <div className="w-full bg-[#F2A307] py-3 px-8 flex flex-col md:flex-row items-center justify-between">
         <div className="flex-1">
-          <h2 className="text-white font-bold text-4xl mb-8">
-            Compassionate Care, Just A Call Away
+          <h2 className="text-white font-bold ml-20 text-4xl mb-4">
+            Compassionate Care, Just A <br/> Call Away
           </h2>
-          <p className="text-white text-xl  font-light mb-8 leading-relaxed">
+          <p className="text-white text-xl ml-20 font-light mb-8 leading-relaxed">
             Looking For A Caregiver Who Treats Your Loved One With Dignity And Kindness? Our Team Is Ready To Offer Personalized Care And Peace Of Mind. Contact Us To Learn More
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center gap-3 bg-[#233D4D] text-white px-5 py-3 rounded-full font-light text-xl hover:bg-[#1a2c3b] transition"
+            className="inline-flex items-center ml-20 gap-3 bg-[#233D4D] text-white px-5 py-3 rounded-full font-light text-xl hover:bg-[#1a2c3b] transition"
           >
             Contact Us
             <span className="ml-2">&#8594;</span>
           </a>
         </div>
-        <div className="flex-1 flex justify-end mt-8 md:mt-0">
+        <div className="flex-1 flex mr-24 justify-end mt-8 md:mt-0">
           <Image
             src="/aboutUs/care-taker.png"
             alt="Compassionate Care Banner"

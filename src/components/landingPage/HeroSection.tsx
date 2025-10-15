@@ -168,7 +168,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
       className={`bg-white rounded-xl shadow-sm p-5 lg:p-6 w-full mx-auto
       ${isCaregiversPage 
         ? "lg:w-[65vw] xl:max-w-6xl items-center" // Smaller width for caregivers page
-        : "lg:w-[70vw] xl:max-w-6xl" // Original width for landing page
+        : "lg:w-[63vw] xl:max-w-6xl" // Original width for landing page
       }
       ${noDescription ? "lg:grid lg:grid-cols-12 lg:gap-6" : "lg:grid lg:grid-cols-12 lg:gap-6"}`}
     >
@@ -206,7 +206,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
             placeholder="Enter Zip Code"
             value={zipCode}
             onChange={(e) => setZipCode(e.target.value)}
-            className="w-full lg:w-[350px] rounded-full outline-none border border-gray-400 py-4 px-6 text-gray-900 text-md focus:border-gray-400 focus:ring-0"
+            className="w-full lg:w-[350px] rounded-full outline-none border border-gray-400 py-4 px-6 text-gray-900 text-lg focus:border-gray-400 focus:ring-0"
             maxLength={10}
           />
         </div>
@@ -217,7 +217,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         >
           <button
             type="submit"
-            className={`w-full justify-center ml-8 px-5 py-4 cursor-pointer rounded-4xl text-lg font-semibold transition whitespace-nowrap
+            className={`w-full justify-center ml-14 px-5 py-4 cursor-pointer rounded-4xl text-lg font-semibold transition whitespace-nowrap
               bg-[#FFA726] text-[#233D4D]`}
           >
             {isCaregiversPage ? "Search Caregiver" : "Search Caregiver"}

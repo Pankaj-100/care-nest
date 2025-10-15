@@ -108,7 +108,7 @@ const Header = () => {
       <div className="flex lg:flex-row flex-col items-center gap-6 lg:mt-0 mt-4">
         {isLoggedInUser && (
           <button className="relative" onClick={handleNotificationOpen}>
-            <NotificationIcon size={20} />
+            <NotificationIcon size={28} />
             {unseenNotifications && (
               <div className="w-2 h-2 rounded-full bg-[var(--golden-yellow)] absolute top-0 right-[0.1rem]" />
             )}

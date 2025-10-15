@@ -112,28 +112,28 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
           {/* First row: Booking ID, Booked On, Preferred Meeting Date, Service End Date */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-4">
             <div className="min-w-0">
-              <span className="block text-[#233D4D] text-base mb-1">Booking ID:</span>
-              <span className="font-sm text-[#98A2B3] truncate block">#{booking.bookingId}</span>
+              <span className="block text-[#233D4D]  text-md font-medium mb-1">Booking ID:</span>
+              <span className="font-sm text-[#5d6675] truncate block">#{booking.bookingId}</span>
             </div>
             <div className="min-w-0">
-              <span className="block text-[#233D4D] text-base mb-1">Booked On:</span>
-              <span className="font-sm text-[#98A2B3] block">
+              <span className="block text-[#233D4D]  text-md font-medium  mb-1">Booked On:</span>
+              <span className="font-sm text-[#5d6675] block">
                 {bookingDetails.bookedOn
                   ? new Date(bookingDetails.bookedOn).toLocaleDateString()
                   : "N/A"}
               </span>
             </div>
             <div className="min-w-0">
-              <span className="block text-[#233D4D] text-base mb-1">Meeting Date:</span>
-              <span className="font-sm text-[#98A2B3] block">
+              <span className="block text-[#233D4D] text-md font-medium mb-1">Meeting Date:</span>
+              <span className="font-sm text-[#5d6675] block">
                 {bookingDetails.meetingDate
                   ? new Date(bookingDetails.meetingDate).toLocaleDateString()
                   : "N/A"}
               </span>
             </div>
             <div className="min-w-0">
-              <span className="block text-[#233D4D] text-base mb-1">Service start Date:</span>
-              <span className="font-sm text-[#98A2B3] block">
+              <span className="block text-[#233D4D]  text-md font-medium  mb-1">Service start Date:</span>
+              <span className="font-sm text-[#5d6675] block">
                 {bookingDetails.startDate
                   ? new Date(bookingDetails.startDate).toLocaleDateString()
                   : "N/A"}
@@ -143,23 +143,23 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
           {/* Second row: Care Type, Service End Date, Service Date and Times */}
           <div className="grid grid-cols-4 gap-6 mb-2">
             <div className="min-w-0">
-              <span className="block text-[#233D4D] text-base mb-1">Service End Date:</span>
-              <span className="font-sm text-[#98A2B3] block">
+              <span className="block text-[#233D4D]  text-md font-medium  mb-1">Service End Date:</span>
+              <span className="font-sm text-[#5d6675] block">
                 {bookingDetails.endDate
                   ? new Date(bookingDetails.endDate).toLocaleDateString()
                   : "N/A"}
               </span>
             </div>
             <div className="min-w-0">
-              <span className="block text-[#233D4D] text-base mb-1">Care Type:</span>
-              <span className="font-sm text-[#98A2B3] block">
+              <span className="block text-[#233D4D]  text-md font-medium  mb-1">Care Type:</span>
+              <span className="font-sm text-[#5d6675] block">
                 {bookingDetails.careType ?? "Personal Care"}
               </span>
               
             </div>
             <div className="min-w-0">
-              <span className="block text-[#233D4D] text-base mb-1">Service Date and Times:</span>
-              <span className="font-sm text-[#98A2B3] flex flex-col gap-1">
+              <span className="block text-[#233D4D]  text-md font-medium mb-1">Service Date and Times:</span>
+              <span className="font-base text-base text-[#5d6675] flex flex-col gap-1">
                 {(() => {
                   const scheduleArr = formatWeeklyScheduleArr(bookingDetails.weeklySchedule);
                   const visibleArr = showAllTimings ? scheduleArr : scheduleArr.slice(0, 2);
@@ -258,7 +258,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
           <ScheduleCare
             isOpen={isEditing}
             OnClose={() => setIsEditing(false)}
-            selectedCaregivers={booking.caregivers.map(cg => ({
+            selectedCaregivers={bookingDetails.caregivers.map(cg => ({
               id: cg.id,
               name: cg.name,
               specialty: cg.status || "General Care",
@@ -267,12 +267,12 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
               avatar: cg.avatar || "/care-giver/boy-icon.png",
             }))}
             onBookingSuccess={handleEditBooking}
-            initialStartDate={booking.startDate ? new Date(booking.startDate) : null}
-            initialEndDate={booking.endDate ? new Date(booking.endDate) : null}
-            initialMeetingDate={booking.meetingDate ? new Date(booking.meetingDate) : null}
-            initialWeeklySchedule={booking.weeklySchedule}
+            initialStartDate={bookingDetails.startDate ? new Date(bookingDetails.startDate) : null}
+            initialEndDate={bookingDetails.endDate ? new Date(bookingDetails.endDate) : null}
+            initialMeetingDate={bookingDetails.meetingDate ? new Date(bookingDetails.meetingDate) : null}
+            initialWeeklySchedule={bookingDetails.weeklySchedule}
             isEditMode={true}
-            bookingId={booking.bookingId}
+            bookingId={bookingDetails.bookingId}
           />
         )}
       </main>

@@ -1,16 +1,16 @@
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-start py-16 px-4">
-      <h4 className="text-center text-[var(--yellow)] font-semibold mb-2 text-xl">
+      <h4 className="text-center text-[var(--yellow)] font-semibold mb-2 text-3xl">
         Let&apos;s Talk About Policy
       </h4>
-      <h1 className="text-center text-[var(--navy)] font-bold text-5xl mb-6">
+      <h1 className="text-center text-[var(--navy)] font-bold text-6xl mb-6">
         Privacy Policy
       </h1>
-      <p className="max-w-3xl text-center text-gray-500 mb-8 text-md">
+      <p className="max-w-3xl text-center text-gray-500 mb-8 text-lg">
         Your privacy is very important to us. Accordingly, we have developed this Policy in order for you to understand how we collect, use, communicate and disclose and make use of personal information. The following outlines our privacy policy.
       </p>
-      <div className="max-w-3xl text-gray-700 space-y-4 text-md">
+      <div className="max-w-3xl text-gray-700 space-y-4 text-lg">
         <ul className="list-disc pl-5 space-y-3">
           <li>
             Before or at the time of collecting personal information, we will identify the purposes for which information is being collected.

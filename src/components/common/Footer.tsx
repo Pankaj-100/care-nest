@@ -21,7 +21,7 @@ type linkSection = {
 const link: linkSection[] = [
   {
     Company: [
-      { title: "About Us", link: "/about" },
+      { title: "About Us", link: "/aboutUs" },
       { title: "Pricing", link: "/pricing" },
       { title: "Features", link: "/features" },
       { title: "We accept Medicaid", link: "/medicaid" },
@@ -65,7 +65,7 @@ const socialLink: linkItems[] = [
 
 const Footer = () => {
   return (
-    <div className="pt-8 pb-8 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
+    <div className="pt-1 pb-1 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-12 items-center">
         {/* Logo and Description */}
         <div className="lg:col-span-2 mt-8">

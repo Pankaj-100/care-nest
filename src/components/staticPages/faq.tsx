@@ -34,13 +34,13 @@ export default function FAQPage() {
 			{/* Top FAQ Banner Section */}
 			<div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
 				<div>
-					<h4 className="text-[var(--yellow)] font-semibold mb-2 text-lg">
+					<h4 className="text-[var(--yellow)] font-semibold mb-2 text-3xl">
 						FAQ&apos;s
 					</h4>
 					<h1 className="text-[var(--navy)] font-bold text-4xl mb-6">
 						Frequently Asked Questions
 					</h1>
-					<p className="text-gray-500 text-base mb-4">
+					<p className="text-gray-500 text-xl mb-4">
 						Your privacy is very important to us. Accordingly, we have
 						developed this Policy in order for you to understand how we
 						collect, use, communicate and disclose and make use of personal
@@ -60,10 +60,10 @@ export default function FAQPage() {
 			{/* General FAQ Section */}
 			<div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
 				<div>
-					<h4 className="text-[var(--yellow)] font-semibold mb-2 text-lg">
+					<h4 className="text-[var(--yellow)] font-semibold mb-2 text-2xl">
 						General FAQ&apos;s
 					</h4>
-					<h2 className="text-[var(--navy)] font-bold text-3xl mb-6">
+					<h2 className="text-[var(--navy)] font-bold text-4xl mb-6">
 						What You Need To Know
 					</h2>
 				</div>
@@ -75,7 +75,7 @@ export default function FAQPage() {
 							onClick={() => setOpenIdx(openIdx === idx ? -1 : idx)}
 						>
 							<div className="flex items-center justify-between">
-								<span className="font-semibold text-[#233D4D] text-lg">
+								<span className="font-semibold text-[#233D4D] text-xl">
 									{faq.question}
 								</span>
 								<span className="text-2xl text-[#233D4D]">
@@ -83,7 +83,7 @@ export default function FAQPage() {
 								</span>
 							</div>
 							{openIdx === idx && faq.answer && (
-								<p className="text-gray-600 text-base mt-3">
+								<p className="text-gray-600 text-md mt-3">
 									{faq.answer}
 								</p>
 							)}
