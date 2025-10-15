@@ -90,19 +90,20 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             Recent Bookings / <span className="text-[#2F3C51]">#{booking.bookingId}</span>
           </h2>
           <div className="flex gap-4">
+             <button
+              onClick={() => setIsEditing(true)}
+              className="border border-[#e89923] font-semibold text-[#FFA726] px-4 py-2 rounded-lg hover:bg-[#FFF3E0] transition"
+            >
+              Edit
+            </button>
             <button
               onClick={() => setOpenDialog(true)}
-              className="border border-[#ee4a47] text-[#ee4a47] px-4 py-2 rounded-lg hover:bg-[#f0eaea] transition"
+              className="border border-[#ee4a47] text-[#ee4a47] font-semibold px-4 py-2 rounded-lg hover:bg-[#f0eaea] transition"
               disabled={isCancelling}
             >
               {isCancelling ? "Cancelling..." : "Cancel Booking"}
             </button>
-            <button
-              onClick={() => setIsEditing(true)}
-              className="border border-[#FFA726] text-[#FFA726] px-4 py-2 rounded-lg hover:bg-[#FFF3E0] transition"
-            >
-              Edit
-            </button>
+           
           </div>
         </div>
 

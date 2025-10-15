@@ -101,13 +101,6 @@ interface BookingResponse {
   };
 }
 
-interface BookingDetailsResponse {
-  success: boolean;
-  message: string;
-  data: {
-    booking: Booking;
-  };
-}
 
 interface RecentBookingsResponse {
   success: boolean;
@@ -232,6 +225,7 @@ interface ProfileViewResponse {
 
 export const bookingApi = createApi({
   reducerPath: 'bookingApi',
+  tagTypes: ['Booking', 'Bookmark'],
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
 
@@ -284,6 +278,7 @@ export const bookingApi = createApi({
         method: "PUT",
         body: payload,
       }),
+      invalidatesTags: ['Booking'],
     }),
 
     getServiceNames: builder.query<ServiceNamesResponse, void>({
@@ -299,6 +294,7 @@ export const bookingApi = createApi({
         method: 'GET',
         params: status ? { status } : undefined,
       }),
+      providesTags: ['Booking'],
     }),
 
     cancelBooking: builder.mutation<CancelBookingResponse, CancelBookingRequest>({
@@ -307,6 +303,7 @@ export const bookingApi = createApi({
         method: 'PUT',
         body: { caregiverId },
       }),
+      invalidatesTags: ['Booking'],
     }),
 
     getServiceHighlights: builder.query<ServiceHighlightsResponse, void>({
@@ -321,6 +318,7 @@ export const bookingApi = createApi({
         url: `/api/v1/bookmarks/${caregiverId}`,
         method: 'POST',
       }),
+      invalidatesTags: ['Bookmark'],
     }),
 
     getBookmarkedCaregivers: builder.query<GetBookmarksResponse, void>({
@@ -328,19 +326,13 @@ export const bookingApi = createApi({
         url: "/api/v1/bookmarks",
         method: "GET",
       }),
+      providesTags: ['Bookmark'],
     }),
 
     trackCaregiverView: builder.mutation<ProfileViewResponse, string>({
       query: (caregiverId) => ({
         url: `/api/v1/views/${caregiverId}`,
         method: 'POST',
-      }),
-    }),
-
-    getBookingDetails: builder.query<BookingDetailsResponse, string>({
-      query: (bookingId) => ({
-        url: `/api/v1/booking/${bookingId}`,
-        method: 'GET',
       }),
     }),
 
@@ -359,5 +351,4 @@ export const {
   useBookmarkCaregiverMutation,
   useGetBookmarkedCaregiversQuery,
   useTrackCaregiverViewMutation,
-  useGetBookingDetailsQuery,
 } = bookingApi;

@@ -70,7 +70,9 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
       : uiToApiStatus[selectedStatus] || undefined;
 
   // Fetch with optional param
-  const { data, isLoading, error, refetch } = useGetRecentBookingsQuery(statusParam);
+  const { data, isLoading, error, refetch } = useGetRecentBookingsQuery(statusParam, {
+    refetchOnMountOrArgChange: true, // <-- Always refetch when mounted or status changes
+  });
   const bookings = extractBookings(data);
 
   // Ensure client UI still filters if backend returns all
@@ -91,12 +93,12 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
   const handleConfirmCancel = async () => {
     if (!selectedBooking) return;
     try {
-      const res = await cancelBooking({
+      await cancelBooking({
         bookingId: selectedBooking.id,
         caregiverId: selectedBooking.caregiverId,
       }).unwrap();
-      toast.success(res?.message || "Booking cancelled successfully");
-      refetch();
+      refetch(); // <-- This reloads the latest bookings
+      toast.success("Booking cancelled successfully");
     } catch (err) {
       const errorObj = err as {
         data?: { message?: string };

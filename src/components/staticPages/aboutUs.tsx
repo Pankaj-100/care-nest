@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function AboutUs() {
   return (
-    <div className="bg-[#ffffff] min-h-screen w-full relative">
+    <div className="bg-[#ffffff] min-h-screen w-full relative font-urbanist">
       {/* About Us Content - above everything */}
       <div className="w-full max-w-7xl mx-auto pt-20 pb-8 px-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -37,15 +37,15 @@ export default function AboutUs() {
         {/* Owner Section */}
         <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
           <div>
-            <h4 className="text-[#F2A307] font-semibold mb-2 text-lg">Owner Of CareWorks</h4>
-            <h2 className="text-[var(--navy)] font-bold text-2xl mb-4">Ruby Agrawal</h2>
-            <p className="text-gray-700 text-base mb-4">
+            <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Owner Of CareWorks</h4>
+            <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">Ruby Agrawal</h2>
+            <p className="text-gray-700 text-lg mb-4">
               The dedicated owner of CareWorks in Houston, brings over 25 years of management expertise and a deep-rooted connection to the community she&apos;s called home for three decades.
             </p>
-            <p className="text-gray-700 text-base mb-4">
+            <p className="text-gray-700 text-lg mb-4">
               As a mother of four and a hands-on caregiver to her own mother during years of complex health challenges, Ruby understands firsthand the emotional and physical demands of caregiving.
             </p>
-            <p className="text-gray-700 text-base">
+            <p className="text-gray-700 text-lg">
               Her experience fuels her passion for supporting seniors and honoring the vital role of both family and professional caregivers. With strong leadership and a heart for service, Ruby ensures CareWorks delivers compassionate, reliable care to every home it touches.
             </p>
           </div>
@@ -72,15 +72,15 @@ export default function AboutUs() {
             />
           </div>
           <div className="md:order-2">
-            <h4 className="text-[#F2A307] font-semibold mb-2 text-lg">Founder Of CareWorks</h4>
-            <h2 className="text-[var(--navy)] font-bold text-2xl mb-4">William Hardy</h2>
-            <p className="text-gray-700 text-base mb-4">
+            <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Founder Of CareWorks</h4>
+            <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">William Hardy</h2>
+            <p className="text-gray-700 text-lg mb-4">
               He is former president of CareWorks, is a respected leader in Houston&apos;s eldercare community. He&apos;s a passionate advocate for senior dignity and well-being, with decades of service and outreach. William has actively contributed to organizations like the Alzheimer&apos;s Association, Elder Service Providers Network, and United Way.
             </p>
-            <p className="text-gray-700 text-base mb-4">
+            <p className="text-gray-700 text-lg mb-4">
               His commitment spans from advisory roles to leading Bible study groups and volunteering at Kinsmen Lutheran Church. Before launching CareWorks, he built a 17-year career in management at the Houston Chronicle.
             </p>
-            <p className="text-gray-700 text-base">
+            <p className="text-gray-700 text-lg">
               He&apos;s also served as a consultant and mentor, guiding companies and young professionals alike. William&apos;s legacy blends business acumen with heartfelt community service. His vision continues to inspire compassionate care across the Houston area.
             </p>
           </div>
@@ -89,15 +89,15 @@ export default function AboutUs() {
         {/* Co-Founder Section */}
         <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
           <div>
-            <h4 className="text-[#F2A307] font-semibold mb-2 text-lg">Co-Founder Of CareWorks</h4>
-            <h2 className="text-[var(--navy)] font-bold text-2xl mb-4">Holly Hardy</h2>
-            <p className="text-gray-700 text-base mb-4">
-              He is vice president of CareWorks in Houston, Texas is a person that has a special place in her heart for those dealing with a loved one that is suffering from Dementia. Her dad was diagnosed with Dementia in 2000. She is a C.P.A. by trade, but her true joy and fulfillment come from raising her two boys and being involved in all of their activities.
+            <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Co-Founder Of CareWorks</h4>
+            <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">Holly Hardy</h2>
+            <p className="text-gray-700 text-lg mb-4">
+              He is vice president of CareWorks in Houston, Texas is a person that has a special place in her heart for those dealing with a loved one that is suffering from Dementia. Her dad was diagnosed with Dementia in 2000. She is
             </p>
-            <p className="text-gray-700 text-base mb-4">
+            <p className="text-gray-700 text-lg mb-4">
               Holly keeps active in the community by serving in the following areas: Volunteer Women Helping Women (2006), Active in Elder Service Providers Network (2006 to present), Active member and volunteer Kinsmen Lutheran Church (1996 to present).
             </p>
-            <p className="text-gray-700 text-base">
+            <p className="text-gray-700 text-lg">
               Upon graduating from the University of Houston in 1983, Holly enjoyed 14 years of successful and meaningful career working in the Accounting Department for Curtin Matheson Scientific, Inc., a distributor of scientific and medical products.
             </p>
           </div>
@@ -158,7 +158,7 @@ export default function AboutUs() {
         </div>
         <div className="flex-1 flex justify-end mt-12 md:mt-0">
           <Image
-            src="/aboutUs/wheelChair.png"
+            src="/aboutUs/wheelchair.png"
             alt="Our Mission Banner"
             width={500}
             height={282}

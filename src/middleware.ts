@@ -16,6 +16,10 @@ const restrictedPaths = [
   "/zip-code",
   "/find-job",
   "/need-service",
+  "/aboutUs",
+  "/privacy",
+  "/resources",
+  "/faq",
 
 
  
