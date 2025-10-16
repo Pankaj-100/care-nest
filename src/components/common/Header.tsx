@@ -89,7 +89,7 @@ const Header = () => {
   }
 
   const navContent = (
-    <div className="flex lg:flex-row flex-col items-center md:gap-x-6 lg:py-0 py-4">
+    <div className="flex lg:flex-row flex-col items-center md:gap-x-12 lg:py-0 py-4">
       <nav className={"flex lg:flex-row flex-col items-center justify-between gap-11 "}>
         {NavbarMenuTitle.map((item, index) => (
           <NavbarMenu
