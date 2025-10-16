@@ -33,9 +33,9 @@ function ActionDialog({
       <div className="flex flex-col items-center">
         <div className="p-5 mb-4 rounded-full bg-[#F2A3071A]">{icon}</div>
         <div className="flex flex-col gap-1 items-center">
-          {heading && <div className="text-xl font-semibold">{heading}</div>}
+          {heading && <div className="text-2xl font-semibold">{heading}</div>}
           {subheading && (
-            <div className="text-sm text-[var(--cool-gray)]  text-wrap text-center max-w-75">
+            <div className="text-lg text-[var(--cool-gray)]  text-wrap text-center max-w-75">
               {subheading}
             </div>
           )}
@@ -44,13 +44,13 @@ function ActionDialog({
         <div className="mt-6  w-full flex gap-2 ">
           {!showCancelButton && (
             <CustomButton
-              className="flex-1 py-5 bg-gray-200 hover:bg-gray-200 hover:opacity-90 "
+              className="flex-1 py-5 text-md bg-gray-200 hover:bg-gray-200 hover:opacity-90 "
               onClick={handleOpen}
             >
               Cancel
             </CustomButton>
           )}
-          <CustomButton className="flex-1 py-5" onClick={handleConfirm}>
+          <CustomButton className="flex-1 text-md py-5" onClick={handleConfirm}>
             {confirmText || "Confirm"}
           </CustomButton>
         </div>

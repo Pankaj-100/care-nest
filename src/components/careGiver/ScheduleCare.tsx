@@ -362,7 +362,7 @@ const ScheduleCare = ({
       const payload = {
         startDate: startDate ? startDate.toISOString().slice(0, 10) : "",
         meetingDate: meetingDate ? meetingDate.toISOString().slice(0, 10) : "",
-        endDate: endDate ? endDate.toISOString().slice(0, 10) : null,
+        endDate: endDate ? `${endDate.getFullYear()}-${(endDate.getMonth() + 1).toString().padStart(2, "0")}-${endDate.getDate().toString().padStart(2, "0")}` : null,
         weeklySchedule,
       };
 
@@ -598,13 +598,18 @@ const ScheduleCare = ({
         {/* Selected caregivers */}
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-[var(--navy)] font-semibold text-base">Selected Caregivers</h2>
-          <button
-            type="button"
-            onClick={OnClose}
-            className="text-[var(--yellow)] font-semibold text-base hover:opacity-80"
-          >
-            Change
-          </button>
+          {/* Hide Change button on /profile route */}
+          {typeof window !== "undefined" && !window.location.pathname.includes("/profile") && (
+            <button
+              type="button"
+              onClick={() => {
+                OnClose();
+              }}
+              className="text-[var(--yellow)] font-semibold text-base hover:opacity-80"
+            >
+              Change
+            </button>
+          )}
         </div>
         <div className="rounded-2xl border border-[#EBEBEB] p-3 sm:p-4 mb-6">
           <div className="space-y-3">

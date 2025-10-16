@@ -5,6 +5,11 @@ import Image from "next/image";
 import { useGetCaregiverDetailsQuery, useBookmarkCaregiverMutation } from "@/store/api/bookingApi";
 import { toast } from "react-toastify";
 import { ChevronDown, ChevronUp } from "lucide-react";
+// import type { Booking } from "@/types/Booking";
+
+// interface BookingDetailsProps {
+  // booking: Booking;
+// }
 
 export interface CaregiverModalProps {
   isOpen: boolean;
@@ -13,6 +18,7 @@ export interface CaregiverModalProps {
   onAddCaregiver: (id: string) => void;
   isBookmarked: boolean;
   isSelected?: boolean; // Add this optional prop
+  bookingStatus?: string; 
 }
 
 interface CaregiverDetail {
@@ -128,8 +134,9 @@ const ModalContent: React.FC<{
   onAddCaregiver: (id: string) => void;
   isBookmarked: boolean;
   isSelected: boolean;
-  caregiverId: string | null; // Add this prop
-}> = ({ raw, onAddCaregiver, isBookmarked, isSelected, caregiverId }) => {
+  caregiverId: string | null;
+  bookingStatus?: string; // <-- Add this line
+}> = ({ raw, onAddCaregiver, isBookmarked, isSelected, caregiverId, bookingStatus }) => {
   const caregiver: CaregiverDetail = Array.isArray(raw) ? raw[0] : raw;
   const [bookmarkCaregiver, { isLoading: bookmarking }] = useBookmarkCaregiverMutation();
   const [bookmarked, setBookmarked] = useState(isBookmarked);
@@ -179,8 +186,20 @@ const ModalContent: React.FC<{
             />
           </div>
 
-          <h2 className="mt-5 text-[26px] font-semibold text-[#233D4D] leading-tight">
+          {/* Caregiver Name and Selected Badge */}
+          <h2 className="mt-5 text-[26px] font-semibold text-[#233D4D] leading-tight flex items-center gap-3">
             {caregiver.name}
+            {typeof window !== "undefined" &&
+              window.location.pathname.includes("/profile") &&
+               (isSelected || bookingStatus === "hired" || bookingStatus === "completed") && (
+                <span className="bg-[#2F3C51] text-white px-4 py-1 rounded-full text-sm flex items-center gap-2">
+                  <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+                    <path d="M6.75 13.5L2.25 9L3.3075 7.9425L6.75 11.3775L14.6925 3.4425L15.75 4.5L6.75 13.5Z" fill="white"/>
+                  </svg>
+                  Selected
+                </span>
+              )
+            }
           </h2>
 
           <div className="mt-7 space-y-4 w-full">
@@ -221,16 +240,30 @@ const ModalContent: React.FC<{
                   : "Save Caregiver"}
             </button>
 
-            <button
-              onClick={() => caregiverId && onAddCaregiver(caregiverId)}
-              className={`w-full py-3 px-6 rounded-lg font-semibold transition ${
-                isSelected
-                  ? "border-2 border-[#F2A307] text-[#F2A307] bg-white hover:bg-red-50"
-                  : "bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--navy)]"
-              }`}
-            >
-              {isSelected ? "Remove Caregiver" : "+ Add Caregiver"}
-            </button>
+            {/* Show Message button instead of Add/Remove when in BookingDetails page */}
+            {typeof window !== "undefined" && window.location.pathname.includes("/profile") ? (
+              <button
+                type="button"
+                className="w-full py-3 px-6 rounded-lg font-semibold bg-[#F2A307] text-[#233D4D] hover:bg-yellow-400 transition"
+                onClick={() => {
+                  // Redirect to messages or open chat with caregiver
+                  window.location.href = `/inbox?caregiverId=${caregiverId}`;
+                }}
+              >
+                Message
+              </button>
+            ) : (
+              <button
+                onClick={() => caregiverId && onAddCaregiver(caregiverId)}
+                className={`w-full py-3 px-6 rounded-lg font-semibold transition ${
+                  isSelected
+                    ? "border-2 border-[#F2A307] text-[#F2A307] bg-white hover:bg-red-50"
+                    : "bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--navy)]"
+                }`}
+              >
+                {isSelected ? "Remove Caregiver" : "+ Add Caregiver"}
+              </button>
+            )}
           </div>
         </div>
       </aside>

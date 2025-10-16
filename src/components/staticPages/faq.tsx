@@ -30,15 +30,15 @@ export default function FAQPage() {
 	const [openIdx, setOpenIdx] = useState(0);
 
 	return (
-		<div className="min-h-screen bg-white flex flex-col items-center py-16 px-4">
+		<div className="min-h-screen bg-white flex flex-col mt-15 items-center">
 			{/* Top FAQ Banner Section */}
 			<div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
 				<div>
 					<h4 className="text-[var(--yellow)] font-semibold mb-2 text-3xl">
 						FAQ&apos;s
 					</h4>
-					<h1 className="text-[var(--navy)] font-bold text-4xl mb-6">
-						Frequently Asked Questions
+					<h1 className="text-[var(--navy)] font-bold text-5xl mb-6">
+						Frequently Asked <br/> Questions
 					</h1>
 					<p className="text-gray-500 text-xl mb-4">
 						Your privacy is very important to us. Accordingly, we have
@@ -93,25 +93,14 @@ export default function FAQPage() {
 			</div>
 
 			{/* Banner Section */}
-			<div
-				className="w-full"
-				style={{
-					background: "#F7F0D3",
-					padding: "28px 0",
-					marginTop: "28px",
-					display: "flex",
-					justifyContent: "center",
-				}}
-			>
-				<div className="flex flex-row items-center justify-center w-full max-w-7xl">
-					<div className="flex-1">
+			<div className="w-full bg-[#F7F0D3] py-5 px-0 mt-8 flex items-center justify-center">
+				<div className="flex flex-row items-center justify-between w-full max-w-7xl">
+					<div className="flex-1 pl-8">
 						<h2 className="text-[var(--navy)] font-bold text-4xl mb-6 leading-tight">
 							Compassionate Care, Just A Call Away
 						</h2>
 						<p className="text-[var(--navy)] text-xl mb-8 leading-relaxed">
-							Looking For A Caregiver Who Treats Your Loved One With Dignity And
-							Kindness? Our Team Is Ready To Offer Personalized Care And Peace Of
-							Mind. Contact Us To Learn More
+							Looking For A Caregiver Who Treats Your Loved One With Dignity And Kindness? Our Team Is Ready To Offer Personalized Care And Peace Of Mind. Contact Us To Learn More
 						</p>
 						<a
 							href="/contact"
@@ -121,7 +110,7 @@ export default function FAQPage() {
 							<span className="ml-2">&#8594;</span>
 						</a>
 					</div>
-					<div className="flex-1 flex justify-end">
+					<div className="flex-1 flex justify-end pr-8">
 						<Image
 							src="/faq2.png"
 							alt="Caregiver Banner"

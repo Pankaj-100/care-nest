@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import ActionDialog from "../common/ActionDialog";
 import CaregiverModal from "../careGiver/CaregiverModal";
 import ScheduleCare from "../careGiver/ScheduleCare";
@@ -15,6 +16,7 @@ interface BookingDetailsProps {
 }
 
 export default function BookingDetails({ booking }: BookingDetailsProps) {
+  const router = useRouter(); // <-- added router
   const [openDeleteDialog, setOpenDialog] = useState(false);
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
   const [cancelBooking, { isLoading: isCancelling }] = useCancelBookingMutation();
@@ -27,12 +29,16 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
   const handleOpen = () => setOpenDialog(false);
 
   const handleCancelBooking = async () => {
-    if (!booking.bookingId || !booking.caregivers?.length) return;
-    const caregiverId = booking.caregivers[0].id;
+    if (!bookingDetails.bookingId || !bookingDetails.caregivers?.length) return;
+    const caregiverId = bookingDetails.caregivers[0].id;
     try {
-      await cancelBooking({ bookingId: booking.bookingId, caregiverId }).unwrap();
+      await cancelBooking({ bookingId: bookingDetails.bookingId, caregiverId }).unwrap();
+      // update local state so UI reflects cancelled status immediately
+      setBookingDetails(prev => ({ ...prev, status: "cancelled" }));
       toast.success("Booking cancelled successfully");
       setOpenDialog(false);
+      // navigate back to previous page
+      router.push('/profile');
     } catch {
       toast.error("Failed to cancel booking");
       setOpenDialog(false);
@@ -90,20 +96,38 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             Recent Bookings / <span className="text-[#2F3C51]">#{booking.bookingId}</span>
           </h2>
           <div className="flex gap-4">
-             <button
-              onClick={() => setIsEditing(true)}
-              className="border border-[#e89923] font-semibold text-[#FFA726] px-4 py-2 rounded-lg hover:bg-[#FFF3E0] transition"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => setOpenDialog(true)}
-              className="border border-[#ee4a47] text-[#ee4a47] font-semibold px-4 py-2 rounded-lg hover:bg-[#f0eaea] transition"
-              disabled={isCancelling}
-            >
-              {isCancelling ? "Cancelling..." : "Cancel Booking"}
-            </button>
-           
+            {/*
+              Hide Edit button for completed or cancelled bookings.
+              include both 'cancelled' and 'canceled' spellings to be safe.
+            */}
+            {booking.status !== "completed" &&
+            booking.status !== "cancelled" &&
+            booking.status !== "canceled" ? (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="border border-[#e89923] font-semibold text-[#FFA726] px-4 py-2 rounded-lg hover:bg-[#FFF3E0] transition"
+              >
+                Edit
+              </button>
+            ) : null}
+
+            {/* Cancel / Cancelled Button */}
+            {booking.status === "cancelled" || booking.status === "canceled" ? (
+              <button
+                className="border border-[#D1D5DB] text-[#6B7280] font-semibold px-4 py-2 rounded-lg bg-[#F3F4F6]"
+                disabled
+              >
+                Cancelled
+              </button>
+            ) : (
+              <button
+                onClick={() => setOpenDialog(true)}
+                className="border border-[#ee4a47] text-[#ee4a47] font-semibold px-4 py-2 rounded-lg hover:bg-[#f0eaea] transition"
+                disabled={isCancelling}
+              >
+                {isCancelling ? "Cancelling..." : "Cancel Booking"}
+              </button>
+            )}
           </div>
         </div>
 
@@ -240,6 +264,8 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
           caregiverId={selectedCaregiverId}
           onAddCaregiver={() => {}}
           isBookmarked={false}
+          isSelected={booking.status === "hired" || booking.status === "completed"}
+          bookingStatus={booking.status} // <-- pass status as prop
         />
 
         {/* Cancel Booking Dialog */}

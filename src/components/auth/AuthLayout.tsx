@@ -35,10 +35,9 @@ function AuthLayout({ image, children }: Props) {
                 personalized care for seniors—right where they feel safest.
               </div>
             </div>
-          </div>
-
-          <div className="absolute right-[-3rem] bottom-[-1.2rem] z-[0] ">
-            <Image src="/auth/design.png" alt="Logo" width={100} height={100}  />
+            <div className="absolute right-[-3rem] bottom-[-1.2rem] z-[0] ">
+             <Image src="/auth/design.png" alt="Logo" width={100} height={100}  />
+            </div>
           </div>
         </div>
       </div>

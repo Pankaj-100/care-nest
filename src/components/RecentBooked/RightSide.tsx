@@ -75,11 +75,18 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
   });
   const bookings = extractBookings(data);
 
+  // Sort bookings by updatedAt (fallback to bookedOn or createdAt)
+  const sortedBookings = [...bookings].sort((a, b) => {
+    const dateA = new Date(a.bookedOn);
+    const dateB = new Date(b.bookedOn);
+    return dateB.getTime() - dateA.getTime(); // Newest first
+  });
+
   // Ensure client UI still filters if backend returns all
   const filteredBookings =
     selectedStatus === "All"
-      ? bookings
-      : bookings.filter(
+      ? sortedBookings
+      : sortedBookings.filter(
           (b) => {
             const uiStatus = apiToUiStatus[b?.status?.toLowerCase?.()];
             // Show both "Active" and "Accepted" for active tab if needed
@@ -150,18 +157,18 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
     );
 
   return (
-    <div className="w-full md:w-3/4 p-6 mt-10">
-      <h2 className="text-3xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
+    <div className="w-full p-8 mt-10">
+      <h2 className="text-4xl  font-semibold text-[var(--navy)] mb-6 font-Urbanist">
         Recent Bookings
       </h2>
 
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap gap-3 mb-8">
         {["All", "Pending", "Accepted", "Active", "Completed", "Cancel"].map(
           (status) => (
             <button
               key={status}
               onClick={() => setSelectedStatus(status)}
-              className={`px-5 py-2 rounded-full font-medium text-sm ${
+              className={`px-8 py-3 rounded-full text-lg md:text-lg font-semibold ${
                 selectedStatus === status
                   ? "bg-[var(--navy)] text-white"
                   : "border border-[var(--navy)] text-[var(--navy)]"
@@ -188,7 +195,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
           </p>
         </div>
       ) : (
-        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 w-full">
+        <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-4 w-full">
           {filteredBookings.map((booking) => {
             const apiStatus = booking.status?.toLowerCase?.() || "";
             const uiStatus =
@@ -200,42 +207,39 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
               <div
                 key={booking.bookingId}
                 onClick={() => onBookingClick(booking)}
-                className="flex items-center justify-between bg-white p-4 rounded-xl shadow-md mx-auto"
+                className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-lg w-full"
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-[var(--navy)] rounded-full flex items-center justify-center">
+                <div className="flex items-center gap-6">
+                  <div className="w-16 h-16 bg-[var(--navy)] rounded-full flex items-center justify-center">
                     <Image
                       src="/Recent/calendar.png"
                       alt="calendar"
-                      width={24}
-                      height={24}
-                      className="w-6 h-6"
+                      width={28}
+                      height={28}
+                      className="w-7 h-7"
                     />
                   </div>
                   <div>
-                    <p className="font-semibold text-lg text-[var(--navy)]">
+                    <p className="font-semibold text-xl md:text-2xl text-[var(--navy)]">
                       #{booking.bookingId}
                     </p>
-                    <p className="text-sm text-gray-600">
-                      {booking.careType }
+                    <p className="text-sm md:text-base text-gray-600">
+                      {booking.careType}
                     </p>
-                    <div className="flex gap-2 mt-1 text-xs text-gray-500">
-                      <div className="flex items-center gap-1 border px-2 py-1 rounded-full text-sm font-light">
+                    <div className="flex gap-3 mt-2 text-xs md:text-sm text-gray-600  items-center">
+                      <div className="flex items-center gap-2 border px-6 py-2 rounded-full border-gray-400 text-md font-md">
                         <Image
                           src="/Recent/c.png"
                           alt="date"
-                          width={12}
-                          height={12}
-                          className="w-3 h-3"
+                          width={14}
+                          height={14}
+                          className="w-3.5 h-3.5"
                         />
-                        {new Date(
-                          booking.bookedOn
-                        ).toLocaleDateString()}
+                        {new Date(booking.bookedOn).toLocaleDateString()}
                       </div>
                       <div
-                        className={`px-3 py-2 rounded-full text-md font-medium items-center ${
-                          statusColor[apiStatus] ||
-                          "bg-gray-200 text-gray-700"
+                        className={`px-6 py-2 rounded-full text-lg font-semibold ${
+                          statusColor[apiStatus] || "bg-gray-200 text-gray-700"
                         }`}
                       >
                         {uiStatus}
@@ -301,9 +305,9 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                         <Image
                           src="/cancel.png"
                           alt="cancel"
-                          width={35}
-                          height={35}
-                          className="w-13 h-13 cursor-pointer"
+                          width={45}
+                          height={45}
+                          className="w-13 h-13   cursor-pointer"
                         />
                       </div>
                     )}

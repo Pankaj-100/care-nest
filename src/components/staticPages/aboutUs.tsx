@@ -37,7 +37,7 @@ export default function AboutUs() {
       {/* Main Content inside wave */}
       <div className="relative z-10 max-w-6xl mx-auto pt-32 pb-24 px-6">
         {/* Owner Section */}
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
+        <div className="grid md:grid-cols-2 mt-10 gap-12 items-center mb-20">
           <div>
             <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Owner Of CareWorks</h4>
             <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">Ruby Agrawal</h2>
@@ -146,26 +146,35 @@ export default function AboutUs() {
       </div>
 
       {/* Our Mission Banner */}
-      <div className="w-full bg-[#233D4D] py-5 px-8 flex flex-col md:flex-row items-center justify-between">
-        <div className="flex-1">
-          <div className="mb-6">
-            <span className="text-6xl text-[#2B384C] opacity-30 font-bold">&quot;</span>
+      <div className="w-full bg-[#233D4D] py-10 px-0 flex items-center justify-center">
+        <div className="flex flex-row items-center justify-between w-full max-w-6xl">
+          <div className="flex-1 pl-2 flex flex-col justify-center">
+            {/* Exclamatory mark image 
+            <Image
+              src="/aboutUs/exclamatory.png"
+              alt="Exclamatory Mark"
+              width={90}
+              height={90}
+              className="mr-8"
+            />*/}
+            <h2 className="text-[#F2A307] font-bold text-[60px] leading-none mb-1">
+              Our Mission
+            </h2>
+            <div className="text-white text-2xl  ml-9 font-light leading-relaxed max-w-xl">
+              <p>To Bring Compassionate Care To Every Doorstep,</p>
+              <p>Empowering Families And Caregivers With Trust,</p>
+              <p>And Support.</p>
+            </div>
           </div>
-          <h2 className="text-[#F2A307] ml-6 font-semibold text-6xl mb-4">Our Mission</h2>
-          <div className="text-[#BFCAD6] ml-30 text-2xl font-light leading-relaxed">
-            <p>To Bring Compassionate Care To Every Doorstep,</p>
-            <p>Empowering Families And Caregivers With Trust, Dignity,</p>
-            <p>And Support.</p>
+          <div className="flex-1 flex justify-end pr-8">
+            <Image
+              src="/aboutUs/wheelchair.png"
+              alt="Our Mission Banner"
+              width={500}
+              height={282}
+              className="w-[500px] h-auto object-contain"
+            />
           </div>
-        </div>
-        <div className="flex-1 flex justify-end mt-12 md:mt-0">
-          <Image
-            src="/aboutUs/wheelchair.png"
-            alt="Our Mission Banner"
-            width={500}
-            height={282}
-            className="w-[500px] h-auto object-contain"
-          />
         </div>
       </div>
 
@@ -174,7 +183,7 @@ export default function AboutUs() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
             <div>
-              <h2 className="text-[var(--navy)] font-bold text-5xl mb-4">Meet Our Team Members</h2>
+              <h2 className="text-[var(--navy)] font-bold text-7xl mb-4">Meet Our Team <br/> Members</h2>
             </div>
             <div>
               <p className="text-[#6B7280] text-xl mb-6">

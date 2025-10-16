@@ -41,7 +41,7 @@ export default function ResourcesPage() {
       <h1 className="text-center text-[var(--navy)] font-bold text-5xl mb-6">
         Helpful Websites For The Elderly
       </h1>
-      <p className="max-w-4xl text-xl text-center text-gray-500 mb-8 text-base">
+      <p className="max-w-4xl text-xl text-center text-gray-500 mb-8 ">
         CareWorks is providing the following list of resources that we hope will assist you in your research. Please click on a link below to visit any of these websites.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
