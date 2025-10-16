@@ -177,7 +177,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
           <h3 className="font-semibold text-xl">
             {title ?? (isCaregiversPage ? "Select 3 Caregivers" : "Browse Caregivers")}
           </h3>
-          <p className="text-md font-medium leading-relaxed text-gray-500">
+          <p className="text-lg font-medium leading-relaxed text-gray-500">
             {description ?? (isCaregiversPage 
               ? "Select up to three caregivers to continue with your Schedule Your Meeting."
               : "Create your free profile to discover verified, compassionate caregivers."
