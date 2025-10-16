@@ -89,8 +89,8 @@ const Header = () => {
   }
 
   const navContent = (
-    <div className="flex lg:flex-row flex-col items-center md:gap-x-18 lg:py-0 py-4">
-      <nav className="flex lg:flex-row flex-col items-center justify-between gap-11">
+    <div className="flex lg:flex-row flex-col items-center md:gap-x-18 lg:py-0 py-4 w-full">
+      <nav className={`flex lg:flex-row flex-col items-center justify-between gap-11  ${isLoggedInUser ? "justify-end" : "justify-end"}`}>
         {NavbarMenuTitle.map((item, index) => (
           <NavbarMenu
             key={index}
@@ -148,7 +148,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex lg:px-13 px-10 py-6 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
+      <div className="flex lg:px-7 px-10 py-7 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
         <div className="flex items-center gap-3 ">
           <Link href="/">
             <Image src={"/Logo_1.svg"} alt="logo" width={160} height={160} />
