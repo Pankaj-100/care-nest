@@ -89,8 +89,8 @@ const Header = () => {
   }
 
   const navContent = (
-    <div className="flex lg:flex-row flex-col items-center md:gap-x-18 lg:py-0 py-4 w-full">
-      <nav className={`flex lg:flex-row flex-col items-center justify-between gap-11  ${isLoggedInUser ? "justify-end" : "justify-end"}`}>
+    <div className="flex lg:flex-row flex-col items-center md:gap-x-6 lg:py-0 py-4">
+      <nav className={"flex lg:flex-row flex-col items-center justify-between gap-11 "}>
         {NavbarMenuTitle.map((item, index) => (
           <NavbarMenu
             key={index}
@@ -105,7 +105,7 @@ const Header = () => {
         ))}
       </nav>
 
-      <div className="flex lg:flex-row flex-col items-center gap-6 lg:mt-0 mt-4">
+      <div className="flex lg:flex-row flex-col items-center gap-5 lg:mt-0 mt-4">
         {isLoggedInUser && (
           <button className="relative" onClick={handleNotificationOpen}>
             <NotificationIcon size={28} />
@@ -148,7 +148,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex lg:px-7 px-10 py-7 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
+      <div className="flex lg:px-13 px-8 py-7 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
         <div className="flex items-center gap-3 ">
           <Link href="/">
             <Image src={"/Logo_1.svg"} alt="logo" width={160} height={160} />
