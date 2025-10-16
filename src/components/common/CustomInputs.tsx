@@ -79,7 +79,7 @@ export const PasswordInput = ({
           onClick={() => setShowPassword((prev) => !prev)}
           type="button"
         >
-          {showPassword ? eyeClosedIcon : eyeOpenIcon}
+          {showPassword ? eyeOpenIcon : eyeClosedIcon}
         </button>
       </div>
       {error && <p className="text-red-500 text-sm mt-1 ml-3">{error}</p>}

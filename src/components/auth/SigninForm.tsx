@@ -102,8 +102,10 @@ function SigninForm() {
       />
 
       <RadioGroup
-        defaultValue={rememberMe}
-        onValueChange={setRememberMe}
+        value={rememberMe}
+        onValueChange={(val) => {
+          setRememberMe(val === rememberMe ? "false" : val);
+        }}
         className="gap-2"
       >
         <div className="flex items-center font-medium text-md space-x-2">

@@ -96,13 +96,10 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             Recent Bookings / <span className="text-[#2F3C51]">#{booking.bookingId}</span>
           </h2>
           <div className="flex gap-4">
-            {/*
-              Hide Edit button for completed or cancelled bookings.
-              include both 'cancelled' and 'canceled' spellings to be safe.
-            */}
+            {/* Hide Edit button for completed or cancelled bookings */}
             {booking.status !== "completed" &&
-            booking.status !== "cancelled" &&
-            booking.status !== "canceled" ? (
+              booking.status !== "cancelled" &&
+              booking.status !== "canceled" ? (
               <button
                 onClick={() => setIsEditing(true)}
                 className="border border-[#e89923] font-semibold text-[#FFA726] px-4 py-2 rounded-lg hover:bg-[#FFF3E0] transition"
@@ -111,7 +108,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
               </button>
             ) : null}
 
-            {/* Cancel / Cancelled Button */}
+            {/* Hide Cancel button for completed bookings */}
             {booking.status === "cancelled" || booking.status === "canceled" ? (
               <button
                 className="border border-[#D1D5DB] text-[#6B7280] font-semibold px-4 py-2 rounded-lg bg-[#F3F4F6]"
@@ -119,7 +116,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
               >
                 Cancelled
               </button>
-            ) : (
+            ) : booking.status !== "completed" ? (
               <button
                 onClick={() => setOpenDialog(true)}
                 className="border border-[#ee4a47] text-[#ee4a47] font-semibold px-4 py-2 rounded-lg hover:bg-[#f0eaea] transition"
@@ -127,7 +124,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
               >
                 {isCancelling ? "Cancelling..." : "Cancel Booking"}
               </button>
-            )}
+            ) : null}
           </div>
         </div>
 
