@@ -20,6 +20,8 @@ const restrictedPaths = [
   "/privacy",
   "/resources",
   "/faq",
+  "/who-we-are",
+  "/veterans",
 
 
  
