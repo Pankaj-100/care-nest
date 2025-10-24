@@ -22,6 +22,7 @@ const restrictedPaths = [
   "/faq",
   "/who-we-are",
   "/veterans",
+  "/medicaid",
 
 
  

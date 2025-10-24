@@ -55,7 +55,8 @@ const Header = () => {
       title: "Who we are",
       services: [
         { title: "About Us", link: "/aboutUs" },
-        { title: "Who we are", link: "/who-we-are" },
+        { title: "Who We Are", link: "/who-we-are" },
+        { title: "We Accept Medicaid", link: "/medicaid" },
         { title: "Privacy Policy", link: "/privacy" },
         { title: "Resources", link: "/resources" },
         { title: "FAQ", link: "/faq" },

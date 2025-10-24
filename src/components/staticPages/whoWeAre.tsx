@@ -8,7 +8,7 @@ export default function WhoWeAre() {
     <div className="w-full flex flex-col items-center bg-white">
       {/* Top Section */}
       <div className="w-full max-w-7xl mt-15 flex flex-col md:flex-row items-start justify-between mb-16">
-        <h1 className="text-5xl md:text-6xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line">
+        <h1 className="text-6xl md:text-7xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line">
           Who We Are
         </h1>
         <div className="text-[#233D4D] text-lg md:text-xl max-w-2xl leading-relaxed">
@@ -77,7 +77,7 @@ export default function WhoWeAre() {
         <h2 className="text-6xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line md:w-1/3">
           Our Promise
         </h2>
-        <div className="text-[#6B7683] text-2xl max-w-3xl leading-relaxed md:w-2/3">
+        <div className="text-[#233D4D] text-2xl max-w-3xl leading-relaxed md:w-2/3">
           What sets us apart is our personal connection to caregiving. We understand the challenges families face because we&apos;ve lived them ourselves. That&apos;s why every service we provide is rooted in compassion, respect, and the belief that quality care should always feel personal.
           <br /><br />
           At CareWorks, we are more than caregivers — we are partners in supporting your family&apos;s journey.
