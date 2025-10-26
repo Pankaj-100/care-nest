@@ -96,6 +96,7 @@ const ServiceWeProvide = () => {
                 {service.desc}
               </p>
               <button
+                onClick={() => window.location.href = '/care-service'}
                 className={`
                   mt-auto flex items-center gap-2 font-semibold text-lg cursor-pointer transition
                   text-[#233D4D] hover:text-[#F2A307] group-hover:text-[#F2A307]

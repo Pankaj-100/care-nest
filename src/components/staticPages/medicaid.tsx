@@ -350,7 +350,7 @@ export default function MedicaidCASProgram() {
           <h2 className="text-4xl font-bold text-[#233D4D] text-center mb-4">
             How To Apply For CAS (Community Attendant Service) Program
           </h2>
-          <p className="text-gray-600 text-center mb-16 max-w-3xl mx-auto">
+          <p className="text-gray-600 text-center mb-16 text-xl max-w-3xl mx-auto">
             Applying for the Community Attendant Services (CAS) program involves several steps to ensure you meet the eligibility criteria and receive the appropriate level of care. Here&apos;s a step-by-step guide to help you through the process.
           </p>
           
@@ -412,8 +412,8 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Verify Medicaid Eligibility</h3>
-                <ul className="space-y-2 text-gray-600">
+                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Verify Medicaid Eligibility</h3>
+                <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
                     Ensure you are eligible for Medicaid by checking your income and resource limits as per state and federal guidelines.
@@ -447,8 +447,8 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Gather Necessary Documentation</h3>
-                <ul className="space-y-2 text-gray-600">
+                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Gather Necessary Documentation</h3>
+                <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
                     Proof of income (pay stubs, tax returns, benefit statements)
@@ -486,8 +486,8 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Initiate The Process</h3>
-                <ul className="space-y-2 text-gray-600">
+                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Initiate The Process</h3>
+                <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
                     Reach out to the Texas Medicaid office to express your interest in the CAS program.
@@ -521,8 +521,8 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Schedule An Assessment</h3>
-                <ul className="space-y-2 text-gray-600">
+                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Schedule An Assessment</h3>
+                <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
                     A healthcare professional or caseworker will conduct an in-home assessment to evaluate your need for attendant services.
@@ -552,8 +552,8 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Submit Application</h3>
-                <ul className="space-y-2 text-gray-600">
+                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Submit Application</h3>
+                <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
                     Fill out the CAS program application form provided by the Medicaid office.
@@ -591,8 +591,8 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Processing Time</h3>
-                <ul className="space-y-2 text-gray-600">
+                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Processing Time</h3>
+                <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
                     The Medicaid office will review your application and assessment results.
@@ -622,8 +622,8 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Personalized Plan</h3>
-                <ul className="space-y-2 text-gray-600">
+                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Personalized Plan</h3>
+                <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
                     If approved, a personalized care plan will be developed by CAREWORKS based on the assessment.
@@ -653,8 +653,8 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Service Initiation</h3>
-                <ul className="space-y-2 text-gray-600">
+                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Service Initiation</h3>
+                <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
                     Once the care plan is finalized, you will be referred to CAREWORKS.
@@ -676,7 +676,7 @@ export default function MedicaidCASProgram() {
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Left Content */}
           <div className="flex-1 text-white">
-            <p className="text-[#F2A307] font-semibold text-lg mb-4">Texas Medicaid Office</p>
+            <p className="text-[#F2A307] font-semibold text-3xl mb-4">Texas Medicaid Office</p>
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
               Dedicated Helpline For Seniors Seeking Care And Support Programs
             </h2>

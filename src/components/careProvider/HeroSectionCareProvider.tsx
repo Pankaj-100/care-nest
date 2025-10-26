@@ -10,7 +10,7 @@ const HeroSectionCareProvider = ({ title, textClasses }: Props) => {
   return (
     <div className="relative h-[300px]">
       <div className="w-full h-[300px] absolute right-0 ">
-        <div className="absolute right-0 w-2/3 h-full">
+        <div className="absolute -right-7 w-2/3 h-full">
           <Image
             src="/hero-care-provider.jpg"
             alt="hero care provider"
@@ -23,7 +23,7 @@ const HeroSectionCareProvider = ({ title, textClasses }: Props) => {
           className="absolute top-0 left-0 h-full w-2/3 pointer-events-none "
           style={{
             background:
-              "linear-gradient(to left, #233d4d00 0%, #233d4d 50%, #233d4d 100%)",
+              "linear-gradient(to left, #233d4d00 0%, #233d4d 40%, #233d4d 100%)",
           }}
         ></div>
       </div>
