@@ -26,7 +26,7 @@ const restrictedPaths = [
   "/care-service",
   "/companion-care",
   "/home-maker",
-  "/sitter-service",
+  "/sitter",
   "/specialized-care",
   "/transportation",
 
