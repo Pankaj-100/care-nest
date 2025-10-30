@@ -19,7 +19,6 @@ export const NavbarDropdown = ({ isOpen, items }: { isOpen: boolean; items: Navb
                 className="min-w-[230px] rounded-2xl bg-white text-[var(--navy)] p-0 overflow-hidden shadow-xl border border-black/5"
             >
                 {items.map((item, index) => {
-                    const isFirst = index === 0
                     return (
                         <React.Fragment key={index}>
                             <DropdownMenuItem
