@@ -8,36 +8,43 @@ const SERVICES = [
     title: "Personal Care",
     desc: "Find your professional personal care provider for daily assistance, hygiene, mobility, and compassionate support.",
     Icon: Service1,
+    route: "/care-service"
   },
   {
     title: "Home Maker Service",
     desc: "Home maker service providers can assist by doing what the client can no longer do, or they can aid the individual...",
     Icon: Service2,
+    route: "/home-maker"
   },
   {
     title: "Specialized Care",
-    desc: "Specialized care provides specialized support for individuals with dementia or Alzheimer’s, ensuring safety...",
+    desc: "Specialized care provides specialized support for individuals with dementia or Alzheimer's, ensuring safety...",
     Icon: Service3,
+    route: "/"
   },
   {
     title: "Sitter Services",
-    desc: "Sitter services provide reliable support and supervision for your loved ones when you can’t be there...",
+    desc: "Sitter services provide reliable support and supervision for your loved ones when you can't be there...",
     Icon: Service4,
+    route: "/sitter"
   },
   {
     title: "Companion Care",
     desc: "Companion care is a very useful form of long-term home care, focused on providing the elderly with emotio...",
     Icon: Service5,
+    route: "/companion-care"
   },
   {
     title: "Transportation",
     desc: "Transportation service is a critical support for older adults to access community services and visit family...",
     Icon: Service5,
+    route: "/transportation"
   },
   {
     title: "Veteran's Home Care Services",
     desc: "CareWorks can assist Houston Veterans every step of the way with the application process. Initially, ...",
     Icon: Service7,
+    route: "/veterans"
   },
 ];
 
@@ -96,7 +103,7 @@ const ServiceWeProvide = () => {
                 {service.desc}
               </p>
               <button
-                onClick={() => window.location.href = '/care-service'}
+                onClick={() => window.location.href = service.route}
                 className={`
                   mt-auto flex items-center gap-2 font-semibold text-lg cursor-pointer transition
                   text-[#233D4D] hover:text-[#F2A307] group-hover:text-[#F2A307]

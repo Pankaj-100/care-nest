@@ -624,7 +624,7 @@ const ScheduleCare = ({
                           c.avatar && c.avatar.trim() !== "/care-giver/boy-icon.png"
                             ? c.avatar.startsWith("http")
                               ? c.avatar
-                              : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.avatar.replace(/^\/+/, "")}`
+                              : `https://creative-story.s3.us-east-1.amazonaws.com/${c.avatar.replace(/^\/+/, "")}`
                             : "/care-giver/boy-icon.png"
                         }
                         alt={c.name}

@@ -90,7 +90,7 @@ const SavedCaregiversPanel = () => {
                   giver.avatar
                     ? giver.avatar.startsWith("http")
                       ? giver.avatar
-                      : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${giver.avatar.replace(/^\/+/, "")}`
+                      : `https://creative-story.s3.us-east-1.amazonaws.com/${giver.avatar.replace(/^\/+/, "")}`
                     : "/care-giver/boy-icon.png"
                 }
                 specialty={"General care"}

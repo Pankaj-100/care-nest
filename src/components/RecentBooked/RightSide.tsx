@@ -162,13 +162,13 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
         Recent Bookings
       </h2>
 
-      <div className="flex flex-wrap gap-3 mb-8">
+      <div className="flex flex-wrap gap-3 mb-8 cursor-pointer">
         {["All", "Pending", "Accepted", "Active", "Completed", "Cancel"].map(
           (status) => (
             <button
               key={status}
               onClick={() => setSelectedStatus(status)}
-              className={`px-8 py-3 rounded-full text-lg md:text-lg font-semibold ${
+              className={`px-8 py-3 rounded-full text-lg md:text-lg cursor-pointer font-semibold ${
                 selectedStatus === status
                   ? "bg-[var(--navy)] text-white"
                   : "border border-[var(--navy)] text-[var(--navy)]"
@@ -347,7 +347,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
               avatar: c.avatar
                 ? c.avatar.startsWith("http")
                   ? c.avatar
-                  : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${c.avatar.replace(/^\/+/, "")}`
+                  : `https://creative-story.s3.us-east-1.amazonaws.com/${c.avatar.replace(/^\/+/, "")}`
                 : "/care-giver/boy-icon.png",
             })) || []
         }

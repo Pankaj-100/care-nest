@@ -223,7 +223,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
                   cg.avatar
                     ? cg.avatar.startsWith("http")
                       ? cg.avatar
-                      : `https://dev-carenest.s3.ap-south-1.amazonaws.com/${cg.avatar.replace(/^\/+/, "")}`
+                      : `https://creative-story.s3.us-east-1.amazonaws.com/${cg.avatar.replace(/^\/+/, "")}`
                     : "/care-giver/boy-icon.png"
                 }
                 alt={cg.name ?? "Caregiver"}
