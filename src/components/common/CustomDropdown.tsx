@@ -24,7 +24,7 @@ export const NavbarDropdown = ({ isOpen, items }: { isOpen: boolean; items: Navb
                         <React.Fragment key={index}>
                             <DropdownMenuItem
                                 asChild
-                                className={`px-5 ${isFirst ? 'py-4 text-medium font-semibold' : 'py-4 text-base'
+                                className={`px-3 py-3 text-md font-semibold
                                     } cursor-pointer hover:bg-[var(--navy)]/5 focus:bg-[var(--navy)]/5`}
                             >
                                 <Link href={item.link || '#'}>{item.title}</Link>

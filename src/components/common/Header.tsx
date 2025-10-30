@@ -66,10 +66,13 @@ const Header = () => {
     {
       title: "Services",
       services: [
-        { title: "Personal care", link: "/service/personal-care" },
-        { title: "Assisted care/Home care", link: "/service/home-care" },
-        { title: "Memory care", link: "/service/memory-care" },
-        { title: "Private pay skilled nursing", link: "/service/skilled-nursing" },
+        { title: "Personal care", link: "/care-service" },
+        { title: "Home Maker Service", link: "/care-service" },
+        { title: "Specialized care", link: "/care-service" },
+        { title: "Sitter Services", link: "/care-service" },
+        { title: "Companion Care", link: "/care-service" },
+        { title: "Transportation", link: "/care-service" },
+        { title: "Veteran's Home Care Services", link: "/veterans" },
       ],
     },
     // Move Blogs here so it's always visible
