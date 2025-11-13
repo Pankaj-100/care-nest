@@ -11,6 +11,7 @@ import Image from "next/image";
 import emptyCaregiverImage from "@/assets/care.svg";
 import { toast } from "react-toastify";
 import type { Booking } from "@/types/Booking";
+import { useRouter } from "next/navigation";
 
 const statusColor: Record<string, string> = {
   requested: "bg-[#E7A200] text-white",
@@ -38,7 +39,7 @@ const apiToUiStatus: Record<string, string> = {
 };
 
 interface RightBookingsPanelProps {
-  onBookingClick: (booking: Booking) => void;
+  onBookingClick?: (booking: Booking) => void; // Optional, for future extensibility
 }
 
 // Use this helper in RightSide.tsx
@@ -48,6 +49,7 @@ function extractBookings(resp?: { data?: { bookings: Booking[] } }): Booking[] {
 }
 
 const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   onBookingClick,
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -149,6 +151,8 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
     if (caregiverIds.length) fetchServices();
   }, [filteredBookings, selectedBooking]);
 
+  const router = useRouter();
+
   if (isLoading)
     return <div className="p-6 text-gray-500">Loading bookings...</div>;
   if (error)
@@ -206,10 +210,10 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
             return (
               <div
                 key={booking.bookingId}
-                onClick={() => onBookingClick(booking)}
+                onClick={() => router.push(`/recent-booking/${booking.bookingId}`)}
                 className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-lg w-full"
               >
-                <div className="flex items-center gap-6">
+                <div className="flex items-center cursor-pointer gap-6">
                   <div className="w-16 h-16 bg-[var(--navy)] rounded-full flex items-center justify-center">
                     <Image
                       src="/Recent/calendar.png"

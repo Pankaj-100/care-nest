@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import Image from "next/image";
-
+import { toast } from "react-toastify";
 
 interface ContactFormProps {
   name: string;
@@ -17,6 +17,11 @@ const ContactForm: React.FC = () => {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false); // changed code: loading state
+
+  const API_BASE =
+    process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || ""; // changed code: env base
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -26,10 +31,43 @@ const ContactForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // add the api
+    setLoading(true);
+    try {
+      const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/inquiry`;
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        description: formData.message, // API expects "description"
+      };
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        const msg = json?.message || `Request failed with status ${res.status}`;
+        toast.error(msg);
+        setLoading(false);
+        return;
+      }
+
+      // success
+      toast.success(json?.message ?? "Inquiry submitted successfully");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (err) {
+      console.error("Inquiry submit error:", err);
+      toast.error("Failed to submit inquiry");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -104,9 +142,10 @@ const ContactForm: React.FC = () => {
 
         <button
           type="submit"
-          className="w-full max-w-lg bg-[var(--navy)] text-white py-3 rounded-full transition-colors"
+          disabled={loading}
+          className="w-full cursor-pointer max-w-lg bg-[var(--navy)] text-white py-3 rounded-full transition-colors disabled:opacity-60"
         >
-          Submit
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>

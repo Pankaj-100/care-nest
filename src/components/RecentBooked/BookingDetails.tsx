@@ -38,7 +38,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
       toast.success("Booking cancelled successfully");
       setOpenDialog(false);
       // navigate back to previous page
-      router.push('/profile');
+      router.push('/recent-booking');
     } catch {
       toast.error("Failed to cancel booking");
       setOpenDialog(false);

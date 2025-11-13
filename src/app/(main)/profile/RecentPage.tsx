@@ -192,3 +192,5 @@ export function RecentPage({ selectedOption, setSelectedOption }: RecentPageProp
     </div>
   );
 }
+
+export default SavedCaregiversPanel;

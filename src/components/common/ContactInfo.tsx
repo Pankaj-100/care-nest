@@ -1,5 +1,6 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface ContactItemProps {
   icon: string;
@@ -29,7 +30,61 @@ export const ContactItem: React.FC<ContactItemProps> = ({
   </div>
 );
 
+type ContactPayload = {
+  id?: string;
+  phoneNumber?: string;
+  email?: string;
+  address?: string;
+  businessHours?: string;
+};
+
 const ContactInfo: React.FC = () => {
+  const API_BASE =
+    process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
+
+  const [contact, setContact] = useState<ContactPayload>({
+    phoneNumber: "976543210",
+    email: "care@wellnurtured.com",
+    address: "123, East Sample Street, City, State",
+    businessHours: "09:00 AM - 08:00 PM",
+  });
+
+  useEffect(() => {
+    let mounted = true;
+    const controller = new AbortController();
+    const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/contact`;
+
+    fetch(endpoint, { signal: controller.signal })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        return json;
+      })
+      .then((json) => {
+        if (!mounted) return;
+        const payload = json?.data?.contact ?? null;
+        if (payload) {
+          setContact({
+            phoneNumber: payload.phoneNumber ?? contact.phoneNumber,
+            email: payload.email ?? contact.email,
+            address: payload.address ?? contact.address,
+            businessHours: payload.businessHours ?? contact.businessHours,
+          });
+        }
+      })
+      .catch((err) => {
+        if (!mounted) return;
+        console.error("Failed to fetch contact:", err);
+        // keep defaults on error
+      });
+
+    return () => {
+      mounted = false;
+      controller.abort();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [API_BASE]);
+
   return (
     <div className="space-y-6 lg:p-4 ">
       <h2 className="text-3xl text-[var(--navy)] font-semibold mb-4 ">
@@ -38,22 +93,22 @@ const ContactInfo: React.FC = () => {
       <ContactItem
         icon={"/Contact/phone.png"}
         label={"Phone Number"}
-        value={"976543210"}
+        value={contact.phoneNumber ?? ""}
       />
       <ContactItem
         icon={"/Contact/email.png"}
         label={"Email ID"}
-        value={"care@wellnurtured.com"}
+        value={contact.email ?? ""}
       />
       <ContactItem
         icon={"/Contact/location.png"}
         label={"Address"}
-        value={"123, East Sample Street, City, State"}
+        value={contact.address ?? ""}
       />
       <ContactItem
         icon={"/Contact/clock.png"}
         label={"Business Hours"}
-        value={"09:00 AM - 08:00 PM"}
+        value={contact.businessHours ?? ""}
       />
     </div>
   );
