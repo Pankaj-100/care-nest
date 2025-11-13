@@ -7,9 +7,8 @@ interface CustomCardProp {
   name: string;
   desc: string;
   para: string;
-  href: string;
-  date: string;
-  key: number;
+  href?: string;
+  date?: string;
 }
 
 export const CustomCard = ({
@@ -20,15 +19,14 @@ export const CustomCard = ({
   para,
   href,
   date,
-  key,
 }: CustomCardProp) => {
   return (
-    <div className="p-4 w-full max-w-md  rounded-2xl " key={key}>
+    <div className="p-4 w-full max-w-md  rounded-2xl ">
       {/* Image Section */}
       <div className="w-full  h-56 relative rounded-2xl overflow-hidden mb-4">
         <Image
           src={imgSrc}
-          alt="Personal Care Service"
+          alt={desc}
           fill
           className="object-cover rounded-2xl"
         />
@@ -59,21 +57,6 @@ export const CustomCard = ({
         <Link href={href}>
           <div className="text-[var(--navy)] font-semibold text-sm cursor-pointer hover:underline flex items-center gap-1">
             Learn More
-            
-              <Image
-                src="/Blog/dark-right-arrow.png"
-                alt="arrow"
-                width={16}
-                height={12}
-                className=" mt-1"
-              />
-           
-          </div>
-        </Link>
-      ) : (
-        <div className="text-[var(--navy)] font-semibold text-sm opacity-60 flex items-center gap-1 cursor-not-allowed">
-          Learn More
-          
             <Image
               src="/Blog/dark-right-arrow.png"
               alt="arrow"
@@ -81,7 +64,18 @@ export const CustomCard = ({
               height={12}
               className=" mt-1"
             />
-         
+          </div>
+        </Link>
+      ) : (
+        <div className="text-[var(--navy)] font-semibold text-sm opacity-60 flex items-center gap-1 cursor-not-allowed">
+          Learn More
+          <Image
+            src="/Blog/dark-right-arrow.png"
+            alt="arrow"
+            width={16}
+            height={12}
+            className=" mt-1"
+          />
         </div>
       )}
     </div>

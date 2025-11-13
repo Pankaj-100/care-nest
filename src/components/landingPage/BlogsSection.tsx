@@ -4,9 +4,10 @@ import Image from "next/image";
 import React from "react";
 import { TransparentButton } from "../common/CustomButton";
 import { useRouter } from "next/navigation";
+import { useGetBlogsQuery } from "@/store/api/blogApi";
 
 type Blog = {
-  id: string; // Add id field
+  id: string;
   title: string;
   author: string;
   date: string;
@@ -14,34 +15,25 @@ type Blog = {
   excerpt: string;
 };
 
-const BLOGS: Blog[] = [
-  {
-    id: "b1", // Add unique id
-    title: "Elderly Care at Home: How to Ensure Comfort & Safety",
-    author: "Nataly Birch",
-    date: "11 January 2025",
-    image: "/service1.png",
-    excerpt: "What the data says about the harm of unnecessary medical tests",
-  },
-  {
-    id: "b2", // Add unique id
-    title: "Assisted Care/Home Care: How to Ensure Comfort & Safety",
-    author: "Alex Morgan",
-    date: "05 January 2025",
-    image: "/Blog/blog2.png",
-    excerpt: "Assisted home care provides daily support for comfort and safety.",
-  },
-  {
-    id: "b3", // Add unique id
-    title: "Memory Care: How to Ensure Comfort & Safety",
-    author: "Jordan Lee",
-    date: "02 January 2025",
-    image: "/Blog/blog3.png",
-    excerpt: "Specialized support for dementia or Alzheimer's with compassion.",
-  },
-];
-
 const BlogsSection = () => {
+  const { data: blogs = [], isLoading } = useGetBlogsQuery();
+
+  // sort by createdAt/newest first and take top 3
+  const latest = (blogs ?? [])
+    .slice()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 3)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .map((b: any) => ({
+      id: b.id,
+      title: b.title ?? "Untitled",
+      author: b.authorName ?? "Unknown",
+      date: b.blogDate ? new Date(b.blogDate).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }) : "—",
+      image: b.mainImage ?? "/service1.png",
+      excerpt: b.description ?? "",
+    })) as Blog[];
+
   return (
     <div className="sm:py-20 py-12 bg-[var(--whiteSmoke)] sm:px-28 px-8">
       <div className="sm:text-center flex items-center justify-center mb-10">
@@ -51,9 +43,17 @@ const BlogsSection = () => {
       </div>
 
       <div className="flex flex-wrap gap-y-8 items-center justify-center gap-10">
-        {BLOGS.map((b) => (
-          <BlogCard key={b.title} {...b} />
-        ))}
+        {isLoading
+          ? // show three skeleton cards while loading
+            [0, 1, 2].map((i) => (
+              <div key={i} className="sm:p-2 sm:w-90">
+                <div className="sm:w-90 h-[300px] rounded-2xl mb-3 relative overflow-hidden bg-gray-100 animate-pulse" />
+                <div className="h-6 bg-gray-100 rounded w-40 mb-2 animate-pulse" />
+                <div className="h-4 bg-gray-100 rounded w-64 mb-2 animate-pulse" />
+                <div className="h-8 bg-gray-100 rounded w-full animate-pulse mt-2" />
+              </div>
+            ))
+          : latest.map((b) => <BlogCard key={b.id} {...b} />)}
       </div>
     </div>
   );

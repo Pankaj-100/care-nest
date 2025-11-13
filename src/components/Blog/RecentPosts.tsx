@@ -1,5 +1,7 @@
+"use client";
 import Image from "next/image";
 import React from "react";
+import { useGetBlogsQuery } from "@/store/api/blogApi";
 
 interface Post {
   title: string;
@@ -9,45 +11,41 @@ interface Post {
   avatar: string;
 }
 
-const posts: Post[] = [
-  {
-    title: "Elderly Care at Home: How to Ensure Comfort...",
-    image: "/Blog/inner_blog5.png",
-    author: "Nandy Birch",
-    date: "11 January 2025",
-    avatar: "/Blog/avatar_img.png",
-  },
-  {
-    title: "Elderly Care at Home: How to Ensure Comfort...",
-    image: "/Blog/inner_blog4.png",
-    author: "Nandy Birch",
-    date: "11 January 2025",
-    avatar: "/Blog/avatar_img.png",
-  },
-  {
-    title: "Elderly Care at Home: How to Ensure Comfort...",
-    image: "/Blog/inner_blog3.png",
-    author: "Nandy Birch",
-    date: "11 January 2025",
-    avatar: "/Blog/avatar_img.png",
-  },
-  {
-    title: "Elderly Care at Home: How to Ensure Comfort...",
-    image: "/Blog/inner_blog2.png",
-    author: "Nandy Birch",
-    date: "11 January 2025",
-    avatar: "/Blog/avatar_img.png",
-  },
-  {
-    title: "Elderly Care at Home: How to Ensure Comfort...",
-    image: "/Blog/inner_blog1.png",
-    author: "Nandy Birch",
-    date: "11 January 2025",
-    avatar: "/Blog/avatar_img.png",
-  },
-];
+const formatDate = (iso?: string) =>
+  iso ? new Date(iso).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }) : "";
 
 const RecentPosts: React.FC = () => {
+  const { data: blogs = [], isLoading, isError } = useGetBlogsQuery();
+  const posts: Post[] = (blogs ?? []).slice(0, 5).map((b) => ({
+    title: b.title ?? "Untitled",
+    image: b.mainImage ?? "/Blog/inner_blog5.png",
+    author: b.authorName ?? "Unknown",
+    date: formatDate(b.blogDate) || "—",
+    avatar: b.authorProfilePic ?? "/Blog/avatar_img.png",
+  }));
+
+  if (isLoading) {
+    return (
+      <div>
+        <h2 className="text-3xl text-[var(--navy)] font-semibold mb-4">Recent Posts</h2>
+        <div className="space-y-4">
+          <div className="h-20 bg-gray-100 rounded-md animate-pulse" />
+          <div className="h-20 bg-gray-100 rounded-md animate-pulse" />
+          <div className="h-20 bg-gray-100 rounded-md animate-pulse" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isError && posts.length === 0) {
+    return (
+      <div>
+        <h2 className="text-3xl text-[var(--navy)] font-semibold mb-4">Recent Posts</h2>
+        <p className="text-sm text-red-600">Failed to load recent posts.</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2 className="text-3xl text-[var(--navy)] font-semibold mb-4">Recent Posts</h2>

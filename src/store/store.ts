@@ -5,7 +5,8 @@ import profileReducer from './profileSlice';
 import bookingReducer from './slices/bookingSlice';
 import { authApi } from './api/authApi';
 import { profileApi } from './api/profileApi';
-import { bookingApi } from './api/bookingApi'; 
+import { bookingApi } from './api/bookingApi';
+import { blogApi } from './api/blogApi'; // added blogApi
 
 export const store = configureStore({
   reducer: {
@@ -14,13 +15,15 @@ export const store = configureStore({
     booking: bookingReducer,
     [authApi.reducerPath]: authApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
-    [bookingApi.reducerPath]: bookingApi.reducer, 
+    [bookingApi.reducerPath]: bookingApi.reducer,
+    [blogApi.reducerPath]: blogApi.reducer, // register blogApi reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authApi.middleware,
       profileApi.middleware,
-      bookingApi.middleware 
+      bookingApi.middleware,
+      blogApi.middleware // add blogApi middleware
     ),
 });
 
