@@ -60,7 +60,7 @@ const Testimonials: React.FC = () => {
       <div className="text-center flex items-center justify-center mb-10">
         <div className="flex flex-col font-medium sm:text-5xl text-5xl capitalize sm:items-center sm:gap-4">
           <div>Trusted by members across</div>
-          <div>the country</div>
+          <div>Houston</div>
         </div>
       </div>
 

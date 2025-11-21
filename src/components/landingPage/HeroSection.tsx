@@ -59,7 +59,7 @@ const HeroSection = () => {
           </h1>
           <div className="my-3">
             <p className="font-light text-lg ">
-              Easily connect with trusted professionals in the Houston community who <br/> provide personal care and support tailored to your family&apos;s needs.
+              Easily connect with trusted Houston caregivers who offer  personal care<br/> and support designed around your family&apos;s needs
             </p>
           </div>
 

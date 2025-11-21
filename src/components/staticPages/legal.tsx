@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type LegalPayload = {
   id: string;
@@ -11,6 +12,7 @@ type LegalPayload = {
 };
 
 export default function Legal() {
+  const router = useRouter();
   const API_BASE =
     process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
   const [legal, setLegal] = useState<LegalPayload | null>(null);
@@ -31,12 +33,10 @@ export default function Legal() {
       .then((json) => {
         if (!mounted) return;
         // Accept both shapes: { data: { policy: ... } } or { data: { terms: ... } }
-        console.debug("terms API response:", json);
         const policy = json?.data?.policy ?? json?.data?.terms ?? null;
         if (!policy) {
           setError("Legal terms not found");
         } else if (policy.type && policy.type !== "legal") {
-          // Ensure the returned content is actually of type "legal"
           setError(`Content type mismatch: expected "legal" but got "${policy.type}"`);
         } else {
           setLegal(policy);
@@ -61,7 +61,10 @@ export default function Legal() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center py-16 px-4">
-        <span>Loading Terms...</span>
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[var(--navy)]" />
+          <span className="text-sm text-gray-600">Loading Terms...</span>
+        </div>
       </div>
     );
   }
@@ -69,23 +72,55 @@ export default function Legal() {
   if (error || !legal) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center py-16 px-4">
-        <span className="text-red-600">{error ?? "No legal terms available"}</span>
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error ?? "No legal terms available"}</p>
+          <button
+            onClick={() => router.back()}
+            className="text-sm text-[var(--navy)] underline"
+            aria-label="Go back"
+          >
+            Go back
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-start py-16 px-4">
-      <h4 className="text-center text-[var(--yellow)] font-semibold mb-2 text-3xl">
-        Let&apos;s Talk About Legal Terms
-      </h4>
-      <h1 className="text-center text-[var(--navy)] font-bold text-6xl mb-6">
-        Legal Terms
-      </h1>
-      <div
-        className="max-w-5xl space-y-3 text-lg prose prose-lg"
-        dangerouslySetInnerHTML={{ __html: legal.content }}
-      />
+    <div className="min-h-screen bg-white flex flex-col items-center justify-start py-8 sm:py-16 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-3xl">
+        <button
+          onClick={() => router.back()}
+          className="mb-4 text-sm text-gray-500 hover:text-gray-700"
+          aria-label="Go back"
+        >
+          ← Back
+        </button>
+
+        <h4 className="text-[var(--yellow)] font-semibold mb-2 text-base sm:text-lg text-center sm:text-left">
+          Let&apos;s Talk About Legal Terms
+        </h4>
+
+        <h1 className="text-[var(--navy)] font-bold text-2xl sm:text-4xl md:text-5xl mb-6 text-center sm:text-left leading-tight">
+          Legal Terms
+        </h1>
+
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
+          <article
+            className="prose-sm sm:prose lg:prose-lg max-w-none text-base sm:text-lg prose-a:text-[var(--navy)]"
+            dangerouslySetInnerHTML={{ __html: legal.content }}
+          />
+        </div>
+
+        <div className="mt-8 flex justify-center sm:justify-start">
+          <button
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-[var(--navy)] text-[var(--navy)] hover:bg-[var(--navy)] hover:text-white transition"
+          >
+            Print
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

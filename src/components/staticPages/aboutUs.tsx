@@ -284,7 +284,7 @@ export default function AboutUs() {
                     <Image src="/aboutUs/reliability.png" alt=" Home" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
                     <h3 className="text-[var(--navy)] font-bold text-3xl mb-4">Dignity at Home</h3>
                     <p className="text-[#2B384C] text-xl">
-                      We help clients maintain independence and comfort in the place they love most their home.
+                      We make it easier for clients to remain independent and comfortable in the place they love most, their home
                     </p>
                   </div>
                 </>

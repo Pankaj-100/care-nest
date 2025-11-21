@@ -29,6 +29,9 @@ const restrictedPaths = [
   "/sitter",
   "/specialized-care",
   "/transportation",
+  "/terms",
+  "/legal",
+  "/recalls"
 
 
  
