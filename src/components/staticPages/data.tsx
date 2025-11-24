@@ -4,27 +4,30 @@ export const allServicesData = {
       title: "What Is Personal Care?",
       description: [
         "Personal care is one of the most common types of in-home care. Generally, this type of care is meant for individuals with chronic health conditions, physical disabilities, or difficulties with strength, coordination, and mobility. One of the most important aspects of personal care is providing assistance with Activities of Daily Living, also known as ADLs.",
-        "Personal care is one of the most common types of in-home care. Generally, this type of care is meant for individuals with chronic health conditions, physical disabilities, or difficulties with strength, coordination, and mobility. One of the most important aspects of personal care is providing assistance with Activities of Daily Living, also known as ADLs."
+        "CareWorks provides trusted personal care services across Houston, offering dependable support for seniors and adults who need daily help. Whether the need comes from illness, injury, surgery, dementia, or the natural challenges of aging, we step in to make everyday life easier and safer."
       ]
     },
     locationSection: {
       title: "Personal Care In Houston, TX",
       content: [
-        "CareWorks is a leading home care company in Houston, Texas, providing trusted in-home care, companionship and respite care to any elderly in need. Whether it is illness, injury, surgery, dementia, or just challenges that come with aging, CareWorks can help you or your loved one. Our caregiver will be in full responsibility for movement, personal grooming, and also monitoring the general health condition of your loved one. From regular blood pressure monitoring to measuring essential vitals like heart rate, etc., the caregiver will take care of everything. We understand that what you want most for your loved one is help, hope, comfort, companionship and compassion. You want someone who genuinely cares. And that's what we do.",
+        " Our caregivers assist with movement, personal grooming, and general well-being. They can help with regular blood pressure checks, monitoring vitals, and keeping an eye on changes that may need attention. Most of all, we understand what families want: comfort, hope, companionship, and someone who truly cares. That is the heart of what we do.",
         "At CareWorks, we provide exceptional personal care in Houston, TX, tailored to meet the unique needs of seniors and individuals facing health challenges. Whether it's illness, injury, post-surgery recovery, dementia, or age-related difficulties, our experienced caregivers are here to offer support, companionship, and peace of mind."
       ]
     },
     servicesWeProvide: {
       title: "Services We Provide",
       services: [
-        "Assistance With Morning And Evening Daily Routines",
-        "Bathing And Showering Assistance",
-        "Personal Hygiene Assistance",
-        "Transfer And Walking Assistance",
-        "Assistance With Restroom Use",
-        "Assistance With Light Exercise",
-        "Incontinence Care And Colostomy Care",
-        "Personal Appearance Care Like Skin Care, Nail Care"
+        " Assistance with morning and evening routines",
+ "Bathing, showering and Toileting help",
+ "Personal hygiene support",
+ "Walking and transfer assistance",
+ "Light housekeeping",
+ "Light exercise support",
+ "Medication Reminders",
+ "Transportation to appointments and social interactions",
+ "Run errands",
+ "Incontinence and colostomy care",
+ "Personal appearance care, including skin and nail care"
       ],
       descriptions: [
         "You have the flexibility to choose the level of care and the location of care. Our services are completely customizable to your specific needs. Whether you need short-term or long-term home care, CareWorks offers convenient, dependable home care services you can trust.",
