@@ -75,13 +75,21 @@ const Header = () => {
         { title: "Veteran's Home Care Services", link: "/veterans" },
       ],
     },
-    // Move Blogs here so it's always visible
+    {
+      title: "Locations",
+      services: [
+        { title: "Sugarland, TX", link: "/location/sugarLand" },
+        { title: "Cypress, TX", link: "/location/cypress" },
+        { title: "Spring, TX", link: "/location/spring" },
+        { title: "Katy, TX", link: "/location/katy" },
+        { title: "Pearland, TX", link: "/location/pearland" },
+      ],
+    },
     { title: "Blogs", link: "/blogs" },
   ];
 
   if (!isLoggedInUser) {
-    // Only add Login options when not logged in
-    NavbarMenuTitle.push({ 
+    NavbarMenuTitle.push({
       title: "Login",
       services: [
         { title: "Login as Care Seeker", link: "/signin" },
@@ -89,13 +97,12 @@ const Header = () => {
       ],
     });
   } else {
-    // Add Inbox when logged in
     NavbarMenuTitle.push({ title: "Inbox", link: "/inbox" });
   }
 
   const navContent = (
-    <div className="flex lg:flex-row flex-col items-center md:gap-x-12 lg:py-0 py-4">
-      <nav className={"flex lg:flex-row flex-col items-center justify-between gap-11 "}>
+    <div className="flex lg:flex-row flex-col items-center lg:gap-x-6 xl:gap-x-9 lg:py-0 py-4 w-full  lg:w-auto">
+      <nav className="flex lg:flex-row flex-col items-center justify-between gap-6 lg:gap-4 xl:gap-6 w-full lg:w-auto">
         {NavbarMenuTitle.map((item, index) => (
           <NavbarMenu
             key={index}
@@ -110,29 +117,29 @@ const Header = () => {
         ))}
       </nav>
 
-      <div className="flex lg:flex-row flex-col items-center gap-5 lg:mt-0 mt-4">
+      <div className="flex lg:flex-row flex-col items-center gap-4 lg:gap-3 xl:gap-5 lg:mt-0 mt-6 w-full lg:w-auto">
         {isLoggedInUser && (
-          <button className="relative" onClick={handleNotificationOpen}>
-            <NotificationIcon size={28} />
+          <button className="relative" onClick={handleNotificationOpen} aria-label="Notifications">
+            <NotificationIcon size={28} className="lg:w-7 lg:h-7" />
             {unseenNotifications && (
               <div className="w-2 h-2 rounded-full bg-[var(--golden-yellow)] absolute top-0 right-[0.1rem]" />
             )}
           </button>
         )}
 
-        {/* Phone badge (always visible on large screens) */}
+        {/* Phone badge - hidden on mobile, shown on lg+ */}
         <Link
           href="tel:9876543210"
-          className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-8 py-3 text-lg font-semibold transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg"
+          className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-3 xl:px-6 py-2 xl:py-3 text-sm xl:text-base font-extrabold transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg whitespace-nowrap"
         >
-          <PhoneIcon />
-          <span >987 654 3210</span>
+          <PhoneIcon className="w-5 h-5 xl:w-6 xl:h-6" />
+          <span>832-237-2273</span>
         </Link>
 
         {!isLoggedInUser && (
           <Link
             href="/choose-path"
-            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-semibold px-6 py-3 text-lg hover:brightness-105 transition"
+            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-4 py-3 text-lg lg:text-base hover:brightness-105 transition w-full lg:w-auto text-center"
           >
             Get Started
           </Link>
@@ -141,7 +148,7 @@ const Header = () => {
         {isLoggedInUser && (
           <Link
             href="/profile"
-            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-semibold px-6 py-3 text-lg hover:brightness-105 transition flex items-center gap-2"
+            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-5 py-2.5 text-sm lg:text-base hover:brightness-105 transition flex items-center justify-center gap-2 w-full lg:w-auto"
           >
             {profileIcon()}
             <span>My Profile</span>
@@ -153,36 +160,39 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex lg:px-13 px-8 py-7 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
-        <div className="flex items-center gap-3 ">
+      <div className="flex px-4 sm:px-6 lg:px-6 xl:px-10 py-4 sm:py-5 lg:py-6 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
+        <div className="flex items-center gap-3">
           <Link href="/">
-            <Image src={"/Logo_1.svg"} alt="logo" width={160} height={160} />
+            <Image 
+              src="/Logo_1.svg" 
+              alt="logo" 
+              width={120} 
+              height={120} 
+              className="w-24 sm:w-32 lg:w-36 xl:w-40 h-auto"
+            />
           </Link>
         </div>
 
-        <button onClick={handleOpenMenu} className="lg:hidden">
-          <MenuIcon size={40} />
+        <button onClick={handleOpenMenu} className="lg:hidden p-2" aria-label="Menu">
+          <MenuIcon size={32} className="sm:w-10 sm:h-10" />
         </button>
 
-        <div className="lg:block hidden"> {navContent}</div>
+        <div className="lg:block hidden">{navContent}</div>
+        
         <CustomDrawer
-          className="bg-[var(--navy)] text-white lg-hidden"
+          className="bg-[var(--navy)] text-white"
           open={openMenu}
           handleOpen={handleOpenMenu}
         >
-          {navContent}
+          <div className="px-4 py-6">{navContent}</div>
         </CustomDrawer>
       </div>
 
-      <Notification
-        open={openNotifications}
-        handleOpen={handleNotificationOpen}
-      />
+      <Notification open={openNotifications} handleOpen={handleNotificationOpen} />
     </>
   );
 };
 
-// Add index, openDropdownIndex, setOpenDropdownIndex to props
 const NavbarMenu = ({
   title,
   link,
@@ -201,33 +211,45 @@ const NavbarMenu = ({
 
   return (
     <div
-      className="flex items-center gap-x-1 cursor-pointer relative"
-      onClick={() => {
-        if (title === "Services" || title === "Login" || title === "Who we are") {
-          setOpenDropdownIndex(isDropdownOpen ? null : index);
-        }
-      }}
+      className="flex items-center gap-x-1 cursor-pointer relative w-full lg:w-auto justify-center lg:justify-start py-2 lg:py-0"
     >
       {link ? (
         <Link
           href={link}
           className={`${
-            isActive ? "text-[var(--yellow)]" : ""
-          } text-lg`}
+            isActive ? "text-[var(--yellow)]" : "text-white"
+          } text-base lg:text-base xl:text-lg hover:text-[var(--yellow)] transition-colors`}
         >
           {title}
         </Link>
       ) : (
-        <span className="text-lg ">{title}</span>
+        <span 
+          className="text-base lg:text-base xl:text-lg"
+          onClick={() => {
+            if (title === "Services" || title === "Login" || title === "Who we are" || title === "Locations") {
+              setOpenDropdownIndex(isDropdownOpen ? null : index);
+            }
+          }}
+        >
+          {title}
+        </span>
       )}
 
-      {(title === "Services" || title === "Who we are" || title === "Login") && (
-        <ChevronDown size={22} />
+      {(title === "Services" || title === "Who we are" || title === "Login" || title === "Locations") && (
+        <ChevronDown 
+          size={18} 
+          className="lg:w-[18px] lg:h-[18px] xl:w-[20px] xl:h-[20px]"
+          onClick={() => {
+            if (title === "Services" || title === "Login" || title === "Who we are" || title === "Locations") {
+              setOpenDropdownIndex(isDropdownOpen ? null : index);
+            }
+          }}
+        />
       )}
 
-      {/* Dropdowns */}
-      {(title === "Services" || title === "Who we are" || title === "Login") && (
-        <div className="mt-5 absolute -right-10 z-50">
+      {/* Dropdowns - only show on desktop (lg+) */}
+      {(title === "Services" || title === "Who we are" || title === "Login" || title === "Locations") && (
+        <div className="hidden lg:block lg:mt-5 lg:absolute lg:left-auto lg:-right-10 z-50">
           <NavbarDropdown isOpen={isDropdownOpen} items={services || []} />
         </div>
       )}

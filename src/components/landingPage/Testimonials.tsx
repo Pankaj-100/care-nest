@@ -22,6 +22,19 @@ const Testimonials: React.FC = () => {
   const [items, setItems] = useState<TestimonialItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  const toggleExpanded = (id: string) => {
+    setExpandedItems((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -68,7 +81,7 @@ const Testimonials: React.FC = () => {
         {loading
           ? // show 3 skeleton slides while loading
             [0, 1, 2].map((i) => (
-              <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/4">
+              <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/3">
                 <div className="p-6 sm:w-84 w-auto bg-white rounded-2xl animate-pulse">
                   <div className="h-12 w-12 rounded-full bg-gray-200 mb-4" />
                   <div className="h-4 bg-gray-200 rounded mb-2 w-24" />
@@ -80,42 +93,57 @@ const Testimonials: React.FC = () => {
           : error && items.length === 0
           ? // error fallback
             [
-              <CarouselItem key="err" className="md:basis-1/2 lg:basis-1/4">
+              <CarouselItem key="err" className="md:basis-1/2 lg:basis-1/3">
                 <div className="p-6 sm:w-84 w-auto bg-white rounded-2xl">
                   <p className="text-red-600">Failed to load testimonials.</p>
                 </div>
               </CarouselItem>,
             ]
           : // render testimonials (limit to first 6)
-            (items ?? []).slice(0, 6).map((t) => (
-              <CarouselItem key={t.id} className="md:basis-1/2 lg:basis-1/4">
-                <div className="p-6 sm:w-84 w-auto bg-white rounded-2xl">
-                  <div className="flex items-center gap-x-6 mb-3">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                      <Image
-                        src={t.profilePic ?? "/profile pic.jpg"}
-                        alt={t.name ?? "User"}
-                        fill
-                        className="rounded-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-medium">{t.name ?? "Anonymous"}</h4>
-                      <p className="text-gray-500 text-xs">{t.profession ?? ""}</p>
-                    </div>
-                  </div>
+            (items ?? []).slice(0, 6).map((t) => {
+              const description = t.description ?? "";
+              const isLong = description.length > 150;
+              const isExpanded = expandedItems.has(t.id);
+              const displayText = isLong && !isExpanded ? description.slice(0, 150) + "..." : description;
 
-                  <div className="flex items-center gap-x-3 my-3">
-                    <p className="text-sm">{Array.from({ length: (t.rating ?? 0) }).map(() => "⭐").join("")}</p>
-                    <p className="text-sm">{t.rating ?? 0}.0</p>
-                  </div>
+              return (
+                <CarouselItem key={t.id} className="md:basis-1/2 lg:basis-1/3">
+                  <div className="p-6 sm:w-84 w-auto bg-white rounded-2xl h-full min-h-[280px] flex flex-col">
+                    <div className="flex items-center gap-x-6 mb-3">
+                      <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={t.profilePic ?? "/profile pic.jpg"}
+                          alt={t.name ?? "User"}
+                          fill
+                          className="rounded-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium truncate">{t.name ?? "Anonymous"}</h4>
+                        <p className="text-gray-500 text-xs truncate">{t.profession ?? ""}</p>
+                      </div>
+                    </div>
 
-                  <div>
-                    <p className="text-lg font-medium">{t.description}</p>
+                    <div className="flex items-center gap-x-3 my-3">
+                      <p className="text-sm">{Array.from({ length: (t.rating ?? 0) }).map(() => "⭐").join("")}</p>
+                      <p className="text-sm">{t.rating ?? 0}.0</p>
+                    </div>
+
+                    <div className="flex-1 flex flex-col">
+                      <p className="text-base font-medium flex-1">{displayText}</p>
+                      {isLong && (
+                        <button
+                          onClick={() => toggleExpanded(t.id)}
+                          className="text-[var(--navy)] hover:text-[var(--yellow)] font-semibold text-sm mt-2 transition-colors self-start"
+                        >
+                          {isExpanded ? "Read less" : "Read more"}
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </CarouselItem>
-            ))}
+                </CarouselItem>
+              );
+            })}
       </CustomCarousel>
     </div>
   );

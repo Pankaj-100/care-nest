@@ -33,10 +33,11 @@ const link: linkSection[] = [
       { title: "Homemakers", link: "/services/homemakers" },
     ],
     "Locations we cover": [
-      { title: "Sugarland, TX", link: "/locations/sugarland" },
-      { title: "Katy, TX", link: "/locations/katy" },
-      { title: "Spring, TX", link: "/locations/spring" },
-      { title: "Cypress, TX", link: "/locations/cypress" },
+      { title: "Sugarland, TX", link: "/location/sugarLand" },
+      { title: "Katy, TX", link: "/location/katy" },
+      { title: "Spring, TX", link: "/location/spring" },
+      { title: "Cypress, TX", link: "/location/cypress" },
+      { title: "Pearland, TX", link: "/location/pearland" },
     ],
     "Quick Links": [
       { title: "FAQs", link: "/faq" },
