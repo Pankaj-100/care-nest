@@ -31,10 +31,13 @@ const restrictedPaths = [
   "/transportation",
   "/terms",
   "/legal",
-  "/recalls"
+  "/recalls",
+  "/location/sugarLand",
+  "/location/katy",
+  "/location/spring",
+  "/location/cypress",
+  "/location/pearland",
 
-
- 
 ];
 
 export async function middleware(request: NextRequest) {
