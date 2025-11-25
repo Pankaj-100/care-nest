@@ -1,13 +1,27 @@
+"use client";
+
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import youtube from "../../../public/Youtube.svg";
 import facebook from "../../../public/Facebook.svg";
 import tiktok from "../../../public/tiktok.svg";
 import instagram from "../../../public/instagram.svg";
 import linkedin from "../../../public/linkedin.svg";
 
+type SocialLink = {
+  id: string;
+  url: string;
+  icon: string;
+  platform: string;
+};
+
+type FooterData = {
+  footerDescription: string;
+  locations: string[];
+  socialLinks: SocialLink[];
+};
 
 type linkItems = {
   icons?: string;
@@ -27,23 +41,16 @@ const link: linkSection[] = [
       { title: "We accept Medicaid", link: "/medicaid" },
     ],
     "Other Services": [
-      { title: "Transportation", link: "/services/transportation" },
-      { title: "Veteran Homecare", link: "/services/veteran-homecare" },
-      { title: "Private Sitters", link: "/services/private-sitters" },
-      { title: "Homemakers", link: "/services/homemakers" },
-    ],
-    "Locations we cover": [
-      { title: "Sugarland, TX", link: "/location/sugarLand" },
-      { title: "Katy, TX", link: "/location/katy" },
-      { title: "Spring, TX", link: "/location/spring" },
-      { title: "Cypress, TX", link: "/location/cypress" },
-      { title: "Pearland, TX", link: "/location/pearland" },
+      { title: "Transportation", link: "/service/transportation" },
+      { title: "Veteran Homecare", link: "/veterans" },
+      { title: "Private Sitters", link: "/service/sitter-service" },
+      { title: "Homemakers", link: "/service/home-maker" },
     ],
     "Quick Links": [
       { title: "FAQs", link: "/faq" },
       { title: "Privacy Policy", link: "/privacy" },
       { title: "Resources", link: "/resources" },
-      { title: "Veterans Financial Assistance", link: "/veterans-assistance" },
+      { title: "Veterans Financial Assistance", link: "/veterans" },
     ],
   },
 ];
@@ -65,6 +72,60 @@ const socialLink: linkItems[] = [
 ];
 
 const Footer = () => {
+  const [footerData, setFooterData] = useState<FooterData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
+
+  useEffect(() => {
+    const fetchFooter = async () => {
+      if (!API_BASE) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/footer`;
+        const res = await fetch(endpoint);
+        
+        if (res.ok) {
+          const json = await res.json();
+          const footer = json?.data?.footer;
+          
+          if (footer) {
+            setFooterData({
+              footerDescription: footer.footerDescription || "",
+              locations: footer.locations || [],
+              socialLinks: footer.socialLinks || [],
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch footer data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFooter();
+  }, [API_BASE]);
+
+  // Prepare dynamic location links from API
+  const locationLinks: linkItems[] = (footerData?.locations || []).map((loc) => ({
+    title: loc,
+    link: `/location/${loc.toLowerCase().replace(/,?\s+/g, "-").replace("tx", "").replace(/-$/, "")}`,
+  }));
+
+  // Prepare dynamic social links from API
+  const dynamicSocialLinks: linkItems[] = (footerData?.socialLinks || []).map((social) => ({
+    icons: social.icon,
+    link: social.url,
+  }));
+
+  const displayDescription = footerData?.footerDescription || 
+    "CareWorks provides compassionate, \n personalized eldercare services that \n support seniors and their families with \n dignity and respect.";
+
+  const displaySocialLinks = dynamicSocialLinks.length > 0 ? dynamicSocialLinks : socialLink;
   return (
     <div className="pt-1 pb-1 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-12 items-center">
@@ -73,8 +134,8 @@ const Footer = () => {
           <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-4">
             <Image src="/Logo_1.svg" alt="Carenest logo" fill priority />
           </Link>
-          <p className={`text-lg text-[#FFFFFF] font-light`}>
-            CareWorks provides compassionate, <br /> personalized eldercare services that <br/> support seniors and their families with <br/> dignity and respect.
+          <p className={`text-lg text-[#FFFFFF] font-light whitespace-pre-line`}>
+            {displayDescription}
           </p>
         </div>
 
@@ -90,7 +151,18 @@ const Footer = () => {
         
         {/* Locations we cover */}
         <div className="mt-8 text-xl">
-          <FooterLink title="Locations we cover" links={link[0]["Locations we cover"]} />
+          {loading ? (
+            <div>
+              <p className="font-medium mb-6 text-white">Locations we cover</p>
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-700 rounded animate-pulse w-32" />
+                <div className="h-4 bg-gray-700 rounded animate-pulse w-28" />
+                <div className="h-4 bg-gray-700 rounded animate-pulse w-36" />
+              </div>
+            </div>
+          ) : (
+            <FooterLink title="Locations we cover" links={locationLinks} />
+          )}
         </div>
         
         {/* Quick Links */}
@@ -141,14 +213,21 @@ const Footer = () => {
         </div>
 
         <div className="flex sm:w-auto w-full justify-around items-center gap-x-5">
-          {socialLink.map((item, i) => (
+          {displaySocialLinks.map((item, i) => (
             <Link
               href={item.link}
               key={i}
-              className="text-lg text-gray-200 p-2 rounded-full border border-gray-200"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lg text-gray-200 p-2 rounded-full border border-gray-200 hover:border-[var(--yellow)] transition-colors"
             >
               <div className="relative w-4 h-4">
-                <Image src={item.icons || ""} alt="icons" fill />
+                <Image 
+                  src={item.icons || ""} 
+                  alt="social icon" 
+                  fill 
+                  className="object-contain"
+                />
               </div>
             </Link>
           ))}
