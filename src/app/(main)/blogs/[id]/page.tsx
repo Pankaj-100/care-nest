@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function BlogPage({ params }: any) {
-  const id = params?.id as string | undefined;
+  const { id } = await params;
 
   if (!id) {
     return (

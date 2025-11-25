@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { useGetBlogsQuery } from "@/store/api/blogApi";
 
 interface Post {
+  id: string;
   title: string;
   image: string;
   author: string;
@@ -17,6 +19,7 @@ const formatDate = (iso?: string) =>
 const RecentPosts: React.FC = () => {
   const { data: blogs = [], isLoading, isError } = useGetBlogsQuery();
   const posts: Post[] = (blogs ?? []).slice(0, 5).map((b) => ({
+    id: b.id,
     title: b.title ?? "Untitled",
     image: b.mainImage ?? "/Blog/inner_blog5.png",
     author: b.authorName ?? "Unknown",
@@ -50,8 +53,12 @@ const RecentPosts: React.FC = () => {
     <div>
       <h2 className="text-3xl text-[var(--navy)] font-semibold mb-4">Recent Posts</h2>
       <div className="space-y-8">
-        {posts.map((post, idx) => (
-          <div key={idx} className="flex gap-3 items-start">
+        {posts.map((post) => (
+          <Link 
+            key={post.id} 
+            href={`/blogs/${post.id}`}
+            className="flex gap-3 items-start group cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
+          >
             <Image
               src={post.image}
               alt={`Thumbnail for ${post.title}`}
@@ -60,7 +67,7 @@ const RecentPosts: React.FC = () => {
               className="w-20 h-20 object-cover rounded-2xl"
             />
             <div>
-              <p className="text-md text-[var(--navy)] font-semibold leading-[150%] font-urbanist">
+              <p className="text-md text-[var(--navy)] font-semibold leading-[150%] font-urbanist group-hover:text-[#F2A307] transition-colors">
                 {post.title}
               </p>
 
@@ -80,7 +87,7 @@ const RecentPosts: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

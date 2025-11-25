@@ -61,26 +61,16 @@ const MainContent: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
         {title}
       </h1>
 
-      <div className="space-y-6 text-[#667085] text-base leading-relaxed">
-        {/* split content into paragraphs if provided */}
-        {content
-          ? content.split("\n").map((p, i) => (
-              <p key={i}>{p}</p>
-            ))
-          : (
-            <>
-              <p>
-                Caring for elderly loved ones at home is a heartfelt responsibility that requires attention, patience, and compassion. Ensuring comfort goes beyond physical needs—it includes emotional support, safety, and a sense of independence. Start by creating a safe and accessible environment.
-              </p>
-              <p>
-                Regular health monitoring and medication management are crucial. Scheduling routine check-ups and organizing medications can prevent potential health risks. Nutrition also plays a key role—offer balanced meals tailored to their dietary needs and encourage hydration.
-              </p>
-              <p>
-                Beyond physical care, emotional well-being is just as important. Encourage social interaction, whether through visits from friends and family or engaging in community activities. Hobbies, light exercise, and mental stimulation through games or reading can greatly enhance quality of life.
-              </p>
-            </>
-          )}
-      </div>
+      <div 
+        className="space-y-6 text-[#667085] text-base leading-relaxed prose prose-lg max-w-none"
+        dangerouslySetInnerHTML={{
+          __html: content || `
+            <p>Caring for elderly loved ones at home is a heartfelt responsibility that requires attention, patience, and compassion. Ensuring comfort goes beyond physical needs—it includes emotional support, safety, and a sense of independence. Start by creating a safe and accessible environment.</p>
+            <p>Regular health monitoring and medication management are crucial. Scheduling routine check-ups and organizing medications can prevent potential health risks. Nutrition also plays a key role—offer balanced meals tailored to their dietary needs and encourage hydration.</p>
+            <p>Beyond physical care, emotional well-being is just as important. Encourage social interaction, whether through visits from friends and family or engaging in community activities. Hobbies, light exercise, and mental stimulation through games or reading can greatly enhance quality of life.</p>
+          `
+        }}
+      />
     </div>
   );
 };
