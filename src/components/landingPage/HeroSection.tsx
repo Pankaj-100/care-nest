@@ -8,7 +8,83 @@ import { RedirectButton } from "../common/CustomButton";
 import { DesignIcon1, DesignIcon2, DesignIcon3 } from "../icons/page";
 import { toast } from "react-toastify";
 
+type HeroSectionData = {
+  heading: string;
+  description: string;
+  googleReviewLink: string;
+  phoneNumber: string;
+};
+
 const HeroSection = () => {
+  const [heroData, setHeroData] = useState<HeroSectionData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
+
+  useEffect(() => {
+    const fetchHeroSection = async () => {
+      if (!API_BASE) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/hero-section`;
+        const res = await fetch(endpoint);
+
+        if (res.ok) {
+          const json = await res.json();
+          const hero = json?.data?.heroSection;
+
+          if (hero) {
+            setHeroData({
+              heading: hero.heading || "",
+              description: hero.description || "",
+              googleReviewLink: hero.googleReviewLink || "",
+              phoneNumber: hero.phoneNumber || "",
+            });
+            console.log("Hero section API response:", hero);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch hero section data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHeroSection();
+  }, [API_BASE]);
+
+  // Split the description into two parts for two-line display
+  const getDescriptionLines = (desc: string) => {
+    // If description contains \n, split by that
+    if (desc.includes('\n')) {
+      return desc.split('\n');
+    }
+    // Otherwise, split at a logical point (after "care and support")
+    const splitPoint = desc.indexOf('care and support');
+    if (splitPoint !== -1) {
+      const line1 = desc.substring(0, splitPoint + 16); // Include "care and support"
+      const line2 = desc.substring(splitPoint + 16).trim();
+      return [line1, line2];
+    }
+    // Fallback: split roughly in the middle
+    const words = desc.split(' ');
+    const midPoint = Math.ceil(words.length / 2);
+    return [
+      words.slice(0, midPoint).join(' '),
+      words.slice(midPoint).join(' ')
+    ];
+  };
+
+  const displayDescription = heroData?.description || 
+    "Easily connect with trusted Houston caregivers who offer personal care and support designed around your family's needs";
+  
+  const descriptionLines = getDescriptionLines(displayDescription);
+  
+  const googleReviewLink = heroData?.googleReviewLink || "#";
+
   return (
     <div className="relative h-auto min-h-[600px] lg:h-[550px] bg-[#233D4D] pb-20 lg:pb-0">
       <div className="h-full w-full relative">
@@ -61,15 +137,30 @@ const HeroSection = () => {
           
           <div className="my-4 sm:my-6">
             <p className="font-light text-sm sm:text-base lg:text-lg text-center lg:text-left">
-              Easily connect with trusted Houston caregivers who offer personal care
-              <br className="hidden sm:block" /> and support designed around your family&apos;s needs
+              {loading ? (
+                <>
+                  <span className="inline-block h-4 w-3/4 bg-gray-600/30 rounded animate-pulse" />
+                  <br />
+                  <span className="inline-block h-4 w-2/3 bg-gray-600/30 rounded animate-pulse mt-2" />
+                </>
+              ) : (
+                <>
+                  {descriptionLines[0]}
+                  {descriptionLines[1] && (
+                    <>
+                      <br />
+                      {descriptionLines[1]}
+                    </>
+                  )}
+                </>
+              )}
             </p>
           </div>
 
           {/* Button + Reviews Badge */}
           <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3 sm:gap-4 lg:gap-6">
             <a
-              href="#"
+              href={googleReviewLink}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block"
