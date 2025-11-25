@@ -1,80 +1,309 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { allServicesData } from './data';
 
-interface ServiceData {
-  mainSection: {
-    title: string;
-    description: string[];
-  };
-  locationSection: {
-    title: string;
-    content: string[];
-  };
-  servicesWeProvide: {
-    title: string;
-    services: string[];
-    descriptions: string[];
-    imagePath: string;
-  };
-  faq: {
-    subtitle: string;
-    title: string;
-    questions: Array<{
-      question: string;
-      answer: string;
-    }>;
-  };
-  contactBanner: {
-    title: string;
-    description: string;
-    buttonText: string;
-  };
+// API Response Types
+export interface ApiServiceItem {
+  id: string;
+  serviceName: string;
+  serviceDescription: string;
+  serviceIcon?: string;
+  careType: string;
+  title1: string;
+  description1: string;
+  title2: string;
+  description2: string;
+  title3: string;
+  description3: string;
+  description3Image?: string;
+  description3List: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ApiFaqItem {
+  id: string;
+  faqType: string;
+  sectionTitle: string;
+  faqItems: Array<{
+    id: string;
+    question: string;
+    answer: string;
+  }>;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface ServiceTemplateProps {
-  serviceData: ServiceData;
+  careType: string;
+  fallbackData?: ApiServiceItem;
+  fallbackKey?: string; // e.g., 'personalCare', 'companionCare'
 }
 
-export default function ServiceTemplate({ serviceData }: ServiceTemplateProps) {
+// convert "Personal Care" -> "personalCare", "Home Maker Service" -> "homeCare"
+// Special cases for FAQ API types
+function titleToFaqType(title: string) {
+  const lowerTitle = title.toLowerCase();
+  
+  // Handle special cases
+  if (lowerTitle.includes("specialized care")) {
+    return "specalizedCare";
+  }
+  if (lowerTitle.includes("home maker")) {
+    return "homeCare";
+  }
+  if (lowerTitle.includes("sitter")) {
+    return "sitter";
+  }
+  
+  const parts = title
+    .replace(/[^a-zA-Z0-9\s]/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (parts.length === 0) return title.toLowerCase();
+  return parts
+    .map((p, i) => (i === 0 ? p.toLowerCase() : p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()))
+    .join("");
+}
+
+export default function ServiceTemplate({ careType, fallbackData, fallbackKey = "personalCare" }: ServiceTemplateProps) {
   const [openFAQ, setOpenFAQ] = useState(0);
+  const [serviceData, setServiceData] = useState<ApiServiceItem | null>(fallbackData || null);
+  const [faqData, setFaqData] = useState<ApiFaqItem | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  console.log("[ServiceTemplate] Received props:", { careType, fallbackKey, hasFallbackData: !!fallbackData });
+
+  // Get static contact banner data from data.tsx
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const contactBannerData = (allServicesData as any)[fallbackKey]?.contactBanner || allServicesData.personalCare.contactBanner;
+
+  useEffect(() => {
+    async function fetchData() {
+      console.log("[ServiceTemplate] useEffect called with careType:", careType);
+      
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
+      
+      // If no API_BASE, just use fallback data
+      if (!API_BASE) {
+        console.log("[ServiceTemplate] No API base URL, using fallback data only");
+        setLoading(false);
+        return;
+      }
+
+      // If careType is undefined or empty, use fallback data
+      if (!careType || careType === "undefined") {
+        console.log("[ServiceTemplate] careType is undefined, using fallback data only");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Fetch service data with timeout
+        const serviceEndpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/service-cms/care-type/${encodeURIComponent(careType)}`;
+        console.log("[ServiceTemplate] fetching service:", serviceEndpoint);
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
+        const serviceRes = await fetch(serviceEndpoint, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        
+        console.log("[ServiceTemplate] service status:", serviceRes.status);
+        
+        if (serviceRes.ok) {
+          const serviceJson = await serviceRes.json();
+          console.log("[ServiceTemplate] service body:", serviceJson);
+          
+          const apiItem = Array.isArray(serviceJson?.data?.services) && serviceJson.data.services.length > 0
+            ? serviceJson.data.services[0]
+            : null;
+          
+          if (apiItem) {
+            console.log("[ServiceTemplate] Using API data");
+            setServiceData(apiItem);
+            
+            // Fetch FAQ data using careType from API
+            const faqSourceTitle = (apiItem?.careType || careType).toString();
+            const faqType = titleToFaqType(faqSourceTitle);
+            
+            const faqEndpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/faq/type/${encodeURIComponent(faqType)}`;
+            console.log("[ServiceTemplate] fetching faq:", faqEndpoint);
+            
+            const faqController = new AbortController();
+            const faqTimeoutId = setTimeout(() => faqController.abort(), 10000);
+            
+            const faqRes = await fetch(faqEndpoint, {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              signal: faqController.signal,
+            });
+            clearTimeout(faqTimeoutId);
+            
+            console.log("[ServiceTemplate] faq status:", faqRes.status);
+            
+            if (faqRes.ok) {
+              const faqJson = await faqRes.json();
+              console.log("[ServiceTemplate] faq body:", faqJson);
+              
+              const apiFaq = Array.isArray(faqJson?.data?.faqs) && faqJson.data.faqs.length > 0
+                ? faqJson.data.faqs[0]
+                : null;
+              
+              if (apiFaq) {
+                setFaqData(apiFaq);
+              }
+            }
+          } else {
+            console.log("[ServiceTemplate] No service data in API response, using fallback");
+            // Fallback data is already set in useState initial value
+          }
+        } else {
+          console.log("[ServiceTemplate] API error, using fallback data");
+          // Fallback data is already set in useState initial value
+        }
+      } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          console.error("[ServiceTemplate] API request timed out, using fallback data");
+        } else {
+          console.error("[ServiceTemplate] fetch error:", error);
+        }
+        // Fallback data is already set in useState initial value
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchData();
+  }, [careType]);
 
   const toggleFAQ = (index: number) => {
     setOpenFAQ(openFAQ === index ? -1 : index);
   };
 
+  // Helper function to parse HTML content into paragraphs
+  const parseHtmlToParagraphs = (html: string): string[] => {
+    if (!html) return [];
+    const paragraphs = html
+      .split(/<\/?p>/gi)
+      .map(p => p.trim())
+      .filter(p => p.length > 0)
+      .map(p => p.replace(/<\/?[^>]+(>|$)/g, "").trim())
+      .filter(p => p.length > 0);
+    return paragraphs.length > 0 ? paragraphs : [html.replace(/<\/?[^>]+(>|$)/g, "").trim()].filter(p => p.length > 0);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen bg-gray-50">
+        {/* Location Section Skeleton */}
+        <div className="w-full bg-white py-20 px-4">
+          <div className="max-w-6xl mx-auto text-center">
+            <h2 className="mb-16">
+              <Skeleton width={400} height={60} className="mx-auto" />
+            </h2>
+            <div className="space-y-8 max-w-5xl mx-auto">
+              <Skeleton count={3} height={24} />
+            </div>
+          </div>
+        </div>
+
+        {/* Main Section Skeleton */}
+        <div className="w-full bg-[#F7F7F3] py-20 px-4">
+          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+            <div className="flex-1 lg:pr-8">
+              <Skeleton width="100%" height={80} className="mb-8" />
+            </div>
+            <div className="flex-1 space-y-6">
+              <Skeleton count={4} height={20} />
+            </div>
+          </div>
+        </div>
+
+        {/* Services Section Skeleton */}
+        <div className="w-full bg-gray-50 py-20 px-4">
+          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-16">
+            <div className="flex-1">
+              <Skeleton width={300} height={50} className="mb-12" />
+              <div className="space-y-4">
+                <Skeleton count={8} height={24} />
+              </div>
+            </div>
+            <div className="flex-1 flex justify-center">
+              <Skeleton width={400} height={300} className="rounded-lg" />
+            </div>
+          </div>
+          <div className="max-w-6xl mx-auto mt-16">
+            <Skeleton count={3} height={20} />
+          </div>
+        </div>
+
+        {/* Contact Banner Skeleton */}
+        <div className="w-full bg-[#F2A307] py-10 px-2">
+          <div className="max-w-5xl mx-auto text-center">
+            <Skeleton width={400} height={50} className="mb-4 mx-auto" baseColor="#d4950a" highlightColor="#f5b742" />
+            <Skeleton count={2} height={24} className="mb-4 mx-auto max-w-4xl" baseColor="#d4950a" highlightColor="#f5b742" />
+            <Skeleton width={150} height={50} className="rounded-full mx-auto" baseColor="#233D4D" highlightColor="#3a5d6d" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!serviceData) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px] bg-gray-50">
+        <div className="text-center">
+          <p className="text-gray-600 text-lg">Service not found</p>
+          <p className="text-gray-500 text-sm mt-2">Please check the service type or try again later.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       
-      {/* Main Section */}
-      <div className="w-full bg-gray-50 py-20 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
-          <div className="flex-1 lg:pr-8">
-            <h1 className="text-5xl lg:text-6xl font-bold text-[#233D4D] leading-tight mb-8">
-              {serviceData.mainSection.title}
-            </h1>
-          </div>
+      
+
+      {/* Location Section */}
+      <div className="w-full bg-white py-20 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-5xl lg:text-6xl font-bold text-[#233D4D] mb-16">
+            {serviceData.title2}
+          </h2>
           
-          <div className="flex-1 space-y-6">
-            {serviceData.mainSection.description.map((paragraph, index) => (
-              <p key={index} className="text-lg text-gray-700 leading-relaxed">
+          <div className="space-y-8 text-lg text-gray-700 leading-relaxed max-w-5xl mx-auto">
+            {parseHtmlToParagraphs(serviceData.description2 || "").map((paragraph, index) => (
+              <p key={index}>
                 {paragraph}
               </p>
             ))}
           </div>
         </div>
       </div>
-
-      {/* Location Section */}
-      <div className="w-full bg-white py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-5xl lg:text-6xl font-bold text-[#233D4D] mb-16">
-            {serviceData.locationSection.title}
-          </h2>
+      {/* Main Section */}
+      <div className="w-full bg-[#F7F7F3] py-20 px-4">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+          <div className="flex-1 lg:pr-8">
+            <h1 className="text-5xl lg:text-6xl font-bold text-[#233D4D] leading-tight mb-8">
+              {serviceData.title1}
+            </h1>
+          </div>
           
-          <div className="space-y-8 text-lg text-gray-700 leading-relaxed max-w-5xl mx-auto">
-            {serviceData.locationSection.content.map((paragraph, index) => (
-              <p key={index}>
+          <div className="flex-1 space-y-6">
+            {parseHtmlToParagraphs(serviceData.description1 || "").map((paragraph, index) => (
+              <p key={index} className="text-lg text-gray-700 leading-relaxed">
                 {paragraph}
               </p>
             ))}
@@ -87,11 +316,11 @@ export default function ServiceTemplate({ serviceData }: ServiceTemplateProps) {
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-16">
           <div className="flex-1">
             <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] mb-12">
-              {serviceData.servicesWeProvide.title}
+              {serviceData.title3}
             </h2>
             
             <div className="space-y-4">
-              {serviceData.servicesWeProvide.services.map((service, index) => (
+              {(serviceData.description3List || []).map((service, index) => (
                 <div key={index} className="flex items-start gap-3">
                   <div className="w-6 h-6 bg-[#233D4D] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-white text-sm">✓</span>
@@ -107,8 +336,8 @@ export default function ServiceTemplate({ serviceData }: ServiceTemplateProps) {
           <div className="flex-1 flex justify-center">
             <div className="relative w-full max-w-md">
               <Image
-                src={serviceData.servicesWeProvide.imagePath}
-                alt={`${serviceData.mainSection.title} service`}
+                src={serviceData.description3Image || "/service-default.jpg"}
+                alt={`${serviceData.serviceName} service`}
                 width={500}
                 height={400}
                 className="w-full h-auto rounded-lg shadow-lg object-cover"
@@ -118,7 +347,7 @@ export default function ServiceTemplate({ serviceData }: ServiceTemplateProps) {
         </div>
         
         <div className="max-w-6xl mx-auto mt-16 space-y-6">
-          {serviceData.servicesWeProvide.descriptions.map((description, index) => (
+          {parseHtmlToParagraphs(serviceData.description3 || "").map((description, index) => (
             <p key={index} className="text-lg text-gray-700 leading-relaxed">
               {description}
             </p>
@@ -127,60 +356,60 @@ export default function ServiceTemplate({ serviceData }: ServiceTemplateProps) {
       </div>
 
       {/* FAQ Section */}
-      <div className="w-full bg-white py-20 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16">
-          <div className="flex-1 lg:pr-8">
-            <p className="text-[#F2A307] font-semibold text-lg mb-4">
-              {serviceData.faq.subtitle}
-            </p>
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] leading-tight">
-              {serviceData.faq.title}
-            </h2>
-          </div>
-          
-          <div className="flex-1 space-y-4">
-            {serviceData.faq.questions.map((faq, index) => (
-              <div key={index} className="bg-gray-100 rounded-lg overflow-hidden">
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-200 transition-colors"
-                >
-                  <span className="font-semibold text-[#233D4D] text-lg pr-4">
-                    {faq.question}
-                  </span>
-                  <span className="text-[#233D4D] text-2xl font-light flex-shrink-0">
-                    {openFAQ === index ? '−' : '+'}
-                  </span>
-                </button>
-                
-                {openFAQ === index && (
-                  <div className="px-6 pb-4">
-                    <p className="text-gray-600 leading-relaxed">
-                      {faq.answer}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
+      {faqData && faqData.faqItems && faqData.faqItems.length > 0 && (
+        <div className="w-full bg-[#F7F7F3] py-20 px-4">
+          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16">
+            <div className="flex-1 lg:pr-8">
+              <p className="text-[#F2A307] font-semibold text-lg mb-4">
+                {faqData.sectionTitle}
+              </p>
+              <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] leading-tight">
+                Frequently asked questions
+              </h2>
+            </div>
+            
+            <div className="flex-1 bg-[#233D4D0A] space-y-4">
+              {faqData.faqItems.map((faq, index) => (
+                <div key={faq.id} className="bg-gray-100 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => toggleFAQ(index)}
+                    className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-200 transition-colors"
+                  >
+                    <span className="font-semibold text-[#233D4D] text-lg pr-4">
+                      {faq.question}
+                    </span>
+                    <span className="text-[#233D4D] text-2xl font-light flex-shrink-0">
+                      {openFAQ === index ? '−' : '+'}
+                    </span>
+                  </button>
+                  
+                  {openFAQ === index && (
+                    <div className="px-6 pb-4">
+                      <p className="text-gray-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Contact Banner Section */}
       <div className="w-full bg-[#F2A307] py-10 px-2">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] mb-4 leading-tight">
-            {serviceData.contactBanner.title}
+            {contactBannerData.title}
           </h2>
           
           <p className="text-lg lg:text-2xl text-white font-light leading-relaxed mb-4 max-w-7xl mx-auto">
-            Make The Call That Can Improve Your Life Or That Of A Loved One. Contact Us Today To Inquire About{' '}
-            <span className="text-[#233D4D]">Our Houston Based Home Care Services</span>{' '}
-            And To Find A Solution That Fits Your Budgetary Needs And Your Lifestyle.
+            {contactBannerData.description}
           </p>
           
           <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-8 py-4 rounded-full text-lg transition-colors duration-300 flex items-center gap-2 mx-auto">
-            {serviceData.contactBanner.buttonText}
+            {contactBannerData.buttonText}
             <span className="text-xl">→</span>
           </button>
         </div>

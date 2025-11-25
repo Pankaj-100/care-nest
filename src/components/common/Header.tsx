@@ -66,12 +66,12 @@ const Header = () => {
     {
       title: "Services",
       services: [
-        { title: "Personal care", link: "/care-service" },
-        { title: "Home Maker Service", link: "/home-maker" },
-        { title: "Specialized care", link: "/care-service" },
-        { title: "Sitter Services", link: "/sitter" },
-        { title: "Companion Care", link: "/companion-care" },
-        { title: "Transportation", link: "/transportation" },
+        { title: "Personal care", link: "/service/personal-care" },
+        { title: "Home Maker Service", link: "/service/home-maker" },
+        { title: "Specialized care", link: "/service/specialized-care" },
+        { title: "Sitter Services", link: "/service/sitter-service" },
+        { title: "Companion Care", link: "/service/companion-care" },
+        { title: "Transportation", link: "/service/transportation" },
         { title: "Veteran's Home Care Services", link: "/veterans" },
       ],
     },

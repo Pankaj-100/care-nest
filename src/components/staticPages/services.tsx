@@ -1,6 +1,5 @@
-import ServiceTemplate from './ServiceTemplate';
-import { allServicesData } from './data';
+import { redirect } from 'next/navigation';
 
 export default function Services() {
-  return <ServiceTemplate serviceData={allServicesData.personalCare} />;
+  redirect('/service/personal-care');
 }
