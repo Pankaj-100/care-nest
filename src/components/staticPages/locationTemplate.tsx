@@ -1,22 +1,28 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-interface LocationData {
+export interface LocationServiceData {
   city: string;
   state: string;
   heroTitle: string;
+  heroImage?: string;
   heroDescription: string;
   whyChooseTitle: string;
   whyChooseDescription: string;
-  whyChooseHighlights: string[];
+  // API does not currently return highlights array, keep optional for future
+  whyChooseHighlights?: string[];
   servicesIntro: string;
+  servicesDescription?: string;
   services: {
+    id: string;
     title: string;
     items: string[];
     image: string;
   }[];
   careDesignedTitle: string;
   careDesignedDescription: string;
+  careDesignedImage?: string;
   proudlyServingTitle: string;
   proudlyServingDescription: string;
   steadyPartnerTitle: string;
@@ -24,14 +30,80 @@ interface LocationData {
 }
 
 interface LocationTemplateProps {
-  data: LocationData;
+  slug: string;
 }
 
-export default function LocationTemplate({ data }: LocationTemplateProps) {
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.NEXT_PUBLIC_BASE_URL ||
+  "";
+
+export default function LocationTemplate({ slug }: LocationTemplateProps) {
+  const [data, setData] = useState<LocationServiceData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      if (!API_BASE || !slug) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const [cityPart, statePart] = slug.split("-");
+        if (!cityPart || !statePart) {
+          setLoading(false);
+          return;
+        }
+
+        const city = decodeURIComponent(cityPart);
+        const state = decodeURIComponent(statePart).toUpperCase();
+
+        const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/location-services/city/${encodeURIComponent(
+          city
+        )}/state/${encodeURIComponent(state)}`;
+
+        const res = await fetch(endpoint);
+        if (!res.ok) {
+          setLoading(false);
+          return;
+        }
+
+        const json = await res.json();
+        const location = json?.data?.locationService as LocationServiceData | undefined;
+        if (location) {
+          setData(location);
+        }
+      } catch (err) {
+        console.error("Failed to fetch location service page:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLocation();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="w-full flex justify-center items-center py-20">
+        <p className="text-lg text-gray-600">Loading location details...</p>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="w-full flex justify-center items-center py-20">
+        <p className="text-lg text-gray-600">Location details not found.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="bg-white py-26 px-6 md:px-12 lg:px-24">
+      <section className="bg-white py-26 px-6 md:px-8 lg:px-24">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 items-start">
           <div>
             <h1 className="text-5xl md:text-5xl font-bold text-[#2C3E50] mb-6 leading-tight">
@@ -49,7 +121,7 @@ export default function LocationTemplate({ data }: LocationTemplateProps) {
       {/* Hero Image Section */}
       <section className="relative w-full h-[400px] md:h-[500px]">
         <Image
-          src="/locationHero.png"
+          src={data.heroImage || "/locationHero.png"}
           alt={`Home care services in ${data.city}`}
           fill
           className="object-cover"
@@ -58,7 +130,7 @@ export default function LocationTemplate({ data }: LocationTemplateProps) {
       </section>
 
       {/* Why Choose Section */}
-      <section className="bg-[#F5F5DC] py-26 px-6 md:px-12 lg:px-24">
+      <section className="bg-[#F5F5DC] py-26 px-6 md:px-8 lg:px-24">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-5xl md:text-4xl lg:text-5xl font-bold text-center text-[#2C3E50] mb-8">
             {data.whyChooseTitle}
@@ -67,8 +139,11 @@ export default function LocationTemplate({ data }: LocationTemplateProps) {
             <p className="text-gray-700 leading-relaxed text-justify text-xl">
               {data.whyChooseDescription}
             </p>
-            {data.whyChooseHighlights.map((highlight, index) => (
-              <p key={index} className="text-gray-700 leading-relaxed text-justify text-xl">
+            {data.whyChooseHighlights?.map((highlight, index) => (
+              <p
+                key={index}
+                className="text-gray-700 leading-relaxed text-justify text-xl"
+              >
                 {highlight}
               </p>
             ))}
@@ -77,7 +152,7 @@ export default function LocationTemplate({ data }: LocationTemplateProps) {
       </section>
 
       {/* Services Section */}
-      <section className="bg-white py-16 px-6 md:px-12 lg:px-24">
+      <section className="bg-white py-16 px-6 md:px-8 lg:px-24">
         <div className="max-w-8xl mx-auto">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-center text-[#2C3E50] mb-4">
             Our Senior Home Care
@@ -85,9 +160,14 @@ export default function LocationTemplate({ data }: LocationTemplateProps) {
           <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold text-center text-[#2C3E50] mb-8">
             Services In {data.city}
           </h3>
-          <p className="text-center text-gray-700 text-xl mb-12 max-w-5xl mx-auto">
+          <p className="text-center text-gray-700 text-xl mb-4 max-w-5xl mx-auto">
             {data.servicesIntro}
           </p>
+          {data.servicesDescription && (
+            <p className="text-center text-gray-700 text-lg mb-12 max-w-5xl mx-auto">
+              {data.servicesDescription}
+            </p>
+          )}
 
           <div className="space-y-12">
             {data.services.map((service, index) => (
@@ -181,13 +261,13 @@ export default function LocationTemplate({ data }: LocationTemplateProps) {
       </section>
 
       {/* Care Designed & Community Section */}
-      <section className="bg-white py-16 px-6 md:px-12 lg:px-24">
+      <section className="bg-white py-16 px-6 md:px-8 lg:px-24">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             {/* Left side - Image */}
             <div className="relative h-[500px] md:h-[600px] rounded-lg overflow-hidden">
               <Image
-                src="/location/location5.png"
+                src={data.careDesignedImage || "/location/location5.png"}
                 alt="Care designed for your family"
                 fill
                 className="object-cover"

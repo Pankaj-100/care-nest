@@ -78,11 +78,11 @@ const Header = () => {
     {
       title: "Locations",
       services: [
-        { title: "Sugarland, TX", link: "/location/sugarLand" },
-        { title: "Cypress, TX", link: "/location/cypress" },
-        { title: "Spring, TX", link: "/location/spring" },
-        { title: "Katy, TX", link: "/location/katy" },
-        { title: "Pearland, TX", link: "/location/pearland" },
+        { title: "Sugarland, TX", link: "/location/SugarLand-TX" },
+        { title: "Cypress, TX", link: "/location/Cypress-TX" },
+        { title: "Spring, TX", link: "/location/Spring-TX" },
+        { title: "Katy, TX", link: "/location/Katy-TX" },
+        { title: "Pearland, TX", link: "/location/Pearland-TX" },
       ],
     },
     { title: "Blogs", link: "/blogs" },
@@ -101,8 +101,8 @@ const Header = () => {
   }
 
   const navContent = (
-    <div className="flex lg:flex-row flex-col items-center lg:gap-x-6 xl:gap-x-9 lg:py-0 py-4 w-full  lg:w-auto">
-      <nav className="flex lg:flex-row flex-col items-center justify-between gap-6 lg:gap-4 xl:gap-6 w-full lg:w-auto">
+    <div className="flex lg:flex-row flex-col items-start lg:items-center lg:gap-x-6 xl:gap-x-9 lg:py-0 py-4 w-full lg:w-auto">
+      <nav className="flex lg:flex-row flex-col items-start lg:items-center justify-between gap-6 lg:gap-4 xl:gap-6 w-full lg:w-auto">
         {NavbarMenuTitle.map((item, index) => (
           <NavbarMenu
             key={index}
@@ -119,7 +119,7 @@ const Header = () => {
 
       <div className="flex lg:flex-row flex-col items-center gap-4 lg:gap-3 xl:gap-5 lg:mt-0 mt-6 w-full lg:w-auto">
         {isLoggedInUser && (
-          <button className="relative" onClick={handleNotificationOpen} aria-label="Notifications">
+          <button className="relative lg:block hidden" onClick={handleNotificationOpen} aria-label="Notifications">
             <NotificationIcon size={28} className="lg:w-7 lg:h-7" />
             {unseenNotifications && (
               <div className="w-2 h-2 rounded-full bg-[var(--golden-yellow)] absolute top-0 right-[0.1rem]" />
@@ -139,7 +139,7 @@ const Header = () => {
         {!isLoggedInUser && (
           <Link
             href="/choose-path"
-            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-4 py-3 text-lg lg:text-base hover:brightness-105 transition w-full lg:w-auto text-center"
+            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-4 py-3 text-lg lg:text-base hover:brightness-105 transition w-full lg:w-auto text-center lg:hidden"
           >
             Get Started
           </Link>
@@ -148,7 +148,7 @@ const Header = () => {
         {isLoggedInUser && (
           <Link
             href="/profile"
-            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-5 py-2.5 text-sm lg:text-base hover:brightness-105 transition flex items-center justify-center gap-2 w-full lg:w-auto"
+            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-5 py-2.5 text-sm lg:text-base hover:brightness-105 transition flex items-center justify-center gap-2 w-full lg:w-auto lg:block hidden"
           >
             {profileIcon()}
             <span>My Profile</span>
@@ -157,6 +157,17 @@ const Header = () => {
       </div>
     </div>
   );
+
+  // Mobile-only profile menu items (shown in sidebar when logged in)
+  const mobileProfileMenuItems = [
+    { title: "Contact Us", link: "/contact" },
+    { title: "Manage Profile", link: "/profile" },
+    { title: "Recent Booking", link: "/recent-booking" },
+    { title: "Saved Caregivers", link: "/saved-caregiver" },
+    { title: "Reset Password", link: "/reset-password" },
+    { title: "Delete Account", link: "/profile?action=delete" },
+    { title: "Log Out", link: "/signin", action: "logout" },
+  ];
 
   return (
     <>
@@ -183,8 +194,70 @@ const Header = () => {
           className="bg-[var(--navy)] text-white"
           open={openMenu}
           handleOpen={handleOpenMenu}
+          direction="right"
         >
-          <div className="px-4 py-6">{navContent}</div>
+          <div className="h-full overflow-y-auto flex flex-col">
+            {/* Logo and Close Button Header */}
+            <div className="flex items-center justify-between px-4 py-6 border-b border-gray-600">
+              <Link href="/" onClick={handleOpenMenu}>
+                <Image 
+                  src="/Logo_1.svg" 
+                  alt="logo" 
+                  width={120} 
+                  height={120} 
+                  className="w-32 h-auto"
+                />
+              </Link>
+              <button 
+                onClick={handleOpenMenu} 
+                className="text-white hover:text-[var(--yellow)] transition-colors p-2"
+                aria-label="Close menu"
+              >
+                <svg 
+                  width="32" 
+                  height="32" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+
+            {/* Navigation Content */}
+            <div className="px-4 py-6 flex-1">
+              {navContent}
+              
+              {/* Mobile-only profile menu items */}
+              {isLoggedInUser && (
+                <div className="lg:hidden mt-4">
+                  <nav className="flex flex-col gap-4 w-full">
+                    {mobileProfileMenuItems.map((item, index) => (
+                      <Link
+                        key={index}
+                        href={item.link}
+                        onClick={(e) => {
+                          if (item.action === "logout") {
+                            e.preventDefault();
+                            Cookies.remove("authToken");
+                            window.location.href = "/signin";
+                          }
+                        }}
+                        className="text-base text-white hover:text-[var(--yellow)] transition-colors py-2"
+                      >
+                        {item.title}
+                      </Link>
+                    ))}
+                  </nav>
+                </div>
+              )}
+            </div>
+          </div>
         </CustomDrawer>
       </div>
 
@@ -211,7 +284,7 @@ const NavbarMenu = ({
 
   return (
     <div
-      className="flex items-center gap-x-1 cursor-pointer relative w-full lg:w-auto justify-center lg:justify-start py-2 lg:py-0"
+      className="flex items-center gap-x-1 cursor-pointer relative w-full lg:w-auto justify-start py-2 lg:py-0"
     >
       {link ? (
         <Link

@@ -5,11 +5,12 @@ interface Props {
   handleOpen: () => void;
   children: React.ReactNode;
   className?: string;
+  direction?: "top" | "bottom" | "left" | "right";
 }
 
-function CustomDrawer({ open, handleOpen, children, className }: Props) {
+function CustomDrawer({ open, handleOpen, children, className, direction = "bottom" }: Props) {
   return (
-    <Drawer open={open} onOpenChange={handleOpen}>
+    <Drawer open={open} onOpenChange={handleOpen} direction={direction}>
       <DrawerContent className={`${className}`}>{children}</DrawerContent>
     </Drawer>
   );

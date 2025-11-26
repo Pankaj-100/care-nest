@@ -1,28 +1,57 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { YellowButton } from "../common/CustomButton";
 import Image from "next/image";
 
 const IntroductionWithCTA = () => {
+  const [title, setTitle] = useState(
+    "Looking to Provide Care For The Elderly?"
+  );
+  const [description, setDescription] = useState(
+    "If you're searching for a trusted caregiving platform where you can offer compassionate care to seniors, you're in the right place. Join a community dedicated to making a real difference in the lives of elderly individuals. Whether you're an experienced caregiver or just starting out, this is the perfect platform to connect, support, and grow your caregiving journey."
+  );
+
+  const API_BASE =
+    process.env.NEXT_PUBLIC_API_URL ||
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    "";
+
+  useEffect(() => {
+    const fetchBecomeCaregiver = async () => {
+      if (!API_BASE) return;
+      try {
+        const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/become-caregiver`;
+        const res = await fetch(endpoint);
+        if (!res.ok) return;
+
+        const json = await res.json();
+        const data = json?.data?.becomeCaregiver;
+        if (data) {
+          if (data.title1) setTitle(data.title1);
+          if (data.description1) setDescription(data.description1);
+        }
+      } catch (err) {
+        console.error("Failed to fetch become-caregiver content for intro:", err);
+      }
+    };
+
+    fetchBecomeCaregiver();
+  }, []);
+
   return (
     <div className="flex lg:flex-row flex-col justify-around gap-y-10 relative bg-[var(--whiteSmoke)] lg:h-[475px] h-max lg:p-16 p-8">
       {/* Left Text Section */}
       <div className="text-white lg:w-1/2 w-full">
         <div>
           <h1 className="font-semibold text-3xl sm:text-4xl lg:text-5xl leading-snug text-[var(--navy)] break-words">
-            Looking to Provide Care For <br />
-            The Elderly?
+            {title}
           </h1>
         </div>
 
         <div className="my-5 w-full max-w-[90%]">
-      <p className="text-[var(--navy)] text-sm sm:text-base">
-  If you&apos;re searching for a trusted caregiving platform where you
-  can offer compassionate care to seniors, you&apos;re in the right place.
-  Join a community dedicated to making a real difference in the lives
-  of elderly individuals. Whether you&apos;re an experienced caregiver
-  or just starting out, this is the perfect platform to connect,
-  support, and grow your caregiving journey.
-</p>
+          <p className="text-[var(--navy)] text-sm sm:text-base">
+            {description}
+          </p>
 
         </div>
 
