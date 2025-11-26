@@ -74,6 +74,14 @@ export default function VeteransFinancialAssistance() {
       "Proper completion of annual VA audits",
     ];
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-10">
+        <p className="text-[#233D4D]">Loading...</p>
+      </div>
+    );
+  }
+
   const image1Src = pageData?.image1 || "/veterans/image1.png";
   const image2Src = pageData?.image2 || "/veterans/image2.png";
   const image3Src = pageData?.image3 || "/veterans/image3.png";

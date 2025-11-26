@@ -3,39 +3,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { YellowButton } from "../common/CustomButton";
 
-const inputsData = [
-  {
-    placeholder: "Full Name",
-    icon: "/user-icon.svg",
-    type: "text",
-  },
-  {
-    placeholder: "Enter Email ID",
-    icon: "/email-icon.svg",
-    type: "email",
-  },
-  {
-    placeholder: "Enter Phone Number",
-    icon: "/phone-icon.svg",
-    type: "number",
-  },
-  {
-    placeholder: "Enter Gender",
-    icon: "/gender-icon.svg",
-    type: "text",
-  },
-  {
-    placeholder: "Enter Address",
-    icon: "/map-icon.svg",
-    type: "text",
-  },
-  {
-    placeholder: "Enter Zipcode",
-    icon: "/correct-notcorrect-icon.svg",
-    type: "text",
-  },
-];
-
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
   process.env.NEXT_PUBLIC_BASE_URL ||

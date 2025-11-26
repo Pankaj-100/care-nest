@@ -16,12 +16,11 @@ const TestimonialCareProvider = () => {
   const [image1, setImage1] = useState("/care-provider-testimonial-1.png");
   const [image2, setImage2] = useState("/care-provider-testimonial-2.png");
 
-  const API_BASE =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    "";
-
   useEffect(() => {
+    const API_BASE =
+      process.env.NEXT_PUBLIC_API_URL ||
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      "";
     const fetchBecomeCaregiver = async () => {
       if (!API_BASE) return;
       try {
@@ -35,7 +34,7 @@ const TestimonialCareProvider = () => {
           if (data.title3) setTitle(data.title3);
           if (Array.isArray(data.testimonials)) {
             setTestimonials(
-              data.testimonials.map((t: any) => ({
+              data.testimonials.map((t: { id: string; name: string; description: string }) => ({
                 id: t.id,
                 name: t.name,
                 description: t.description,

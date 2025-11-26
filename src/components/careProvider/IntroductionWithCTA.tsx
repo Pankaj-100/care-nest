@@ -11,12 +11,12 @@ const IntroductionWithCTA = () => {
     "If you're searching for a trusted caregiving platform where you can offer compassionate care to seniors, you're in the right place. Join a community dedicated to making a real difference in the lives of elderly individuals. Whether you're an experienced caregiver or just starting out, this is the perfect platform to connect, support, and grow your caregiving journey."
   );
 
-  const API_BASE =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    "";
-
   useEffect(() => {
+    const API_BASE =
+      process.env.NEXT_PUBLIC_API_URL ||
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      "";
+
     const fetchBecomeCaregiver = async () => {
       if (!API_BASE) return;
       try {

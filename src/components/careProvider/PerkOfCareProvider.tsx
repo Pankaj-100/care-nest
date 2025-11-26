@@ -15,12 +15,11 @@ const PerkOfCareProvider = () => {
   );
   const [perksData, setPerksData] = useState<PerksProps[]>([]);
 
-  const API_BASE =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    "";
-
   useEffect(() => {
+    const API_BASE =
+      process.env.NEXT_PUBLIC_API_URL ||
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      "";
     const fetchBecomeCaregiver = async () => {
       if (!API_BASE) return;
       try {
@@ -34,7 +33,7 @@ const PerkOfCareProvider = () => {
           if (data.title2) setTitle(data.title2);
           if (Array.isArray(data.points)) {
             setPerksData(
-              data.points.map((pt: any) => ({
+              data.points.map((pt: { heading: string; description: string; icon?: string }) => ({
                 title: pt.heading,
                 description: pt.description,
                 icon: pt.icon,
