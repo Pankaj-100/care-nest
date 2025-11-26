@@ -118,10 +118,14 @@ export default function AboutUs() {
             </h1>
           </div>
           <div>
-            <p className="text-[#6B7280] text-xl mb-10leading-relaxed">
-              {about.mainDescription ??
-                "CareWorks delivers trusted, high-quality home care across Houston and surrounding communities, tailored to each individual's needs. We take a holistic, personalized approach to ensure compassionate support for every patient. Our team of skilled caregivers, nurses, and aides brings warmth and professionalism to every home. We empower seniors and those recovering to live independently with dignity and comfort. With CareWorks, families gain peace of mind knowing their loved ones are in caring hands."}
-            </p>
+            <div
+              className="text-[#6B7280] text-xl mb-10leading-relaxed"
+              dangerouslySetInnerHTML={{
+                __html:
+                  about.mainDescription ??
+                  "CareWorks delivers trusted, high-quality home care across Houston and surrounding communities, tailored to each individual's needs. We take a holistic, personalized approach to ensure compassionate support for every patient. Our team of skilled caregivers, nurses, and aides brings warmth and professionalism to every home. We empower seniors and those recovering to live independently with dignity and comfort. With CareWorks, families gain peace of mind knowing their loved ones are in caring hands.",
+              }}
+            />
           </div>
         </div>
       </div>
@@ -148,7 +152,10 @@ export default function AboutUs() {
               <div>
                 <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">{p.personTitle ?? "Key Person"}</h4>
                 <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">{p.personName}</h2>
-                <p className="text-gray-700 text-xl mb-4">{p.personDescription}</p>
+                <p
+                  className="text-gray-700 text-xl mb-4"
+                  dangerouslySetInnerHTML={{ __html: p.personDescription ?? "" }}
+                />
               </div>
               <div className="flex justify-center">
                 <Image
@@ -261,7 +268,10 @@ export default function AboutUs() {
                       className="mx-auto mb-6 w-20 h-20"
                     />
                     <h3 className="text-[var(--navy)] font-bold text-3xl mb-4">{v.valueName}</h3>
-                    <p className="text-[#2B384C] text-xl">{v.valueDescription}</p>
+                    <p
+                      className="text-[#2B384C] text-xl"
+                      dangerouslySetInnerHTML={{ __html: v.valueDescription ?? "" }}
+                    />
                   </div>
                 ))
               ) : (
@@ -298,9 +308,10 @@ export default function AboutUs() {
           <div className="flex flex-row items-center justify-between w-full max-w-6xl">
             <div className="flex-1 pl-2 flex flex-col justify-center">
               <h2 className="text-[#F2A307] font-bold text-[60px] leading-none mb-1">Our Mission</h2>
-              <div className="text-white text-2xl  ml-9 font-light leading-relaxed max-w-xl">
-                <p>{about.missionDescription ?? "To Bring Compassionate Care To Every Doorstep,Empowering Families And Caregivers With Trust,And Support."}</p>
-              </div>
+              <div
+                className="text-white text-2xl ml-9 font-light leading-relaxed max-w-xl"
+                dangerouslySetInnerHTML={{ __html: about.missionDescription ?? "" }}
+              />
             </div>
             <div className="flex-1 flex justify-end pr-8">
               <Image
@@ -322,7 +333,10 @@ export default function AboutUs() {
                 <h2 className="text-[var(--navy)] font-bold text-7xl mb-4">{about.meetTeamHeading ?? "Meet Our Team Members"}</h2>
               </div>
               <div>
-                <p className="text-[#6B7280] text-xl mb-6">{about.meetTeamDescription}</p>
+                <div
+                  className="text-[#6B7280] text-xl mb-6"
+                  dangerouslySetInnerHTML={{ __html: about.meetTeamDescription ?? "" }}
+                />
               </div>
             </div>
 

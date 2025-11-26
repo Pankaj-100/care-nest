@@ -85,14 +85,10 @@ export default function WhoWeAre() {
         <h1 className="text-6xl md:text-7xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line">
           {who.mainHeading || "Who We Are"}
         </h1>
-        <div className="text-[#233D4D] text-lg md:text-xl max-w-2xl leading-relaxed">
-          {/* preserve paragraphs if the API includes line breaks */}
-          {who.mainDescription?.split("\n").map((p, i) => (
-            <p key={i} className={i > 0 ? "mt-4" : ""}>
-              {p}
-            </p>
-          )) ?? null}
-        </div>
+        <div
+          className="text-[#233D4D] text-lg md:text-xl max-w-2xl leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: who.mainDescription ?? "" }}
+        />
       </div>
 
       {/* Images Section */}
@@ -168,13 +164,10 @@ export default function WhoWeAre() {
         <h2 className="text-6xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line md:w-1/3">
           {who.promiseHeading ?? "Our Promise"}
         </h2>
-        <div className="text-[#233D4D] text-2xl max-w-3xl leading-relaxed md:w-2/3">
-          {who.promiseDescription?.split("\n").map((p, i) => (
-            <p key={i} className={i > 0 ? "mt-4" : ""}>
-              {p}
-            </p>
-          )) ?? null}
-        </div>
+        <div
+          className="text-[#233D4D] text-2xl max-w-3xl leading-relaxed md:w-2/3"
+          dangerouslySetInnerHTML={{ __html: who.promiseDescription ?? "" }}
+        />
       </section>
 
       {/* Contact Banner Section */}
