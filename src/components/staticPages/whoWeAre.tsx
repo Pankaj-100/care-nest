@@ -81,27 +81,27 @@ export default function WhoWeAre() {
   return (
     <div className="w-full flex flex-col items-center bg-white">
       {/* Top Section */}
-      <div className="w-full max-w-7xl mt-15 flex flex-col md:flex-row items-start justify-between mb-16">
-        <h1 className="text-6xl md:text-7xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line">
+      <div className="w-full max-w-7xl mt-10 flex flex-col lg:flex-row items-start justify-between mb-16 px-4 sm:px-6">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-[#233D4D] mb-6 lg:mb-0 lg:mr-12 whitespace-pre-line lg:w-1/2">
           {who.mainHeading || "Who We Are"}
         </h1>
         <div
-          className="text-[#233D4D] text-lg md:text-xl max-w-2xl leading-relaxed"
+          className="text-[#233D4D] text-base sm:text-lg md:text-xl max-w-2xl leading-relaxed lg:w-1/2"
           dangerouslySetInnerHTML={{ __html: who.mainDescription ?? "" }}
         />
       </div>
 
       {/* Images Section */}
-      <div className="w-full mt-15 max-w-6xl flex flex-wrap justify-center gap-8">
+      <div className="w-full mt-6 max-w-6xl grid grid-cols-2 gap-4 sm:gap-6 md:gap-8 px-4 lg:flex lg:flex-row lg:justify-center lg:items-stretch lg:gap-8">
         {images.length > 0 ? (
-          images.map((src, idx) => (
+          images.slice(0, 4).map((src, idx) => (
             <Image
               key={idx}
               src={src}
               alt={`who-we-are-${idx}`}
               width={260}
               height={300}
-              className="w-60 h-80 object-cover shadow-md"
+              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
             />
           ))
         ) : (
@@ -111,28 +111,28 @@ export default function WhoWeAre() {
               alt="CareWorks support 1"
               width={250}
               height={450}
-              className="w-60 h-80 object-cover shadow-md"
+              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
             />
             <Image
               src="/whoWeAre/image2.png"
               alt="CareWorks support 2"
               width={260}
               height={300}
-              className=" object-cover shadow-md"
+              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
             />
             <Image
               src="/whoWeAre/image3.png"
               alt="CareWorks support 3"
               width={260}
               height={300}
-              className=" object-cover shadow-md"
+              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
             />
             <Image
               src="/whoWeAre/image4.png"
               alt="CareWorks support 4"
               width={260}
               height={300}
-              className="w-60 h-80 object-cover shadow-md"
+              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
             />
           </>
         )}
@@ -143,9 +143,11 @@ export default function WhoWeAre() {
         <h2 className="text-6xl font-bold text-[#233D4D] mb-10 text-center">
           {who.caregiverNetworkHeading ?? "Our Caregiver Network"}
         </h2>
-        <p className="text-[#233D4D] text-2xl max-w-5xl text-center mb-8 leading-snug">
-          {who.caregiverNetworkDescription}
-        </p>
+        <div
+          className="text-[#233D4D] text-base sm:text-xl md:text-2xl md:w-2/3  max-w-5xl text-center mb-8 leading-snug"
+          dangerouslySetInnerHTML={{ __html: who.caregiverNetworkDescription ?? "" }}
+        />
+        
       </section>
 
       <div className="w-full flex justify-center">
@@ -171,7 +173,7 @@ export default function WhoWeAre() {
       </section>
 
       {/* Contact Banner Section */}
-      <section className="w-full relative flex justify-start items-center py-20">
+      <section className="w-full relative flex justify-start items-center py-10 sm:py-16 md:py-20 mt-4">
         <div className="absolute inset-0 w-full h-full z-0">
           <Image
             src="/whoWeAre/image6.png"
@@ -189,7 +191,7 @@ export default function WhoWeAre() {
           />
         </div>
 
-        <div className="absolute z-20 pointer-events-none left-15 right-15 top-15 bottom-15">
+        <div className="absolute z-20 pointer-events-none left-4 right-4 top-4 bottom-4 sm:left-10 sm:right-10 sm:top-10 sm:bottom-10">
           <Image
             src="/whoWeAre/rectangle-design.png"
             alt="Rectangle Design"
@@ -198,11 +200,11 @@ export default function WhoWeAre() {
           />
         </div>
 
-        <div className="relative z-30 max-w-2xl px-8 py-12 flex flex-col items-start ml-25">
-          <h2 className="text-[#F2A307] text-5xl font-bold mb-8">
+        <div className="relative z-30 max-w-2xl px-4 sm:px-8 py-8 sm:py-12 flex flex-col items-start ml-0 sm:ml-10">
+          <h2 className="text-[#F2A307] text-2xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-8">
             Contact Us Today For More Information
           </h2>
-          <p className="text-white text-2xl mb-8">
+          <p className="text-white text-base sm:text-xl md:text-2xl mb-4 sm:mb-8">
             Make The Call That Can Improve Your Life Or That Of A Loved One.
             Contact Us Today To Inquire About Our Houston Based Home Care Services
             And To Find A Solution That Fits Your Budgetary Needs And Your
@@ -212,7 +214,7 @@ export default function WhoWeAre() {
             onClick={() => {
               window.location.href = "/contact";
             }}
-            className="bg-[#F2A307] text-[#233D4D] text-xl font-semibold px-10 py-4 rounded-full flex items-center gap-3 hover:bg-[#d89a06] transition"
+            className="bg-[#F2A307] text-[#233D4D] text-base sm:text-xl font-semibold px-6 sm:px-10 py-3 sm:py-4 rounded-full flex items-center gap-3 hover:bg-[#d89a06] transition"
           >
             Contact Us <span className="ml-2">&#8594;</span>
           </button>

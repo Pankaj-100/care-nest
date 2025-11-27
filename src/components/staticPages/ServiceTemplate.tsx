@@ -293,7 +293,7 @@ export default function ServiceTemplate({ careType, fallbackData, fallbackKey = 
         </div>
       </div>
       {/* Main Section */}
-      <div className="w-full bg-[#F7F7F3] py-20 px-4">
+      <div className="w-full bg-[#F7F7F3] py-16 px-4">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
           <div className="flex-1 lg:pr-8">
             <h1 className="text-5xl lg:text-6xl font-bold text-[#233D4D] leading-tight mb-8">
@@ -313,12 +313,23 @@ export default function ServiceTemplate({ careType, fallbackData, fallbackKey = 
 
       {/* Services We Provide Section */}
       <div className="w-full bg-gray-50 py-20 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-16">
-          <div className="flex-1">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-16">
+          {/* Image: above content on mobile, beside on md+ */}
+          <div className="w-full md:w-auto flex justify-center mb-4 md:mb-0 md:order-2">
+            <div className="relative w-82 h-66 sm:w-80 sm:h-64 md:w-80 md:h-64 lg:w-96 lg:h-72">
+              <Image
+                src={serviceData.description3Image || "/service-default.jpg"}
+                alt={`${serviceData.serviceName} service`}
+                fill
+                className="rounded-lg shadow-lg object-cover"
+                sizes="(max-width: 768px) 100vw, 400px"
+              />
+            </div>
+          </div>
+          <div className="flex-1 md:order-1">
             <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] mb-12">
               {serviceData.title3}
             </h2>
-            
             <div className="space-y-4">
               {(serviceData.description3List || []).map((service, index) => (
                 <div key={index} className="flex items-start gap-3">
@@ -332,20 +343,7 @@ export default function ServiceTemplate({ careType, fallbackData, fallbackKey = 
               ))}
             </div>
           </div>
-          
-          <div className="flex-1 flex justify-center">
-            <div className="relative w-full max-w-md">
-              <Image
-                src={serviceData.description3Image || "/service-default.jpg"}
-                alt={`${serviceData.serviceName} service`}
-                width={500}
-                height={400}
-                className="w-full h-auto rounded-lg shadow-lg object-cover"
-              />
-            </div>
-          </div>
         </div>
-        
         <div className="max-w-6xl mx-auto mt-16 space-y-6">
           {parseHtmlToParagraphs(serviceData.description3 || "").map((description, index) => (
             <p key={index} className="text-lg text-gray-700 leading-relaxed">

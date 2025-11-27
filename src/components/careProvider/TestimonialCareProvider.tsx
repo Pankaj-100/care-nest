@@ -53,20 +53,15 @@ const TestimonialCareProvider = () => {
   }, []);
 
   return (
-    <div className="flex lg:flex-row flex-col gap-x-16 gap-y-8 items-center justify-start lg:p-18 p-8 w-full">
-      {/* Left Section - Testimonial Text */}
-      <div className="w-full lg:w-[40%]">
-        <Testimonial testimonials={testimonials} />
-      </div>
-
-      {/* Right Section - Title + Images */}
-      <div className="w-full lg:w-[60%]">
-        <h1 className="font-semibold lg:text-4xl text-xl text-[var(--navy)] text-center lg:text-right">
+    <div className="w-full bg-white lg:bg-[var(--whiteSmoke)] px-6 sm:px-8 lg:px-18 py-10 lg:py-18 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
+      {/* Left block: title + images for mobile, stays on left for desktop */}
+      <div className="w-full lg:w-[55%]">
+        <h1 className="font-semibold text-3xl sm:text-4xl lg:text-4xl text-[var(--navy)] text-left">
           {title}
         </h1>
 
-        <div className="mt-6 flex flex-col sm:flex-row items-stretch gap-6 sm:justify-end lg:justify-end lg:ml-auto">
-          <div className="relative w-full sm:basis-[42%] h-64 md:h-72 lg:h-[24rem] xl:h-[28rem] overflow-hidden">
+        <div className="mt-6 flex flex-row items-stretch gap-4 sm:gap-6">
+          <div className="relative basis-1/2 h-64 sm:h-72 lg:h-[24rem] xl:h-[26rem] overflow-hidden rounded-2xl">
             <Image
               src={image1}
               alt="Care provider with client"
@@ -76,7 +71,7 @@ const TestimonialCareProvider = () => {
               priority
             />
           </div>
-          <div className="relative w-full sm:basis-[42%] h-64 md:h-72 lg:h-[24rem] xl:h-[28rem] overflow-hidden">
+          <div className="relative basis-1/2 h-64 sm:h-72 lg:h-[24rem] xl:h-[26rem] overflow-hidden rounded-2xl">
             <Image
               src={image2}
               alt="Conversation with client"
@@ -86,6 +81,11 @@ const TestimonialCareProvider = () => {
             />
           </div>
         </div>
+      </div>
+
+      {/* Right block: testimonial card */}
+      <div className="w-full lg:w-[45%] flex justify-center lg:justify-end">
+        <Testimonial testimonials={testimonials} />
       </div>
     </div>
   );
@@ -110,24 +110,24 @@ export const Testimonial = ({ testimonials }: TestimonialProps) => {
     );
 
   return (
-    <div className="max-w-[30rem] mx-auto lg:mx-0 text-center lg:text-left">
+    <div className="max-w-[30rem] mx-auto lg:mx-0 text-left">
       {/* Quote Icon */}
-      <div className="mb-6 flex justify-center lg:justify-start">{quotes}</div>
+      <div className="mb-6 flex justify-start">{quotes}</div>
 
       {/* Testimonial Text */}
-      <p className="text-gray-600">
+      <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
         {hasTestimonials
           ? testimonials[index].description
           : "Working with CareWorks has been life-changing. The support and meaningful connections with clients make every day rewarding."}
       </p>
 
       {/* Author */}
-      <p className="mt-4 font-bold lg:text-lg text-[var(--navy)]">
+      <p className="mt-4 font-bold text-base sm:text-lg text-[var(--navy)]">
         {hasTestimonials ? testimonials[index].name : "Caregiver"}
       </p>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-center lg:justify-start gap-6 mt-6">
+      <div className="flex justify-start gap-6 mt-8">
         {hasTestimonials && (
           <>
             <button

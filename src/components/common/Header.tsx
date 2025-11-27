@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { NavbarDropdown } from "./CustomDropdown";
 import { usePathname } from "next/navigation";
@@ -12,7 +12,6 @@ import CustomDrawer from "./CustomDrawer";
 import { MdMenu as MenuIcon } from "react-icons/md";
 import Cookies from "js-cookie";
 import { profileIcon } from "../icons/page";
-import { PhoneIcon } from "../icons/page";
 
 export interface NavbarTypes {
   title: string;
@@ -26,6 +25,7 @@ const Header = () => {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [isLoggedInUser, setIsLoggedIn] = useState(false);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
+  const navRef = useRef<HTMLDivElement | null>(null);
 
   const isValidToken = Cookies.get("authToken") ? true : false;
 
@@ -45,6 +45,22 @@ const Header = () => {
   useEffect(() => {
     setOpenDropdownIndex(null);
   }, [path]);
+
+  // Close dropdowns when clicking outside the nav area (desktop)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!navRef.current) return;
+      const target = event.target as Node | null;
+      if (target && !navRef.current.contains(target)) {
+        setOpenDropdownIndex(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const unseenNotifications = true;
 
@@ -78,7 +94,7 @@ const Header = () => {
     {
       title: "Locations",
       services: [
-        { title: "Sugarland, TX", link: "/location/SugarLand-TX" },
+        { title: "Sugarland, TX", link: "/location/Sugarland-TX" },
         { title: "Cypress, TX", link: "/location/Cypress-TX" },
         { title: "Spring, TX", link: "/location/Spring-TX" },
         { title: "Katy, TX", link: "/location/Katy-TX" },
@@ -101,7 +117,10 @@ const Header = () => {
   }
 
   const navContent = (
-    <div className="flex lg:flex-row flex-col items-start lg:items-center lg:gap-x-6 xl:gap-x-9 lg:py-0 py-4 w-full lg:w-auto">
+    <div
+      ref={navRef}
+      className="flex lg:flex-row flex-col items-start lg:items-center lg:gap-x-6 xl:gap-x-9 lg:py-0 py-4 w-full lg:w-auto"
+    >
       <nav className="flex lg:flex-row flex-col items-start lg:items-center justify-between gap-6 lg:gap-4 xl:gap-6 w-full lg:w-auto">
         {NavbarMenuTitle.map((item, index) => (
           <NavbarMenu
@@ -127,19 +146,20 @@ const Header = () => {
           </button>
         )}
 
-        {/* Phone badge - hidden on mobile, shown on lg+ */}
+        {/* Phone badge - hidden on mobile, shown on 
         <Link
           href="tel:9876543210"
           className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-3 xl:px-6 py-2 xl:py-3 text-sm xl:text-base font-extrabold transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg whitespace-nowrap"
         >
           <PhoneIcon className="w-5 h-5 xl:w-6 xl:h-6" />
           <span>832-237-2273</span>
-        </Link>
+        </Link>lg+ */}
 
+        {/* Get Started button: shows on all breakpoints, styled per design */}
         {!isLoggedInUser && (
           <Link
             href="/choose-path"
-            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-4 py-3 text-lg lg:text-base hover:brightness-105 transition w-full lg:w-auto text-center lg:hidden"
+            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-9 py-3 text-lg sm:text-lg hover:brightness-105 transition w-full lg:w-auto text-center"
           >
             Get Started
           </Link>
@@ -184,9 +204,38 @@ const Header = () => {
           </Link>
         </div>
 
-        <button onClick={handleOpenMenu} className="lg:hidden p-2" aria-label="Menu">
-          <MenuIcon size={32} className="sm:w-10 sm:h-10" />
-        </button>
+        {/* Mobile / tablet right side: login / get started before login,
+            notification + menu after login */}
+        <div className="flex items-center gap-4 lg:hidden">
+          {!isLoggedInUser ? (
+            <>
+              <Link href="/signin" className="text-white font-light text-base">
+                Login
+              </Link>
+              <Link
+                href="/choose-path"
+                className="text-[var(--yellow)] font-light text-base"
+              >
+                Get Started
+              </Link>
+            </>
+          ) : (
+            <button
+              className="relative flex items-center justify-center"
+              onClick={handleNotificationOpen}
+              aria-label="Notifications"
+            >
+              <NotificationIcon size={26} className="w-7 h-7" />
+              {unseenNotifications && (
+                <span className="w-2.5 h-2.5 rounded-full bg-[var(--golden-yellow)] absolute -top-1 -right-1" />
+              )}
+            </button>
+          )}
+
+          <button onClick={handleOpenMenu} className="p-2" aria-label="Menu">
+            <MenuIcon size={32} className="sm:w-10 sm:h-10" />
+          </button>
+        </div>
 
         <div className="lg:block hidden">{navContent}</div>
         

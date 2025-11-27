@@ -31,13 +31,14 @@ const MainContent: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
   const content = blog?.content ?? "";
 
   return (
-    <div className="w-full md:w-2/3 mx-auto px-6 py-12">
-      <div className="rounded-lg overflow-hidden mb-6 w-full h-[420px] relative">
+    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12">
+      <div className="rounded-lg overflow-hidden mb-6 w-full h-[220px] sm:h-[320px] md:h-[380px] lg:h-[420px] relative">
         <Image
           src={imageSrc}
           alt={title}
           fill
           className="object-cover"
+          priority
         />
       </div>
 
@@ -52,17 +53,17 @@ const MainContent: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
           />
         </div>
 
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-500 text-md sm:text-sm">
           {author} • {date}
         </p>
       </div>
 
-      <h1 className="text-4xl font-medium mb-6 text-[var(--navy)] leading-[120%]">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-medium mb-4 sm:mb-6 text-[var(--navy)] leading-[120%]">
         {title}
       </h1>
 
       <div 
-        className="space-y-6 text-[#667085] text-base leading-relaxed prose prose-lg max-w-none"
+        className="space-y-4 sm:space-y-6 text-[#667085] text-sm sm:text-base leading-relaxed prose prose-sm sm:prose-base max-w-none"
         dangerouslySetInnerHTML={{
           __html: content || `
             <p>Caring for elderly loved ones at home is a heartfelt responsibility that requires attention, patience, and compassion. Ensuring comfort goes beyond physical needs—it includes emotional support, safety, and a sense of independence. Start by creating a safe and accessible environment.</p>

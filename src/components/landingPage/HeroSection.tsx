@@ -5,7 +5,8 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCareseekerZipcode } from "@/store/slices/bookingSlice";
 import Image from "next/image";
 import { RedirectButton } from "../common/CustomButton";
-import { DesignIcon1, DesignIcon2, DesignIcon3 } from "../icons/page";
+import { DesignIcon1, DesignIcon2, DesignIcon3, PhoneIcon } from "../icons/page";
+import RippleRadio from "../common/RippleRadio";
 import { toast } from "react-toastify";
 
 type HeroSectionData = {
@@ -87,6 +88,15 @@ const HeroSection = () => {
 
   return (
     <div className="relative h-auto min-h-[600px] lg:h-[550px] bg-[#233D4D] pb-20 lg:pb-0">
+      {/* Mobile contact banner */}
+      <a
+        href={`tel:${heroData?.phoneNumber || "8322372273"}`}
+        className="flex lg:hidden items-center justify-center gap-3 bg-[#F2E9CE] text-[#233D4D] py-3 px-4 text-lg font-semibold"
+      >
+        <PhoneIcon className="w-5 h-5" />
+        <span>{heroData?.phoneNumber || "832 237 2273"}</span>
+      </a>
+
       <div className="h-full w-full relative">
         {/* Background ellipse */}
         <div className="absolute inset-0 flex items-center justify-center">
@@ -113,6 +123,17 @@ const HeroSection = () => {
         <div className="absolute -top-3 -right-4 w-8 h-8 sm:w-10 sm:h-10 text-[#FFA726]">
           <DesignIcon3 />
         </div>
+
+        {/* Floating phone badge - desktop only */}
+        <a
+          href={`tel:${heroData?.phoneNumber || "8322372273"}`}
+          className="hidden lg:flex items-center gap-4 rounded-full bg-[#F2E9CE] text-[#233D4D] px-10 py-3 text-lg lg:text-lg font-extrabold shadow-md absolute top-0 right-8 z-30"
+        >
+          
+          <RippleRadio />
+          <PhoneIcon className="w-5 h-5 lg:w-6 lg:h-6" />
+          <span>{heroData?.phoneNumber || "832-237-2273"}</span>
+        </a>
 
         {/* Main content - desktop: absolute positioned, mobile: relative */}
         <div className="relative lg:absolute lg:left-28 lg:top-[8%] px-4 sm:px-8 lg:px-0 pt-12 lg:pt-0 text-white lg:w-[1050px]">
@@ -183,7 +204,7 @@ const HeroSection = () => {
         </div>
 
         {/* Right side hero image - desktop only */}
-        <div className="absolute right-23 lg:right-45 top-[43%] -translate-y-1/2 w-[370px] h-[370px] lg:w-[430px] lg:h-[430px] z-10 hidden lg:block">
+        <div className="absolute right-23 lg:right-53 top-[43%] -translate-y-1/2 w-[370px] h-[370px] lg:w-[430px] lg:h-[430px] z-10 hidden lg:block">
           <div className="relative w-full h-full">
             <Image
               src="/main-hero-section.png"
@@ -309,7 +330,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         >
           <button
             type="submit"
-            className={`w-full justify-center lg:ml-14 px-4 py-3 sm:px-5 sm:py-3.5 lg:px-6 lg:py-4 cursor-pointer rounded-4xl text-base sm:text-lg font-semibold transition whitespace-nowrap
+            className={`w-full text-center lg:ml-12 px-4 py-3 sm:px-5 sm:py-3.5 lg:px-6 lg:py-4 cursor-pointer rounded-4xl text-base sm:text-lg font-semibold transition whitespace-nowrap
               bg-[#FFA726] text-[#233D4D] hover:brightness-105`}
           >
             Search Caregiver

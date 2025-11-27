@@ -150,7 +150,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
 
   return (
     <>
-      <div className="w-full md:w-1/4 p-6 shadow-lg rounded-lg h-[520px] mt-10">
+      <div className="hidden md:block w-full md:w-1/4 p-6 shadow-lg rounded-lg h-[520px] mt-10">
         {/* Profile Info */}
         <div className="mt-2 flex flex-row items-center gap-2 mb-6 border-b border-[#00000033] py-1">
           <div className="relative w-[68px] h-[68px] group">

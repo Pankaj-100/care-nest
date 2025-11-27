@@ -14,8 +14,8 @@ const CustomCarousel = ({ children }: { children: React.ReactNode }) => {
             <CarouselContent>
                 {children}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+                <CarouselPrevious className="flex h-6 w-6 -translate-y-1/2 rounded-full bg-[var(--navy)] text-white shadow-md hover:bg-[var(--yellow)] hover:text-[var(--navy)] top-1/2 -left-4 sm:-left-6" />
+                <CarouselNext className="flex h-6 w-6 -translate-y-1/2 rounded-full bg-[var(--navy)] text-white shadow-md hover:bg-[var(--yellow)] hover:text-[var(--navy)] top-1/2 -right-4 sm:-right-6" />
         </Carousel>
 
     )

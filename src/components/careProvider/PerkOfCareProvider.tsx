@@ -50,12 +50,14 @@ const PerkOfCareProvider = () => {
   }, []);
 
   return (
-    <div className="lg:p-18 p-8  bg-[var(--cream)] h-auto">
-      <h1 className="font-medium text-5xl leading-11 text-[var(--navy)] lg:w-1/2">
+    <div className="w-full bg-[var(--cream)] px-6 sm:px-8 lg:px-18 py-10 lg:py-18">
+      <h1 className="font-medium text-3xl sm:text-4xl lg:text-5xl leading-snug text-[var(--navy)] max-w-[26rem]">
         {title}
       </h1>
 
-      <div className="mt-12 grid lg:grid-cols-3 grid-cols-2 gap-8">
+      <div
+        className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-none"
+      >
         {perksData.map((perk, index) => (
           <Perks
             key={index}
@@ -71,9 +73,9 @@ const PerkOfCareProvider = () => {
 
 export const Perks = ({ title, description, icon }: PerksProps) => {
   return (
-    <div className="">
-      <div className="p-2 bg-[var(--navy)] rounded-full w-8 h-8 flex items-center justify-center">
-        <div className="absolute w-5 h-5">
+    <div className="flex flex-col gap-3">
+      <div className="p-2 bg-[var(--navy)] rounded-full w-10 h-10 flex items-center justify-center">
+        <div className="relative w-5 h-5">
           <Image
             src={icon || "/clock-line-icon.svg"}
             alt={"perk icon"}
@@ -82,11 +84,13 @@ export const Perks = ({ title, description, icon }: PerksProps) => {
         </div>
       </div>
 
-      <div className="mt-2">
-        <h2 className="text-xl font-semibold text-[var(--navy)] mb-2">
+      <div>
+        <h2 className="text-lg sm:text-xl font-semibold text-[var(--navy)] mb-1">
           {title}
         </h2>
-        <p className="text-sm text-[var(--navy)]">{description}</p>
+        <p className="text-sm sm:text-base text-[var(--navy)] leading-relaxed">
+          {description}
+        </p>
       </div>
     </div>
   );

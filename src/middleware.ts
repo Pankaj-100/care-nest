@@ -32,12 +32,11 @@ const restrictedPaths = [
   "/terms",
   "/legal",
   "/recalls",
-  "/location/sugarLand",
-  "/location/katy",
-  "/location/spring",
-  "/location/cypress",
-  "/location/pearland",
-
+  "/location/Sugarland-TX",
+  "/location/Katy-TX",
+  "/location/Spring-TX",
+  "/location/Cypress-TX",
+  "/location/Pearland-TX",
 ];
 
 export async function middleware(request: NextRequest) {
