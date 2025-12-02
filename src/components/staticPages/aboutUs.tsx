@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type KeyPerson = {
   id: string;
@@ -82,8 +84,100 @@ export default function AboutUs() {
   // Keep UI unchanged when loading / error: render minimal notices (doesn't modify inline CSS)
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center py-16 px-4">
-        <span>Loading content...</span>
+      <div className="bg-[#ffffff] min-h-screen w-full relative font-urbanist">
+        <div className="w-full max-w-7xl mx-auto pt-20 pb-8 px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <Skeleton height={32} width={120} style={{ marginBottom: 16 }} />
+              <Skeleton height={56} width={400} style={{ marginBottom: 32 }} />
+            </div>
+            <div>
+              <Skeleton count={4} height={24} width={"100%"} style={{ marginBottom: 8 }} />
+            </div>
+          </div>
+        </div>
+
+        {/* Key People Skeleton */}
+        <div className="relative z-10 max-w-6xl mx-auto pt-32 pb-24 px-6">
+          {[1, 2].map((_, idx) => (
+            <div key={idx} className={`grid md:grid-cols-2 mt-10 gap-12 items-center mb-20`}>
+              <div>
+                <Skeleton height={32} width={180} style={{ marginBottom: 8 }} />
+                <Skeleton height={32} width={220} style={{ marginBottom: 16 }} />
+                <Skeleton count={3} height={20} width={"100%"} style={{ marginBottom: 8 }} />
+              </div>
+              <div className="flex justify-center">
+                <Skeleton circle height={350} width={350} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Our Values Skeleton */}
+        <div className="w-full ">
+          <div className="max-w-5xl mx-auto py-5 px-1">
+            <Skeleton height={48} width={300} style={{ margin: "0 auto 32px auto", display: "block" }} />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+              {[1, 2, 3].map((_, idx) => (
+                <div key={idx}>
+                  <Skeleton circle height={80} width={80} style={{ margin: "0 auto 24px auto" }} />
+                  <Skeleton height={32} width={120} style={{ margin: "0 auto 16px auto" }} />
+                  <Skeleton count={2} height={20} width={"100%"} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Our Mission Banner Skeleton */}
+        <div className="w-screen bg-[#233D4D] py-14 flex items-center justify-center relative left-1/2 right-1/2 -mx-[50vw]">
+          <div className="flex flex-row items-center justify-between w-full max-w-[1800px] px-0 md:px-20">
+            <div className="flex-1 flex flex-col justify-center">
+              <Skeleton height={60} width={300} style={{ marginBottom: 24 }} />
+              <Skeleton count={2} height={24} width={"100%"} />
+            </div>
+            <div className="flex-1 flex justify-end">
+              <Skeleton height={200} width={300} />
+            </div>
+          </div>
+        </div>
+
+        {/* Meet Our Team Members Skeleton */}
+        <div className="w-full bg-[#fff] py-20 px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
+              <div>
+                <Skeleton height={64} width={400} style={{ marginBottom: 16 }} />
+              </div>
+              <div>
+                <Skeleton count={2} height={24} width={"100%"} />
+              </div>
+            </div>
+            <div className="flex items-center gap-4 justify-center">
+              <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
+                {[1, 2, 3, 4].map((_, idx) => (
+                  <div key={idx} className="relative rounded-lg overflow-hidden flex flex-col items-center justify-end pb-6 group w-full h-[320px]">
+                    <Skeleton height={320} width={320} />
+                    <Skeleton height={24} width={120} style={{ marginTop: 8 }} />
+                    <Skeleton height={20} width={80} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Compassionate Care Banner Skeleton */}
+        <div className="w-full bg-[#F2A307] py-3 px-8 flex flex-col md:flex-row items-center justify-between">
+          <div className="flex-1">
+            <Skeleton height={40} width={350} style={{ marginBottom: 16, marginLeft: 80 }} />
+            <Skeleton count={2} height={24} width={500} style={{ marginBottom: 16, marginLeft: 80 }} />
+            <Skeleton height={40} width={180} style={{ marginLeft: 80 }} />
+          </div>
+          <div className="flex-1 flex mr-24 justify-end mt-8 md:mt-0">
+            <Skeleton height={200} width={200} />
+          </div>
+        </div>
       </div>
     );
   }

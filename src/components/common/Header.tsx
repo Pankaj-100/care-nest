@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { NavbarDropdown } from "./CustomDropdown";
+// Removed NavbarDropdown import; will implement dropdown inline
 import { usePathname } from "next/navigation";
 import Notification from "../Notification";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
@@ -119,9 +119,9 @@ const Header = () => {
   const navContent = (
     <div
       ref={navRef}
-      className="flex lg:flex-row flex-col items-start lg:items-center lg:gap-x-[clamp(1.5rem,3vw,3rem)] xl:gap-x-[clamp(2rem,4vw,4rem)] lg:py-0 py-4 w-full lg:w-auto lg:justify-end"
+      className="flex lg:flex-row flex-col items-start lg:items-center lg:gap-x-[clamp(1.3rem,1.8vw,1.8rem)] xl:gap-x-[clamp(1.8rem,2.8vw,2.8rem)] lg:py-0 py-4 w-full lg:w-auto lg:justify-end"
     >
-      <nav className="flex lg:flex-row flex-col items-start lg:items-center lg:justify-end gap-6 lg:gap-[clamp(1.25rem,2vw,2.5rem)] xl:gap-[clamp(2rem,3vw,3rem)] w-full lg:w-auto">
+      <nav className="flex lg:flex-row flex-col items-start lg:items-center lg:justify-end gap-6 lg:gap-[clamp(1.25rem,1.8vw,1.8rem)] xl:gap-[clamp(1.8rem,2.8vw,2.8rem)] w-full lg:w-auto">
         {NavbarMenuTitle.map((item, index) => (
           <NavbarMenu
             key={index}
@@ -185,7 +185,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex px-4 sm:px-6 lg:px-6 xl:px-10 py-4 sm:py-5 lg:py-6 items-center justify-between bg-[var(--navy)] text-white overflow-hidden">
+      <div className="flex px-4 sm:px-6 lg:px-6 xl:px-10 py-4 sm:py-5 lg:py-6 items-center justify-between bg-[var(--navy)] text-white z-[2000] relative">
         <div className="flex items-center gap-3">
           <Link href="/">
             <Image 
@@ -334,13 +334,13 @@ const NavbarMenu = ({
           href={link}
           className={`${
             isActive ? "text-[var(--yellow)]" : "text-white"
-          } text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.5vw,1.5rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] hover:text-[var(--yellow)] transition-colors`}
+          } text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] hover:text-[var(--yellow)] transition-colors`}
         >
           {title}
         </Link>
       ) : (
         <span 
-          className="text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.5vw,1.5rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] "
+          className="text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] "
           onClick={() => {
             if (title === "Services" || title === "Login" || title === "Who we are" || title === "Locations") {
               setOpenDropdownIndex(isDropdownOpen ? null : index);
@@ -365,8 +365,42 @@ const NavbarMenu = ({
 
       {/* Dropdowns - only show on desktop (lg+) */}
       {(title === "Services" || title === "Who we are" || title === "Login" || title === "Locations") && (
-        <div className="hidden lg:block lg:mt-5 lg:absolute lg:left-auto lg:-right-10 z-50">
-          <NavbarDropdown isOpen={isDropdownOpen} items={services || []} />
+        <div className="relative hidden lg:block z-[999]">
+          {isDropdownOpen && (
+            <div
+              className="absolute top-full right-0 mt-6 min-w-[230px] rounded-2xl bg-white text-[var(--navy)] p-0 overflow-hidden shadow-xl border border-black/5 z-[999]"
+              onMouseLeave={() => setOpenDropdownIndex(null)}
+            >
+              {services && services.map((item, idx) => (
+                <React.Fragment key={idx}>
+                  {item.link && item.link.startsWith('http') ? (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-[var(--navy)]/5 focus:bg-[var(--navy)]/5 block w-full transition-colors"
+                      style={{ outline: 'none' }}
+                      onClick={() => setOpenDropdownIndex(null)}
+                    >
+                      {item.title}
+                    </a>
+                  ) : (
+                    <Link
+                      href={item.link || '#'}
+                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-[var(--navy)]/5 focus:bg-[var(--navy)]/5 block w-full transition-colors"
+                      style={{ outline: 'none' }}
+                      onClick={() => setOpenDropdownIndex(null)}
+                    >
+                      {item.title}
+                    </Link>
+                  )}
+                  {idx < (services.length - 1) && (
+                    <div className="mx-5 h-px bg-[var(--navy)]/10" />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
