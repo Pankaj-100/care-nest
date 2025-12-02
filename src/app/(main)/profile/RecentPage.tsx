@@ -62,11 +62,11 @@ const SavedCaregiversPanel = () => {
   };
 
   return (
-    <div className="p-6 mt-10">
-      <h2 className="text-2xl font-bold">Saved Caregivers</h2>
+    <div className="p-3 sm:p-4 md:p-6 mt-6 md:mt-10">
+      <h2 className="text-xl sm:text-2xl font-bold">Saved Caregivers</h2>
       {data.data.givers.length === 0 ? (
-        <div className="flex flex-col items-center justify-center mt-10 space-y-4">
-          <div className="relative w-64 h-64">
+        <div className="flex flex-col items-center justify-center mt-8 sm:mt-10 space-y-4">
+          <div className="relative w-40 h-40 sm:w-64 sm:h-64">
             <Image
               src={emptyCaregiverImage}
               alt="No saved caregivers"
@@ -74,14 +74,14 @@ const SavedCaregiversPanel = () => {
               className="object-contain"
             />
           </div>
-          <p className="text-lg text-gray-600">You havent saved any caregivers yet!</p>
+          <p className="text-base sm:text-lg text-gray-600">You havent saved any caregivers yet!</p>
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center mb-6">
-            <p>Select caregivers to book their services (Select at least 3)</p>
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 gap-2 sm:gap-0">
+            <p className="text-sm sm:text-base">Select caregivers to book their services (Select at least 3)</p>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {data.data.givers.map((giver) => (
               <CaregiverCard
                 key={giver.id}
@@ -98,16 +98,16 @@ const SavedCaregiversPanel = () => {
                 isBookmarked={true}
                 heightClass="h-30"
                 isSelected={selectedCaregivers.includes(giver.id)}
-                onClick={() => setSelectedCaregiverId(giver.id)} // <-- Only open modal
+                onClick={() => setSelectedCaregiverId(giver.id)}
                 onBookmarkToggle={() => handleRemoveBookmark(giver.id)}
               />
             ))}
           </div>
-          <div className="mt-10 text-center max-w-xl mx-auto">
+          <div className="mt-8 sm:mt-10 text-center max-w-xl mx-auto">
             <button
               disabled={selectedCaregivers.length < 3}
               onClick={() => setIsScheduleOpen(true)}
-              className={`w-full px-12 py-4 text-[var(--navy)] text-lg bg-yellow-500 rounded-full font-semibold transition
+              className={`w-full px-8 sm:px-12 py-3 sm:py-4 text-[var(--navy)] text-base sm:text-lg bg-yellow-500 rounded-full font-semibold transition
                 ${selectedCaregivers.length >= 3 ? "hover:shadow-md" : "cursor-not-allowed opacity-50"}`}
             >
               Proceed
@@ -186,7 +186,7 @@ export function RecentPage({ selectedOption, setSelectedOption }: RecentPageProp
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] max-w-7xl mx-auto flex flex-col md:flex-row p-4 gap-4">
+    <div className="min-h-screen bg-[#F8F9FA] max-w-7xl mx-auto flex flex-col md:flex-row p-2 sm:p-4 gap-3 sm:gap-4">
       <Sidebar onSelect={setSelectedOption} selected={selectedOption} />
       <div className="w-full md:w-3/4">{renderRightPanel()}</div>
     </div>

@@ -119,9 +119,9 @@ const Header = () => {
   const navContent = (
     <div
       ref={navRef}
-      className="flex lg:flex-row flex-col items-start lg:items-center lg:gap-x-6 xl:gap-x-9 lg:py-0 py-4 w-full lg:w-auto"
+      className="flex lg:flex-row flex-col items-start lg:items-center lg:gap-x-[clamp(1.5rem,3vw,3rem)] xl:gap-x-[clamp(2rem,4vw,4rem)] lg:py-0 py-4 w-full lg:w-auto lg:justify-end"
     >
-      <nav className="flex lg:flex-row flex-col items-start lg:items-center justify-between gap-6 lg:gap-4 xl:gap-6 w-full lg:w-auto">
+      <nav className="flex lg:flex-row flex-col items-start lg:items-center lg:justify-end gap-6 lg:gap-[clamp(1.25rem,2vw,2.5rem)] xl:gap-[clamp(2rem,3vw,3rem)] w-full lg:w-auto">
         {NavbarMenuTitle.map((item, index) => (
           <NavbarMenu
             key={index}
@@ -136,7 +136,7 @@ const Header = () => {
         ))}
       </nav>
 
-      <div className="flex lg:flex-row flex-col items-center gap-4 lg:gap-3 xl:gap-5 lg:mt-0 mt-6 w-full lg:w-auto">
+      <div className="flex lg:flex-row flex-col items-center gap-4 lg:gap-6 xl:gap-10 lg:mt-0 mt-6 w-full lg:w-auto">
         {isLoggedInUser && (
           <button className="relative lg:block hidden" onClick={handleNotificationOpen} aria-label="Notifications">
             <NotificationIcon size={28} className="lg:w-7 lg:h-7" />
@@ -145,15 +145,6 @@ const Header = () => {
             )}
           </button>
         )}
-
-        {/* Phone badge - hidden on mobile, shown on 
-        <Link
-          href="tel:9876543210"
-          className="hidden lg:flex items-center gap-2 rounded-full bg-[#F2E9CE] text-[var(--navy)] px-3 xl:px-6 py-2 xl:py-3 text-sm xl:text-base font-extrabold transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg whitespace-nowrap"
-        >
-          <PhoneIcon className="w-5 h-5 xl:w-6 xl:h-6" />
-          <span>832-237-2273</span>
-        </Link>lg+ */}
 
         {/* Get Started button: shows on all breakpoints, styled per design */}
         {!isLoggedInUser && (
@@ -168,10 +159,13 @@ const Header = () => {
         {isLoggedInUser && (
           <Link
             href="/profile"
-            className="rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-5 py-2.5 text-sm lg:text-base hover:brightness-105 transition flex items-center justify-center gap-2 w-full lg:w-auto lg:block hidden"
+            className="group flex items-center justify-center rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-7 py-2 text-base lg:text-lg shadow-md hover:brightness-105 transition gap-2 min-w-[140px]"
+            style={{ minHeight: 48 }}
           >
-            {profileIcon()}
-            <span>My Profile</span>
+            <span className="flex items-center justify-center mr-2">
+              {profileIcon()}
+            </span>
+            <span className="block text-center leading-tight">My Profile</span>
           </Link>
         )}
       </div>
@@ -243,7 +237,7 @@ const Header = () => {
           className="bg-[var(--navy)] text-white"
           open={openMenu}
           handleOpen={handleOpenMenu}
-          direction="right"
+          direction="left"
         >
           <div className="h-full overflow-y-auto flex flex-col">
             {/* Logo and Close Button Header */}
@@ -340,13 +334,13 @@ const NavbarMenu = ({
           href={link}
           className={`${
             isActive ? "text-[var(--yellow)]" : "text-white"
-          } text-base lg:text-base xl:text-lg hover:text-[var(--yellow)] transition-colors`}
+          } text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.5vw,1.5rem)] xl:text-[clamp(0.8rem,1.2vw,1.2rem)] hover:text-[var(--yellow)] transition-colors`}
         >
           {title}
         </Link>
       ) : (
         <span 
-          className="text-base lg:text-base xl:text-lg"
+          className="text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.5vw,1.5rem)] xl:text-[clamp(0.8rem,1.2vw,1.2rem)] "
           onClick={() => {
             if (title === "Services" || title === "Login" || title === "Who we are" || title === "Locations") {
               setOpenDropdownIndex(isDropdownOpen ? null : index);

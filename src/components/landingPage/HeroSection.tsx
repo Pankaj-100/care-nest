@@ -136,7 +136,7 @@ const HeroSection = () => {
         </a>
 
         {/* Main content - desktop: absolute positioned, mobile: relative */}
-        <div className="relative lg:absolute lg:left-28 lg:top-[8%] px-4 sm:px-8 lg:px-0 pt-12 lg:pt-0 text-white lg:w-[1050px]">
+        <div className="relative lg:absolute lg:left-28 lg:top-[2%] px-4 sm:px-8 lg:px-0 pt-12 lg:pt-0 text-white lg:w-[1050px]">
           <h1 className="font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight text-center lg:text-left">
             Find compassionate{" "}
             <span className="relative inline-block">
@@ -204,7 +204,7 @@ const HeroSection = () => {
         </div>
 
         {/* Right side hero image - desktop only */}
-        <div className="absolute right-23 lg:right-53 top-[43%] -translate-y-1/2 w-[370px] h-[370px] lg:w-[430px] lg:h-[430px] z-10 hidden lg:block">
+        <div className="absolute right-23 lg:right-53 top-[38%] -translate-y-1/2 w-[370px] h-[370px] lg:w-[430px] lg:h-[430px] z-10 hidden lg:block">
           <div className="relative w-full h-full">
             <Image
               src="/main-hero-section.png"
@@ -217,7 +217,7 @@ const HeroSection = () => {
         </div>
 
         {/* Desktop Browse Caregiver - absolute positioned */}
-        <div className="lg:flex hidden items-center justify-center absolute -bottom-16 left-1/2 -translate-x-1/2 w-full pointer-events-none z-20">
+        <div className="lg:flex hidden items-center justify-center absolute -bottom-1 left-1/2 -translate-x-1/2 w-full pointer-events-none z-20">
           <div className="w-full max-w-4xl pointer-events-auto">
             <BrowseCaregiver />
           </div>
@@ -330,7 +330,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         >
           <button
             type="submit"
-            className={`w-full text-center lg:ml-12 px-4 py-3 sm:px-5 sm:py-3.5 lg:px-6 lg:py-4 cursor-pointer rounded-4xl text-base sm:text-lg font-semibold transition whitespace-nowrap
+            className={`w-full flex items-center justify-center text-center lg:ml-12 px-5 py-3 sm:px-5 sm:py-3.5 lg:px-6 lg:py-4 cursor-pointer rounded-4xl text-base sm:text-lg font-semibold transition whitespace-nowrap
               bg-[#FFA726] text-[#233D4D] hover:brightness-105`}
           >
             Search Caregiver

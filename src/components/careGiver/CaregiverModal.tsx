@@ -97,22 +97,22 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
   if (!isOpen || !caregiverId) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4">
-      <div className="relative w-full max-w-3xl max-h-[80vh] overflow-hidden rounded-2xl bg-white shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-2 sm:px-4">
+      <div className="relative w-full max-w-lg sm:max-w-2xl md:max-w-3xl max-h-[90vh] sm:max-h-[85vh] md:max-h-[80vh] overflow-hidden rounded-2xl bg-white shadow-2xl flex flex-col">
         {/* Close */}
         <button
           aria-label="Close"
           onClick={onClose}
-          className="absolute right-4 top-4 h-10 w-10 cursor-pointer rounded-full bg-white text-[#233D4D] border border-gray-200 hover:shadow-sm flex items-center justify-center z-10"
+          className="absolute right-2 top-2 sm:right-4 sm:top-4 h-9 w-9 sm:h-10 sm:w-10 cursor-pointer rounded-full bg-white text-[#233D4D] border border-gray-200 hover:shadow-sm flex items-center justify-center z-10"
         >
           ✕
         </button>
 
         {isLoading && (
-          <div className="p-10 text-center text-sm text-gray-500">Loading caregiver...</div>
+          <div className="p-6 sm:p-10 text-center text-sm text-gray-500">Loading caregiver...</div>
         )}
         {(isError || !data?.data?.details) && !isLoading && (
-          <div className="p-10 text-center text-sm text-red-500">Failed to load caregiver.</div>
+          <div className="p-6 sm:p-10 text-center text-sm text-red-500">Failed to load caregiver.</div>
         )}
 
         {!isLoading && !isError && data?.data?.details && (
@@ -121,7 +121,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
             onAddCaregiver={onAddCaregiver}
             isBookmarked={!!isBookmarked}
             isSelected={isSelected}
-            caregiverId={caregiverId} // Add this line
+            caregiverId={caregiverId}
           />
         )}
       </div>
@@ -164,35 +164,35 @@ const ModalContent: React.FC<{
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] h-full">
+    <div className="flex flex-col md:grid md:grid-cols-[260px_1fr] h-full">
       {/* Left sidebar */}
-      <aside className="bg-[#F6F8F4] p-3 md:p-4">
+      <aside className="bg-[#F6F8F4] p-3 sm:p-4 flex-shrink-0">
         <div className="flex flex-col items-center text-center">
           <div className="relative">
             <Image
               src={avatarSrc}
               alt={caregiver.name}
-              width={144}
-              height={144}
-              className="h-36 w-36 rounded-full object-cover ring-2 ring-white shadow"
+              width={104}
+              height={104}
+              className="h-24 w-24 sm:h-36 sm:w-36 rounded-full object-cover ring-2 ring-white shadow"
             />
             {/* Verified tick */}
             <Image
               src="/care-giver/verified.png"
               alt="Verified"
-              width={28}
-              height={28}
-              className="absolute -bottom-1 -right-1 h-7 w-7"
+              width={20}
+              height={20}
+              className="absolute -bottom-1 -right-1 h-5 w-5 sm:h-7 sm:w-7"
             />
           </div>
 
           {/* Caregiver Name and Selected Badge */}
-          <h2 className="mt-5 text-[26px] font-semibold text-[#233D4D] leading-tight flex items-center gap-3">
+          <h2 className="mt-4 sm:mt-5 text-lg sm:text-[26px] font-semibold text-[#233D4D] leading-tight flex items-center gap-2 sm:gap-3">
             {caregiver.name}
             {typeof window !== "undefined" &&
               window.location.pathname.includes("/profile") &&
                (isSelected || bookingStatus === "hired" || bookingStatus === "completed") && (
-                <span className="bg-[#2F3C51] text-white px-4 py-1 rounded-full text-sm flex items-center gap-2">
+                <span className="bg-[#2F3C51] text-white px-3 sm:px-4 py-1 rounded-full text-xs sm:text-sm flex items-center gap-2">
                   <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
                     <path d="M6.75 13.5L2.25 9L3.3075 7.9425L6.75 11.3775L14.6925 3.4425L15.75 4.5L6.75 13.5Z" fill="white"/>
                   </svg>
@@ -202,7 +202,7 @@ const ModalContent: React.FC<{
             }
           </h2>
 
-          <div className="mt-7 space-y-4 w-full">
+          <div className="mt-5 sm:mt-7 space-y-3 sm:space-y-4 w-full">
             <InfoRow label="Experience" value={`${caregiver.experience ?? 0}+ Years`} />
             <InfoRow
               label="Available Distance"
@@ -215,10 +215,10 @@ const ModalContent: React.FC<{
           </div>
 
           {/* Actions */}
-          <div className="mt-8 w-full space-y-4">
+          <div className="mt-6 sm:mt-8 w-full space-y-3 sm:space-y-4">
             <button
               type="button"
-              className={`w-full h-12 rounded-xl cursor-pointer border font-medium transition flex items-center justify-center gap-2 ${
+              className={`w-full h-11 sm:h-12 rounded-xl cursor-pointer border font-medium transition flex items-center justify-center gap-2 ${
                 bookmarked 
                   ? "border-[#233D4D] bg-[#233D4D] text-white" 
                   : "border-[#233D4D1A] text-[#233D4D] bg-white hover:shadow-sm"
@@ -229,8 +229,8 @@ const ModalContent: React.FC<{
               <Image
                 src={bookmarked ? "/care-giver/bookmark-bold.png" : "/care-giver/bookmark.png"}
                 alt="Save"
-                width={18}
-                height={18}
+                width={16}
+                height={16}
                 className={bookmarked ? "filter brightness-0 invert" : ""}
               />
               {bookmarking
@@ -244,7 +244,7 @@ const ModalContent: React.FC<{
             {typeof window !== "undefined" && window.location.pathname.includes("/profile") ? (
               <button
                 type="button"
-                className="w-full py-3 px-6 rounded-lg font-semibold bg-[#F2A307] text-[#233D4D] hover:bg-yellow-400 transition"
+                className="w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold bg-[#F2A307] text-[#233D4D] hover:bg-yellow-400 transition"
                 onClick={() => {
                   // Redirect to messages or open chat with caregiver
                   window.location.href = `/inbox?caregiverId=${caregiverId}`;
@@ -255,7 +255,7 @@ const ModalContent: React.FC<{
             ) : (
               <button
                 onClick={() => caregiverId && onAddCaregiver(caregiverId)}
-                className={`w-full py-3 px-6 rounded-lg font-semibold transition ${
+                className={`w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition ${
                   isSelected
                     ? "border-2 border-[#F2A307] text-[#F2A307] bg-white hover:bg-red-50"
                     : "bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--navy)]"
@@ -269,21 +269,21 @@ const ModalContent: React.FC<{
       </aside>
 
       {/* Right content - with scrollable area */}
-      <main className="overflow-y-auto max-h-[80vh]">
-        <div className="p-5 md:p-7">
-          <h3 className="text-2xl font-semibold text-[#233D4D]">Overview</h3>
-          <hr className="mt-4 border-gray-200" />
+      <main className="overflow-y-auto max-h-[50vh] sm:max-h-[80vh]">
+        <div className="p-4 sm:p-5 md:p-7">
+          <h3 className="text-lg sm:text-2xl font-semibold text-[#233D4D]">Overview</h3>
+          <hr className="mt-3 sm:mt-4 border-gray-200" />
 
           {/* About */}
           <CollapsibleSection title="About" defaultExpanded>
-            <p className="text-[15px] leading-7 text-[#6B778C]">
+            <p className="text-[14px] sm:text-[15px] leading-6 sm:leading-7 text-[#6B778C]">
               {caregiver.about?.trim() || "No description available."}
             </p>
           </CollapsibleSection>
 
           {/* Location */}
           <CollapsibleSection title="Location" defaultExpanded>
-            <p className="text-[15px] text-[#6B778C]">{caregiver.location ?? caregiver.address ?? "—"}</p>
+            <p className="text-[14px] sm:text-[15px] text-[#6B778C]">{caregiver.location ?? caregiver.address ?? "—"}</p>
           </CollapsibleSection>
 
           {/* Services */}
@@ -292,7 +292,7 @@ const ModalContent: React.FC<{
             defaultExpanded={false}
           >
             {caregiver.services && caregiver.services.length > 0 ? (
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {caregiver.services.map((s, i) => (
                   <Pill key={`${s}-${i}`}>{s}</Pill>
                 ))}
@@ -308,7 +308,7 @@ const ModalContent: React.FC<{
             defaultExpanded={false}
           >
             {caregiver.languages && caregiver.languages.length > 0 ? (
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {caregiver.languages.map((l, i) => (
                   <Pill key={`${l}-${i}`}>{l}</Pill>
                 ))}

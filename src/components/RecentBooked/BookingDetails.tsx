@@ -89,20 +89,20 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
   };
 
   return (
-    <div className="flex gap-8 max-w-7xl mx-auto px-6 py-10 bg-[#F8F9FA]">
+    <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:gap-8 max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-8 md:py-10 bg-[#F8F9FA]">
       <main className="flex-1">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold text-[#2F3C51]">
-            Recent Bookings / <span className="text-[#2F3C51]">#{booking.bookingId}</span>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-0">
+          <h2 className="text-xl sm:text-2xl font-semibold text-[#2F3C51]">
+            Recent Booking / <span className="text-[#2F3C51]">#{booking.bookingId}</span>
           </h2>
-          <div className="flex gap-4">
+          <div className="flex gap-2 sm:gap-4">
             {/* Hide Edit button for completed or cancelled bookings */}
             {booking.status !== "completed" &&
               booking.status !== "cancelled" &&
               booking.status !== "canceled" ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="border border-[#e89923] font-semibold text-[#FFA726] px-4 py-2 rounded-lg hover:bg-[#FFF3E0] transition"
+                className="border border-[#e89923] font-semibold text-[#FFA726] px-3 sm:px-4 py-2 rounded-lg hover:bg-[#FFF3E0] transition text-sm sm:text-base"
               >
                 Edit
               </button>
@@ -111,7 +111,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             {/* Hide Cancel button for completed bookings */}
             {booking.status === "cancelled" || booking.status === "canceled" ? (
               <button
-                className="border border-[#D1D5DB] text-[#6B7280] font-semibold px-4 py-2 rounded-lg bg-[#F3F4F6]"
+                className="border border-[#D1D5DB] text-[#6B7280] font-semibold px-3 sm:px-4 py-2 rounded-lg bg-[#F3F4F6] text-sm sm:text-base"
                 disabled
               >
                 Cancelled
@@ -119,7 +119,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             ) : booking.status !== "completed" ? (
               <button
                 onClick={() => setOpenDialog(true)}
-                className="border border-[#ee4a47] text-[#ee4a47] font-semibold px-4 py-2 rounded-lg hover:bg-[#f0eaea] transition"
+                className="border border-[#ee4a47] text-[#ee4a47] font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-[#f0eaea] transition text-sm sm:text-base"
                 disabled={isCancelling}
               >
                 {isCancelling ? "Cancelling..." : "Cancel Booking"}
@@ -128,122 +128,125 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
           </div>
         </div>
 
-        {/* Booking Details Card */}
-        <div className="max-w-2xl">
-          {/* First row: Booking ID, Booked On, Preferred Meeting Date, Service End Date */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-4">
-            <div className="min-w-0">
-              <span className="block text-[#233D4D]  text-md font-medium mb-1">Booking ID:</span>
-              <span className="font-sm text-[#5d6675] truncate block">#{booking.bookingId}</span>
+        {/* Booking Details Card - 3-column grid on desktop, stacked on mobile */}
+        <div className="relative w-full bg-white rounded-2xl shadow-sm px-4 py-6 sm:px-8 sm:py-8 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
+            {/* Column 1 */}
+            <div className="flex flex-col gap-4">
+              <div>
+                <span className="block text-[#233D4D] text-base font-semibold mb-1">Booking ID:</span>
+                <span className="block text-[#B0B7C3] text-lg font-md truncate max-w-[180px]">#{booking.bookingId}</span>
+              </div>
+              <div>
+                <span className="block text-[#233D4D] text-base font-semibold mb-1">Booked On:</span>
+                <span className="block text-[#B0B7C3] text-lg font-md">
+                  {bookingDetails.bookedOn
+                    ? new Date(bookingDetails.bookedOn).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                    : "N/A"}
+                </span>
+              </div>
+              <div>
+                <span className="block text-[#233D4D] text-base font-semibold mb-1">Meeting Date:</span>
+                <span className="block text-[#B0B7C3] text-lg font-md">
+                  {bookingDetails.meetingDate
+                    ? new Date(bookingDetails.meetingDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                    : "N/A"}
+                </span>
+              </div>
             </div>
-            <div className="min-w-0">
-              <span className="block text-[#233D4D]  text-md font-medium  mb-1">Booked On:</span>
-              <span className="font-sm text-[#5d6675] block">
-                {bookingDetails.bookedOn
-                  ? new Date(bookingDetails.bookedOn).toLocaleDateString()
-                  : "N/A"}
-              </span>
+            {/* Column 2 */}
+            <div className="flex flex-col gap-4">
+              <div>
+                <span className="block text-[#233D4D] text-base font-semibold mb-1">Service start Date:</span>
+                <span className="block text-[#B0B7C3] text-lg font-md">
+                  {bookingDetails.startDate
+                    ? new Date(bookingDetails.startDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                    : "N/A"}
+                </span>
+              </div>
+              <div>
+                <span className="block text-[#233D4D] text-base font-semibold mb-1">Service End Date:</span>
+                <span className="block text-[#B0B7C3] text-lg font-md">
+                  {bookingDetails.endDate
+                    ? new Date(bookingDetails.endDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                    : "N/A"}
+                </span>
+              </div>
+              <div>
+                <span className="block text-[#233D4D] text-base font-semibold mb-1">Care Type:</span>
+                <span className="block text-[#B0B7C3] text-lg font-md">
+                  {bookingDetails.careType ?? "Personal Care"}
+                </span>
+              </div>
             </div>
-            <div className="min-w-0">
-              <span className="block text-[#233D4D] text-md font-medium mb-1">Meeting Date:</span>
-              <span className="font-sm text-[#5d6675] block">
-                {bookingDetails.meetingDate
-                  ? new Date(bookingDetails.meetingDate).toLocaleDateString()
-                  : "N/A"}
-              </span>
-            </div>
-            <div className="min-w-0">
-              <span className="block text-[#233D4D]  text-md font-medium  mb-1">Service start Date:</span>
-              <span className="font-sm text-[#5d6675] block">
-                {bookingDetails.startDate
-                  ? new Date(bookingDetails.startDate).toLocaleDateString()
-                  : "N/A"}
-              </span>
-            </div>
-          </div>
-          {/* Second row: Care Type, Service End Date, Service Date and Times */}
-          <div className="grid grid-cols-4 gap-6 mb-2">
-            <div className="min-w-0">
-              <span className="block text-[#233D4D]  text-md font-medium  mb-1">Service End Date:</span>
-              <span className="font-sm text-[#5d6675] block">
-                {bookingDetails.endDate
-                  ? new Date(bookingDetails.endDate).toLocaleDateString()
-                  : "N/A"}
-              </span>
-            </div>
-            <div className="min-w-0">
-              <span className="block text-[#233D4D]  text-md font-medium  mb-1">Care Type:</span>
-              <span className="font-sm text-[#5d6675] block">
-                {bookingDetails.careType ?? "Personal Care"}
-              </span>
-              
-            </div>
-            <div className="min-w-0">
-              <span className="block text-[#233D4D]  text-md font-medium mb-1">Service Date and Times:</span>
-              <span className="font-base text-base text-[#5d6675] flex flex-col gap-1">
-                {(() => {
-                  const scheduleArr = formatWeeklyScheduleArr(bookingDetails.weeklySchedule);
-                  const visibleArr = showAllTimings ? scheduleArr : scheduleArr.slice(0, 2);
-                  return (
-                    <>
-                      {visibleArr.length === 0 ? (
-                        <span>N/A</span>
-                      ) : (
-                        visibleArr.map((item, idx) => (
-                          <span key={idx} className="whitespace-nowrap">{item}</span>
-                        ))
-                      )}
-                      {scheduleArr.length > 2 && (
-                        <button
-                          className="text-[#FFA726] text-left text-sm"
-                          type="button"
-                          onClick={() => setShowAllTimings((prev) => !prev)}
-                        >
-                          {showAllTimings ? "View less ↑" : "View more ↓"}
-                        </button>
-                      )}
-                    </>
-                  );
-                })()}
-              </span>
+            {/* Column 3 */}
+            <div className="flex flex-col gap-4">
+              <div>
+                <span className="block text-[#233D4D] text-base font-semibold mb-1">Service Date and Times:</span>
+                <span className="block text-[#B0B7C3] text-lg font-md">
+                  {(() => {
+                    const scheduleArr = formatWeeklyScheduleArr(bookingDetails.weeklySchedule);
+                    const visibleArr = showAllTimings ? scheduleArr : scheduleArr.slice(0, 2);
+                    return (
+                      <>
+                        {visibleArr.length === 0 ? (
+                          <span>N/A</span>
+                        ) : (
+                          <span className="block whitespace-pre-line">{visibleArr.join("\n")}</span>
+                        )}
+                        {scheduleArr.length > 2 && (
+                          <button
+                            className="text-[#FFA726] text-left text-lg font-semibold mt-1"
+                            type="button"
+                            onClick={() => setShowAllTimings((prev) => !prev)}
+                          >
+                            {showAllTimings ? "View less ↑" : "View more ↓"}
+                          </button>
+                        )}
+                      </>
+                    );
+                  })()}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-
         {/* Caregivers List */}
         <div className="space-y-4">
           {booking.caregivers?.map((cg, idx) => (
             <div
               key={cg.id ?? idx}
-              className="bg-white rounded-xl p-4 flex items-center gap-4 border cursor-pointer"
+              className="bg-white rounded-2xl p-4 flex items-center gap-4 cursor-pointer shadow-sm"
               onClick={() => setSelectedCaregiverId(cg.id ?? null)}
             >
-              <Image
-                src={
-                  cg.avatar
-                    ? cg.avatar.startsWith("http")
-                      ? cg.avatar
-                      : `https://creative-story.s3.us-east-1.amazonaws.com/${cg.avatar.replace(/^\/+/, "")}`
-                    : "/care-giver/boy-icon.png"
-                }
-                alt={cg.name ?? "Caregiver"}
-                width={60}
-                height={60}
-                className="rounded-full object-cover"
-                style={{ minWidth: 60, minHeight: 60 }}
-              />
-              <div>
-                <h4 className="font-semibold text-lg">{cg.name ?? "Unknown"}</h4>
-                <p className="text-sm text-[#7A8699]">Elderly Care</p>
-                <div className="flex gap-2 mt-1">
-                  <span className="border border-[#D1D5DB] rounded-full px-3 py-1 text-sm">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center">
+                <Image
+                  src={
+                    cg.avatar
+                      ? cg.avatar.startsWith("http")
+                        ? cg.avatar
+                        : `https://creative-story.s3.us-east-1.amazonaws.com/${cg.avatar.replace(/^\/+/, "")}`
+                      : "/care-giver/boy-icon.png"
+                  }
+                  alt={cg.name ?? "Caregiver"}
+                  width={56}
+                  height={56}
+                  className="rounded-full object-cover"
+                  style={{ minWidth: 56, minHeight: 56 }}
+                />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-xl text-[#233D4D]">{cg.name ?? "Unknown"}</h4>
+                <p className="text-base text-[#7A8699]">Elderly Care</p>
+                <div className="flex gap-2 mt-2">
+                  <span className="border-1 border-[#B0B7C3] rounded-full px-4 py-1 text-base font-semibold text-[#233D4D] bg-white">
                     {cg.experience ? `${cg.experience} +Years` : "N/A"}
                   </span>
                 </div>
               </div>
               {(booking.status === "accepted" && cg.status === "hired") ||
                 (booking.status === "completed" && cg.status === "completed") ? (
-                <span className="bg-[#2F3C51] text-white px-4 py-1 rounded-full text-sm flex items-center gap-2 ml-auto">
+                <span className="bg-[#2F3C51] text-white px-6 py-2 rounded-full text-base font-semibold flex items-center gap-2 ml-auto">
                   <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
                     <path d="M6.75 13.5L2.25 9L3.3075 7.9425L6.75 11.3775L14.6925 3.4425L15.75 4.5L6.75 13.5Z" fill="white"/>
                   </svg>
