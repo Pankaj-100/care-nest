@@ -70,13 +70,12 @@ function titleToFaqType(title: string) {
     .join("");
 }
 
-export default function ServiceTemplate({ careType, fallbackData, fallbackKey = "personalCare" }: ServiceTemplateProps) {
+
+export default function ServiceTemplate({ careType, fallbackKey = "personalCare" }: ServiceTemplateProps) {
   const [openFAQ, setOpenFAQ] = useState(0);
-  const [serviceData, setServiceData] = useState<ApiServiceItem | null>(fallbackData || null);
+  const [serviceData, setServiceData] = useState<ApiServiceItem | null>(null);
   const [faqData, setFaqData] = useState<ApiFaqItem | null>(null);
   const [loading, setLoading] = useState(true);
-
-  console.log("[ServiceTemplate] Received props:", { careType, fallbackKey, hasFallbackData: !!fallbackData });
 
   // Get static contact banner data from data.tsx
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,32 +83,21 @@ export default function ServiceTemplate({ careType, fallbackData, fallbackKey = 
 
   useEffect(() => {
     async function fetchData() {
-      console.log("[ServiceTemplate] useEffect called with careType:", careType);
-      
       const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
-      
-      // If no API_BASE, just use fallback data
-      if (!API_BASE) {
-        console.log("[ServiceTemplate] No API base URL, using fallback data only");
-        setLoading(false);
-        return;
-      }
 
-      // If careType is undefined or empty, use fallback data
-      if (!careType || careType === "undefined") {
-        console.log("[ServiceTemplate] careType is undefined, using fallback data only");
+      // If no API_BASE or careType is undefined/empty, do not fetch
+      if (!API_BASE || !careType || careType === "undefined") {
         setLoading(false);
+        setServiceData(null);
         return;
       }
 
       try {
         // Fetch service data with timeout
         const serviceEndpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/service-cms/care-type/${encodeURIComponent(careType)}`;
-        console.log("[ServiceTemplate] fetching service:", serviceEndpoint);
-        
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-        
+
         const serviceRes = await fetch(serviceEndpoint, {
           headers: {
             'Content-Type': 'application/json',
@@ -117,31 +105,24 @@ export default function ServiceTemplate({ careType, fallbackData, fallbackKey = 
           signal: controller.signal,
         });
         clearTimeout(timeoutId);
-        
-        console.log("[ServiceTemplate] service status:", serviceRes.status);
-        
+
         if (serviceRes.ok) {
           const serviceJson = await serviceRes.json();
-          console.log("[ServiceTemplate] service body:", serviceJson);
-          
           const apiItem = Array.isArray(serviceJson?.data?.services) && serviceJson.data.services.length > 0
             ? serviceJson.data.services[0]
             : null;
-          
+
           if (apiItem) {
-            console.log("[ServiceTemplate] Using API data");
             setServiceData(apiItem);
-            
+
             // Fetch FAQ data using careType from API
             const faqSourceTitle = (apiItem?.careType || careType).toString();
             const faqType = titleToFaqType(faqSourceTitle);
-            
+
             const faqEndpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/faq/type/${encodeURIComponent(faqType)}`;
-            console.log("[ServiceTemplate] fetching faq:", faqEndpoint);
-            
             const faqController = new AbortController();
             const faqTimeoutId = setTimeout(() => faqController.abort(), 10000);
-            
+
             const faqRes = await fetch(faqEndpoint, {
               headers: {
                 'Content-Type': 'application/json',
@@ -149,41 +130,30 @@ export default function ServiceTemplate({ careType, fallbackData, fallbackKey = 
               signal: faqController.signal,
             });
             clearTimeout(faqTimeoutId);
-            
-            console.log("[ServiceTemplate] faq status:", faqRes.status);
-            
+
             if (faqRes.ok) {
               const faqJson = await faqRes.json();
-              console.log("[ServiceTemplate] faq body:", faqJson);
-              
               const apiFaq = Array.isArray(faqJson?.data?.faqs) && faqJson.data.faqs.length > 0
                 ? faqJson.data.faqs[0]
                 : null;
-              
+
               if (apiFaq) {
                 setFaqData(apiFaq);
               }
             }
           } else {
-            console.log("[ServiceTemplate] No service data in API response, using fallback");
-            // Fallback data is already set in useState initial value
+            setServiceData(null);
           }
         } else {
-          console.log("[ServiceTemplate] API error, using fallback data");
-          // Fallback data is already set in useState initial value
+          setServiceData(null);
         }
-      } catch (error) {
-        if (error instanceof Error && error.name === 'AbortError') {
-          console.error("[ServiceTemplate] API request timed out, using fallback data");
-        } else {
-          console.error("[ServiceTemplate] fetch error:", error);
-        }
-        // Fallback data is already set in useState initial value
+      } catch {
+        setServiceData(null);
       } finally {
         setLoading(false);
       }
     }
-    
+
     fetchData();
   }, [careType]);
 
@@ -316,7 +286,7 @@ export default function ServiceTemplate({ careType, fallbackData, fallbackKey = 
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-16">
           {/* Image: above content on mobile, beside on md+ */}
           <div className="w-full md:w-auto flex justify-center mb-4 md:mb-0 md:order-2">
-            <div className="relative w-82 h-66 sm:w-80 sm:h-64 md:w-80 md:h-64 lg:w-96 lg:h-72">
+            <div className="relative w-92 h-66 sm:w-80 sm:h-64 md:w-80 md:h-64 lg:w-116 lg:h-72">
               <Image
                 src={serviceData.description3Image || "/service-default.jpg"}
                 alt={`${serviceData.serviceName} service`}

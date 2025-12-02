@@ -36,8 +36,8 @@ const link: linkSection[] = [
   {
     Company: [
       { title: "About Us", link: "/aboutUs" },
-      { title: "Pricing", link: "/pricing" },
-      { title: "Features", link: "/features" },
+      { title: "Become A Caregiver", link: "/care-provider" },
+      { title: "Who we are", link: "/who-we-are" },
       { title: "We accept Medicaid", link: "/medicaid" },
     ],
     "Other Services": [
@@ -111,10 +111,15 @@ const Footer = () => {
   }, [API_BASE]);
 
   // Prepare dynamic location links from API
-  const locationLinks: linkItems[] = (footerData?.locations || []).map((loc) => ({
-    title: loc,
-    link: `/location/${loc.toLowerCase().replace(/,?\s+/g, "-").replace("tx", "").replace(/-$/, "")}`,
-  }));
+  const locationLinks: linkItems[] = (footerData?.locations || []).map((loc) => {
+    // Remove commas, trim, replace multiple spaces with one, then replace spaces with hyphens
+    // e.g., 'Sugarland, TX' -> 'Sugarland-TX'
+    const cleaned = loc.replace(/,/g, '').trim().replace(/\s+/g, '-');
+    return {
+      title: loc,
+      link: `/location/${cleaned}`,
+    };
+  });
 
   // Prepare dynamic social links from API
   const dynamicSocialLinks: linkItems[] = (footerData?.socialLinks || []).map((social) => ({

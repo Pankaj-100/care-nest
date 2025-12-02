@@ -93,10 +93,10 @@ const BlogsSection = () => {
         {isLoading
           ? [0, 1, 2].map((i) => (
               <div key={i} className="sm:p-2 w-full max-w-lg mx-auto">
-                <div className="w-full h-[300px] rounded-2xl mb-3 relative overflow-hidden bg-gray-100 animate-pulse" />
-                <div className="h-6 bg-gray-100 rounded w-40 mb-2 animate-pulse" />
-                <div className="h-4 bg-gray-100 rounded w-64 mb-2 animate-pulse" />
-                <div className="h-8 bg-gray-100 rounded w-full animate-pulse mt-2" />
+                <div className="w-full h-[300px] rounded-2xl mb-3 relative overflow-hidden animate-pulse" />
+                <div className="h-6  rounded w-40 mb-2 animate-pulse" />
+                <div className="h-4  rounded w-64 mb-2 animate-pulse" />
+                <div className="h-8  rounded w-full animate-pulse mt-2" />
               </div>
             ))
           : latest.map((b) => <BlogCard key={b.id} {...b} />)}
@@ -113,7 +113,7 @@ const BlogCard = ({ id, title, author, date, image, excerpt }: Blog) => {
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto flex flex-col justify-between bg-white rounded-[28px] shadow-none border-0 p-0">
+    <div className="w-full max-w-lg mx-auto flex flex-col justify-between rounded-[28px] shadow-none border-0 p-0">
       <div className="w-full h-72 sm:h-80 md:h-[360px] rounded-[24px] mb-4 relative overflow-hidden">
         <Image
           src={image}

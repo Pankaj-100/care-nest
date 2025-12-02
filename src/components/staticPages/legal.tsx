@@ -87,17 +87,10 @@ export default function Legal() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-start py-8 sm:py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex flex-col items-center justify-start py-8 sm:py-16 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-3xl">
-        <button
-          onClick={() => router.back()}
-          className="mb-4 text-sm text-gray-500 hover:text-gray-700"
-          aria-label="Go back"
-        >
-          ← Back
-        </button>
 
-        <h4 className="text-[var(--yellow)] font-semibold mb-2 text-base sm:text-lg text-center sm:text-left">
+        <h4 className="text-[var(--yellow)] font-semibold mb-2 text-lg sm:text-lg text-center sm:text-left">
           Let&apos;s Talk About Legal Terms
         </h4>
 
@@ -105,20 +98,11 @@ export default function Legal() {
           Legal Terms
         </h1>
 
-        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
+        <div className=" rounded-lg p-4 sm:p-6 lg:p-8">
           <article
-            className="prose-sm sm:prose lg:prose-lg max-w-none text-base sm:text-lg prose-a:text-[var(--navy)]"
+            className="prose-sm sm:prose lg:prose-lg max-w-none text-lg sm:text-lg prose-a:text-[var(--navy)]"
             dangerouslySetInnerHTML={{ __html: legal.content }}
           />
-        </div>
-
-        <div className="mt-8 flex justify-center sm:justify-start">
-          <button
-            onClick={() => window.print()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-[var(--navy)] text-[var(--navy)] hover:bg-[var(--navy)] hover:text-white transition"
-          >
-            Print
-          </button>
         </div>
       </div>
     </div>

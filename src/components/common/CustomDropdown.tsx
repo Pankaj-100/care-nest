@@ -9,7 +9,7 @@ import {
 import { NavbarTypes } from './Header'
 import Link from 'next/link'
 
-export const NavbarDropdown = ({ isOpen, items }: { isOpen: boolean; items: NavbarTypes[] }) => {
+export const NavbarDropdown = ({ isOpen, items, closeDropdown }: { isOpen: boolean; items: NavbarTypes[]; closeDropdown?: () => void }) => {
     return (
         <DropdownMenu open={isOpen} modal={false}>
             <DropdownMenuTrigger />
@@ -23,8 +23,8 @@ export const NavbarDropdown = ({ isOpen, items }: { isOpen: boolean; items: Navb
                         <React.Fragment key={index}>
                             <DropdownMenuItem
                                 asChild
-                                className={`px-3 py-3 text-md font-semibold
-                                    } cursor-pointer hover:bg-[var(--navy)]/5 focus:bg-[var(--navy)]/5`}
+                                className={`px-3 py-3 text-md font-semibold cursor-pointer hover:bg-[var(--navy)]/5 focus:bg-[var(--navy)]/5`}
+                                onSelect={closeDropdown}
                             >
                                 <Link href={item.link || '#'}>{item.title}</Link>
                             </DropdownMenuItem>

@@ -134,9 +134,9 @@ export default function AboutUs() {
       <Image
         src="/aboutUs/design.png"
         alt="Wave Top"
-        width={1920}
-        height={2000}
-        className="absolute top-90 left-0 w-full h-[2000px] pointer-events-none"
+        width={1940}
+        height={2200}
+        className="hidden lg:block absolute top-90 left-0 w-full h-[2200px] pointer-events-none"
         style={{ zIndex: 1 }}
       />
 
@@ -253,20 +253,22 @@ export default function AboutUs() {
         )}
 
         {/* Our Values Section - OUTSIDE the wave */}
-        <div className="w-full bg-[#ffffff] ">
+        <div className="w-full ">
           <div className="max-w-5xl mx-auto py-5 px-1">
             <h2 className="text-center text-[var(--navy)] font-bold text-5xl mb-16">{about.valuesHeading ?? "Our Values"}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
               {values.length > 0 ? (
                 values.map((v) => (
                   <div key={v.id}>
-                    <Image
-                      src={`/aboutUs/${v.valueName.toLowerCase().replace(/\s+/g, "")}.png`}
-                      alt={v.valueName}
-                      width={80}
-                      height={80}
-                      className="mx-auto mb-6 w-20 h-20"
-                    />
+                    {v.valueName === "Compassion" && (
+                      <Image src="/aboutUs/compassion.png" alt="Compassion" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
+                    )}
+                    {v.valueName === "Reliability" && (
+                      <Image src="/aboutUs/reliability.png" alt="Reliability" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
+                    )}
+                    {v.valueName === "Dignity at Home" && (
+                      <Image src="/aboutUs/home.png" alt="Dignity at Home" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
+                    )}
                     <h3 className="text-[var(--navy)] font-bold text-3xl mb-4">{v.valueName}</h3>
                     <p
                       className="text-[#2B384C] text-xl"
@@ -291,7 +293,7 @@ export default function AboutUs() {
                     </p>
                   </div>
                   <div>
-                    <Image src="/aboutUs/reliability.png" alt=" Home" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
+                    <Image src="/aboutUs/home.png" alt=" Home" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
                     <h3 className="text-[var(--navy)] font-bold text-3xl mb-4">Dignity at Home</h3>
                     <p className="text-[#2B384C] text-xl">
                       We make it easier for clients to remain independent and comfortable in the place they love most, their home
@@ -304,16 +306,16 @@ export default function AboutUs() {
         </div>
 
         {/* Our Mission Banner */}
-        <div className="w-full bg-[#233D4D] py-10 px-4 flex items-center justify-center">
-          <div className="flex flex-row items-center justify-between w-full max-w-6xl">
-            <div className="flex-1 pl-2 flex flex-col justify-center">
-              <h2 className="text-[#F2A307] font-bold text-[60px] leading-none mb-1">Our Mission</h2>
+        <div className="w-screen bg-[#233D4D] py-14 flex items-center justify-center relative left-1/2 right-1/2 -mx-[50vw]">
+          <div className="flex flex-row items-center justify-between w-full max-w-[1800px] px-0 md:px-20">
+            <div className="flex-1 flex flex-col justify-center">
+              <h2 className="text-[#F2A307] font-bold text-[60px] leading-none mb-6">Our Mission</h2>
               <div
-                className="text-white text-2xl ml-9 font-light leading-relaxed max-w-xl"
+                className="text-white text-2xl font-light leading-relaxed max-w-2xl"
                 dangerouslySetInnerHTML={{ __html: about.missionDescription ?? "" }}
               />
             </div>
-            <div className="flex-1 flex justify-end pr-8">
+            <div className="flex-1 flex justify-end">
               <Image
                 src="/aboutUs/wheelchair.png"
                 alt="Our Mission Banner"
