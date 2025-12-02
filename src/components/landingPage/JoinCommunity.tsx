@@ -19,7 +19,7 @@ const JoinCommunity = () => {
         </p>
 
         <YellowButton
-          className="px-6 sm:px-8 py-4 sm:py-5 text-sm sm:text-base lg:text-lg"
+          className="px-6 sm:px-8 py-5 sm:py-7 lg:py-7 text-sm sm:text-base lg:text-lg"
           onClick={() =>
             (window.location.href = "https://carenest-caregiver.vercel.app/signup")
           }
@@ -27,7 +27,7 @@ const JoinCommunity = () => {
           Join our cool community as a Caregiver
         </YellowButton>
 
-        <div className="hidden sm:block w-16 h-6 lg:w-24 lg:h-9 absolute z-10 -right-4 lg:-right-10 top-10">
+        <div className="hidden sm:block w-26 h-9 absolute z-10 left-[400px] bottom-[-10px]">
           <Image src="/dashed arrow.png" alt="arrow image" fill />
         </div>
       </div>

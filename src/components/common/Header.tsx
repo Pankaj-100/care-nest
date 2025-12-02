@@ -334,13 +334,13 @@ const NavbarMenu = ({
           href={link}
           className={`${
             isActive ? "text-[var(--yellow)]" : "text-white"
-          } text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.5vw,1.5rem)] xl:text-[clamp(0.8rem,1.2vw,1.2rem)] hover:text-[var(--yellow)] transition-colors`}
+          } text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.5vw,1.5rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] hover:text-[var(--yellow)] transition-colors`}
         >
           {title}
         </Link>
       ) : (
         <span 
-          className="text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.5vw,1.5rem)] xl:text-[clamp(0.8rem,1.2vw,1.2rem)] "
+          className="text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.5vw,1.5rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] "
           onClick={() => {
             if (title === "Services" || title === "Login" || title === "Who we are" || title === "Locations") {
               setOpenDropdownIndex(isDropdownOpen ? null : index);

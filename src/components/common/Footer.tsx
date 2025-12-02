@@ -128,7 +128,7 @@ const Footer = () => {
   const displaySocialLinks = dynamicSocialLinks.length > 0 ? dynamicSocialLinks : socialLink;
   return (
     <div className="pt-1 pb-1 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-12 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-12 items-start">
         {/* Logo and Description */}
         <div className="lg:col-span-2 mt-1">
           <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-4">
@@ -140,17 +140,17 @@ const Footer = () => {
         </div>
 
         {/* Company Links */}
-        <div className="mt-8 text-xl">
+        <div className="mt-8 text-xl flex flex-col justify-start h-full">
           <FooterLink title="Company" links={link[0]["Company"]} />
         </div>
         
         {/* Other Services */}
-        <div className="mt-8 text-xl">
+        <div className="mt-8 text-xl flex flex-col justify-start h-full">
           <FooterLink title="Other Services" links={link[0]["Other Services"]} />
         </div>
         
         {/* Locations we cover */}
-        <div className="mt-8 text-xl">
+        <div className="mt-8 text-xl flex flex-col justify-start h-full">
           {loading ? (
             <div>
               <p className="font-medium mb-6 text-white">Locations we cover</p>
@@ -166,7 +166,7 @@ const Footer = () => {
         </div>
         
         {/* Quick Links */}
-        <div className="mt-14 text-xl">
+        <div className="mt-8 text-xl flex flex-col justify-start h-full">
           <FooterLink title="Quick Links" links={link[0]["Quick Links"]} />
         </div>
       </div>

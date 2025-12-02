@@ -88,12 +88,12 @@ const BlogsSection = () => {
         )}
       </div>
 
-      {/* Tablet & Desktop: show up to three cards side by side */}
-      <div className="hidden md:flex flex-wrap items-stretch justify-center gap-8 lg:gap-10">
+      {/* Tablet & Desktop: show up to three cards in a row, equal width, consistent spacing */}
+      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 items-stretch justify-center w-full max-w-7xl mx-auto">
         {isLoading
           ? [0, 1, 2].map((i) => (
-              <div key={i} className="sm:p-2 sm:w-90">
-                <div className="sm:w-90 h-[300px] rounded-2xl mb-3 relative overflow-hidden bg-gray-100 animate-pulse" />
+              <div key={i} className="sm:p-2 w-full max-w-lg mx-auto">
+                <div className="w-full h-[300px] rounded-2xl mb-3 relative overflow-hidden bg-gray-100 animate-pulse" />
                 <div className="h-6 bg-gray-100 rounded w-40 mb-2 animate-pulse" />
                 <div className="h-4 bg-gray-100 rounded w-64 mb-2 animate-pulse" />
                 <div className="h-8 bg-gray-100 rounded w-full animate-pulse mt-2" />
@@ -113,20 +113,20 @@ const BlogCard = ({ id, title, author, date, image, excerpt }: Blog) => {
   };
 
   return (
-    <div className="w-full max-w-md sm:max-w-sm md:max-w-md lg:max-w-lg sm:p-2">
-      <div className="w-full h-72 sm:h-80 md:h-[360px] rounded-3xl mb-4 relative overflow-hidden">
+    <div className="w-full max-w-lg mx-auto flex flex-col justify-between bg-white rounded-[28px] shadow-none border-0 p-0">
+      <div className="w-full h-72 sm:h-80 md:h-[360px] rounded-[24px] mb-4 relative overflow-hidden">
         <Image
           src={image}
           alt={title}
           fill
           sizes="(min-width:1024px) 320px, 90vw"
-          className="rounded-2xl object-cover"
+          className="rounded-[24px] object-cover"
           priority
         />
       </div>
 
       <div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-x-2">
             <div className="relative w-7 h-7 rounded-full border border-[var(--navy)] overflow-hidden">
               <Image
@@ -138,7 +138,6 @@ const BlogCard = ({ id, title, author, date, image, excerpt }: Blog) => {
             </div>
             <p className="text-[var(--navy)] text-sm sm:text-base">{author}</p>
           </div>
-
           <p className="text-[var(--navy)] text-sm sm:text-base">{date}</p>
         </div>
         <h3 className="font-semibold text-2xl sm:text-3xl my-3 text-[var(--navy)]">
