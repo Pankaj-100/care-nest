@@ -49,14 +49,13 @@ const IntroductionWithCTA = () => {
         </div>
 
         <div className="my-5 w-full max-w-[90%]">
-          <p className="text-[var(--navy)] text-sm sm:text-base">
-            {description}
+          <p className="text-[var(--navy)] text-sm sm:text-base" dangerouslySetInnerHTML={{__html: description || description}}>
           </p>
 
         </div>
 
-        <div className="max-w-[90%]">
-          <YellowButton className="px-10">Register now</YellowButton>
+        <div className="max-w-2xl">
+          <YellowButton className="px-14 py-4">Register now</YellowButton>
         </div>
       </div>
 

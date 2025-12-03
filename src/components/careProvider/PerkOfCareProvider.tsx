@@ -51,7 +51,7 @@ const PerkOfCareProvider = () => {
 
   return (
     <div className="w-full bg-[var(--cream)] px-6 sm:px-8 lg:px-18 py-10 lg:py-18">
-      <h1 className="font-medium text-3xl sm:text-4xl lg:text-5xl leading-snug text-[var(--navy)] max-w-[26rem]">
+      <h1 className="font-semibold text-4xl sm:text-4xl lg:text-5xl leading-snug text-[var(--navy)] max-w-[28rem]">
         {title}
       </h1>
 
@@ -74,10 +74,10 @@ const PerkOfCareProvider = () => {
 export const Perks = ({ title, description, icon }: PerksProps) => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="p-2 bg-[var(--navy)] rounded-full w-10 h-10 flex items-center justify-center">
-        <div className="relative w-5 h-5">
+      <div className="p-2  rounded-full w-10 h-10 flex items-center justify-center">
+        <div className="relative w-12 h-7">
           <Image
-            src={icon || "/clock-line-icon.svg"}
+            src={icon || ""}
             alt={"perk icon"}
             fill
           />
@@ -85,10 +85,10 @@ export const Perks = ({ title, description, icon }: PerksProps) => {
       </div>
 
       <div>
-        <h2 className="text-lg sm:text-xl font-semibold text-[var(--navy)] mb-1">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--navy)] mb-2">
           {title}
         </h2>
-        <p className="text-sm sm:text-base text-[var(--navy)] leading-relaxed">
+        <p className="text-xl sm:text-2xl text-[var(--navy)] leading-relaxed">
           {description}
         </p>
       </div>

@@ -61,7 +61,7 @@ export const TransparentButton = ({
   onClick,
 }: ButtonType) => {
   const classes = cn(
-    "cursor-pointer rounded-3xl border-2 border-[var(--navy)] bg-transparent px-4 py-5 text-xs text-[var(--navy)] font-semibold hover:bg-[var(--navy)] hover:text-white transition-all duration-300 ease-in-out",
+    "cursor-pointer rounded-3xl border-2 border-[var(--navy)] bg-transparent px-4 py-5 text-base text-[var(--navy)] font-semibold hover:bg-[var(--navy)] hover:text-white transition-all duration-300 ease-in-out",
     className
   );
   return (

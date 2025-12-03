@@ -16,7 +16,7 @@ const HeroSectionCareProvider = ({ title, textClasses }: Props) => {
           src="/hero-care-provider.jpg"
           alt="hero care provider"
           fill
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: "cover", objectPosition: "right" }}
           priority
         />
         {/* Overlay: mobile/tablet vertical, desktop horizontal */}
@@ -33,7 +33,7 @@ const HeroSectionCareProvider = ({ title, textClasses }: Props) => {
           style={{
             background:
               // Desktop: horizontal gradient (left to right)
-              'linear-gradient(90deg, #233d4d 0%, #233d4d 30%, rgba(35,61,77,0.7) 40%, rgba(35,61,77,0) 80%)',
+              'linear-gradient(90deg, #233d4d 0%, #233d4d 20%, rgba(35,61,77,0.7) 40%, rgba(35,61,77,0) 80%)',
           }}
         />
       </div>
