@@ -157,7 +157,7 @@ const HeroSection = () => {
           </h1>
           
           <div className="my-4 sm:my-6">
-            <p className="font-light text-sm sm:text-base lg:text-lg text-center lg:text-left">
+            <p className="font-light text-sm sm:text-base lg:text-lg text-center lg:text-left ">
               {loading ? (
                 <>
                   <span className="inline-block h-4 w-3/4 bg-gray-600/30 rounded animate-pulse" />
@@ -165,15 +165,9 @@ const HeroSection = () => {
                   <span className="inline-block h-4 w-2/3 bg-gray-600/30 rounded animate-pulse mt-2" />
                 </>
               ) : (
-                <>
-                  {descriptionLines[0]}
-                  {descriptionLines[1] && (
-                    <>
-                      <br />
-                      {descriptionLines[1]}
-                    </>
-                  )}
-                </>
+                <span
+                  dangerouslySetInnerHTML={{ __html: heroData?.description || descriptionLines.join('<br />') }}
+                />
               )}
             </p>
           </div>

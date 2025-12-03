@@ -11,7 +11,7 @@ const classes = `absolute text-7xl text-white lg:left-28 left-8 font-medium -tra
 
   return (
     <div className="relative">
-      <div className="relative h-[221px]">
+      <div className="relative h-[241px]">
         <Image
           src={"/hero-section.png"}
           alt="Logo"

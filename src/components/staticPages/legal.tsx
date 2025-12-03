@@ -90,11 +90,11 @@ export default function Legal() {
     <div className="min-h-screen flex flex-col items-center justify-start py-8 sm:py-16 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-3xl">
 
-        <h4 className="text-[var(--yellow)] font-semibold mb-2 text-lg sm:text-lg text-center sm:text-left">
+        <h4 className="text-[var(--yellow)] font-semibold mb-2 text-lg sm:text-lg text-center">
           Let&apos;s Talk About Legal Terms
         </h4>
 
-        <h1 className="text-[var(--navy)] font-bold text-2xl sm:text-4xl md:text-5xl mb-6 text-center sm:text-left leading-tight">
+        <h1 className="text-[var(--navy)] font-bold text-2xl sm:text-4xl md:text-5xl mb-6 text-center leading-tight">
           Legal Terms
         </h1>
 
