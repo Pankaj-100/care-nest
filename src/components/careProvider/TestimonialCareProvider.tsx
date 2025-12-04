@@ -56,7 +56,7 @@ const TestimonialCareProvider = () => {
     <div className="w-full bg-white lg:bg-[var(--whiteSmoke)] px-6 sm:px-8 lg:px-18 py-10 lg:py-18 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
       {/* Left block: title + images for mobile, stays on left for desktop */}
       <div className="w-full lg:w-[55%]">
-        <h1 className="font-semibold text-3xl sm:text-4xl lg:text-4xl text-[var(--navy)] text-left">
+        <h1 className="font-semibold text-3xl sm:text-4xl lg:text-5xl text-[var(--navy)] text-left">
           {title}
         </h1>
 
@@ -115,14 +115,14 @@ export const Testimonial = ({ testimonials }: TestimonialProps) => {
       <div className="mb-6 flex justify-start">{quotes}</div>
 
       {/* Testimonial Text */}
-      <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+      <p className="text-gray-600 text-sm sm:text-xl leading-relaxed">
         {hasTestimonials
           ? testimonials[index].description
           : "Working with CareWorks has been life-changing. The support and meaningful connections with clients make every day rewarding."}
       </p>
 
       {/* Author */}
-      <p className="mt-4 font-bold text-base sm:text-lg text-[var(--navy)]">
+      <p className="mt-4 font-bold text-base sm:text-xl text-[var(--navy)]">
         {hasTestimonials ? testimonials[index].name : "Caregiver"}
       </p>
 

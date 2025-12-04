@@ -8,6 +8,8 @@ interface ContactFormProps {
   name: string;
   email: string;
   message: string;
+  zipcode: string;
+  phone: string;
 }
 
 const ContactForm: React.FC = () => {
@@ -15,6 +17,8 @@ const ContactForm: React.FC = () => {
     name: "",
     email: "",
     message: "",
+    zipcode: "",
+    phone: "",
   });
 
   const [loading, setLoading] = useState(false); // changed code: loading state
@@ -40,6 +44,8 @@ const ContactForm: React.FC = () => {
         name: formData.name,
         email: formData.email,
         description: formData.message, // API expects "description"
+        zipcode: formData.zipcode,
+        phone: formData.phone,
       };
 
       const res = await fetch(endpoint, {
@@ -61,7 +67,7 @@ const ContactForm: React.FC = () => {
 
       // success
       toast.success(json?.message ?? "Inquiry submitted successfully");
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", message: "", zipcode: "", phone: "" });
     } catch (err) {
       console.error("Inquiry submit error:", err);
       toast.error("Failed to submit inquiry");
@@ -88,7 +94,6 @@ const ContactForm: React.FC = () => {
             height={20}
             className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
           />
-
           <input
             name="name"
             type="text"
@@ -103,12 +108,11 @@ const ContactForm: React.FC = () => {
         <div className="relative">
           <Image
             src="/Contact/email-icon.png"
-            alt="Name"
+            alt="Email"
             width={20}
             height={20}
             className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
           />
-
           <input
             name="email"
             type="email"
@@ -119,6 +123,45 @@ const ContactForm: React.FC = () => {
             required
           />
         </div>
+
+        <div className="relative">
+          <Image
+            src="/Contact/user-icon.png"
+            alt="Zip code"
+            width={20}
+            height={20}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
+          />
+          <input
+            name="zipcode"
+            type="text"
+            value={formData.zipcode}
+            onChange={handleChange}
+            placeholder="Enter Zip code"
+            className="w-full pl-12 pr-4 max-w-lg px-4 py-3 border bg-white rounded-full focus:outline-none "
+            required
+          />
+        </div>
+
+        <div className="relative">
+          <Image
+            src="/Contact/user-icon.png"
+            alt="Phone No"
+            width={20}
+            height={20}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
+          />
+          <input
+            name="phone"
+            type="tel"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Enter Phone No"
+            className="w-full pl-12 pr-4 max-w-lg px-4 py-3 border bg-white rounded-full focus:outline-none "
+            required
+          />
+        </div>
+
 
         <div className="relative">
           <Image

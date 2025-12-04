@@ -132,7 +132,7 @@ const RegisterAsCareProvider = () => {
               onChange={setZipcode}
             />
             <InputArea value={description} onChange={setDescription} />
-            <YellowButton className="w-full mt-8" disabled={submitting}>
+            <YellowButton className="w-full mt-8 text-lg py-4" disabled={submitting}>
               {submitting ? "Submitting..." : "Submit"}
             </YellowButton>
           </form>

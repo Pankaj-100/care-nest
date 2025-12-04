@@ -53,7 +53,7 @@ const MainContent: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
           />
         </div>
 
-        <p className="text-gray-500 text-md sm:text-sm">
+        <p className="text-gray-500 text-md sm:text-md">
           {author} • {date}
         </p>
       </div>
@@ -63,7 +63,7 @@ const MainContent: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
       </h1>
 
       <div 
-        className="space-y-4 sm:space-y-6 text-[#667085] text-sm sm:text-base leading-relaxed prose prose-sm sm:prose-base max-w-none"
+        className="space-y-4 sm:space-y-6 text-[#667085] text-lg sm:text-lg leading-relaxed prose prose-sm sm:prose-base max-w-none"
         dangerouslySetInnerHTML={{
           __html: content || `
             <p>Caring for elderly loved ones at home is a heartfelt responsibility that requires attention, patience, and compassion. Ensuring comfort goes beyond physical needs—it includes emotional support, safety, and a sense of independence. Start by creating a safe and accessible environment.</p>

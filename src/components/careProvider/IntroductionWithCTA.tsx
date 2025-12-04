@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { YellowButton } from "../common/CustomButton";
+import Link from "next/link";
 import Image from "next/image";
 
 const IntroductionWithCTA = () => {
@@ -49,13 +50,17 @@ const IntroductionWithCTA = () => {
         </div>
 
         <div className="my-5 w-full max-w-[90%]">
-          <p className="text-[var(--navy)] text-sm sm:text-base" dangerouslySetInnerHTML={{__html: description || description}}>
+          <p className="text-[var(--navy)] text-xl sm:text-xl" dangerouslySetInnerHTML={{__html: description || description}}>
           </p>
 
         </div>
 
-        <div className="max-w-2xl">
-          <YellowButton className="px-14 py-4">Register now</YellowButton>
+        <div className="max-w-3xl">
+          <Link href="https://carenest-caregiver.vercel.app/signup" passHref legacyBehavior>
+            <a>
+              <YellowButton className="px-14 py-5 text-xl">Register now</YellowButton>
+            </a>
+          </Link>
         </div>
       </div>
 

@@ -390,9 +390,26 @@ export default function LocationTemplate({ slug }: LocationTemplateProps) {
                 </p>
               </div>
             </div>
+
+            
           </div>
         </div>
       </section>
+    {/* Contact Banner Section */}
+    <div className="w-full bg-[#F2A307] py-10 px-2">
+      <div className="max-w-5xl mx-auto text-center">
+        <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] mb-4 leading-tight">
+          Get In Touch With Us
+        </h2>
+        <p className="text-lg lg:text-2xl text-white font-light leading-relaxed mb-4 max-w-7xl mx-auto">
+          Have questions about our senior home care services or want to discuss your family’s needs? Our team is here to help you every step of the way. Reach out today for personalized support and guidance.
+        </p>
+        <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-10 py-5 rounded-full text-xl transition-colors duration-300 flex items-center gap-2 mx-auto">
+          Contact Us
+          <span className="text-xl">→</span>
+        </button>
+      </div>
     </div>
+  </div>
   );
 }

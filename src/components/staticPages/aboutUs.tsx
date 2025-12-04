@@ -426,7 +426,7 @@ export default function AboutUs() {
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
               <div>
-                <h2 className="text-[var(--navy)] font-bold text-7xl mb-4">{about.meetTeamHeading ?? "Meet Our Team Members"}</h2>
+                <h2 className="text-[var(--navy)] font-bold text-5xl mb-4 leading-tight">{about.meetTeamHeading ?? "Meet Our Team Members"}</h2>
               </div>
               <div>
                 <div

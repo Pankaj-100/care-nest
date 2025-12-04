@@ -42,20 +42,20 @@ export const CustomCard = ({
               className="object-cover"
             />
           </div>
-          <p className="text-[#98A2B3] text-sm font-medium">{name}</p>
+          <p className="text-[#98A2B3] text-md font-medium">{name}</p>
         </div>
-        <p className="text-[#98A2B3] text-sm">{date}</p>
+        <p className="text-[#98A2B3] text-md">{date}</p>
       </div>
 
-      <h3 className="font-medium text-3xl  text-[var(--navy)] mb-1">
+      <h3 className="text-3xl text-[var(--navy)] mb-1" style={{ fontFamily: 'Tahoma, Arial, sans-serif' }}>
         {desc}
       </h3>
 
-      <p className="text-sm text-[var(--navy)] mb-4">{para}</p>
+      <p className="text-lg text-[var(--navy)] mb-4">{para}</p>
 
       {href ? (
         <Link href={href}>
-          <div className="text-[var(--navy)] font-semibold text-sm cursor-pointer hover:underline flex items-center gap-1">
+          <div className="text-[var(--navy)] font-semibold text-xl cursor-pointer hover:underline flex items-center gap-1">
             Learn More
             <Image
               src="/Blog/dark-right-arrow.png"

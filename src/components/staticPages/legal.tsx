@@ -100,7 +100,7 @@ export default function Legal() {
 
         <div className=" rounded-lg p-4 sm:p-6 lg:p-8">
           <article
-            className="prose-sm sm:prose lg:prose-lg max-w-none text-lg sm:text-lg prose-a:text-[var(--navy)]"
+            className="prose-sm sm:prose lg:prose-lg max-w-none text-xl sm:text-xl prose-a:text-[var(--navy)]"
             dangerouslySetInnerHTML={{ __html: legal.content }}
           />
         </div>

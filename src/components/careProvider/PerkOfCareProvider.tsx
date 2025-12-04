@@ -10,9 +10,6 @@ interface PerksProps {
 }
 
 const PerkOfCareProvider = () => {
-  const [title, setTitle] = useState(
-    "Perks Of Joining As A  Caregiver On Our Platform"
-  );
   const [perksData, setPerksData] = useState<PerksProps[]>([]);
 
   useEffect(() => {
@@ -30,7 +27,6 @@ const PerkOfCareProvider = () => {
         const json = await res.json();
         const data = json?.data?.becomeCaregiver;
         if (data) {
-          if (data.title2) setTitle(data.title2);
           if (Array.isArray(data.points)) {
             setPerksData(
               data.points.map((pt: { heading: string; description: string; icon?: string }) => ({
@@ -51,8 +47,9 @@ const PerkOfCareProvider = () => {
 
   return (
     <div className="w-full bg-[var(--cream)] px-6 sm:px-8 lg:px-18 py-10 lg:py-18">
-      <h1 className="font-semibold text-4xl sm:text-4xl lg:text-5xl leading-snug text-[var(--navy)] max-w-[28rem]">
-        {title}
+      <h1 className="font-semibold text-4xl sm:text-4xl lg:text-5xl leading-tight text-[var(--navy)] w-full">
+        {/* {title} */}
+        Perks Of Joining As A<br />Caregiver On Our Platform
       </h1>
 
       <div
@@ -85,10 +82,10 @@ export const Perks = ({ title, description, icon }: PerksProps) => {
       </div>
 
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--navy)] mb-2">
+        <h2 className="text-2xl sm:text-2xl font-bold text-[var(--navy)] mb-2">
           {title}
         </h2>
-        <p className="text-xl sm:text-2xl text-[var(--navy)] leading-relaxed">
+        <p className="text-xl sm:text-xl text-[var(--navy)] leading-relaxed">
           {description}
         </p>
       </div>

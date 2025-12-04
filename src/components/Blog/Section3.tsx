@@ -51,24 +51,24 @@ const Section3: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
               alt="Author Avatar"
               className="rounded-full"
             />
-            <div className="flex items-center gap-2 text-sm">
+            <div className="flex items-center gap-2 text-md">
               <h4 className="font-semibold">{author}</h4>
               <div className="bg-white/50 w-2 h-2 rounded-full"></div>
               <p>{date}</p>
             </div>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-semibold leading-[120%] font-urbanist">
+          <h2 className="text-2xl sm:text-2xl font-semibold leading-[120%] font-urbanist">
             {title}
           </h2>
 
-          <p className="text-sm sm:text-md font-medium leading-[120%] font-urbanist">
+          <p className="text-sm sm:text-lg font-medium leading-[120%] font-urbanist">
             {desc}
           </p>
 
           {/* Learn More */}
           <div className="flex items-center gap-2 cursor-pointer hover:underline">
-            <a href={`/blogs/${blog?.id ?? ""}`} className="text-base leading-[150%] font-urbanist">
+            <a href={`/blogs/${blog?.id ?? ""}`} className="text-lg leading-[150%] font-urbanist">
               Learn More
             </a>
             <Image
