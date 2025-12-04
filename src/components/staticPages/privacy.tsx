@@ -71,10 +71,10 @@ export default function PrivacyPolicy() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-start py-16 px-4">
-      <h4 className="text-center text-[var(--yellow)] font-semibold mb-2 text-3xl">
+      <h4 className="text-center text-[var(--yellow)] font-semibold mb-2 text-2xl">
         Let&apos;s Talk About Policy
       </h4>
-      <h1 className="text-center text-[var(--navy)] font-bold text-6xl mb-6">
+      <h1 className="text-center text-[var(--navy)] font-semibold text-5xl mb-6">
         Privacy Policy
       </h1>
       <div

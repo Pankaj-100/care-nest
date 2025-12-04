@@ -9,7 +9,7 @@ export default function MedicaidCASProgram() {
       {/* Header Section */}
       <div className="w-full max-w-6xl text-center mb-11">
         <div className="text-[#F2A307] font-semibold text-4xl mb-4">What You Need To Know</div>
-        <h1 className="text-5xl md:text-6xl font-bold text-[#233D4D] leading-tight">
+        <h1 className="text-5xl md:text-5xl font-semibold text-[#233D4D] leading-tight">
           Medicaid CAS Program In Texas
         </h1>
       </div>
@@ -54,7 +54,7 @@ export default function MedicaidCASProgram() {
             left: '108px'
           }}
         >
-          <h3 className="text-2xl font-bold text-[#233D4D] mb-3">Medicaid Eligibility</h3>
+          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Medicaid Eligibility</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             The individual must be eligible for Medicaid, which generally means they fall within the low-income bracket as determined by state and federal guidelines.
           </p>
@@ -70,7 +70,7 @@ export default function MedicaidCASProgram() {
             left: '580px'
           }}
         >
-          <h3 className="text-2xl font-bold text-[#233D4D] mb-3">Residency</h3>
+          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Residency</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             The applicant must be a resident of the state where they are applying for CAS services. For instance, in Texas, the individual must be a resident of Texas.
           </p>
@@ -86,7 +86,7 @@ export default function MedicaidCASProgram() {
             left: '108px'
           }}
         >
-          <h3 className="text-2xl font-bold text-[#233D4D] mb-3">Age And Disability</h3>
+          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Age And Disability</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             While the program primarily serves elderly individuals and those with disabilities, specific age requirements may vary by state. In general, adults with disabilities and seniors are the primary recipients.
           </p>
@@ -102,7 +102,7 @@ export default function MedicaidCASProgram() {
             left: '1100px'
           }}
         >
-          <h3 className="text-2xl font-bold text-[#233D4D] mb-3">Need For Assistance</h3>
+          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Need For Assistance</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             The individual must require assistance with at least one activity of daily living (ADL) such as bathing, dressing, grooming, eating, or mobility.
           </p>
@@ -137,7 +137,7 @@ export default function MedicaidCASProgram() {
             left: '600px'
           }}
         >
-          <h3 className="text-2xl font-bold text-[#233D4D] mb-3">Functional Limitations</h3>
+          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Functional Limitations</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             The applicant must have a functional limitation that necessitates the need for personal care services. This could be due to a chronic illness, physical disability, or cognitive impairment.
           </p>
@@ -153,7 +153,7 @@ export default function MedicaidCASProgram() {
             left: '1100px'
           }}
         >
-          <h3 className="text-2xl font-bold text-[#233D4D] mb-8">Assessment</h3>
+          <h3 className="text-xl font-semibold text-[#233D4D] mb-8">Assessment</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             A professional assessment must determine that the individual requires attendant services to perform daily living activities safely and effectively. This assessment is usually conducted by a healthcare professional or caseworkor.
           </p>
@@ -193,7 +193,7 @@ export default function MedicaidCASProgram() {
             {/* Step 1 */}
             <div className="flex items-center justify-between mt-8 mb-16">
               <div className="w-2/5 text-right pr-8">
-                <h3 className="text-[#F2A307] text-2xl font-bold mb-2">Verify Medicaid Eligibility</h3>
+                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Verify Medicaid Eligibility</h3>
                 <p className="text-white text-lg leading-relaxed">Confirm that you meet Medicaid income and <br/> resource limits. You can check this through your <br/> state&apos;s Medicaid office or website.</p>
               </div>
               
@@ -217,7 +217,7 @@ export default function MedicaidCASProgram() {
               </div>
               
               <div className="w-2/5 text-left pl-8">
-                <h3 className="text-[#F2A307] text-2xl font-bold mb-2">Contact Medicaid Office</h3>
+                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Contact Medicaid Office</h3>
                 <p className="text-white text-lg">Reach out to your state&apos;s Medicaid <br/> office to inquire about CAS and <br/> initiate the application process.</p>
               </div>
             </div>
@@ -225,7 +225,7 @@ export default function MedicaidCASProgram() {
             {/* Step 3 */}
             <div className="flex items-center justify-between mb-16">
               <div className="w-2/5 text-right pr-8">
-                <h3 className="text-[#F2A307] text-2xl font-bold mb-2">Schedule An Assessment</h3>
+                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Schedule An Assessment</h3>
                 <p className="text-white text-lg">Arrange for a professional assessment to <br/> evaluate your need for attendant services.</p>
               </div>
               
@@ -249,7 +249,7 @@ export default function MedicaidCASProgram() {
               </div>
               
               <div className="w-2/5 text-left pl-8">
-                <h3 className="text-[#F2A307] text-2xl font-bold mb-2">Submit Required Documentation</h3>
+                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Submit Required Documentation</h3>
                 <p className="text-white text-lg">Provide necessary documentation, <br/> including proof of income, residency, and <br/> medical records if required.</p>
               </div>
             </div>
@@ -257,7 +257,7 @@ export default function MedicaidCASProgram() {
             {/* Step 5 */}
             <div className="flex items-center justify-between">
               <div className="w-2/5 text-right pr-8">
-                <h3 className="text-[#F2A307] text-2xl font-bold mb-2">Approval And Services</h3>
+                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Approval And Services</h3>
                 <p className="text-white text-lg">Once approved, you will receive a <br/> personalized care plan and be matched <br/> with a caregiver to start receiving services.</p>
               </div>
               
@@ -277,7 +277,7 @@ export default function MedicaidCASProgram() {
       {/* Benefits Section */}
       <div className="w-full bg-[#F7F0D3] py-20 px-4 -mt-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold text-[#233D4D] mt-8 text-center mb-16">
+          <h2 className="text-5xl font-semibold text-[#233D4D] mt-8 text-center mb-16">
             Benefits Of The CAS Program
           </h2>
           
@@ -288,7 +288,7 @@ export default function MedicaidCASProgram() {
               <div className="w-12 h-12 bg-[#233D4D1A] rounded-full flex items-center justify-center mb-6">
                <Medicaid1 />
               </div>
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Personalized Care</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Personalized Care</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
                 Individualized assistance with daily living activities such as bathing, dressing, and grooming.
               </p>
@@ -299,7 +299,7 @@ export default function MedicaidCASProgram() {
               <div className="w-12 h-12 bg-[#233D4D1A] rounded-full flex items-center justify-center mb-6">
                 <Medicaid2 />
               </div>
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Enhanced Independence</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Enhanced Independence</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
                 Helps recipients maintain independence by providing necessary support at home.
               </p>
@@ -310,7 +310,7 @@ export default function MedicaidCASProgram() {
               <div className="w-12 h-12 bg-[#233D4D1A] rounded-full flex items-center justify-center mb-6">
                 <Medicaid3 />
               </div>
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Cost-Effective</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Cost-Effective</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
                 Covered by Medicaid, making it an affordable option for eligible individuals.
               </p>
@@ -324,7 +324,7 @@ export default function MedicaidCASProgram() {
               <div className="w-12 h-12 bg-[#233D4D1A] rounded-full flex items-center justify-center mb-6">
                 <Medicaid4 />
               </div>
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Comprehensive Support</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Comprehensive Support</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
                 Includes services like meal preparation, medication reminders, and light housekeeping.
               </p>
@@ -335,7 +335,7 @@ export default function MedicaidCASProgram() {
               <div className="w-12 h-12 bg-[#233D4D1A] rounded-full flex items-center justify-center mb-6">
                 <Medicaid5 />
               </div>
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Professional Caregivers</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Professional Caregivers</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
                 Services provided by trained and compassionate attendants.
               </p>
@@ -347,7 +347,7 @@ export default function MedicaidCASProgram() {
       {/* How To Apply Section */}
       <div className="w-full bg-white py-20 px-4">
         <div className="max-w-6xl mx-auto relative">
-          <h2 className="text-4xl font-bold text-[#233D4D] text-center mb-4">
+          <h2 className="text-5xl font-semibold text-[#233D4D] text-center mb-4">
             How To Apply For CAS (Community Attendant Service) Program
           </h2>
           <p className="text-gray-600 text-center mb-16 text-xl max-w-3xl mx-auto">
@@ -412,14 +412,14 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Verify Medicaid Eligibility</h3>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Verify Medicaid Eligibility</h3>
                 <ul className="space-y-2 text-lg text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                  <li className="flex items-start text-lg gap-2">
+                    <span className="w-2 h-2 bg-[#F2A307] rounded-full text-lg mt-2 flex-shrink-0"></span>
                     Ensure you are eligible for Medicaid by checking your income and resource limits as per state and federal guidelines.
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                  <li className="flex items-start text-lg gap-2">
+                    <span className="w-2 h-2 bg-[#F2A307] rounded-full text-lg mt-2 flex-shrink-0"></span>
                     Contact your state&apos;s Medicaid office or visit their website for eligibility information.
                   </li>
                   <li className="flex items-start gap-2">
@@ -447,7 +447,7 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Gather Necessary Documentation</h3>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Gather Necessary Documentation</h3>
                 <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
@@ -486,7 +486,7 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Initiate The Process</h3>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Initiate The Process</h3>
                 <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
@@ -521,7 +521,7 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Schedule An Assessment</h3>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Schedule An Assessment</h3>
                 <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
@@ -552,7 +552,7 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Submit Application</h3>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Submit Application</h3>
                 <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
@@ -591,7 +591,7 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Processing Time</h3>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Processing Time</h3>
                 <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
@@ -622,7 +622,7 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Personalized Plan</h3>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Personalized Plan</h3>
                 <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
@@ -653,7 +653,7 @@ export default function MedicaidCASProgram() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-3xl font-bold text-[#233D4D] mb-4">Service Initiation</h3>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Service Initiation</h3>
                 <ul className="space-y-2 text-lg text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
@@ -676,8 +676,8 @@ export default function MedicaidCASProgram() {
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Left Content */}
           <div className="flex-1 text-white">
-            <p className="text-[#F2A307] font-semibold text-3xl mb-4">Texas Medicaid Office</p>
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            <p className="text-[#F2A307] font-semibold text-2xl mb-4">Texas Medicaid Office</p>
+            <h2 className="text-4xl lg:text-3xl font-semibold mb-6 leading-tight">
               Dedicated Helpline For Seniors Seeking Care And Support Programs
             </h2>
             
@@ -686,14 +686,30 @@ export default function MedicaidCASProgram() {
                 <div className="w-6 h-6 rounded-full flex items-center justify-center">
                   <NetworkIcon/>
                 </div>
-                <span className="text-lg">Https://Www.Yourtexasbenefits.Com/Learn/Home</span>
+                <a
+                  href="https://www.yourtexasbenefits.com/learn/home"
+                  target="_blank"
+                  className="text-lg hover:underline focus:underline"
+                  aria-label="Visit Your Texas Benefits website"
+                  rel="noopener noreferrer"
+                >
+                  Https://Www.Yourtexasbenefits.Com/Learn/Home
+                </a>
               </div>
               
               <div className="flex items-center gap-3">
                 <div className="w-6 h-6 rounded-full flex items-center justify-center">
                   <LocationIcon1/>
                 </div>
-                <span className="text-lg">Find Local Aging & Disability Resource Center</span>
+                <a
+                  href="https://hhs.texas.gov/services/aging/long-term-care/aging-disability-resource-center"
+                  target="_blank"
+                  className="text-lg hover:underline focus:underline"
+                  aria-label="Find Local Aging & Disability Resource Center"
+                  rel="noopener noreferrer"
+                >
+                  Find Local Aging & Disability Resource Center
+                </a>
               </div>
             </div>
             
@@ -723,7 +739,7 @@ export default function MedicaidCASProgram() {
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Left Content */}
           <div className="flex-1 lg:pr-8">
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] mb-6 leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-semibold text-[#233D4D] mb-6 leading-tight">
               We&apos;re Here For You
             </h2>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-2xl">
@@ -735,21 +751,43 @@ export default function MedicaidCASProgram() {
                 <div className="w-12 h-12 bg-[#233D4D] rounded-full flex items-center justify-center">
                   <PhoneIcon3 />
                 </div>
-                <span className="text-xl text-[#233D4D] font-medium">832-237-2273</span>
+                <a
+                  href="tel:8322372273"
+                  className="text-lg text-[#233D4D] font-medium hover:underline focus:underline"
+                  aria-label="Call 832-237-2273"
+                  rel="noopener noreferrer"
+                >
+                  832-237-2273
+                </a>
               </div>
               
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-[#233D4D] rounded-full flex items-center justify-center">
                   <MessageIcon3/>
                 </div>
-                <span className="text-xl text-[#233D4D] font-medium">Careworks77479@Gmail.Com</span>
+                <a
+                  href="mailto:Careworks77479@Gmail.Com"
+                  className="text-lg text-[#233D4D] font-medium hover:underline focus:underline"
+                  aria-label="Email Careworks77479@Gmail.Com"
+                  rel="noopener noreferrer"
+                >
+                  Careworks77479@Gmail.Com
+                </a>
               </div>
               
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-[#233D4D] rounded-full flex items-center justify-center">
                   <NetworkIcon2 />
                 </div>
-                <span className="text-xl text-[#233D4D] font-medium">Https://Www.Careworks.Biz</span>
+                <a
+                  href="https://www.careworks.biz"
+                  target="_blank"
+                  className="text-lg text-[#233D4D] font-medium hover:underline focus:underline"
+                  aria-label="Visit Careworks website"
+                  rel="noopener noreferrer"
+                >
+                  Https://Www.Careworks.Biz
+                </a>
               </div>
             </div>
           </div>

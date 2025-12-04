@@ -84,7 +84,7 @@ const RegisterAsCareProvider = () => {
       </div>
       <div className="lg:px-20 px-8 lg:py-20 py-12 flex justify-center bg-[var(--whiteSmoke)] lg:min-w-1/2">
         <div>
-          <h1 className="text-4xl font-medium  text-[var(--navy)]">
+          <h1 className="text-4xl font-semibold  text-[var(--navy)]">
             Start Caring, Start Earning –  <br />Register as a Caregiver Now
           </h1>
 

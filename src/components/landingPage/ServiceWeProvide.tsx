@@ -202,7 +202,7 @@ const ServiceWeProvide: React.FC = () => {
                   </div>
 
                   <h3
-                    className={`font-semibold text-2xl mb-4 font-urbanist text-[#233D4D] group-hover:text-[#F2A307] transition-colors duration-200`}
+                    className={`font-semibold text-xl mb-4 font-urbanist text-[#233D4D] group-hover:text-[#F2A307] transition-colors duration-200`}
                   >
                     {service.title}
                   </h3>
@@ -215,7 +215,7 @@ const ServiceWeProvide: React.FC = () => {
 
                   <button
                     onClick={() => (window.location.href = service.route)}
-                    className={`mt-auto flex items-center gap-2 font-semibold text-lg cursor-pointer transition text-[#233D4D] hover:text-[#F2A307] group-hover:text-[#F2A307]`}
+                    className={`mt-auto flex items-center gap-2 font-semibold text-md cursor-pointer transition text-[#233D4D] hover:text-[#F2A307] group-hover:text-[#F2A307]`}
                   >
                     View More <span className="ml-1">&#8594;</span>
                   </button>

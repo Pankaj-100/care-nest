@@ -140,7 +140,7 @@ const BlogCard = ({ id, title, author, date, image, excerpt }: Blog) => {
           </div>
           <p className="text-[var(--navy)] text-sm sm:text-base">{date}</p>
         </div>
-        <h3 className="font-semibold text-2xl sm:text-3xl my-3 text-[var(--navy)]">
+        <h3 className="font-semibold text-2xl sm:text-2xl my-3 text-[var(--navy)]">
           {title}
         </h3>
         <p className="w-full text-base sm:text-lg text-[var(--navy)] mb-6 line-clamp-3">

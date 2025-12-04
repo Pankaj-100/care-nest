@@ -1,105 +1,136 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
-const faqs = [
-	{
-		question: "How do I book a caregiver through the platform?",
-		answer:
-			"You can book a caregiver by selecting your preferred service type (e.g., elderly care, post-surgery support), choosing a time slot, and confirming the booking. Our platform allows you to view caregiver profiles, ratings, and availability before making a decision.",
-	},
-	{
-		question: "Can I schedule recurring visits instead of one-time care?",
-		answer: "",
-	},
-	{
-		question: "What happens if I need to cancel or reschedule a booking?",
-		answer: "",
-	},
-	{
-		question: "Are caregivers background-checked and certified?",
-		answer: "",
-	},
-	{
-		question: "How is payment handled for care services?",
-		answer: "",
-	},
-];
 
-export default function FAQPage() {
-	const [openIdx, setOpenIdx] = useState(0);
+interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+interface FaqData {
+  sectionTitle: string;
+  faqItems: FaqItem[];
+}
 
-	return (
-		<div className="min-h-screen bg-white flex flex-col mt-15 items-center">
-			{/* Top FAQ Banner Section */}
-			<div className="w-full max-w-6xl flex flex-col md:grid md:grid-cols-2 gap-8 items-center mb-16 px-4">
-				<div className="order-2 md:order-1">
-					<h4 className="text-[var(--yellow)] font-semibold mb-2 text-2xl sm:text-3xl">
-						FAQ&apos;s
-					</h4>
-					<h1 className="text-[var(--navy)] font-bold text-3xl sm:text-5xl mb-4 sm:mb-6">
-						Frequently Asked <br/> Questions
-					</h1>
-					<p className="text-gray-500 text-base sm:text-xl mb-4">
-						Your privacy is very important to us. Accordingly, we have
-						developed this Policy in order for you to understand how we
-						collect, use, communicate and disclose and make use of personal
-						information. The following outlines our privacy policy.
-					</p>
-				</div>
-				<div className="flex justify-center order-1 md:order-2 mb-4 md:mb-0">
-					<Image
-						src="/faq1.png"
-						alt="FAQ Banner"
-						width={240}
-						height={240}
-						className="max-w-[240px] w-full h-auto sm:max-w-[340px] sm:w-full"
-					/>
-				</div>
+export default function FAQ() {
+  const [openIdx, setOpenIdx] = useState<number>(-1);
+const [faq, setFaq] = useState<FaqData | null>(null);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState<string | null>(null);
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
+
+// Fetch FAQ data from API
+useEffect(() => {
+  let mounted = true;
+  const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/faq/type/FaqPage`;
+  setLoading(true);
+  fetch(endpoint)
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((json) => {
+      if (!mounted) return;
+      const faqs = json?.data?.faqs?.[0];
+      if (!faqs) {
+        setError("No FAQ data found");
+      } else {
+        setFaq({
+          sectionTitle: faqs.sectionTitle || "What You Need To Know",
+          faqItems: faqs.faqItems || [],
+        });
+      }
+    })
+		.catch(() => {
+			if (!mounted) return;
+			setError("Failed to load FAQ");
+		})
+    .finally(() => {
+      if (!mounted) return;
+      setLoading(false);
+    });
+  return () => {
+    mounted = false;
+  };
+}, [API_BASE]);
+
+return (
+	<div className="min-h-screen bg-white flex flex-col mt-15 items-center">
+		{/* Top FAQ Banner Section */}
+		<div className="w-full max-w-6xl flex flex-col md:grid md:grid-cols-2 gap-8 items-center mb-16 px-4">
+			<div className="order-2 md:order-1">
+				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-2xl sm:text-3xl">
+					FAQ&apos;s
+				</h4>
+				<h1 className="text-[var(--navy)] font-semibold text-3xl sm:text-5xl mb-4 sm:mb-6">
+					Frequently Asked <br/> Questions
+				</h1>
+				<p className="text-gray-500 text-base sm:text-lg mb-4">
+					Your privacy is very important to us. Accordingly, we have
+					developed this Policy in order for you to understand how we
+					collect, use, communicate and disclose and make use of personal
+					information. The following outlines our privacy policy.
+				</p>
 			</div>
-			{/* General FAQ Section */}
-			<div className="w-full max-w-6xl flex flex-col md:grid md:grid-cols-2 gap-8 items-start px-4">
-				<div>
-					<h4 className="text-[var(--yellow)] font-semibold mb-2 text-xl sm:text-2xl">
-						General FAQ&apos;s
-					</h4>
-					<h2 className="text-[var(--navy)] font-bold text-2xl sm:text-4xl mb-4 sm:mb-6">
-						What You Need To Know
-					</h2>
-				</div>
-				<div className="flex flex-col gap-4">
-					{faqs.map((faq, idx) => (
-						<div
-							key={faq.question}
-							className="bg-[#F7F7F3] rounded-xl px-4 sm:px-6 py-4 sm:py-5 shadow-sm cursor-pointer transition"
-							onClick={() => setOpenIdx(openIdx === idx ? -1 : idx)}
-						>
-							<div className="flex items-center justify-between">
-								<span className="font-semibold text-[#233D4D] text-base sm:text-xl">
-									{faq.question}
-								</span>
-								<span className="text-xl sm:text-2xl text-[#233D4D]">
-									{openIdx === idx ? "−" : "+"}
-								</span>
-							</div>
-							{openIdx === idx && faq.answer && (
-								<p className="text-gray-600 text-sm sm:text-md mt-3">
-									{faq.answer}
-								</p>
-							)}
+			<div className="flex justify-center order-1 md:order-2 mb-4 md:mb-0">
+				<Image
+					src="/faq1.png"
+					alt="FAQ Banner"
+					width={240}
+					height={240}
+					className="max-w-[240px] w-full h-auto sm:max-w-[340px] sm:w-full"
+				/>
+			</div>
+		</div>
+		{/* General FAQ Section */}
+		<div className="w-full max-w-6xl flex flex-col md:grid md:grid-cols-2 gap-8 items-start px-4">
+			<div>
+				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-xl sm:text-2xl">
+					General FAQ&apos;s
+				</h4>
+				<h2 className="text-[var(--navy)] font-semibold text-2xl sm:text-5xl mb-4 sm:mb-6">
+					{faq?.sectionTitle || "What You Need To Know"}
+				</h2>
+			</div>
+			<div className="flex flex-col gap-4">
+				{loading && <div className="text-[var(--navy)]">Loading FAQs...</div>}
+				{error && <div className="text-red-400">{error}</div>}
+				{!loading && !error && Array.isArray(faq?.faqItems) && faq.faqItems.length > 0 && faq.faqItems.map((faq, idx) => (
+					<div
+						key={faq.id}
+						className="bg-[#F7F7F3] rounded-xl px-4 sm:px-6 py-4 sm:py-5 shadow-sm cursor-pointer transition"
+						onClick={() => setOpenIdx(openIdx === idx ? -1 : idx)}
+					>
+						<div className="flex items-center justify-between">
+							<span className=" font-medium text-[#233D4D] text-lg sm:text-xl">
+								{faq.question}
+							</span>
+							<span className="text-xl sm:text-lg text-[#233D4D]">
+								{openIdx === idx ? "−" : "+"}
+							</span>
 						</div>
-					))}
-				</div>
+						{openIdx === idx && faq.answer && (
+							<p className="text-gray-600 text-lg sm:text-md mt-3">
+								{faq.answer}
+							</p>
+						)}
+					</div>
+				))}
+				{!loading && !error && (!faq?.faqItems || !Array.isArray(faq.faqItems) || faq.faqItems.length === 0) && (
+					<div className="text-[var(--navy)]">No FAQs available.</div>
+				)}
 			</div>
+		</div>
 
 			{/* Banner Section */}
 			<div className="w-full bg-[#F7F0D3] py-8 px-0 mt-8 flex items-center justify-center">
 				<div className="flex flex-col md:flex-row items-center justify-between w-full max-w-7xl px-4">
 					<div className="flex-1 md:pl-8 order-2 md:order-1">
-						<h2 className="text-[var(--navy)] font-bold text-2xl sm:text-4xl mb-4 sm:mb-6 leading-tight">
+						<h2 className="text-[var(--navy)] font-semibold text-2xl sm:text-5xl mb-4 sm:mb-6 leading-tight">
 							Compassionate Care, Just A Call Away
 						</h2>
-						<p className="text-[var(--navy)] text-base sm:text-xl mb-6 sm:mb-8 leading-relaxed">
+						<p className="text-[var(--navy)] text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
 							Looking For A Caregiver Who Treats Your Loved One With Dignity And Kindness? Our Team Is Ready To Offer Personalized Care And Peace Of Mind. Contact Us To Learn More
 						</p>
 						<a

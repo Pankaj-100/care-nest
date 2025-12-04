@@ -195,7 +195,7 @@ export default function LocationTemplate({ slug }: LocationTemplateProps) {
             </h1>
           </div>
           <div>
-            <p className="text-gray-700 leading-relaxed text-justify text-xl">
+            <p className="text-gray-700 leading-relaxed text-justify text-lg">
               {data.heroDescription}
             </p>
           </div>
@@ -220,7 +220,7 @@ export default function LocationTemplate({ slug }: LocationTemplateProps) {
             {data.whyChooseTitle}
           </h2>
           <div className="space-y-4">
-            <p className="text-gray-700 leading-relaxed text-justify text-xl">
+            <p className="text-gray-700 leading-relaxed text-justify text-lg">
               {data.whyChooseDescription}
             </p>
             {data.whyChooseHighlights?.map((highlight, index) => (
@@ -238,13 +238,13 @@ export default function LocationTemplate({ slug }: LocationTemplateProps) {
       {/* Services Section */}
       <section className="bg-white py-16 px-6 md:px-8 lg:px-24">
         <div className="max-w-8xl mx-auto">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-center text-[#2C3E50] mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-[#2C3E50] mb-4">
             Our Senior Home Care
           </h2>
-          <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold text-center text-[#2C3E50] mb-8">
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-[#2C3E50] mb-8">
             Services In {data.city}
           </h3>
-          <p className="text-center text-gray-700 text-xl mb-4 max-w-5xl mx-auto">
+          <p className="text-center text-gray-700 text-lg mb-4 max-w-5xl mx-auto">
             {data.servicesIntro}
           </p>
           {data.servicesDescription && (
@@ -310,7 +310,7 @@ export default function LocationTemplate({ slug }: LocationTemplateProps) {
                       />
                     </div>
                     <div className="order-1 md:order-2">
-                      <h4 className="text-4xl font-bold text-[#2C3E50] mb-4">
+                      <h4 className="text-5xl font-bold text-[#2C3E50] mb-4">
                         {service.title}
                       </h4>
                       <ul className="space-y-3">
@@ -331,7 +331,7 @@ export default function LocationTemplate({ slug }: LocationTemplateProps) {
                                 />
                               </svg>
                             </div>
-                            <span className="text-gray-700 text-xl">{item}</span>
+                            <span className="text-gray-700 text-lg">{item}</span>
                           </li>
                         ))}
                       </ul>

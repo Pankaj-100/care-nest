@@ -82,69 +82,49 @@ export default function WhoWeAre() {
     <div className="w-full flex flex-col items-center bg-white">
       {/* Top Section */}
       <div className="w-full max-w-7xl mt-10 flex flex-col lg:flex-row items-start justify-between mb-16 px-4 sm:px-6">
-        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-[#233D4D] mb-6 lg:mb-0 lg:mr-12 whitespace-pre-line lg:w-1/2">
+        <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#233D4D] mb-6 lg:mb-0 lg:mr-12 whitespace-pre-line lg:w-1/2">
           {who.mainHeading || "Who We Are"}
         </h1>
         <div
-          className="text-[#233D4D] text-base sm:text-lg md:text-xl max-w-2xl leading-relaxed lg:w-1/2"
+          className="text-[#233D4D] text-lg sm:text-lg md:text-lg max-w-2xl leading-relaxed lg:w-1/2"
           dangerouslySetInnerHTML={{ __html: who.mainDescription ?? "" }}
         />
       </div>
 
-      {/* Images Section */}
+      {/* Images Section with specific sizes for each slot */}
       <div className="w-full mt-6 max-w-6xl grid grid-cols-2 gap-4 sm:gap-6 md:gap-8 px-4 lg:flex lg:flex-row lg:justify-center lg:items-stretch lg:gap-8">
-        {images.length > 0 ? (
-          images.slice(0, 4).map((src, idx) => (
+        {(images.length > 0 ? images.slice(0, 4) : [
+          "/whoWeAre/image1.png",
+          "/whoWeAre/image2.png",
+          "/whoWeAre/image3.png",
+          "/whoWeAre/image4.png"
+        ]).map((src, idx) => {
+          // Assign specific sizes for each image slot
+          let width = 260, height = 300;
+          if (idx === 0) { width = 250; height = 450; }
+          if (idx === 1) { width = 260; height = 300; }
+          if (idx === 2) { width = 260; height = 300; }
+          if (idx === 3) { width = 260; height = 300; }
+          return (
             <Image
               key={idx}
               src={src}
               alt={`who-we-are-${idx}`}
-              width={260}
-              height={300}
+              width={width}
+              height={height}
               className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
             />
-          ))
-        ) : (
-          <>
-            <Image
-              src="/whoWeAre/image1.png"
-              alt="CareWorks support 1"
-              width={250}
-              height={450}
-              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
-            />
-            <Image
-              src="/whoWeAre/image2.png"
-              alt="CareWorks support 2"
-              width={260}
-              height={300}
-              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
-            />
-            <Image
-              src="/whoWeAre/image3.png"
-              alt="CareWorks support 3"
-              width={260}
-              height={300}
-              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
-            />
-            <Image
-              src="/whoWeAre/image4.png"
-              alt="CareWorks support 4"
-              width={260}
-              height={300}
-              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
-            />
-          </>
-        )}
+          );
+        })}
       </div>
 
       {/* Our Caregiver Network Section */}
       <section className="w-full bg-[#F7F7F3] py-15 flex flex-col items-center mt-20">
-        <h2 className="text-6xl font-bold text-[#233D4D] mb-10 text-center">
+        <h2 className="text-5xl font-bold text-[#233D4D] mb-10 text-center">
           {who.caregiverNetworkHeading ?? "Our Caregiver Network"}
         </h2>
         <div
-          className="text-[#233D4D] text-base sm:text-xl md:text-2xl md:w-2/3  max-w-5xl text-center mb-8 leading-snug"
+          className="text-[#233D4D] text-base sm:text-lg md:text-lg md:w-2/3  max-w-6xl text-center mb-8 leading-snug"
           dangerouslySetInnerHTML={{ __html: who.caregiverNetworkDescription ?? "" }}
         />
         
@@ -155,7 +135,7 @@ export default function WhoWeAre() {
           src={heroImage}
           alt="Caregiver with senior outdoors"
           width={1600}
-          height={800}
+          height={700}
           className="w-full max-w-9xl h-[580px] object-cover shadow"
           priority
         />
@@ -163,11 +143,11 @@ export default function WhoWeAre() {
 
       {/* Our Promise Section */}
       <section className="w-full max-w-7xl flex flex-col md:flex-row items-start justify-between mt-25 mb-19 px-4">
-        <h2 className="text-6xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line md:w-1/3">
+        <h2 className="text-5xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line md:w-1/3">
           {who.promiseHeading ?? "Our Promise"}
         </h2>
         <div
-          className="text-[#233D4D] text-2xl max-w-3xl leading-relaxed md:w-2/3"
+          className="text-[#233D4D] text-lg max-w-3xl leading-relaxed md:w-2/3"
           dangerouslySetInnerHTML={{ __html: who.promiseDescription ?? "" }}
         />
       </section>
@@ -204,7 +184,7 @@ export default function WhoWeAre() {
           <h2 className="text-[#F2A307] text-2xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-8">
             Contact Us Today For More Information
           </h2>
-          <p className="text-white text-base sm:text-xl md:text-2xl mb-4 sm:mb-8">
+          <p className="text-white text-base sm:text-lg md:text-2xl mb-4 sm:mb-8">
             Make The Call That Can Improve Your Life Or That Of A Loved One.
             Contact Us Today To Inquire About Our Houston Based Home Care Services
             And To Find A Solution That Fits Your Budgetary Needs And Your

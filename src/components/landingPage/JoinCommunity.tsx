@@ -12,7 +12,7 @@ const JoinCommunity = () => {
           Interested in caregiving opportunities? Join our growing community of trusted professionals helping families every day
         </h1>
 
-        <p className="text-gray-300 my-4 text-sm sm:text-base xl:text-[20px] font-light">
+        <p className="text-gray-300 my-4 text-sm sm:text-base xl:text-lg font-light">
           Become part of a growing community of compassionate caregivers. Offer
           your skills, earn on your terms, and make a meaningful difference in
           the lives of elderly individuals and their families every day.
@@ -27,7 +27,7 @@ const JoinCommunity = () => {
           Join our cool community as a Caregiver
         </YellowButton>
 
-        <div className="hidden sm:block w-26 h-9 absolute z-10 left-[400px] bottom-[-10px]">
+        <div className="hidden sm:block w-26 h-9 absolute z-10 left-[430px] bottom-[-10px]">
           <Image src="/dashed arrow.png" alt="arrow image" fill />
         </div>
       </div>

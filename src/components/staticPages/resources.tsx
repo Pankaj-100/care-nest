@@ -86,7 +86,7 @@ export default function ResourcesPage() {
       <h1 className="text-center text-[var(--navy)] font-bold text-5xl mb-6">
         {data.title}
       </h1>
-      <p className="max-w-4xl text-xl text-center text-gray-500 mb-8 ">
+      <p className="max-w-4xl text-lg text-center text-gray-500 mb-8 ">
         {data.description}
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
@@ -105,7 +105,7 @@ export default function ResourcesPage() {
                 </span>
               ))}
             </div>
-            <h3 className="text-2xl font-bold text-[#233D4D] mb-2">
+            <h3 className="text-xl font-bold text-[#233D4D] mb-2">
               {card.title}
             </h3>
             <p className="text-gray-500 text-lg mb-6 line-clamp-4">

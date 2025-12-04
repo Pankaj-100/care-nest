@@ -5,8 +5,8 @@ export default function LongTermCare() {
   return (
     <div className="flex flex-col min-h-screen items-center py-20 px-4 bg-gray-50 relative">
       {/* Header Section */}
-      <div className="w-full max-w-6xl text-center mb-16 relative z-10">
-        <h1 className="text-4xl md:text-5xl font-bold text-[#233D4D] leading-tight mb-8">
+      <div className="w-full max-w-5xl text-center mb-16 relative z-10">
+        <h1 className="text-4xl md:text-5xl font-semibold text-[#233D4D] leading-tight mb-8">
           Why Choose CareWorks As Your Long-Term Care Provider Under The CAS Program?
         </h1>
       </div>
@@ -72,7 +72,7 @@ export default function LongTermCare() {
               </div>
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Expertise In The CAS Program</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Expertise In The CAS Program</h3>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-[#233D4D] mb-2 flex items-center gap-2">
@@ -113,7 +113,7 @@ export default function LongTermCare() {
               </div>
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Personalized And Compassionate Care</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Personalized And Compassionate Care</h3>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-[#233D4D] mb-2 flex items-center gap-2">
@@ -154,7 +154,7 @@ export default function LongTermCare() {
               </div>
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Flexible And Reliable Services</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Flexible And Reliable Services</h3>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-[#233D4D] mb-2 flex items-center gap-2">
@@ -195,7 +195,7 @@ export default function LongTermCare() {
               </div>
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Comprehensive Range Of Services</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Comprehensive Range Of Services</h3>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-[#233D4D] mb-2 flex items-center gap-2">
@@ -236,7 +236,7 @@ export default function LongTermCare() {
               </div>
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Highly Trained And Experienced Caregivers</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Highly Trained And Experienced Caregivers</h3>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-[#233D4D] mb-2 flex items-center gap-2">
@@ -277,7 +277,7 @@ export default function LongTermCare() {
               </div>
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Transparent And Affordable Pricing</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Transparent And Affordable Pricing</h3>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-[#233D4D] mb-2 flex items-center gap-2">
@@ -318,7 +318,7 @@ export default function LongTermCare() {
               </div>
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Strong Community Presence</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Strong Community Presence</h3>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-[#233D4D] mb-2 flex items-center gap-2">
@@ -359,7 +359,7 @@ export default function LongTermCare() {
               </div>
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-[#233D4D] mb-4">Positive Client Feedback</h3>
+              <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Positive Client Feedback</h3>
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-[#233D4D] mb-2 flex items-center gap-2">
