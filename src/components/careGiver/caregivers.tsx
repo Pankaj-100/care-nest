@@ -323,10 +323,16 @@ const CaregiversPage = () => {
               </button>
             </div>
 
-            {/* Show active filters count */}
+            {/* Show active filters count - improved logic for boolean filters */}
             {Object.keys(filters).some(key => {
               const value = filters[key as keyof CaregiverFilters];
-              return value && (Array.isArray(value) ? value.length > 0 : true);
+              if (Array.isArray(value)) {
+                return value.length > 0;
+              }
+              if (typeof value === 'boolean') {
+                return value === true || value === false;
+              }
+              return value !== undefined && value !== null && value !== '';
             }) && (
               <div className="flex items-center gap-2 text-[16px] font-medium">
                 <span className="text-gray-500 text-[16px] font-medium ">
