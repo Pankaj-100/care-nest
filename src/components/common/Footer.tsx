@@ -176,25 +176,37 @@ const Footer = () => {
         </div>
       </div>
 
+
+
+      {/* Proud Partners Section - match expected image */}
+      <div className="flex flex-col items-center my-12">
+        <div className="w-full flex flex-col items-center">
+          <h3 className="text-2xl font-medium mb-5 text-white text-left w-full max-w-xs" style={{ marginLeft: '60px' }}>Proud Partners</h3>
+          <div className="flex flex-row flex-wrap justify-end items-end gap-12 w-full max-w-6xl mb-12">
+            <Image src="/partners/veterans-care.png" alt="Veterans Care Coordination" width={220} height={60} className="object-contain h-16 w-auto" />
+            <Image src="/partners/caring-com.png" alt="Caring.com" width={90} height={90} className="object-contain h-16 w-auto" />
+            <Image src="/partners/a-place-for-mom.png" alt="A Place for Mom" width={220} height={60} className="object-contain h-16 w-auto" />
+          </div>
+        </div>
+      </div>
+
+      {/* Newsletter and CAREWORKS branding */}
       <div className="my-7 flex items-center justify-between flex-wrap gap-y-5">
         <div>
-          <h3 className="text-xl font-medium lg:mb-3">
-            Subscribe to our newsletter
-          </h3>
+          <h3 className="text-xl font-medium lg:mb-3">Subscribe to our newsletter</h3>
           <div className="flex">
             <input
               type="text"
               placeholder="Email address"
-              className="outline-none border-b py-2 sm:w-60 w-70 text-lg bg-transparent text-white placeholder-gray-300"
+              className="outline-none border-b py-2 sm:w-80 w-70 text-xl bg-transparent text-white placeholder-gray-300"
             />
             <button className="bg-[var(--yellow)] text-black px-4 py-4 rounded-t-lg cursor-pointer">
               <ChevronRight />
             </button>
           </div>
         </div>
-
         <div>
-          <h1 className="font-bold xl:text-[120px] lg:text-[80px] text-gray-400/30 tracking-widest sm:mt-0 mt-2">
+          <h1 className="font-bold xl:text-[105px] lg:text-[80px] text-gray-400/30 tracking-widest sm:mt-0 mt-2">
             CAREWORKS
           </h1>
         </div>
