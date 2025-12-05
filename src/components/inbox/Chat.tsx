@@ -38,7 +38,7 @@ const Chat = ({ messages, otherUserDetails }: Props) => {
 
   return (
     <div
-      className="flex flex-col flex-grow h-full overflow-y-auto hide-scrollbar gap-4 p-4"
+      className="flex flex-col flex-grow h-full overflow-y-auto hide-scrollbar gap-3 p-2 sm:gap-4 sm:p-4"
       ref={containerRef}
     >
       {messages.length === 0 && (
@@ -47,8 +47,8 @@ const Chat = ({ messages, otherUserDetails }: Props) => {
 
       {Object.entries(groupedMessages).map(([dateLabel, msgs]) => (
         <div key={dateLabel}>
-          <div className="flex justify-center my-4">
-            <span className="bg-gray-100 text-gray-700 px-6 py-2 rounded-full text-sm font-semibold">
+          <div className="flex justify-center my-3 sm:my-4">
+            <span className="bg-gray-100 text-gray-700 px-4 py-1 sm:px-6 sm:py-2 rounded-full text-xs sm:text-sm font-semibold">
               {dateLabel}
             </span>
           </div>
@@ -70,17 +70,23 @@ const Chat = ({ messages, otherUserDetails }: Props) => {
                       : ProfilePic
                   }
                   alt={isOther ? otherUserDetails?.name || "User" : "You"}
-                  className="!w-10 !h-10 rounded-full"
+                  className="!w-8 !h-8 sm:!w-10 sm:!h-10 rounded-full"
                 />
-                <div className="flex flex-col text-base text-black max-w-[21rem]">
+                <div className="flex flex-col text-sm sm:text-base text-black max-w-[15rem] sm:max-w-[21rem]">
                   <div
-                    className={`rounded-2xl px-5 py-3 ${
+                    className={`rounded-2xl px-3 py-2 sm:px-5 sm:py-3 ${
                       isOther ? "bg-[#e5e7e8]" : "bg-[#233D4D33] text-black"
                     }`}
                   >
                     {msg.message}
                   </div>
-                  <div className={isOther ? "ms-1 text-[gray]" : "self-end text-[gray] mr-1"}>
+                    <div
+                      className={
+                        isOther
+                          ? "ms-1 text-[gray] text-xs sm:text-xs mt-2"
+                          : "self-end text-[gray] mr-1 mt-2 text-xs sm:text-xs"
+                      }
+                    >
                     {new Date(msg.createdAt).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
