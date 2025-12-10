@@ -1,7 +1,4 @@
-"use client";
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 export interface LocationServiceData {
@@ -35,145 +32,29 @@ interface LocationTemplateProps {
   slug: string;
 }
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ||
-  process.env.NEXT_PUBLIC_BASE_URL ||
-  "";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
 
-export default function LocationTemplate({ slug }: LocationTemplateProps) {
-  const [data, setData] = useState<LocationServiceData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchLocation = async () => {
-      if (!API_BASE || !slug) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const [cityPart, statePart] = slug.split("-");
-        if (!cityPart || !statePart) {
-          setLoading(false);
-          return;
-        }
-
+export default async function LocationTemplate({ slug }: LocationTemplateProps) {
+  let data: LocationServiceData | null = null;
+  if (API_BASE && slug) {
+    try {
+      const [cityPart, statePart] = slug.split("-");
+      if (cityPart && statePart) {
         const city = decodeURIComponent(cityPart);
         const state = decodeURIComponent(statePart).toUpperCase();
-
-        const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/location-services/city/${encodeURIComponent(
-          city
-        )}/state/${encodeURIComponent(state)}`;
-
-        const res = await fetch(endpoint);
-        if (!res.ok) {
-          setLoading(false);
-          return;
+        const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/location-services/city/${encodeURIComponent(city)}/state/${encodeURIComponent(state)}`;
+        const res = await fetch(endpoint, { cache: "no-store" });
+        if (res.ok) {
+          const json = await res.json();
+          const location = json?.data?.locationService as LocationServiceData | undefined;
+          if (location) {
+            data = location;
+          }
         }
-
-        const json = await res.json();
-        const location = json?.data?.locationService as LocationServiceData | undefined;
-        if (location) {
-          setData(location);
-        }
-      } catch (err) {
-        console.error("Failed to fetch location service page:", err);
-      } finally {
-        setLoading(false);
       }
-    };
-
-    fetchLocation();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className="w-full">
-        {/* Hero Section Skeleton */}
-        <section className="bg-white py-26 px-6 md:px-8 lg:px-24">
-          <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 items-start">
-            <div>
-              <Skeleton height={48} width="75%" style={{ marginBottom: 24 }} />
-            </div>
-            <div>
-              <Skeleton height={24} width="100%" style={{ marginBottom: 8 }} />
-              <Skeleton height={24} width="83%" style={{ marginBottom: 8 }} />
-              <Skeleton height={24} width="66%" />
-            </div>
-          </div>
-        </section>
-
-        {/* Hero Image Skeleton */}
-        <section className="relative w-full h-[400px] md:h-[500px]">
-          <Skeleton height="100%" width="100%" style={{ position: "absolute", inset: 0 }} />
-        </section>
-
-        {/* Why Choose Section Skeleton */}
-        <section className="bg-[#F5F5DC] py-26 px-6 md:px-8 lg:px-24">
-          <div className="max-w-7xl mx-auto">
-            <Skeleton height={40} width="50%" style={{ marginBottom: 32, marginLeft: "auto", marginRight: "auto" }} />
-            <div className="space-y-4">
-              <Skeleton height={24} width="100%" />
-              <Skeleton height={24} width="83%" />
-            </div>
-          </div>
-        </section>
-
-        {/* Services Section Skeleton */}
-        <section className="bg-white py-16 px-6 md:px-8 lg:px-24">
-          <div className="max-w-8xl mx-auto">
-            <Skeleton height={32} width="33%" style={{ marginBottom: 16, marginLeft: "auto", marginRight: "auto" }} />
-            <Skeleton height={32} width="50%" style={{ marginBottom: 32, marginLeft: "auto", marginRight: "auto" }} />
-            <Skeleton height={24} width="66%" style={{ marginBottom: 16, marginLeft: "auto", marginRight: "auto" }} />
-            <div className="space-y-12">
-              {[1,2].map((_, index) => (
-                <div key={index} className="grid md:grid-cols-2 gap-8 items-center">
-                  <div>
-                    <Skeleton height={24} width="50%" style={{ marginBottom: 16 }} />
-                    <div className="space-y-3">
-                      {[1,2,3].map((__, idx) => (
-                        <div key={idx} className="flex items-center gap-3">
-                          <Skeleton circle height={24} width={24} />
-                          <Skeleton height={20} width="66%" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="relative h-64 md:h-80 rounded-lg overflow-hidden">
-                    <Skeleton height="100%" width="100%" style={{ position: "absolute", inset: 0 }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Care Designed & Community Section Skeleton */}
-        <section className="bg-white py-16 px-6 md:px-8 lg:px-24">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-start">
-              <div className="relative h-[500px] md:h-[600px] rounded-lg overflow-hidden">
-                <Skeleton height="100%" width="100%" style={{ position: "absolute", inset: 0 }} />
-              </div>
-              <div className="space-y-12">
-                <div>
-                  <Skeleton height={32} width="66%" style={{ marginBottom: 24 }} />
-                  <Skeleton height={24} width="100%" />
-                </div>
-                <div>
-                  <Skeleton height={28} width="50%" style={{ marginBottom: 16 }} />
-                  <Skeleton height={24} width="100%" />
-                </div>
-                <div>
-                  <Skeleton height={28} width="50%" style={{ marginBottom: 16 }} />
-                  <Skeleton height={24} width="100%" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
+    } catch {
+      // ignore error
+    }
   }
 
   if (!data) {

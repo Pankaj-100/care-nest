@@ -1,8 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 
-type VeteransApiData = {
+export type VeteransApiData = {
   id: string;
   title1: string;
   description1: string;
@@ -16,39 +16,25 @@ type VeteransApiData = {
   sectionImage: string;
 };
 
-export default function VeteransFinancialAssistance() {
-  const [pageData, setPageData] = useState<VeteransApiData | null>(null);
-  const [loading, setLoading] = useState(true);
+export type FaqItem = { id: string; question: string; answer: string };
+export type VeteransFaqApi = {
+  faqs: Array<{
+    id: string;
+    faqType: string;
+    sectionTitle: string;
+    faqItems: FaqItem[];
+  }>;
+  count: number;
+};
 
-  const API_BASE =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    "";
+interface VeteransFinancialAssistanceProps {
+  pageData: VeteransApiData;
+  faqSectionTitle: string;
+  faqItems: FaqItem[];
+}
 
-  useEffect(() => {
-    const fetchVeteransPage = async () => {
-      if (!API_BASE) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/veterans-home-care`;
-        const res = await fetch(endpoint);
-        if (res.ok) {
-          const json = await res.json();
-          const data: VeteransApiData | null =
-            json?.data?.veteransHomeCare ?? null;
-          if (data) setPageData(data);
-        }
-      } catch (err) {
-        console.error("Failed to fetch veterans home care page:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchVeteransPage();
-  }, [API_BASE]);
+export default function VeteransFinancialAssistance({ pageData, faqSectionTitle, faqItems }: VeteransFinancialAssistanceProps) {
+  const [openFaqIdx, setOpenFaqIdx] = React.useState<number | null>(null);
 
   const headerTitle = pageData?.title1 || "Veterans Financial Assistance";
   const headerDescription =
@@ -73,14 +59,6 @@ export default function VeteransFinancialAssistance() {
       "Manage events and activities that impact compliance issues",
       "Proper completion of annual VA audits",
     ];
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center py-10">
-        <p className="text-[#233D4D]">Loading...</p>
-      </div>
-    );
-  }
 
   const image1Src = pageData?.image1 || "/veterans/image1.png";
   const image2Src = pageData?.image2 || "/veterans/image2.png";
@@ -171,7 +149,7 @@ export default function VeteransFinancialAssistance() {
         </div>
       </div>
 
-      {/* FAQ Section */}
+      {/* FAQ Section - dynamic from API */}
       <div className="w-full bg-white mt-12 md:mt-16 py-12 md:py-16">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 md:gap-12 md:flex-row px-4 md:px-6 items-start">
           {/* Left: Heading */}
@@ -180,47 +158,47 @@ export default function VeteransFinancialAssistance() {
               General FAQ&apos;s
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-[#233D4D]">
-              Some Frequently
+              {faqSectionTitle.split(" ").slice(0, 3).join(" ")}
               <br />
-              Asked Questions
-              <br />
-              About The Veteran&apos;s
-              <br />
-              Pension Benefit
+              {faqSectionTitle.split(" ").slice(3).join(" ")}
             </h2>
           </div>
-
           {/* Right: FAQ Cards */}
           <div className="w-full md:w-7/12 flex flex-col gap-3">
-            {/* Open item */}
-            <div className="rounded-xl bg-[#233D4D0A] p-4 sm:p-5 shadow-sm">
-              <div className="mb-2 flex items-center justify-between text-sm sm:text-base md:text-lg font-semibold text-[#233D4D] gap-3">
-                <span>Does every Veteran or surviving spouse receive this benefit?</span>
-                <span className="text-2xl font-bold text-[#233D4D]">—</span>
-              </div>
-              <p className="text-xs sm:text-sm md:text-base leading-relaxed text-[#233D4D]">
-                Eligibility is determined based on service during a declared war
-                period, income limitations, liquid assets and a medically documented
-                disability by a physician. Our dedicated Veteran&apos;s Care Managers
-                will work closely with you to determine your eligibility.
-              </p>
-            </div>
-
-            {/* Collapsed items */}
-            {[
-              "What are the costs associated with applying for this benefit?",
-              "What are declared periods of war?",
-              "Do I have to go to a VA physician to be covered by the pension benefits?",
-              "Can I apply for the VA Pension Benefits on my own?",
-            ].map((q) => (
-              <div
-                key={q}
-                className="flex items-center justify-between rounded-xl bg-[#233D4D0A] p-4 sm:p-5 text-xs sm:text-sm md:text-base font-semibold text-[#233D4D] shadow-sm gap-3"
-              >
-                <span>{q}</span>
-                <span className="text-2xl font-bold text-[#233D4D]">+</span>
-              </div>
-            ))}
+            {faqItems.length === 0 ? (
+              <div className="rounded-xl bg-[#233D4D0A] p-4 sm:p-5 shadow-sm text-[#233D4D]">No FAQs available.</div>
+            ) : (
+              faqItems.map((item, idx) => {
+                const isOpen = openFaqIdx === idx;
+                const hasAnswer = item.answer && item.answer !== '.';
+                return (
+                  <div key={item.id} className="rounded-xl bg-[#233D4D0A] p-4 sm:p-5 shadow-sm">
+                    <button
+                      type="button"
+                      className="w-full mb-2 flex items-center justify-between text-sm sm:text-base md:text-md font-semibold text-[#233D4D] gap-3 focus:outline-none"
+                      aria-expanded={isOpen}
+                      aria-controls={`faq-answer-${item.id}`}
+                      onClick={() => {
+                        if (!hasAnswer) return;
+                        setOpenFaqIdx(isOpen ? null : idx);
+                      }}
+                      style={{ background: 'none', border: 0, padding: 0, cursor: hasAnswer ? 'pointer' : 'default' }}
+                    >
+                      <span>{item.question}</span>
+                      <span className="text-2xl font-bold text-[#233D4D]">{hasAnswer ? (isOpen ? '—' : '+') : '+'}</span>
+                    </button>
+                    {hasAnswer && isOpen && (
+                      <p
+                        id={`faq-answer-${item.id}`}
+                        className="text-xs sm:text-sm md:text-base leading-relaxed text-[#233D4D]"
+                      >
+                        {item.answer}
+                      </p>
+                    )}
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </div>
@@ -228,22 +206,26 @@ export default function VeteransFinancialAssistance() {
       {/* Contact Banner Section */}
       <div className="w-full bg-[#F2A307] py-10 md:py-14 mt-10 md:mt-0">
         <div className="mx-auto flex max-w-7xl flex-col items-center text-center px-4">
-          <h2 className="mb-4 text-3xl sm:text-4xl md:text-6xl font-bold text-[#233D4D] leading-snug md:leading-tight">
+          <h2 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-bold text-[#233D4D] leading-snug md:leading-tight">
             Contact Us Today For More Information
           </h2>
-          <p className="mb-6 max-w-6xl font-light text-base sm:text-lg md:text-3xl leading-relaxed text-white">
+          <p className="mb-6 max-w-5xl font-light text-base sm:text-lg md:text-2xl leading-relaxed text-white">
             We Are Proud To Help You Attain The Benefits You Have Earned As{" "}
             <br className="hidden md:block" />
-            <span className="font-light text-lg sm:text-2xl md:text-3xl text-[#233D4D]">
+            <span className="font-light text-lg sm:text-xl md:text-2xl text-[#233D4D]">
               An Honored Veteran
             </span>{" "}
             Of The US Armed Forces.
           </p>
-          <button className="inline-flex cursor-pointer items-center gap-2 font-light rounded-full bg-[#233D4D] px-8 md:px-10 py-3 md:py-5 text-sm sm:text-base md:text-lg text-white transition hover:bg-[#1a2c38]">
+          <a href="/contact">
+          <button className="inline-flex cursor-pointer items-center gap-2 font-semibold rounded-full bg-[#233D4D] px-8 md:px-10 py-3 md:py-5 text-sm sm:text-base md:text-lg text-white transition hover:bg-[#1a2c38]">
             Contact Us <span className="ml-1">&#8594;</span>
           </button>
+          </a>
         </div>
       </div>
+      {/* Reduce white gap below contact banner */}
+      <div className="w-full" style={{ marginTop: '-3rem', paddingBottom: '3' }}></div>
     </div>
   );
 }

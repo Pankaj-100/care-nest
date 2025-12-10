@@ -45,7 +45,7 @@ const Section3: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
         <div className="absolute bottom-6 left-6 text-white flex flex-col gap-4 max-w-md sm:max-w-lg">
           <div className="flex items-center gap-3">
             <Image
-              src={blog?.authorProfilePic ?? "/Blog/avatar_img.png"}
+              src={blog?.authorProfilePic && blog.authorProfilePic.trim() !== "" ? blog.authorProfilePic : "/Blog/avatar_img.png"}
               width={24}
               height={24}
               alt="Author Avatar"

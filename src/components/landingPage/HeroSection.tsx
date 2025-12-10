@@ -234,6 +234,7 @@ interface Props {
 
 export const BrowseCaregiver = ({ noDescription, title, description }: Props) => {
   const [zipCode, setZipCode] = useState<string>("");
+  const [zipError, setZipError] = useState<string>("");
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
@@ -257,11 +258,19 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
 
   function handleRedirect(e?: React.MouseEvent | React.FormEvent) {
     if (e) e.preventDefault();
-    if (!zipCode.trim()) {
+    const zipTrimmed = zipCode.trim();
+    if (!zipTrimmed) {
+      setZipError("You need to enter zipcode");
       toast.error("You need to enter zipcode");
       return;
     }
-    dispatch(setCareseekerZipcode(Number(zipCode.trim())));
+    if (!/^[0-9]{5}$/.test(zipTrimmed)) {
+      setZipError("Zip code must be exactly 5 digits");
+      toast.error("Zip code must be exactly 5 digits");
+      return;
+    }
+    setZipError("");
+    dispatch(setCareseekerZipcode(Number(zipTrimmed)));
     if (pathname === "/care-giver") {
       return;
     } else {
@@ -310,12 +319,23 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
           <input
             id="zip-input"
             type="text"
+            inputMode="numeric"
+            pattern="[0-9]{5}"
             placeholder="Enter Zip Code"
             value={zipCode}
-            onChange={(e) => setZipCode(e.target.value)}
-            className="w-full lg:w-[350px] rounded-full outline-none border border-gray-400 py-3 px-4 sm:py-3.5 sm:px-5 lg:py-4 lg:px-6 text-gray-900 text-base sm:text-lg focus:border-gray-400 focus:ring-0"
-            maxLength={10}
+            onChange={(e) => {
+              // Only allow digits, max 5
+              const val = e.target.value.replace(/[^0-9]/g, "").slice(0, 5);
+              setZipCode(val);
+              if (zipError) setZipError("");
+            }}
+            className={`w-full lg:w-[350px] rounded-full outline-none border py-3 px-4 sm:py-3.5 sm:px-5 lg:py-4 lg:px-6 text-gray-900 text-base sm:text-lg focus:border-gray-400 focus:ring-0 ${zipError ? "border-red-500" : "border-gray-400"}`}
+            maxLength={5}
+            autoComplete="postal-code"
           />
+          {zipError && (
+            <span className="text-red-500 text-sm mt-1 block">{zipError}</span>
+          )}
         </div>
         <div
           className={`col-span-12 flex items-end ${

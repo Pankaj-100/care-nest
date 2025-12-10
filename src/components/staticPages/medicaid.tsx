@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import LongTermCare from "./longterm-care";
 import {Medicaid1, Medicaid2, Medicaid3, Medicaid4, Medicaid5, Medicaid6,Medicaid7, Medicaid8, Medicaid9, Medicaid10, Medicaid12, Medicaid13, Medicaid14, NetworkIcon, LocationIcon1, PhoneIcon2, NetworkIcon2, PhoneIcon3, MessageIcon3 } from "../icons/page";
 
@@ -24,9 +25,11 @@ export default function MedicaidCASProgram() {
           <p className="text-lg text-gray-600 mb-8 leading-relaxed">
             The Medicaid Community Attendant Services (CAS) program is a vital healthcare initiative designed to provide personal care services to Medicaid recipients. This program is specifically tailored to assist low-income individuals and families who require help with daily living activities due to age, disability, or chronic illness.
           </p>
-          <button className="bg-[#F2A307] text-white text-lg font-semibold px-8 py-4 rounded-full flex items-center gap-2 hover:bg-[#e6950a] transition">
-            Learn More <span className="ml-2">&#8594;</span>
-          </button>
+          <Link href="/service/personal-care">
+            <button className="bg-[#F2A307] text-white text-lg font-semibold px-8 py-4 rounded-full flex items-center gap-2 hover:bg-[#e6950a] transition">
+              Learn More <span className="ml-2">&#8594;</span>
+            </button>
+          </Link>
         </div>
 
         {/* Right Image */}

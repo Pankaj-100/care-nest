@@ -45,7 +45,7 @@ const MainContent: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
       <div className="flex items-center gap-x-3 mb-4">
         <div className="relative w-8 h-8 rounded-full border border-[var(--navy)] overflow-hidden">
           <Image
-            src={blog?.authorProfilePic ?? "/Blog/avatar_img.png"}
+            src={blog?.authorProfilePic && blog.authorProfilePic.trim() !== "" ? blog.authorProfilePic : "/Blog/avatar_img.png"}
             width={32}
             height={32}
             alt={author}

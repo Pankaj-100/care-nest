@@ -36,7 +36,7 @@ export const CustomCard = ({
         <div className="flex items-center gap-x-2">
           <div className="relative w-6 h-6 rounded-full border border-[var(--navy)] overflow-hidden">
             <Image
-              src={profileImg}
+              src={profileImg && profileImg.trim() !== "" ? profileImg : "/Blog/avatar_img.png"}
               alt="Profile Picture"
               fill
               className="object-cover"

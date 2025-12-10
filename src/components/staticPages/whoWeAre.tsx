@@ -1,7 +1,5 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import ContactButton from "./ContactButton";
 
 type WhoPayload = {
   id: string;
@@ -15,61 +13,25 @@ type WhoPayload = {
   promiseDescription?: string;
 };
 
-export default function WhoWeAre() {
-  const API_BASE =
-    process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
-  const [who, setWho] = useState<WhoPayload | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    const controller = new AbortController();
-    const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/who-we-are`;
-
-    setLoading(true);
-    fetch(endpoint, { signal: controller.signal })
-      .then(async (res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((json) => {
-        if (!mounted) return;
-        const payload = json?.data?.whoWeAre ?? null;
-        if (!payload) {
-          setError("Content not found");
-        } else {
-          setWho(payload);
-        }
-      })
-      .catch((err) => {
-        if (!mounted) return;
-        console.error("Failed to fetch who-we-are:", err);
-        setError("Failed to load content");
-      })
-      .finally(() => {
-        if (!mounted) return;
-        setLoading(false);
-      });
-
-    return () => {
-      mounted = false;
-      controller.abort();
-    };
-  }, [API_BASE]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center py-16 px-4">
-        <span>Loading content...</span>
-      </div>
-    );
+async function fetchWhoWeAre(): Promise<WhoPayload | null> {
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
+  const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/who-we-are`;
+  try {
+    const res = await fetch(endpoint, { cache: "no-store" });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json?.data?.whoWeAre ?? null;
+  } catch {
+    return null;
   }
+}
 
-  if (error || !who) {
+export default async function WhoWeAre() {
+  const who = await fetchWhoWeAre();
+  if (!who) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center py-16 px-4">
-        <span className="text-red-600">{error ?? "No content available"}</span>
+        <span className="text-red-600">No content available</span>
       </div>
     );
   }
@@ -190,14 +152,7 @@ export default function WhoWeAre() {
             And To Find A Solution That Fits Your Budgetary Needs And Your
             Lifestyle.
           </p>
-          <button
-            onClick={() => {
-              window.location.href = "/contact";
-            }}
-            className="bg-[#F2A307] text-[#233D4D] text-base sm:text-xl font-semibold px-6 sm:px-10 py-3 sm:py-4 rounded-full flex items-center gap-3 hover:bg-[#d89a06] transition"
-          >
-            Contact Us <span className="ml-2">&#8594;</span>
-          </button>
+            <ContactButton />
         </div>
       </section>
     </div>
