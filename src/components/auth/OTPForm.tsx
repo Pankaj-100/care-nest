@@ -84,7 +84,7 @@ function OTPForm({ isEmailVerify }: Props) {
       }).unwrap();
 
       if (res.success) {
-        toast.success(res.message || "OTP resent!");
+        toast.success("OTP is sent to your mail ID. OTP is valid for 10 minutes.");
         setTime(30);
       } else {
         toast.error("Failed to resend OTP.");

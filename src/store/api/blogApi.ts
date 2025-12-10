@@ -17,11 +17,11 @@ export const blogApi = createApi({
   reducerPath: "blogApi",
   baseQuery: fetchBaseQuery({ baseUrl: `${API_BASE.replace(/\/$/, "")}/api/v1/` }),
   endpoints: (builder) => ({
-    getBlogs: builder.query<BlogItem[], void>({
-      query: () => `blog`,
-      // return normalized array so consumers get blogs directly
-    //   eslint-disable-next-line @typescript-eslint/no-explicit-any
-      transformResponse: (response: any) => response?.data?.blogs ?? [],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    getBlogs: builder.query<any, { page: number; pageSize: number }>({
+      query: ({ page, pageSize }) => `blog?page=${page}&pageSize=${pageSize}`,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (response: any) => response?.data ?? {},
     }),
     getBlogById: builder.query<BlogItem | null, string>({
       query: (id) => `blog/${id}`,

@@ -7,7 +7,12 @@ import HeroSectionCareProvider from "@/components/careProvider/HeroSectionCarePr
 import { useGetBlogsQuery } from "@/store/api/blogApi";
 
 export default function BlogsPage() {
-  const { data: blogs = [], isLoading, isError } = useGetBlogsQuery();
+  const [page, setPage] = React.useState(1);
+  const pageSize = 9;
+  const { data, isLoading, isError } = useGetBlogsQuery({ page, pageSize });
+  const blogs = data?.blogs ?? [];
+  const pagination = data?.pagination ?? {};
+  const totalPages = pagination.totalPages ?? 1;
 
   if (isLoading) {
     return (
@@ -33,6 +38,33 @@ export default function BlogsPage() {
       <HeroSectionCareProvider title="Blogs" textClasses="lg:ml-10 " />
       <Section3 blog={latest} />
       <CardSection blogs={rest} />
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 py-8">
+          <button
+            className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              className={`px-3 py-1 rounded ${page === i + 1 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"}`}
+              onClick={() => setPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </main>
   );
 }

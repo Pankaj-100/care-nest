@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   image: string;
@@ -13,7 +14,9 @@ function AuthLayout({ image, children }: Props) {
         {/* Left form */}
         <div className="col-start-1 md:col-end-5 col-end-13 flex flex-col min-h-0">
           <div className="mb-0">
-            <Image src={"/auth/logo-1.png"} alt="Logo" width={180} height={100} />
+            <Link href="/">
+              <Image src={"/auth/logo-1.png"} alt="Logo" width={180} height={100} className="cursor-pointer" />
+            </Link>
           </div>
           <div className="h-full ">{children}</div>
         </div>

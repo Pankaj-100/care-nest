@@ -16,12 +16,20 @@ type Blog = {
 };
 
 const BlogsSection = () => {
-  const { data: blogs = [], isLoading } = useGetBlogsQuery();
+  const { data: blogs = [], isLoading } = useGetBlogsQuery({ page: 1, pageSize: 3 });
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Handle both array and object with items property
+  // Use blogs.items if available, otherwise fallback to blogs (array)
+  const blogArray = Array.isArray(blogs.blogs)
+    ? blogs.blogs
+    : Array.isArray(blogs)
+    ? blogs
+    : [];
+
   // sort by createdAt/newest first and take top 3
-  const latest = (blogs ?? [])
+  const latest = blogArray
     .slice()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -31,7 +39,9 @@ const BlogsSection = () => {
       id: b.id,
       title: b.title ?? "Untitled",
       author: b.authorName ?? "Unknown",
-      date: b.blogDate ? new Date(b.blogDate).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }) : "—",
+      date: b.blogDate
+        ? new Date(b.blogDate).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })
+        : "—",
       image: b.mainImage ?? "/service1.png",
       excerpt: b.description ?? "",
     })) as Blog[];

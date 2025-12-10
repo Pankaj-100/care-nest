@@ -13,13 +13,27 @@ import { useResetPasswordMutation } from "@/store/api/authApi"; // Adjust path a
 function ResetPasswordForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState({ password: "", confirmPassword: "" });
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
   const router = useRouter();
 
   const handleSubmit = async () => {
-    if (!password || !confirmPassword) {
-      toast.error("Please fill in both fields.");
+    const newErrors = { password: "", confirmPassword: "" };
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must contain at least 8 characters";
+    }
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please fill the confirmation password";
+      toast.error("Please fill the confirmation password");
+      setErrors(newErrors);
+      return;
+    }
+    setErrors(newErrors);
+    if (newErrors.password) {
+      toast.error(newErrors.password);
       return;
     }
 
@@ -59,6 +73,7 @@ function ResetPasswordForm() {
         setText={setPassword}
         Icon={passwordIcon}
         placeholder="Enter Password"
+        error={errors.password}
       />
 
       <PasswordInput
@@ -66,6 +81,7 @@ function ResetPasswordForm() {
         setText={setConfirmPassword}
         Icon={passwordIcon}
         placeholder="Enter Confirm Password"
+        error={errors.confirmPassword}
       />
 
       <CustomButton className="mt-4 mb-3" onClick={handleSubmit} 

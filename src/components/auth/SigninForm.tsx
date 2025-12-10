@@ -10,10 +10,10 @@ import { EmailIcon, passwordIcon } from "@/lib/svg_icons";
 import GoogleButton from "./GoogleButton";
 import TextWithLines from "../common/TextWithLine";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "../ui/checkbox";
 import Link from "next/link";
 
-import { useSigninMutation } from "@/store/api/authApi"; // Adjust path as needed
+import { useSigninMutation } from "@/store/api/authApi";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { clearPendingBooking } from "@/store/slices/bookingSlice";
 import { useCreateBookingMutation } from "@/store/api/bookingApi";
@@ -21,7 +21,7 @@ import { useCreateBookingMutation } from "@/store/api/bookingApi";
 function SigninForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState("false");
+  const [rememberMe, setRememberMe] = useState(false);
 
   const router = useRouter();
   const [signin, { isLoading }] = useSigninMutation();
@@ -34,6 +34,12 @@ function SigninForm() {
       toast.error("Please enter both email and password");
       return;
     }
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Invalid Email Address");
+      return;
+    }
 
      try {
       const response = await signin({
@@ -44,14 +50,16 @@ function SigninForm() {
 
       if (response && response.success) {
         // Set tokens with appropriate expiration
-        if (rememberMe === "true") {
+        if (rememberMe) {
           Cookies.set("authToken", response.data.accessToken, { expires: 7 }); // 1 week
           Cookies.set("refreshToken", response.data.refreshToken, { expires: 30 }); // 1 month
         } else {
           Cookies.set("authToken", response.data.accessToken); // Session cookie
           Cookies.set("refreshToken", response.data.refreshToken); // Session cookie
         }
-        
+
+        toast.success("Login successful!");
+
         if (pendingBooking) {
           try {
             const result = await createBooking(pendingBooking).unwrap();
@@ -66,7 +74,11 @@ function SigninForm() {
         }
         router.push("/");
       } else {
-        toast.error(response?.message || "Login failed. Please check your credentials and try again.");
+        let errorMsg = response?.message || "Login failed. Please check your credentials and try again.";
+        if (errorMsg.toLowerCase().includes("email is incorrect")) {
+          errorMsg = "Email was not registered";
+        }
+        toast.error(errorMsg);
       }
     } catch (error: unknown) {
       if (typeof error === "object" && error !== null) {
@@ -92,6 +104,9 @@ function SigninForm() {
         Icon={EmailIcon}
         type="email"
         placeholder="Enter Email ID"
+        className="text-xl placeholder:text-xl"
+        autoComplete="email"
+        inputMode="email"
       />
 
       <PasswordInput
@@ -99,20 +114,17 @@ function SigninForm() {
         setText={setPassword}
         Icon={passwordIcon}
         placeholder="Enter Password"
+        className="text-xl placeholder:text-xl"
       />
 
-      <RadioGroup
-        value={rememberMe}
-        onValueChange={(val) => {
-          setRememberMe(val === rememberMe ? "false" : val);
-        }}
-        className="gap-2"
-      >
-        <div className="flex items-center font-medium text-md space-x-2">
-          <RadioGroupItem value="true" id="option-one" />
-          <Label htmlFor="option-one" className="text-md">Remember me</Label>
-        </div>
-      </RadioGroup>
+      <div className="flex items-center font-medium text-md space-x-2">
+        <Checkbox
+          id="rememberMe"
+          checked={rememberMe}
+          onChange={(e) => setRememberMe(e.target.checked)}
+        />
+        <Label htmlFor="rememberMe" className="text-md">Remember me</Label>
+      </div>
 
       <CustomButton className="mt-4 mb-3 text-lg" onClick={handleSubmit} 
       //disabled={isLoading}

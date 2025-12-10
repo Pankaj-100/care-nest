@@ -17,8 +17,17 @@ const formatDate = (iso?: string) =>
   iso ? new Date(iso).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }) : "";
 
 const RecentPosts: React.FC = () => {
-  const { data: blogs = [], isLoading, isError } = useGetBlogsQuery();
-  const posts: Post[] = (blogs ?? []).slice(0, 5).map((b) => ({
+  const { data: blogs = [], isLoading, isError } = useGetBlogsQuery({ page: 1, pageSize: 5 });
+  interface BlogApiResponse {
+    id: string;
+    title?: string;
+    mainImage?: string;
+    authorName?: string;
+    blogDate?: string;
+    authorProfilePic?: string;
+  }
+
+  const posts: Post[] = (blogs as BlogApiResponse[] ?? []).slice(0, 5).map((b: BlogApiResponse) => ({
     id: b.id,
     title: b.title ?? "Untitled",
     image: b.mainImage ?? "/Blog/inner_blog5.png",

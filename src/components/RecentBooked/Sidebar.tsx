@@ -247,6 +247,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
         <Logout
           goTo={(value: string) => {
             setShowLogout(false);
+            toast.success("Logout successful!");
             // pass selection back to parent if needed
             onSelect?.(value);
           }}

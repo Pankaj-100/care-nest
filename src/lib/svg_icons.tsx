@@ -1,3 +1,15 @@
+export const zipCodeIcon = (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect x="6" y="10" width="20" height="12" rx="3" stroke="#233D4D" strokeWidth="1.5" />
+    <text x="16" y="20" textAnchor="middle" fontSize="8" fill="#233D4D">ZIP</text>
+  </svg>
+);
 export const personIcon = (
   <svg
     width="32"

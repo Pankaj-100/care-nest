@@ -7,6 +7,7 @@ import { PasswordInput, TextInput } from "@/components/common/CustomInputs";
 import Cookies from "js-cookie";
 import {
   addressIcon,
+  zipCodeIcon,
   EmailIcon,
   passwordIcon,
   personIcon,
@@ -54,6 +55,7 @@ function SignupForm() {
       case "name":
         return value.trim() ? "" : "Name is required";
       case "email":
+        if (!value.trim()) return "EmailId is required";
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
           ? ""
           : "Invalid email format";
@@ -62,8 +64,8 @@ function SignupForm() {
       case "address":
         return value.trim() ? "" : "Address is required";
       case "zipCode":
-        // 6 digits (adjust if needed)
-        return /^\d{6}$/.test(value.trim()) ? "" : "Invalid zip code";
+        if (!value.trim()) return "Zip code is required";
+        return /^\d{5}$/.test(value.trim()) ? "" : "Zip code must be 5 digits";
       case "password":
         return value.length >= 6
           ? ""
@@ -137,7 +139,11 @@ function SignupForm() {
     } catch (err: unknown) {
       if (typeof err === "object" && err !== null && "data" in err) {
         const errorData = err as { data?: { message?: string } };
-        toast.error(errorData.data?.message || "Signup failed. Please try again.");
+        let errorMsg = errorData.data?.message || "Signup failed. Please try again.";
+        if (errorMsg.toLowerCase().includes("email is incorrect")) {
+          errorMsg = "Email already registered";
+        }
+        toast.error(errorMsg);
       } else {
         toast.error("Signup failed. Please try again.");
       }
@@ -153,6 +159,7 @@ function SignupForm() {
         placeholder="Enter User Name"
         error={touched.name ? errors.name : ""}
         onBlur={() => handleBlur("name", name)}
+        className="text-xl placeholder:text-xl"
       />
       <TextInput
         text={email}
@@ -162,6 +169,7 @@ function SignupForm() {
         placeholder="Enter Email ID"
         error={touched.email ? errors.email : ""}
         onBlur={() => handleBlur("email", email)}
+        className="text-xl placeholder:text-xl"
       />
       <TextInput
         text={phone}
@@ -170,6 +178,7 @@ function SignupForm() {
         placeholder="Enter Phone Number"
         error={touched.phone ? errors.phone : ""}
         onBlur={() => handleBlur("phone", phone)}
+        className="text-xl placeholder:text-xl"
       />
       <TextInput
         text={address}
@@ -178,17 +187,19 @@ function SignupForm() {
         placeholder="Enter Address"
         error={touched.address ? errors.address : ""}
         onBlur={() => handleBlur("address", address)}
+        className="text-xl placeholder:text-xl"
       />
       {/* Zip Code */}
       <TextInput
         text={zipCode}
         setText={setZipCode}
-        Icon={addressIcon}
+        Icon={zipCodeIcon}
         placeholder="Enter Zip Code"
         // use tel to surface numeric keypad on mobile
         type="tel"
         error={touched.zipCode ? errors.zipCode : ""}
         onBlur={() => handleBlur("zipCode", zipCode)}
+        className="text-xl placeholder:text-xl"
       />
       <PasswordInput
         text={password}

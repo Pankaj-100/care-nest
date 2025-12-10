@@ -27,16 +27,25 @@ function ForgotPasswordForm() {
         role: "user", // or 'giver' depending on your use case
       }).unwrap();
 
-      toast.success(res.message || "OTP sent to your email.");
-       Cookies.set('userId', res.data.userId, { expires: 1/24 }); // Expires in 1 hour
+      if (res.success && res.data?.userId) {
+        toast.success(res.message || "OTP sent to your email.");
+        Cookies.set('userId', res.data.userId, { expires: 1/24 }); // Expires in 1 hour
         router.push("/otp-verification");
+      } else {
+        toast.error(res.message || "Email was not registered");
+      }
     } catch (err: unknown) {
-  if (typeof err === "object" && err !== null && "data" in err) {
-    const errorData = err as { data?: { message?: string } };
-    toast.error(errorData.data?.message || "Failed to send OTP. Try again.");
-  } else {
-    toast.error("Failed to send OTP. Try again.");
-  }}
+      if (typeof err === "object" && err !== null && "data" in err) {
+        const errorData = err as { data?: { message?: string } };
+        let errorMsg = errorData.data?.message || "Failed to send OTP. Try again.";
+        if (errorMsg.toLowerCase().includes("email is incorrect")) {
+          errorMsg = "Email was not registered";
+        }
+        toast.error(errorMsg);
+      } else {
+        toast.error("Failed to send OTP. Try again.");
+      }
+    }
   };
 
   return (
@@ -47,6 +56,7 @@ function ForgotPasswordForm() {
         Icon={EmailIcon}
         type="email"
         placeholder="Enter Email ID"
+        className="text-xl placeholder:text-xl"
       />
 
       <CustomButton className="mt-6" onClick={handleSubmit} 
