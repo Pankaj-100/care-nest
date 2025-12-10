@@ -404,10 +404,12 @@ export default function LocationTemplate({ slug }: LocationTemplateProps) {
         <p className="text-lg lg:text-2xl text-white font-light leading-relaxed mb-4 max-w-7xl mx-auto">
           Have questions about our senior home care services or want to discuss your family’s needs? Our team is here to help you every step of the way. Reach out today for personalized support and guidance.
         </p>
+        <a href="/contact">
         <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-10 py-5 rounded-full text-xl transition-colors duration-300 flex items-center gap-2 mx-auto">
           Contact Us
           <span className="text-xl">→</span>
         </button>
+        </a>
       </div>
     </div>
   </div>

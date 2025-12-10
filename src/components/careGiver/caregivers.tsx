@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation"; // Add usePathname
 import { IoFilter as FilterIcon } from "react-icons/io5";
 import FilterSidebar from "@/components/careGiver/FilterSidebar";
 import CaregiverCard from "@/components/careGiver/CaregiverCard";
+import Image from "next/image";
 import CaregiverModal from "@/components/careGiver/CaregiverModal";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import CustomSheet from "../common/CustomSheet";
@@ -65,7 +66,7 @@ const CaregiversPage = () => {
   // Build the search parameters including filters - properly typed
   const searchApiParams: SearchCaregiversParams = React.useMemo(() => {
     const baseParams: SearchCaregiversParams = {
-      zipcode: careseekerZipcode ? String(careseekerZipcode) : "",
+      zipcode: careseekerZipcode && String(careseekerZipcode).trim() !== "" ? String(careseekerZipcode) : ""
     };
 
     // Add filter parameters - make sure gender is included
@@ -95,8 +96,7 @@ const CaregiversPage = () => {
   const { data, isLoading, error } = useSearchCaregiversQuery(
     searchApiParams,
     { 
-      skip: !careseekerZipcode,
-      // Force refetch when parameters change
+      // Always fetch, even if zipcode is not set
       refetchOnMountOrArgChange: true,
     }
   );
@@ -352,8 +352,16 @@ const CaregiversPage = () => {
 
           <div className="sm:mt-0 mt-4 max-h-[800px] overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-6 pr-2">
             {!isLoading && caregivers.length === 0 && (
-              <div className="col-span-2 text-center py-8">
-                <p className="text-gray-500">No caregivers found matching your criteria.</p>
+              <div className="col-span-2 flex flex-col items-center justify-center py-8">
+                <Image
+                  src="/no-caregivers.png"
+                  alt="No caregivers found"
+                  width={120}
+                  height={80}
+                  className="mb-4"
+                  priority
+                />
+                <p className="text-[var(--navy)] text-lg font-medium mt-2">No caregivers found. Please try searching again.</p>
               </div>
             )}
             {isLoading && (
@@ -379,8 +387,8 @@ const CaregiversPage = () => {
           <div className="mt-10 lg:mb-0 mb-5 w-full text-center max-w-xl mx-auto">
             <button
               onClick={() => {
-                if (mappedCaregiversForSchedule.length < 3) {
-                  toast.error("Please select at least 3 caregivers to proceed with booking.");
+                if (mappedCaregiversForSchedule.length < 1) {
+                  toast.error("Please select at least 1 caregiver to proceed with booking.");
                   return;
                 }
                 setIsScheduleOpen(true);
@@ -391,7 +399,7 @@ const CaregiversPage = () => {
                   : "bg-[#233D4D1A] hover:cursor-not-allowed"
               }`}
             >
-              Proceed ({mappedCaregiversForSchedule.length}/3)
+              Proceed ({mappedCaregiversForSchedule.length})
             </button>
           </div>
         </div>

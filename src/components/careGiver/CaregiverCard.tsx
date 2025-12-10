@@ -29,6 +29,19 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   heightClass,
 }) => {
   const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
+  // Fix: Show '0 Years' if experience is null, undefined, or not a number
+  let experienceDisplay = experience;
+  if (
+    experience === null ||
+    experience === undefined ||
+    experience === "null Years" ||
+    experience === "undefined Years" ||
+    experience === "NaN Years" ||
+    (typeof experience === "string" && experience.match(/^null|undefined|NaN/i))
+  ) {
+    experienceDisplay = "0 Years";
+  }
+
   return (
     <div
       onClick={onClick}
@@ -83,7 +96,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
         </p>
         <div className="flex flex-row gap-2 sm:gap-4 mt-2 h-max text-xs sm:text-sm">
           <div className="font-semibold border border-[var(--navy)] rounded-full px-4 py-1 text-[var(--navy)] h-max whitespace-nowrap bg-white">
-            {experience}
+            {experienceDisplay}
           </div>
         </div>
       </div>

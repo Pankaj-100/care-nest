@@ -396,7 +396,7 @@ const ScheduleCare = ({
     if (effectiveServiceIds.length === 0)
       return setFormError("You missed service selection, start the booking from home page.");
 
-    if (selectedCaregivers.length < 3) return setFormError("Select at least three caregivers.");
+    if (selectedCaregivers.length < 1) return setFormError("Select at least one caregiver.");
     if (selectedDays.length === 0) return setFormError("Select at least one meeting day.");
 
     // Build weeklySchedule array
@@ -660,13 +660,29 @@ const ScheduleCare = ({
                   </div>
 
                   {/* Right side - Experience Badge (always aligned to top-right) */}
-                  <div className="flex-shrink-0 ml-3 mt-1"> {/* Added mt-1 for consistent top alignment */}
-                    <div className="border border-gray-300 rounded-full px-3 py-1">
-                      <span className="text-sm text-gray-700 whitespace-nowrap">
-                        {c.experience && c.experience !== "null" ? c.experience : "0+ Years"}
-                      </span>
+                    <div className="flex-shrink-0 ml-3 mt-1"> {/* Added mt-1 for consistent top alignment */}
+                      <div className="border border-gray-300 rounded-full px-3 py-1">
+                        <span className="text-sm text-gray-700 whitespace-nowrap">
+                          {(() => {
+                            // Show '0+ Years' if experience is null, undefined, empty, or contains 'null', 'undefined', 'NaN'
+                            const exp = c.experience;
+                            if (
+                              exp === null ||
+                              exp === undefined ||
+                              (typeof exp === "string" && (
+                                exp.trim() === "" ||
+                                exp.toLowerCase().includes("null") ||
+                                exp.toLowerCase().includes("undefined") ||
+                                exp.toLowerCase().includes("nan")
+                              ))
+                            ) {
+                              return "0 Years";
+                            }
+                            return exp;
+                          })()}
+                        </span>
+                      </div>
                     </div>
-                  </div>
                 </div>
                 {idx < selectedCaregivers.length - 1 && (
                   <div className="border-t border-[#EBEBEB] mt-3" />

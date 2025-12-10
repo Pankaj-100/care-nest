@@ -21,12 +21,13 @@ export const CareGiverHero = () => {
       <div className="lg:flex items-center justify-center lg:absolute sm:-bottom-20  bottom-0 lg:-translate-x-1/2 lg:left-[890px] lg:m-0 m-4">
         <BrowseCaregiver
           // show heading + helper text in the hero box
-          title="Select 3 Caregivers"
+          // Choose caregivers to schedule your meeting.
+          title="Select Caregivers"
           description={
-            <>
-              Select up to{" "}
+            <> 
+              Choose{" "}
               <span className="text-[var(--yellow)] font-semibold">
-                three caregivers
+                caregivers
               </span>{" "}
               to schedule your meeting.
             </>

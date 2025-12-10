@@ -1,4 +1,4 @@
-"use client";
+
 import Legal from "@/components/staticPages/legal";
 
 

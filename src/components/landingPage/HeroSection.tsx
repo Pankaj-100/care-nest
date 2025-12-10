@@ -282,12 +282,12 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
       {!noDescription && (
         <div className="col-span-12 lg:col-span-5 space-y-2 lg:ml-8 mb-4 lg:mb-0">
           <h3 className="font-semibold text-lg sm:text-xl">
-            {title ?? (isCaregiversPage ? "Select 3 Caregivers" : "Browse Caregivers")}
+            {title ?? (isCaregiversPage ? "Select Caregivers" : "Browse Caregivers")}
           </h3>
           <p className="text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-gray-500">
             {description ??
               (isCaregiversPage
-                ? "Select up to three caregivers to continue with your Schedule Your Meeting."
+                ? "Choose caregivers to schedule your meeting."
                 : "Create your free profile to discover verified, compassionate caregivers.")}
           </p>
         </div>

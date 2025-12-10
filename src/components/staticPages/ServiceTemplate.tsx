@@ -376,10 +376,12 @@ export default function ServiceTemplate({ careType, fallbackKey = "personalCare"
             {contactBannerData.description}
           </p>
           
-          <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-10 py-5 rounded-full text-xl transition-colors duration-300 flex items-center gap-2 mx-auto">
-            {contactBannerData.buttonText}
-            <span className="text-xl">→</span>
-          </button>
+          <a href="/contact">
+            <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-10 py-5 rounded-full text-xl transition-colors duration-300 flex items-center gap-2 mx-auto">
+              {contactBannerData.buttonText}
+              <span className="text-xl">→</span>
+            </button>
+          </a>
         </div>
       </div>
 
