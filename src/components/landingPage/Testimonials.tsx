@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import CustomCarousel from "../common/CustomCarousel";
+import Autoplay from "embla-carousel-autoplay";
 import { CarouselItem } from "../ui/carousel";
 
 type TestimonialItem = {
@@ -14,6 +15,8 @@ type TestimonialItem = {
   description?: string;
   createdAt?: string;
 };
+
+const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
 
 const Testimonials: React.FC = () => {
   const API_BASE =
@@ -71,13 +74,13 @@ const Testimonials: React.FC = () => {
   return (
     <div className="py-12 sm:py-20 bg-[var(--whiteSmoke)] px-4 sm:px-10 lg:px-24 xl:px-28">
       <div className="text-center flex items-center justify-center mb-10">
-        <div className="flex flex-col font-medium text-3xl sm:text-4xl lg:text-5xl capitalize items-center gap-2 sm:gap-3">
+        <div className="flex flex-col font-semibold text-3xl sm:text-4xl lg:text-5xl capitalize items-center gap-2 sm:gap-3">
           <div>Trusted By Members</div>
           <div>Across The Houston</div>
         </div>
       </div>
 
-      <CustomCarousel>
+      <CustomCarousel plugins={[Autoplay({ delay: 3500, stopOnInteraction: false })]}>
         {loading
           ? // show 3 skeleton slides while loading
             [0, 1, 2].map((i) => (
@@ -99,8 +102,8 @@ const Testimonials: React.FC = () => {
                 </div>
               </CarouselItem>,
             ]
-          : // render testimonials (limit to first 6)
-            (items ?? []).slice(0, 6).map((t) => {
+          : // render all testimonials
+            (items ?? []).map((t) => {
               const description = t.description ?? "";
               const isLong = description.length > 150;
               const isExpanded = expandedItems.has(t.id);
@@ -109,7 +112,7 @@ const Testimonials: React.FC = () => {
               return (
                 <CarouselItem
                   key={t.id}
-                  className="basis-full sm:basis-4/5 md:basis-2/3 lg:basis-1/2 xl:basis-2/5 px-2 flex justify-center"
+                  className="basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/3 px-2 flex justify-center"
                 >
                   <div className="p-6 sm:p-8 w-full bg-white rounded-3xl h-full min-h-[260px] flex flex-col">
                     <div className="flex items-center gap-x-4 sm:gap-x-6 mb-4">

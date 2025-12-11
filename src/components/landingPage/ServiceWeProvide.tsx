@@ -26,51 +26,7 @@ type MetaService = {
   route: string;
 };
 
-// static meta (icons + routes) remain local
-const META_SERVICES: MetaService[] = [
-  {
-    title: "Personal Care",
-    desc: "Find your professional personal care provider for daily assistance, hygiene, mobility, and compassionate support.",
-    Icon: Service1,
-    route: "/service/personal-care",
-  },
-  {
-    title: "Home Maker Service",
-    desc: "Home maker service providers can assist by doing what the client can no longer do, or they can aid the individual...",
-    Icon: Service2,
-    route: "/service/home-maker",
-  },
-  {
-    title: "Specialized Care",
-    desc: "Specialized care provides specialized support for individuals with dementia or Alzheimer's, ensuring safety...",
-    Icon: Service3,
-    route: "/service/specialized-care",
-  },
-  {
-    title: "Sitter Services",
-    desc: "Sitter services provide reliable support and supervision for your loved ones when you can't be there...",
-    Icon: Service4,
-    route: "/service/sitter-service",
-  },
-  {
-    title: "Companion Care",
-    desc: "Companion care is a very useful form of long-term home care, focused on providing the elderly with emotio...",
-    Icon: Service5,
-    route: "/service/companion-care",
-  },
-  {
-    title: "Transportation",
-    desc: "Transportation service is a critical support for older adults to access community services and visit family...",
-    Icon: Service5,
-    route: "/service/transportation",
-  },
-  {
-    title: "Veteran's Home Care Services",
-    desc: "CareWorks can assist Houston Veterans every step of the way with the application process. Initially, ...",
-    Icon: Service7,
-    route: "/veterans",
-  },
-];
+
 
 const ServiceWeProvide: React.FC = () => {
   const [apiServices, setApiServices] = useState<ApiService[]>([]);
@@ -113,46 +69,9 @@ const ServiceWeProvide: React.FC = () => {
     };
   }, [API_BASE]);
 
-  // build display list: prefer API text but keep local icons/routes
-  const displayList = (() => {
-    // map META_SERVICES by title for quick lookup
-    const metaByTitle = new Map(META_SERVICES.map((m) => [m.title.toLowerCase(), m]));
 
-    // for each meta, find matching API item by careType or serviceName
-    const result = META_SERVICES.map((meta) => {
-      const found =
-        apiServices.find(
-          (s) =>
-            (s.careType && s.careType.toLowerCase() === meta.title.toLowerCase()) ||
-            (s.serviceName && s.serviceName.toLowerCase() === meta.title.toLowerCase())
-        ) ?? null;
-
-      return {
-        id: found?.id ?? `meta-${meta.title}`,
-        title: found?.serviceName ?? meta.title,
-        desc: found?.serviceDescription ?? meta.desc,
-        Icon: meta.Icon,
-        route: meta.route,
-      };
-    });
-
-    // append any API services that do not match existing meta (use default icon)
-    const extras = apiServices
-      .filter(
-        (s) =>
-          !metaByTitle.has((s.careType ?? "").toLowerCase()) &&
-          !metaByTitle.has((s.serviceName ?? "").toLowerCase())
-      )
-      .map((s) => ({
-        id: s.id,
-        title: s.serviceName,
-        desc: s.serviceDescription ?? "",
-        Icon: Service5,
-        route: "/",
-      }));
-
-    return [...result, ...extras];
-  })();
+  // Only use API data for display list
+  const displayList = apiServices;
 
   return (
     <div className="flex flex-col justify-center w-full min-h-screen bg-[#F7F0D3] px-4 py-12">
@@ -172,50 +91,36 @@ const ServiceWeProvide: React.FC = () => {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto place-items-center">
             {displayList.map((service, idx) => {
-              // Check if this is the last card and it's alone in the last row
-              const isLast = idx === displayList.length - 1;
-              const isVeterans = service.title === "Veteran's Home Care Services";
-              const shouldCenter =
-                isLast &&
-                isVeterans &&
-                displayList.length === META_SERVICES.length &&
-                META_SERVICES.length % 3 !== 0 &&
-                idx % 3 === 0;
-
-              const IconComp = service.Icon;
-
               return (
                 <div
                   key={service.id}
-                  className={`rounded-2xl p-8 flex flex-col h-full transition-colors duration-200 bg-[#0000000A] text-[#233D4D] hover:bg-[#233D4D] hover:text-white hover:shadow-lg group ${
-                    shouldCenter ? "col-span-full justify-self-center w-full max-w-md" : ""
-                  }`}
+                  className="rounded-2xl p-8 flex flex-col h-full transition-colors duration-200 bg-[#0000000A] text-[#233D4D] hover:bg-[#233D4D] hover:text-white hover:shadow-lg group"
                 >
                   <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center mb-6 bg-[#233D4D1A] group-hover:bg-[#2F3C51] transition-colors duration-200`}
+                    className="w-12 h-12 rounded-full flex items-center justify-center mb-6 bg-[#bcbdbd1a] group-hover:bg-[#F2E9CE] transition-colors duration-200"
                   >
-                    <IconComp
-                      width={24}
-                      height={24}
-                      className="text-[#233D4D] group-hover:text-[#F2E9CE] transition-colors duration-200"
-                    />
+                    {service.serviceIcon ? (
+                      <img src={service.serviceIcon} alt={service.serviceName} width={24} height={24} className="object-contain" />
+                    ) : null}
                   </div>
 
-                  <h3
-                    className={`font-semibold text-xl mb-4 font-urbanist text-[#233D4D] group-hover:text-[#F2A307] transition-colors duration-200`}
-                  >
-                    {service.title}
+                  <h3 className="font-semibold text-xl mb-4 font-urbanist text-[#233D4D] group-hover:text-[#F2A307] transition-colors duration-200">
+                    {service.serviceName}
                   </h3>
 
-                  <p
-                    className={`text-lg font-urbanist mb-8 text-[#233D4D] group-hover:text-white transition-colors duration-200`}
-                  >
-                    {service.desc}
+                  <p className="text-lg font-urbanist mb-8 text-[#233D4D] group-hover:text-white transition-colors duration-200">
+                    {service.serviceDescription}
                   </p>
 
                   <button
-                    onClick={() => (window.location.href = service.route)}
-                    className={`mt-auto flex items-center gap-2 font-semibold text-md cursor-pointer transition text-[#233D4D] hover:text-[#F2A307] group-hover:text-[#F2A307]`}
+                    onClick={() => {
+                      // Fallback: try to build a route from serviceName, or go to home
+                      const slug = service.serviceName
+                        ? "/service/" + service.serviceName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
+                        : "/";
+                      window.location.href = slug;
+                    }}
+                    className="mt-auto flex items-center gap-2 font-semibold text-md cursor-pointer transition text-[#233D4D] hover:text-[#F2A307] group-hover:text-[#F2A307]"
                   >
                     View More <span className="ml-1">&#8594;</span>
                   </button>

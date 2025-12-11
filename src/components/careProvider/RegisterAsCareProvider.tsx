@@ -18,10 +18,28 @@ const RegisterAsCareProvider = () => {
   const [description, setDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!fullName.trim()) newErrors.fullName = "Full Name is required.";
+    if (!email.trim()) newErrors.email = "Email is required.";
+    else if (!/^\S+@\S+\.\S+$/.test(email)) newErrors.email = "Invalid email format.";
+    if (!phoneNumber.trim()) newErrors.phoneNumber = "Phone Number is required.";
+    else if (!/^\d{10}$/.test(phoneNumber.replace(/\D/g, ""))) newErrors.phoneNumber = "Enter a valid 10-digit phone number.";
+    if (!gender.trim()) newErrors.gender = "Gender is required.";
+    if (!address.trim()) newErrors.address = "Address is required.";
+    if (!zipcode.trim()) newErrors.zipcode = "Zipcode is required.";
+    else if (!/^\d{5}$/.test(zipcode)) newErrors.zipcode = "Enter a valid 5-digit zipcode.";
+    if (!description.trim()) newErrors.description = "Description is required.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!API_BASE || submitting) return;
+    if (!validate()) return;
 
     setSubmitting(true);
     try {
@@ -55,6 +73,7 @@ const RegisterAsCareProvider = () => {
       setAddress("");
       setZipcode("");
       setDescription("");
+      setErrors({});
 
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
@@ -88,13 +107,14 @@ const RegisterAsCareProvider = () => {
             Start Caring, Start Earning –  <br />Register as a Caregiver Now
           </h1>
 
-          <form className="mt-8" onSubmit={handleSubmit}>
+          <form className="mt-8" onSubmit={handleSubmit} noValidate>
             <Input
-              placeholder="Full Name"
+              placeholder="Enter Name"
               icon="/user-icon.svg"
               type="text"
               value={fullName}
               onChange={setFullName}
+              error={errors.fullName}
             />
             <Input
               placeholder="Enter Email ID"
@@ -102,13 +122,15 @@ const RegisterAsCareProvider = () => {
               type="email"
               value={email}
               onChange={setEmail}
+              error={errors.email}
             />
             <Input
               placeholder="Enter Phone Number"
               icon="/phone-icon.svg"
               type="tel"
               value={phoneNumber}
-              onChange={setPhoneNumber}
+              onChange={(val) => setPhoneNumber(val.replace(/[^\d]/g, ""))}
+              error={errors.phoneNumber}
             />
             <Input
               placeholder="Enter Gender"
@@ -116,6 +138,7 @@ const RegisterAsCareProvider = () => {
               type="text"
               value={gender}
               onChange={setGender}
+              error={errors.gender}
             />
             <Input
               placeholder="Enter Address"
@@ -123,16 +146,18 @@ const RegisterAsCareProvider = () => {
               type="text"
               value={address}
               onChange={setAddress}
+              error={errors.address}
             />
             <Input
               placeholder="Enter Zipcode"
               icon="/correct-notcorrect-icon.svg"
               type="text"
               value={zipcode}
-              onChange={setZipcode}
+              onChange={(val) => setZipcode(val.replace(/[^\d]/g, ""))}
+              error={errors.zipcode}
             />
-            <InputArea value={description} onChange={setDescription} />
-            <YellowButton className="w-full mt-8 text-lg py-4" disabled={submitting}>
+            <InputArea value={description} onChange={setDescription} error={errors.description} />
+            <YellowButton className="w-full mt-8 text-lg py-6" disabled={submitting}>
               {submitting ? "Submitting..." : "Submit"}
             </YellowButton>
           </form>
@@ -148,21 +173,25 @@ interface InputProps {
   type: string;
   value: string;
   onChange: (value: string) => void;
+  error?: string;
 }
 
-const Input = ({ placeholder, icon, type = "text", value, onChange }: InputProps) => {
+const Input = ({ placeholder, icon, type = "text", value, onChange, error }: InputProps) => {
   return (
-    <div className="flex bg-white rounded-3xl p-4 items-center gap-x-3 mb-5">
-      <div className="relative w-5 h-5">
-        <Image src={icon} alt="icon" fill />
+    <div className="flex flex-col mb-5">
+      <div className="flex bg-white rounded-3xl p-4 items-center gap-x-3">
+        <div className="relative w-5 h-5">
+          <Image src={icon} alt="icon" fill />
+        </div>
+        <input
+          type={type}
+          placeholder={placeholder}
+          className="outline-none w-full"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
       </div>
-      <input
-        type={type}
-        placeholder={placeholder}
-        className="outline-none w-full"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
+      {error && <span className="text-red-500 text-sm mt-1 ml-2">{error}</span>}
     </div>
   );
 };
@@ -170,21 +199,25 @@ const Input = ({ placeholder, icon, type = "text", value, onChange }: InputProps
 interface InputAreaProps {
   value: string;
   onChange: (value: string) => void;
+  error?: string;
 }
 
-const InputArea = ({ value, onChange }: InputAreaProps) => {
+const InputArea = ({ value, onChange, error }: InputAreaProps) => {
   return (
-    <div className="flex items-start bg-white rounded-3xl p-3 gap-3">
-      <div className="w-6 h-6 min-w-[24px] relative mt-2">
-        <Image src="/write-icon.svg" alt="write icon" fill />
+    <div className="flex flex-col mb-5">
+      <div className="flex items-start bg-white rounded-3xl p-3 gap-3">
+        <div className="w-6 h-6 min-w-[24px] relative mt-2">
+          <Image src="/write-icon.svg" alt="write icon" fill />
+        </div>
+        <textarea
+          className="w-full rounded-2xl p-2 outline-none resize-none"
+          placeholder="Write a brief description"
+          rows={4}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        ></textarea>
       </div>
-      <textarea
-        className="w-full rounded-2xl p-2 outline-none resize-none"
-        placeholder="Write a brief description"
-        rows={4}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      ></textarea>
+      {error && <span className="text-red-500 text-sm mt-1 ml-2">{error}</span>}
     </div>
   );
 };

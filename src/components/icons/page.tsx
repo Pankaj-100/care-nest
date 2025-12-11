@@ -327,3 +327,9 @@ export const PhoneIcon2=()=>(
 </svg>
 
 )
+
+export const ArrowIcon=(props: React.SVGProps<SVGSVGElement>)=>(
+  <svg {...props} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.5 12L19.5 12M19.5 12L13.875 18M19.5 12L13.875 6" stroke="#233D4D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+</svg>
+)

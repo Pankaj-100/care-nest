@@ -27,7 +27,7 @@ const JoinCommunity = () => {
           Join our cool community as a Caregiver
         </YellowButton>
 
-        <div className="hidden sm:block w-26 h-9 absolute z-10 left-[430px] bottom-[-10px]">
+        <div className="hidden sm:block w-26 h-9 absolute z-10 left-[450px] bottom-[-12px]">
           <Image src="/dashed arrow.png" alt="arrow image" fill />
         </div>
       </div>
@@ -58,7 +58,7 @@ const JoinCommunity = () => {
             </div>
             <div className="relative w-32 h-32 sm:w-34 sm:h-35 rounded-t-2xl rounded-r-2xl">
               <Image
-                src={"/community-img-1.png"}
+                src={"/community-img-3.png"}
                 alt="community"
                 fill
                 className="rounded-t-2xl rounded-r-2xl object-cover"
@@ -78,7 +78,7 @@ const JoinCommunity = () => {
           </div>
           <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-r-2xl rounded-b-2xl">
             <Image
-              src={"/community-img-3.png"}
+              src={"/community-img-1.png"}
               alt="community"
               fill
               className="rounded-r-2xl rounded-b-2xl object-cover"

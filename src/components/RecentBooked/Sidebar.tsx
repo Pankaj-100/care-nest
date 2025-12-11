@@ -31,7 +31,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
 
   const { name, email, avatar, address, mobile, gender } = useSelector(
     (state: RootState) => state.profile
-  );
+  ) as { name: string; email: string; avatar: string | null; address: string; mobile: string; gender: string };
 
   const [showLogout, setShowLogout] = useState(false);
   const [showDelete, setShowDelete] = useState(false);

@@ -66,11 +66,11 @@ return (
 				<h1 className="text-[var(--navy)] font-semibold text-3xl sm:text-5xl mb-4 sm:mb-6">
 					Frequently Asked <br/> Questions
 				</h1>
-				<p className="text-gray-500 text-base sm:text-lg mb-4">
+				<p className="text-gray-500 text-base sm:text-lg mb-4 text-left">
 					Your privacy is very important to us. Accordingly, we have
-					developed this Policy in order for you to understand how we
-					collect, use, communicate and disclose and make use of personal
-					information. The following outlines our privacy policy.
+					developed this Policy in order for you to understand how 
+					we collect, use, communicate and disclose and make use 
+					of personal information. The following outlines our privacy policy.
 				</p>
 			</div>
 			<div className="flex justify-center order-1 md:order-2 mb-4 md:mb-0">
@@ -86,7 +86,7 @@ return (
 		{/* General FAQ Section */}
 		<div className="w-full max-w-6xl flex flex-col md:grid md:grid-cols-2 gap-8 items-start px-4">
 			<div>
-				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-xl sm:text-2xl">
+				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-xl sm:text-3xl">
 					General FAQ&apos;s
 				</h4>
 				<h2 className="text-[var(--navy)] font-semibold text-2xl sm:text-5xl mb-4 sm:mb-6">

@@ -25,9 +25,9 @@ export default function MedicaidCASProgram() {
           <p className="text-lg text-gray-600 mb-8 leading-relaxed">
             The Medicaid Community Attendant Services (CAS) program is a vital healthcare initiative designed to provide personal care services to Medicaid recipients. This program is specifically tailored to assist low-income individuals and families who require help with daily living activities due to age, disability, or chronic illness.
           </p>
-          <Link href="/service/personal-care">
-            <button className="bg-[#F2A307] text-white text-lg font-semibold px-8 py-4 rounded-full flex items-center gap-2 hover:bg-[#e6950a] transition">
-              Learn More <span className="ml-2">&#8594;</span>
+          <Link href="/contact">
+            <button className="bg-[#F2A307] cursor-pointer text-white text-lg font-semibold px-8 py-4 rounded-full flex items-center gap-2 hover:bg-[#e6950a] transition">
+              contact Us <span className="ml-2">&#8594;</span>
             </button>
           </Link>
         </div>
@@ -57,7 +57,7 @@ export default function MedicaidCASProgram() {
             left: '108px'
           }}
         >
-          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Medicaid Eligibility</h3>
+          <h3 className="text-2xl font-semibold text-[#233D4D] mb-3">Medicaid Eligibility</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             The individual must be eligible for Medicaid, which generally means they fall within the low-income bracket as determined by state and federal guidelines.
           </p>
@@ -73,7 +73,7 @@ export default function MedicaidCASProgram() {
             left: '580px'
           }}
         >
-          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Residency</h3>
+          <h3 className="text-2xl font-semibold text-[#233D4D] mb-3">Residency</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             The applicant must be a resident of the state where they are applying for CAS services. For instance, in Texas, the individual must be a resident of Texas.
           </p>
@@ -89,7 +89,7 @@ export default function MedicaidCASProgram() {
             left: '108px'
           }}
         >
-          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Age And Disability</h3>
+          <h3 className="text-2xl font-semibold text-[#233D4D] mb-3">Age And Disability</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             While the program primarily serves elderly individuals and those with disabilities, specific age requirements may vary by state. In general, adults with disabilities and seniors are the primary recipients.
           </p>
@@ -105,7 +105,7 @@ export default function MedicaidCASProgram() {
             left: '1100px'
           }}
         >
-          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Need For Assistance</h3>
+          <h3 className="text-2xl font-semibold text-[#233D4D] mb-3">Need For Assistance</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             The individual must require assistance with at least one activity of daily living (ADL) such as bathing, dressing, grooming, eating, or mobility.
           </p>
@@ -140,7 +140,7 @@ export default function MedicaidCASProgram() {
             left: '600px'
           }}
         >
-          <h3 className="text-xl font-semibold text-[#233D4D] mb-3">Functional Limitations</h3>
+          <h3 className="text-2xl font-semibold text-[#233D4D] mb-3">Functional Limitations</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             The applicant must have a functional limitation that necessitates the need for personal care services. This could be due to a chronic illness, physical disability, or cognitive impairment.
           </p>
@@ -156,7 +156,7 @@ export default function MedicaidCASProgram() {
             left: '1100px'
           }}
         >
-          <h3 className="text-xl font-semibold text-[#233D4D] mb-8">Assessment</h3>
+          <h3 className="text-2xl font-semibold text-[#233D4D] mb-8">Assessment</h3>
           <p className="text-gray-600 text-lg leading-relaxed">
             A professional assessment must determine that the individual requires attendant services to perform daily living activities safely and effectively. This assessment is usually conducted by a healthcare professional or caseworkor.
           </p>
@@ -196,8 +196,8 @@ export default function MedicaidCASProgram() {
             {/* Step 1 */}
             <div className="flex items-center justify-between mt-8 mb-16">
               <div className="w-2/5 text-right pr-8">
-                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Verify Medicaid Eligibility</h3>
-                <p className="text-white text-lg leading-relaxed">Confirm that you meet Medicaid income and <br/> resource limits. You can check this through your <br/> state&apos;s Medicaid office or website.</p>
+                <h3 className="text-[#F2A307] text-2xl font-semibold mb-2">Verify Medicaid Eligibility</h3>
+                <p className="text-white text-lg text-right leading-relaxed">Confirm that you meet Medicaid income and <br/> resource limits. You can check this through your <br/> state&apos;s Medicaid office or website.</p>
               </div>
               
               <div className="absolute left-1/2 transform -translate-x-1/2 z-20">
@@ -220,16 +220,16 @@ export default function MedicaidCASProgram() {
               </div>
               
               <div className="w-2/5 text-left pl-8">
-                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Contact Medicaid Office</h3>
-                <p className="text-white text-lg">Reach out to your state&apos;s Medicaid <br/> office to inquire about CAS and <br/> initiate the application process.</p>
+                <h3 className="text-[#F2A307] text-2xl font-semibold mb-2">Contact Medicaid Office</h3>
+                <p className="text-white text-lg text-left">Reach out to your state&apos;s Medicaid <br/> office to inquire about CAS and <br/> initiate the application process.</p>
               </div>
             </div>
 
             {/* Step 3 */}
             <div className="flex items-center justify-between mb-16">
               <div className="w-2/5 text-right pr-8">
-                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Schedule An Assessment</h3>
-                <p className="text-white text-lg">Arrange for a professional assessment to <br/> evaluate your need for attendant services.</p>
+                <h3 className="text-[#F2A307] text-2xl font-semibold mb-2">Schedule An Assessment</h3>
+                <p className="text-white text-lg text-right">Arrange for a professional assessment to <br/> evaluate your need for attendant services.</p>
               </div>
               
               <div className="absolute left-1/2 transform -translate-x-1/2 z-20">
@@ -252,16 +252,16 @@ export default function MedicaidCASProgram() {
               </div>
               
               <div className="w-2/5 text-left pl-8">
-                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Submit Required Documentation</h3>
-                <p className="text-white text-lg">Provide necessary documentation, <br/> including proof of income, residency, and <br/> medical records if required.</p>
+                <h3 className="text-[#F2A307] text-2xl font-semibold mb-2">Submit Required Documentation</h3>
+                <p className="text-white text-lg text-left">Provide necessary documentation, <br/> including proof of income, residency, and <br/> medical records if required.</p>
               </div>
             </div>
 
             {/* Step 5 */}
             <div className="flex items-center justify-between">
               <div className="w-2/5 text-right pr-8">
-                <h3 className="text-[#F2A307] text-xl font-semibold mb-2">Approval And Services</h3>
-                <p className="text-white text-lg">Once approved, you will receive a <br/> personalized care plan and be matched <br/> with a caregiver to start receiving services.</p>
+                <h3 className="text-[#F2A307] text-2xl font-semibold mb-2">Approval And Services</h3>
+                <p className="text-white text-lg text-right">Once approved, you will receive a <br/> personalized care plan and be matched <br/> with a caregiver to start receiving services.</p>
               </div>
               
               <div className="absolute left-1/2 transform -translate-x-1/2 z-20">
@@ -501,7 +501,7 @@ export default function MedicaidCASProgram() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Call the INTAKE number: <span className="font-semibold">713-692-1635</span>
+                    Call the INTAKE number: <span className="font-semibold">832-237-2273</span>
                   </li>
                 </ul>
               </div>
@@ -716,9 +716,11 @@ export default function MedicaidCASProgram() {
               </div>
             </div>
             
-            <button className="bg-[#F2A307] text-white px-8 py-4 rounded-full font-light text-lg flex items-center gap-2 hover:bg-[#e6950a] transition">
-              <PhoneIcon2/> Call 2-1-1
-            </button>
+            <a href="tel:8322372273">
+              <button className="bg-[#F2A307] text-white px-8 py-4 rounded-full font-light text-lg flex items-center gap-2 hover:bg-[#e6950a] transition">
+                <PhoneIcon2/> Call 832-237-2273
+              </button>
+            </a>
           </div>
           
           {/* Right Image */}

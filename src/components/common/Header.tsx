@@ -68,7 +68,7 @@ const Header = () => {
   const NavbarMenuTitle: NavbarTypes[] = [
     { title: "Home", link: "/" },
     {
-      title: "Who we are",
+      title: "Who We Are",
       services: [
         { title: "About Us", link: "/aboutUs" },
         { title: "Who We Are", link: "/who-we-are" },
@@ -342,7 +342,7 @@ const NavbarMenu = ({
         <span 
           className="text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] "
           onClick={() => {
-            if (title === "Services" || title === "Login" || title === "Who we are" || title === "Locations") {
+            if (title === "Services" || title === "Login" || title === "Who We Are" || title === "Locations") {
               setOpenDropdownIndex(isDropdownOpen ? null : index);
             }
           }}
@@ -351,12 +351,12 @@ const NavbarMenu = ({
         </span>
       )}
 
-      {(title === "Services" || title === "Who we are" || title === "Login" || title === "Locations") && (
+      {(title === "Services" || title === "Who We Are" || title === "Login" || title === "Locations") && (
         <ChevronDown 
           size={18} 
           className="lg:w-[18px] lg:h-[18px] xl:w-[20px] xl:h-[20px]"
           onClick={() => {
-            if (title === "Services" || title === "Login" || title === "Who we are" || title === "Locations") {
+            if (title === "Services" || title === "Login" || title === "Who We Are" || title === "Locations") {
               setOpenDropdownIndex(isDropdownOpen ? null : index);
             }
           }}
@@ -364,7 +364,7 @@ const NavbarMenu = ({
       )}
 
       {/* Dropdowns - only show on desktop (lg+) */}
-      {(title === "Services" || title === "Who we are" || title === "Login" || title === "Locations") && (
+      {(title === "Services" || title === "Who We Are" || title === "Login" || title === "Locations") && (
         <div className="relative hidden lg:block z-[999]">
           {isDropdownOpen && (
             <div

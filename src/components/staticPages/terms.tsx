@@ -83,7 +83,7 @@ export default function Terms() {
         Terms and Conditions
       </h1>
       <div
-        className="max-w-5xl space-y-3 text-lg prose prose-lg"
+        className="max-w-5xl space-y-3 text-lg prose prose-lg mx-auto text-center"
         dangerouslySetInnerHTML={{ __html: terms.content }}
       />
     </div>

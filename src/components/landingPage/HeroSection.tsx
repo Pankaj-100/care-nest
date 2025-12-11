@@ -4,8 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCareseekerZipcode } from "@/store/slices/bookingSlice";
 import Image from "next/image";
-import { RedirectButton } from "../common/CustomButton";
-import { DesignIcon1, DesignIcon2, DesignIcon3, PhoneIcon } from "../icons/page";
+import { DesignIcon1, DesignIcon2, DesignIcon3, PhoneIcon, ArrowIcon } from "../icons/page";
 import RippleRadio from "../common/RippleRadio";
 import { toast } from "react-toastify";
 
@@ -189,11 +188,14 @@ const HeroSection = () => {
                 priority
               />
             </a>
-            <RedirectButton
-              className="px-5 py-3 sm:px-6 sm:py-3.5 lg:px-7 lg:py-7 text-sm sm:text-base lg:text-lg rounded-4xl font-semibold after:content-['→'] after:ml-2 after:inline-block after:transition-transform hover:after:translate-x-1"
-              path="/contact"
-              title="Contact Us"
-            />
+            <button
+              type="button"
+              onClick={() => window.location.href = '/contact'}
+              className="px-5 py-3 sm:px-6 sm:py-3.5 cursor-pointer lg:px-8 lg:py-4 mb-2 text-sm sm:text-base lg:text-lg rounded-4xl font-semibold flex items-center gap-2 bg-[var(--yellow)] text-[var(--navy)] hover:bg-[var(--yellow-light)] transition-all duration-300 ease-in-out shadow-md"
+            >
+              <span>Contact Us</span>
+              <ArrowIcon className="w-6 h-6 ml-2" />
+            </button>
           </div>
         </div>
 
@@ -310,7 +312,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
       >
         <div
           className={`flex flex-col col-span-12 ${
-            !noDescription ? "lg:col-span-7" : "lg:col-span-8"
+            !noDescription ? "lg:col-span-7 lg:mr-3" : "lg:col-span-8"
           }`}
         >
           <label className="mb-2 font-semibold text-base sm:text-lg lg:text-xl" htmlFor="zip-input">
@@ -329,7 +331,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
               setZipCode(val);
               if (zipError) setZipError("");
             }}
-            className={`w-full lg:w-[350px] rounded-full outline-none border py-3 px-4 sm:py-3.5 sm:px-5 lg:py-4 lg:px-6 text-gray-900 text-base sm:text-lg focus:border-gray-400 focus:ring-0 ${zipError ? "border-red-500" : "border-gray-400"}`}
+            className={`w-full lg:w-[280px] rounded-full outline-none border py-3 px-4 sm:py-3.5 sm:px-5 lg:py-4 lg:px-6 text-gray-900 text-base sm:text-lg focus:border-gray-400 focus:ring-0 ${zipError ? "border-red-500" : "border-gray-400"}`}
             maxLength={5}
             autoComplete="postal-code"
           />
@@ -344,7 +346,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         >
           <button
             type="submit"
-            className={`w-full flex items-center justify-center text-center lg:ml-12 px-5 py-3 sm:px-5 sm:py-3.5 lg:px-6 lg:py-4 cursor-pointer rounded-4xl text-base sm:text-lg font-semibold transition whitespace-nowrap
+            className={`w-full flex items-center justify-center text-center lg:ml-12 px-5 py-3 sm:px-5 sm:py-3.5 lg:px-6 lg:py-4 cursor-pointer rounded-4xl text-base sm:text-md font-semibold transition whitespace-nowrap
               bg-[#FFA726] text-[#233D4D] hover:brightness-105`}
           >
             Search Caregiver

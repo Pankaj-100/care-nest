@@ -44,7 +44,7 @@ export default async function WhoWeAre() {
     <div className="w-full flex flex-col items-center bg-white">
       {/* Top Section */}
       <div className="w-full max-w-7xl mt-10 flex flex-col lg:flex-row items-start justify-between mb-16 px-4 sm:px-6">
-        <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#233D4D] mb-6 lg:mb-0 lg:mr-12 whitespace-pre-line lg:w-1/2">
+        <h1 className="text-3xl mt-15 sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#233D4D] mb-6 lg:mb-0 lg:mr-12 whitespace-pre-line lg:w-1/2">
           {who.mainHeading || "Who We Are"}
         </h1>
         <div
@@ -61,12 +61,12 @@ export default async function WhoWeAre() {
           "/whoWeAre/image3.png",
           "/whoWeAre/image4.png"
         ]).map((src, idx) => {
-          // Assign specific sizes for each image slot
-          let width = 260, height = 300;
-          if (idx === 0) { width = 250; height = 450; }
-          if (idx === 1) { width = 260; height = 300; }
-          if (idx === 2) { width = 260; height = 300; }
-          if (idx === 3) { width = 260; height = 300; }
+          // Staggered sizes for visual interest
+          let width = 260, height = 300, extraClass = "";
+          if (idx === 0) { width = 250; height = 300; extraClass = "lg:h-[300px] lg:w-[250px]"; }
+          if (idx === 1) { width = 260; height = 400; extraClass = "lg:h-[400px] lg:w-[260px]"; }
+          if (idx === 2) { width = 260; height = 400; extraClass = "lg:h-[400px] lg:w-[260px]"; }
+          if (idx === 3) { width = 260; height = 400; extraClass = "lg:h-[300px] lg:w-[250px]"; }
           return (
             <Image
               key={idx}
@@ -74,7 +74,7 @@ export default async function WhoWeAre() {
               alt={`who-we-are-${idx}`}
               width={width}
               height={height}
-              className="w-full h-48 sm:h-60 md:h-72 lg:w-60 lg:h-80 object-cover shadow-md"
+              className={`w-full object-cover shadow-md ${extraClass}`}
             />
           );
         })}
@@ -142,7 +142,7 @@ export default async function WhoWeAre() {
           />
         </div>
 
-        <div className="relative z-30 max-w-2xl px-4 sm:px-8 py-8 sm:py-12 flex flex-col items-start ml-0 sm:ml-10">
+        <div className="relative z-30 max-w-2xl px-4 sm:px-8 py-8 sm:py-12 flex flex-col items-start ml-0 sm:ml-27">
           <h2 className="text-[#F2A307] text-2xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-8">
             Contact Us Today For More Information
           </h2>

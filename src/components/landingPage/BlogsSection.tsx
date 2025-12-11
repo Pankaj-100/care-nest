@@ -13,6 +13,7 @@ type Blog = {
   date: string;
   image: string;
   excerpt: string;
+  authorProfilePic: string;
 };
 
 const BlogsSection = () => {
@@ -44,6 +45,7 @@ const BlogsSection = () => {
         : "—",
       image: b.mainImage ?? "/service1.png",
       excerpt: b.description ?? "",
+      authorProfilePic: b.authorProfilePic ?? "/profile pic.jpg",
     })) as Blog[];
 
   const handlePrev = () => {
@@ -59,7 +61,7 @@ const BlogsSection = () => {
   return (
     <div className="py-10 sm:py-16 bg-[var(--whiteSmoke)] px-4 sm:px-8 lg:px-20 xl:px-28">
       <div className="flex items-center justify-center mb-8 sm:mb-10 text-center">
-        <h1 className="font-medium text-3xl sm:text-4xl lg:text-5xl leading-snug max-w-xl sm:max-w-3xl capitalize">
+        <h1 className="font-semibold text-3xl sm:text-4xl lg:text-5xl leading-snug max-w-xl sm:max-w-4xl capitalize">
           Resources Are Essential For Human Activities In Various Realms.
         </h1>
       </div>
@@ -115,7 +117,7 @@ const BlogsSection = () => {
   );
 };
 
-const BlogCard = ({ id, title, author, date, image, excerpt }: Blog) => {
+const BlogCard = ({ id, title, author, date, image, excerpt, authorProfilePic }: Blog) => {
   const router = useRouter();
 
   const handleLearnMore = () => {
@@ -140,7 +142,7 @@ const BlogCard = ({ id, title, author, date, image, excerpt }: Blog) => {
           <div className="flex items-center gap-x-2">
             <div className="relative w-7 h-7 rounded-full border border-[var(--navy)] overflow-hidden">
               <Image
-                src={"/profile pic.jpg"}
+                src={authorProfilePic || "/profile pic.jpg"}
                 alt={`${author} avatar`}
                 fill
                 className="object-cover"
@@ -157,7 +159,7 @@ const BlogCard = ({ id, title, author, date, image, excerpt }: Blog) => {
           {excerpt}
         </p>
       </div>
-      <TransparentButton className="w-full text-base sm:text-lg py-3 sm:py-4 rounded-full" onClick={handleLearnMore}>
+      <TransparentButton className="w-full text-base sm:text-lg py-3 sm:py-5 rounded-full" onClick={handleLearnMore}>
         Learn More
       </TransparentButton>
     </div>

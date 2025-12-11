@@ -58,7 +58,7 @@ const IntroductionWithCTA = () => {
         <div className="max-w-3xl">
           <Link href="https://carenest-caregiver.vercel.app/signup" passHref legacyBehavior>
             <a>
-              <YellowButton className="px-14 py-5 text-xl">Register now</YellowButton>
+              <YellowButton className="px-14 py-7 text-xl">Register now</YellowButton>
             </a>
           </Link>
         </div>

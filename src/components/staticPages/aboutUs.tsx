@@ -241,26 +241,51 @@ export default function AboutUs() {
           people.map((p, idx) => (
             <div
               key={p.id}
-              className={`grid md:grid-cols-2 mt-10 gap-12 items-center mb-20 ${idx % 2 === 1 ? "md:flex-row-reverse" : ""}`}
+              className="grid md:grid-cols-2 mt-10 gap-12 items-center mb-20"
             >
-              <div>
-                <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">{p.personTitle ?? "Key Person"}</h4>
-                <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">{p.personName}</h2>
-                <p
-                  className="text-gray-700 text-xl mb-4"
-                  dangerouslySetInnerHTML={{ __html: p.personDescription ?? "" }}
-                />
-              </div>
-              <div className="flex justify-center">
-                <Image
-                  src={p.personImage ?? "/aboutUs/ruby.png"}
-                  alt={p.personName}
-                  width={350}
-                  height={350}
-                  className="rounded-xl w-[350px] h-[350px] object-cover"
-                  priority={idx === 0}
-                />
-              </div>
+              {idx === 1 ? (
+                <>
+                  <div className="flex justify-center">
+                    <Image
+                      src={p.personImage ?? "/aboutUs/ruby.png"}
+                      alt={p.personName}
+                      width={350}
+                      height={350}
+                      className="rounded-xl w-[350px] h-[350px] object-cover"
+                      priority={idx === 1}
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-[#F2A307] font-semibold mb-2 text-xl">{p.personTitle ?? "Key Person"}</h4>
+                    <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">{p.personName}</h2>
+                    <p
+                      className="text-gray-700 text-xl mb-4"
+                      dangerouslySetInnerHTML={{ __html: p.personDescription ?? "" }}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">{p.personTitle ?? "Key Person"}</h4>
+                    <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">{p.personName}</h2>
+                    <p
+                      className="text-gray-700 text-xl mb-4"
+                      dangerouslySetInnerHTML={{ __html: p.personDescription ?? "" }}
+                    />
+                  </div>
+                  <div className="flex justify-center">
+                    <Image
+                      src={p.personImage ?? "/aboutUs/ruby.png"}
+                      alt={p.personName}
+                      width={350}
+                      height={350}
+                      className="rounded-xl w-[350px] h-[350px] object-cover"
+                      priority={idx === 0}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           ))
         ) : (
@@ -422,7 +447,7 @@ export default function AboutUs() {
         </div>
 
         {/* Meet Our Team Members Section */}
-        <div className="w-full bg-[#fff] py-20 px-8">
+        <div className="w-full bg-[#fff] py-9 px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
               <div>
@@ -499,7 +524,7 @@ export default function AboutUs() {
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center ml-20 gap-3 bg-[#233D4D] text-white px-5 py-3 rounded-full font-light text-xl hover:bg-[#1a2c3b] transition"
+            className="inline-flex items-center ml-20 gap-3 bg-[#233D4D] text-white px-6 py-4 rounded-full font-light text-xl hover:bg-[#1a2c3b] transition"
           >
             Contact Us
             <span className="ml-2">&#8594;</span>

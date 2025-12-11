@@ -37,8 +37,8 @@ const link: linkSection[] = [
     Company: [
       { title: "About Us", link: "/aboutUs" },
       { title: "Become A Caregiver", link: "/care-provider" },
-      { title: "Who we are", link: "/who-we-are" },
-      { title: "We accept Medicaid", link: "/medicaid" },
+      { title: "Who We Are", link: "/who-we-are" },
+      { title: "We Accept Medicaid", link: "/medicaid" },
     ],
     "Other Services": [
       { title: "Transportation", link: "/service/transportation" },
@@ -60,7 +60,7 @@ const footerLink: linkItems[] = [
   { title: "Privacy", link: "/privacy" },
   { title: "Cookies", link: "/cookies" },
   { title: "Legal", link: "/legal" },
-  { title: "Recalls", link: "/recalls" },
+  // { title: "Recalls", link: "/recalls" },
 ];
 
 const socialLink: linkItems[] = [
@@ -139,7 +139,7 @@ const Footer = () => {
           <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-4">
             <Image src="/Logo_1.svg" alt="Carenest logo" fill priority />
           </Link>
-          <p className={`text-lg text-[#FFFFFF] font-light whitespace-pre-line`}>
+          <p className={`text-lg text-[#FFFFFF] font-light `}>
             {displayDescription}
           </p>
         </div>
@@ -238,7 +238,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="text-lg text-gray-200 p-2 rounded-full border border-gray-200 hover:border-[var(--yellow)] transition-colors"
             >
-              <div className="relative w-4 h-4">
+              <div className="relative w-5 h-5">
                 <Image 
                   src={item.icons || ""} 
                   alt="social icon" 

@@ -38,8 +38,12 @@ function ForgotPasswordForm() {
       if (typeof err === "object" && err !== null && "data" in err) {
         const errorData = err as { data?: { message?: string } };
         let errorMsg = errorData.data?.message || "Failed to send OTP. Try again.";
-        if (errorMsg.toLowerCase().includes("email is incorrect")) {
-          errorMsg = "Email was not registered";
+        if (
+          errorMsg.toLowerCase().includes("email is incorrect") ||
+          errorMsg.toLowerCase().includes("not registered") ||
+          errorMsg.toLowerCase().includes("not found")
+        ) {
+          errorMsg = "Email id Not registered";
         }
         toast.error(errorMsg);
       } else {

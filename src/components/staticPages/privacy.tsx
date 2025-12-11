@@ -78,7 +78,7 @@ export default function PrivacyPolicy() {
         Privacy Policy
       </h1>
       <div
-        className="max-w-5xl space-y-3 text-lg prose prose-lg"
+        className="max-w-5xl space-y-3 text-lg prose prose-lg mx-auto text-center"
         dangerouslySetInnerHTML={{ __html: policy.content }}
       />
     </div>

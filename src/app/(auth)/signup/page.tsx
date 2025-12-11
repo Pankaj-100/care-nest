@@ -8,7 +8,7 @@ function page() {
   return (
     <AuthLayout image="/auth/signup.png">
       <div>
-        <div className="text-[var(--blue-gray)] font-semibold text-4xl">
+        <div className="text-[var(--blue-gray)] mt-3 font-semibold text-4xl">
           Join Now!
         </div>
         <div className="text-[var(--blue-gray)] text-xl mt-2">

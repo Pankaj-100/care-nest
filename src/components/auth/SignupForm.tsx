@@ -184,7 +184,7 @@ function SignupForm() {
         text={address}
         setText={setAddress}
         Icon={addressIcon}
-        placeholder="Enter Address"
+        placeholder="Enter Service Address"
         error={touched.address ? errors.address : ""}
         onBlur={() => handleBlur("address", address)}
         className="text-xl placeholder:text-xl"
