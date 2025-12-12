@@ -63,8 +63,8 @@ return (
 				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-2xl sm:text-3xl">
 					FAQ&apos;s
 				</h4>
-				<h1 className="text-[var(--navy)] font-semibold text-3xl sm:text-5xl mb-4 sm:mb-6">
-					Frequently Asked <br/> Questions
+				<h1 className="text-[var(--navy)] font-semibold text-xl sm:text-3xl mb-4 sm:mb-6">
+					Find quick answers to the most common questions about CareWorks, our services and how the platform works. If you need more help, our team is always here to support you.  
 				</h1>
 				<p className="text-gray-500 text-base sm:text-lg mb-4 text-left">
 					Your privacy is very important to us. Accordingly, we have

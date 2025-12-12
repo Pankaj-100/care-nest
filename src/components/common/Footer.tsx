@@ -181,11 +181,12 @@ const Footer = () => {
       {/* Proud Partners Section - match expected image */}
       <div className="flex flex-col items-center my-12">
         <div className="w-full flex flex-col items-center">
-          <h3 className="text-2xl font-medium mb-5 text-white text-left w-full max-w-xs" style={{ marginLeft: '60px' }}>Proud Partners</h3>
+          <h3 className="text-2xl font-medium mb-5 text-white text-left w-full max-w-md" style={{ marginLeft: '40px' }}>Proud Partners</h3>
           <div className="flex flex-row flex-wrap justify-end items-end gap-12 w-full max-w-6xl mb-12">
             <Image src="/partners/veterans-care.png" alt="Veterans Care Coordination" width={220} height={60} className="object-contain h-16 w-auto" />
             <Image src="/partners/caring-com.png" alt="Caring.com" width={90} height={90} className="object-contain h-16 w-auto" />
             <Image src="/partners/a-place-for-mom.png" alt="A Place for Mom" width={220} height={60} className="object-contain h-16 w-auto" />
+            <Image src="carescout.png" alt="Carescout Qualtiy network" width={90} height={90} className="object-contain h-16 w-auto" />
           </div>
         </div>
       </div>

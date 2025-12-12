@@ -26,9 +26,10 @@ const ChoosingPath: React.FC = () => {
                 <Image
                   src="/old-age-caregiver.png"
                   alt="Find caregiver illustration"
-                  width={150}
-                  height={150}
-                  className="w-auto h-auto"
+                  width={112}
+                  height={112}
+                  className="w-24 h-24 object-contain"
+                  sizes="96px"
                 />
               </div>
               <h2 className="font-semibold text-2xl">Find trusted caregivers</h2>
@@ -49,9 +50,10 @@ const ChoosingPath: React.FC = () => {
                 <Image
                   src="/girl-caregiver.png"
                   alt="Caregiver working illustration"
-                  width={150}
-                  height={150}
-                  className="w-auto h-auto"
+                  width={112}
+                  height={112}
+                  className="w-28 h-28 object-contain"
+                  sizes="112px"
                 />
               </div>
               <h2 className="font-semibold text-2xl">Work as a caregiver</h2>

@@ -75,8 +75,8 @@ const Testimonials: React.FC = () => {
     <div className="py-12 sm:py-20 bg-[var(--whiteSmoke)] px-4 sm:px-10 lg:px-24 xl:px-28">
       <div className="text-center flex items-center justify-center mb-10">
         <div className="flex flex-col font-semibold text-3xl sm:text-4xl lg:text-5xl capitalize items-center gap-2 sm:gap-3">
-          <div>Trusted By Members</div>
-          <div>Across The Houston</div>
+          <div>Trusted by Houston Families</div>
+          <div>Who Count on Quality Care</div>
         </div>
       </div>
 

@@ -501,7 +501,7 @@ export default function MedicaidCASProgram() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Call the INTAKE number: <span className="font-semibold">832-237-2273</span>
+                    Call the INTAKE number: <span className="font-semibold">713-692-1635</span>
                   </li>
                 </ul>
               </div>
@@ -705,7 +705,7 @@ export default function MedicaidCASProgram() {
                   <LocationIcon1/>
                 </div>
                 <a
-                  href="https://hhs.texas.gov/services/aging/long-term-care/aging-disability-resource-center"
+                  href="https://www.hhs.texas.gov/services/aging/long-term-care/aging-disability-resource-centers"
                   target="_blank"
                   className="text-lg hover:underline focus:underline"
                   aria-label="Find Local Aging & Disability Resource Center"
@@ -718,7 +718,7 @@ export default function MedicaidCASProgram() {
             
             <a href="tel:8322372273">
               <button className="bg-[#F2A307] text-white px-8 py-4 rounded-full font-light text-lg flex items-center gap-2 hover:bg-[#e6950a] transition">
-                <PhoneIcon2/> Call 832-237-2273
+                <PhoneIcon2/> Call 2-1-1
               </button>
             </a>
           </div>

@@ -24,6 +24,9 @@ export default function ResourcesPage() {
   const [data, setData] = useState<ResourcesPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     let mounted = true;
@@ -43,6 +46,9 @@ export default function ResourcesPage() {
           setError("No resources found");
         } else {
           setData(resources);
+          const count = resources.resourceCards?.length ?? 0;
+          setTotalPages(Math.max(1, Math.ceil(count / pageSize)));
+          setPage(1);
         }
       })
       .catch((err) => {
@@ -76,14 +82,15 @@ export default function ResourcesPage() {
     );
   }
 
-  const cards = data.resourceCards ?? [];
+  const allCards = data.resourceCards ?? [];
+  const cards = allCards.slice((page - 1) * pageSize, page * pageSize);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center py-16 px-4">
-      <h4 className="text-center text-[var(--yellow)] font-semibold mb-2 text-3xl">
-        Resources
+      <h4 className="text-center text-[var(--yellow)] font-semibold mb-4 text-3xl">
+        Essential Resources That Support Seniors on Their Care Journey
       </h4>
-      <h1 className="text-center text-[var(--navy)] font-bold text-5xl mb-6">
+      <h1 className="text-center text-[var(--navy)] font-bold text-4xl mb-6">
         {data.title}
       </h1>
       <p className="max-w-4xl text-lg text-center text-gray-500 mb-8 ">
@@ -123,6 +130,25 @@ export default function ResourcesPage() {
           </div>
         ))}
       </div>
+      {totalPages > 1 && (
+        <div className="flex items-center gap-3 mt-8">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1 || loading}
+            className="px-4 py-2 rounded-full bg-[#233D4D] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <span className="text-[#233D4D] font-semibold">Page {page} of {totalPages}</span>
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages || loading}
+            className="px-4 py-2 rounded-full bg-[#233D4D] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

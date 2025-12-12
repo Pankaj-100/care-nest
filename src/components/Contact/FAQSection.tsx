@@ -62,7 +62,7 @@ const FAQSection = () => {
         {faq?.sectionTitle || "Have Questions?\nWe Have Answers!"}
       </h2>
       <p className="text-lg text-[var(--navy)]/70 ">
-        Your Comprehensive CareLinix Guide: Answers to Your Most <br />Common Questions
+        Your Comprehensive CareWorks Guide: Answers to Your Most <br />Common Questions
       </p>
       {loading && <div className="text-[var(--navy)]">Loading FAQs...</div>}
       {error && <div className="text-red-400">{error}</div>}
