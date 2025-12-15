@@ -342,9 +342,12 @@ const ScheduleCare = ({
     e.preventDefault();
     setFormError(null);
 
+    // Validate meeting date and start date
+    if (!meetingDate) return setFormError("Please provide preferred meeting date");
+    if (!startDate) return setFormError("Please provide service start date");
+
     // Only validate startDate in edit mode
     if (isEditMode) {
-      if (!startDate) return setFormError("Select start date.");
 
       // Build weeklySchedule array
       const weeklySchedule: { weekDay: number; startTime: string; endTime: string }[] = [];
@@ -390,8 +393,6 @@ const ScheduleCare = ({
     }
 
     // --- Existing validations for new booking ---
-    if (!startDate) return setFormError("Select start date.");
-
     const effectiveServiceIds = serviceIds || serviceIdsRedux || [];
     if (effectiveServiceIds.length === 0)
       return setFormError("You missed service selection, start the booking from home page.");

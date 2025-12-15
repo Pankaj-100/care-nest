@@ -108,8 +108,7 @@ export default function ManageProfile() {
       case "mobile":
         return /^\d{10}$/.test(value) ? "": "Mobile must be 10 digits";
       case "zipcode":
-        // Accept 5 or 6 digits. Adjust if your region requires a fixed length.
-        return /^\d{5,6}$/.test(value) ? "" : "Zip code must be 5–6 digits";
+        return /^\d{5}$/.test(value) ? "" : "Zip code must be 5 digits";
       default:
         return "";
     }
@@ -170,7 +169,7 @@ export default function ManageProfile() {
     }
   };
 
-  const handleCareRecipientSave = async (e: React.FormEvent) => {
+ {/* const handleCareRecipientSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!careRecipient) return;
     try {
@@ -179,7 +178,7 @@ export default function ManageProfile() {
     } catch {
       toast.error("Failed to update care recipient.");
     }
-  };
+  }; /*/}
 
   // Skeleton loader for input fields with pulsing data area but static icon
   const InputSkeleton = ({ icon }: { icon: React.ReactNode }) => (
@@ -191,7 +190,7 @@ export default function ManageProfile() {
 
   return (
     <div>
-      <div className="bg-[#F8F8F8] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto mt-10">
+      <div className="bg-[#FFFFFF] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto mt-10">
         <form onSubmit={handleSubmit}>
           <div className="flex justify-between items-center mb-6 border-b pb-6">
             <h2 className="text-3xl font-semibold leading-8 text-[var(--navy)]">
@@ -200,7 +199,7 @@ export default function ManageProfile() {
             <button
               type="submit"
               disabled={isUpdating || hasErrors}
-              className={`flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition font-semibold ${
+              className={`flex items-center gap-2 cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition font-semibold ${
                 isUpdating || hasErrors ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
@@ -242,7 +241,7 @@ export default function ManageProfile() {
               />
               <div className="space-y-1">
                 <div
-                  className={`flex items-center bg-white px-4 py-4 rounded-full border ${
+                  className={`flex items-center bg-[#F8F8F8] px-4 py-4 rounded-full border ${
                     errors.gender ? "border-red-500 ring-2 ring-red-400" : "focus-within:ring-2 ring-yellow-400"
                   }`}
                 >
@@ -295,7 +294,7 @@ export default function ManageProfile() {
         </form>
       </div>
 
-      {/* Care recipient section */}
+      {/* Care recipient section 
       <div className="mt-10 bg-[#F8F8F8] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto">
         <form onSubmit={handleCareRecipientSave}>
           <div className="flex justify-between items-center mb-6 border-b pb-6">
@@ -334,7 +333,7 @@ export default function ManageProfile() {
             </div>
           </div>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -361,9 +360,9 @@ function InputField({
   return (
     <div className="space-y-1">
       <div
-        className={`flex items-center bg-white px-4 py-4 rounded-full border ${
+        className={`flex items-center bg-[#F8F8F8] px-4 py-4 rounded-full border ${
           disabled
-            ? "bg-gray-100 border-gray-300 cursor-not-allowed"
+            ? "bg-[#FFFFFF] cursor-not-allowed"
             : error
             ? "border-red-500 ring-2 ring-red-400"
             : "focus-within:ring-2 ring-yellow-400"

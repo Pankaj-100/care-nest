@@ -74,12 +74,12 @@ const SavedCaregiversPanel = () => {
               className="object-contain"
             />
           </div>
-          <p className="text-base sm:text-lg text-gray-600">You havent saved any caregivers yet!</p>
+          <p className="text-base sm:text-lg text-gray-600">You haven't saved any caregivers yet!</p>
         </div>
       ) : (
         <>
           <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 gap-2 sm:gap-0">
-            <p className="text-sm sm:text-base">Select caregivers to book their services (Select at least 3)</p>
+            <p className="text-sm sm:text-base">Select caregivers to book their services (Select at least 1)</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {data.data.givers.map((giver) => (
@@ -103,12 +103,12 @@ const SavedCaregiversPanel = () => {
               />
             ))}
           </div>
-          <div className="mt-8 sm:mt-10 text-center max-w-xl mx-auto">
+          <div className="mt-8 sm:mt-10  text-center max-w-xl mx-auto">
             <button
-              disabled={selectedCaregivers.length < 3}
+              disabled={selectedCaregivers.length < 1}
               onClick={() => setIsScheduleOpen(true)}
-              className={`w-full px-8 sm:px-12 py-3 sm:py-4 text-[var(--navy)] text-base sm:text-lg bg-yellow-500 rounded-full font-semibold transition
-                ${selectedCaregivers.length >= 3 ? "hover:shadow-md" : "cursor-not-allowed opacity-50"}`}
+              className={`w-full px-8 sm:px-12 cursor-pointer py-3 sm:py-4 text-[var(--navy)] text-base sm:text-xl bg-yellow-500 rounded-full font-semibold transition
+                ${selectedCaregivers.length >= 1 ? "hover:shadow-md" : "cursor-not-allowed opacity-50"}`}
             >
               Proceed
             </button>

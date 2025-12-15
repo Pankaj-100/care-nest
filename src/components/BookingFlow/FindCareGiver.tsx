@@ -118,7 +118,7 @@ const FindCareGiver: React.FC = () => {
   return (
     <main className="w-full px-4 py-14 md:py-16 bg-[#F7F7F3]">
       <h1 className="text-center text-[22px] md:text-[30px] font-semibold text-[var(--navy)] mb-12 leading-snug">
-        Pick the right service for your home care needs.
+        Pick The Right Service For Your Home Care Needs.
       </h1>
 
       {isLoading ? (

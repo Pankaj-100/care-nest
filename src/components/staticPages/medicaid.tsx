@@ -27,7 +27,7 @@ export default function MedicaidCASProgram() {
           </p>
           <Link href="/contact">
             <button className="bg-[#F2A307] cursor-pointer text-white text-lg font-semibold px-8 py-4 rounded-full flex items-center gap-2 hover:bg-[#e6950a] transition">
-              contact Us <span className="ml-2">&#8594;</span>
+              Contact Us <span className="ml-2">&#8594;</span>
             </button>
           </Link>
         </div>

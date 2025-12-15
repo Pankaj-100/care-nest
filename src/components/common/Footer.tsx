@@ -142,6 +142,27 @@ const Footer = () => {
           <p className={`text-lg text-[#FFFFFF] font-light `}>
             {displayDescription}
           </p>
+          <div className="mt-5 flex items-center gap-4">
+            {displaySocialLinks.map((item, i) => (
+              <Link
+                href={item.link}
+                key={i}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-20 h-20 flex items-center justify-center rounded-full   transition-colors"
+                aria-label={`Visit our ${item.icons ? "social" : "social"} link`}
+              >
+                <div className="relative mt-2 w-13 h-13">
+                  <Image
+                    src={item.icons || ""}
+                    alt="social icon"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Company Links */}
@@ -231,24 +252,7 @@ const Footer = () => {
         </div>
 
         <div className="flex sm:w-auto w-full justify-around items-center gap-x-5">
-          {displaySocialLinks.map((item, i) => (
-            <Link
-              href={item.link}
-              key={i}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-lg text-gray-200 p-2 rounded-full border border-gray-200 hover:border-[var(--yellow)] transition-colors"
-            >
-              <div className="relative w-5 h-5">
-                <Image 
-                  src={item.icons || ""} 
-                  alt="social icon" 
-                  fill 
-                  className="object-contain"
-                />
-              </div>
-            </Link>
-          ))}
+          {/* Social links relocated under description */}
         </div>
       </div>
     </div>

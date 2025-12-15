@@ -96,9 +96,9 @@ const NeedService: React.FC = () => {
   return (
     <div className="w-full bg-[#F7F7F3] min-h-screen flex justify-center px-4">
       <div className="w-full max-w-[560px] mx-auto pt-14 pb-24">
-        <h1 className="text-center font-semibold text-[#233D4D] text-[26px] sm:text-[30px] leading-snug tracking-[0.2px]">
-          To personalize your care, tell us who
-          <br className="hidden sm:block" /> needs assistance.
+        <h1 className="text-center font-semibold text-[#233D4D] text-[22px] sm:text-[28px] leading-snug tracking-[0.2px]">
+          To Personalize Your Care, Tell Us Who
+          <br className="hidden sm:block" /> Needs Assistance.
         </h1>
 
         <div
@@ -138,7 +138,7 @@ const NeedService: React.FC = () => {
           <YellowButton
             onClick={handleNext}
             disabled={submitting}
-            className={`w-full px-4 py-4 text-base sm:text-lg md:text-xl font-medium rounded-full sm:py-5 md:py-6 md:px-65 ${
+            className={`w-full px-4 py-4 text-base sm:text-lg md:text-xl font-bold rounded-full sm:py-5 md:py-6 md:px-65 ${
               !selected.length
                 ? "opacity-50 cursor-not-allowed pointer-events-none"
                 : ""

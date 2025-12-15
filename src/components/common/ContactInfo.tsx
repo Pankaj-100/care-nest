@@ -25,7 +25,39 @@ export const ContactItem: React.FC<ContactItemProps> = ({
     </div>
     <div>
       <p className="text-md font-medium">{label}</p>
-      <p className="text-md text-[var(--cool-gray)]">{value}</p>
+      {(() => {
+        const trimmed = (value || "").trim();
+        if (!trimmed) return <p className="text-md text-[var(--cool-gray)]">{value}</p>;
+
+        const lower = (label || "").toLowerCase();
+        let href: string | undefined;
+        let external = false;
+
+        if (lower.includes("phone")) {
+          const tel = trimmed.replace(/[^\d+]/g, "");
+          if (tel) href = `tel:${tel}`;
+        } else if (lower.includes("email")) {
+          href = `mailto:${trimmed}`;
+        } else if (lower.includes("address")) {
+          href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
+          external = true;
+        }
+
+        if (!href) {
+          return <p className="text-md text-[var(--cool-gray)]">{value}</p>;
+        }
+
+        return (
+          <a
+            href={href}
+            {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            className="text-lg text-[var(--cool-gray)] hover:text-[var(--navy)]  break-all"
+            aria-label={`${label} ${trimmed}`}
+          >
+            {value}
+          </a>
+        );
+      })()}
     </div>
   </div>
 );

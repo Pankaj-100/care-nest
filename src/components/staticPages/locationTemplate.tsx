@@ -35,6 +35,17 @@ interface LocationTemplateProps {
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
 
 export default async function LocationTemplate({ slug }: LocationTemplateProps) {
+  const splitIntoTwoLines = (text: string) => {
+    const trimmed = (text || "").trim();
+    if (!trimmed) return ["", ""] as const;
+    const words = trimmed.split(/\s+/);
+    if (words.length <= 1) return [trimmed, ""] as const;
+    const mid = Math.floor(words.length / 2);
+    // Prefer splitting on the nearest word boundary to middle
+    const first = words.slice(0, mid).join(" ");
+    const second = words.slice(mid).join(" ");
+    return [first, second] as const;
+  };
   let data: LocationServiceData | null = null;
   if (API_BASE && slug) {
     try {
@@ -76,9 +87,10 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
             </h1>
           </div>
           <div>
-            <p className="text-gray-700 leading-relaxed text-justify text-lg">
-              {data.heroDescription}
-            </p>
+            <div
+              className="text-gray-700 leading-relaxed text-justify text-lg prose prose-slate max-w-none"
+              dangerouslySetInnerHTML={{ __html: data.heroDescription }}
+            />
           </div>
         </div>
       </section>
@@ -120,14 +132,24 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
       <section className="bg-white py-16 px-6 md:px-8 lg:px-24">
         <div className="max-w-8xl mx-auto">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-[#2C3E50] mb-4">
-            Our Senior Home Care
+            {(() => {
+              const [line1, line2] = splitIntoTwoLines(data.servicesIntro);
+              if (!line2) return line1;
+              return (
+                <>
+                  {line1}
+                  <br />
+                  {line2}
+                </>
+              );
+            })()}
           </h2>
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-[#2C3E50] mb-8">
-            Services In {data.city}
-          </h3>
-          <p className="text-center text-gray-700 text-lg mb-4 max-w-5xl mx-auto">
-            {data.servicesIntro}
-          </p>
+          {/* <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-[#2C3E50] mb-8"> */}
+            {/* Services In {data.city} */}
+          {/* </h3> */}
+          {/* <p className="text-center text-gray-700 text-lg mb-4 max-w-5xl mx-auto"> */}
+            {/* {data.servicesIntro} */}
+          {/* </p> */}
           {data.servicesDescription && (
             <p className="text-center text-gray-700 text-lg mb-12 max-w-5xl mx-auto">
               {data.servicesDescription}

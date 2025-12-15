@@ -143,7 +143,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
     { id: 1, name: "Manage Profile", icon: "/Recent/right-arrow.png", route: "/profile" },
     { id: 2, name: "Recent Booking", icon: "/Recent/right-arrow.png", route: "/recent-booking" },
     { id: 3, name: "Saved Caregivers", icon: "/Recent/right-arrow.png", route: "/saved-caregiver" },
-    { id: 4, name: "Reset Password", icon: "/Recent/right-arrow.png", route: "/reset-password" },
+    { id: 4, name: "Reset Password", icon: "/Recent/right-arrow.png", route: "/password-reset" },
     { id: 5, name: "Delete Account", icon: "/Recent/right-arrow.png" },
     { id: 6, name: "Logout", icon: "/Recent/right-arrow.png" },
   ];
@@ -152,8 +152,8 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
     <>
       <div className="hidden md:block w-full md:w-1/4 p-6 shadow-lg rounded-lg h-[520px] mt-10">
         {/* Profile Info */}
-        <div className="mt-2 flex flex-row items-center gap-2 mb-6 border-b border-[#00000033] py-1">
-          <div className="relative w-[68px] h-[68px] group">
+        <div className="mt-2 flex flex-row items-start gap-2 mb-6 border-b border-[#00000033] py-1">
+          <div className="relative w-[68px] h-[68px] flex-shrink-0 group">
             <Image
               src={avatar || "/Recent/profile.png"}
               alt="User Avatar"
@@ -196,8 +196,8 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
             />
           </div>
 
-          <div className="flex flex-col">
-            <h2 className="text-2xl font-bold text-[var(--navy)]">
+          <div className="flex flex-col flex-1 min-w-0">
+            <h2 className="text-2xl font-bold text-[var(--navy)] break-words">
               {name || "Your Name"}
             </h2>
           </div>

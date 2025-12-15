@@ -12,8 +12,8 @@ const ZipCodePage: React.FC = () => {
   const [zip, setZip] = useState("");
   const [touched, setTouched] = useState(false);
 
-  // Allow digits + optional space / dash (user can paste formats)
-  const isValid = /^[A-Za-z0-9\- ]{3,10}$/.test(zip.trim());
+  // Only allow exactly 5 digits
+  const isValid = /^\d{5}$/.test(zip);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -33,8 +33,8 @@ const ZipCodePage: React.FC = () => {
   return (
     <main className="w-full flex flex-col items-center px-4 py-14 md:py-20 bg-[#F9F9F7]">
       <h1 className="text-center text-2xl md:text-[34px] font-semibold leading-tight max-w-2xl text-[var(--navy)] mb-10">
-        Enter your ZIP code to search
-        <br className="hidden sm:block" /> for caregivers near you.
+        Enter Your ZIP Code To Search
+        <br className="hidden sm:block" /> For Caregivers Near You.
       </h1>
 
       <form
@@ -49,31 +49,44 @@ const ZipCodePage: React.FC = () => {
             </span>
             <input
               type="text"
-              inputMode="text"
+              inputMode="numeric"
+              autoComplete="postal-code"
               placeholder="Enter ZIP Code"
               value={zip}
-              onChange={(e) => setZip(e.target.value)}
+              onChange={(e) => {
+                const next = e.target.value.replace(/\D/g, "").slice(0, 5);
+                setZip(next);
+              }}
               onBlur={() => setTouched(true)}
-              className="w-full rounded-full bg-white border border-gray-200 focus:border-gray-300 focus:ring-0 outline-none py-4 pl-12 pr-5 text-sm text-gray-900 transition"
-              maxLength={10}
+              className="w-full rounded-full bg-white border border-gray-200 focus:border-gray-300 focus:ring-0 outline-none py-4 pl-12 pr-5 text-lg text-gray-900 transition"
+              maxLength={5}
               autoFocus
               aria-invalid={touched && !isValid}
-              aria-describedby="zip-error"
+              aria-describedby="zip-empty zip-error zip-prev"
             />
           </div>
+          {touched && zip.length === 0 && (
+            <p
+              id="zip-empty"
+              className="text-lg text-red-600 mt-2 ml-1 font-medium"
+            >
+              Please fill the zipcode.
+            </p>
+          )}
           {touched && !isValid && zip.length > 0 && (
             <p
               id="zip-error"
               className="text-xs text-red-600 mt-2 ml-1 font-medium"
             >
-              Please enter 3–10 valid characters (letters, numbers, dash or space).
+              Please enter a valid 5-digit ZIP code.
             </p>
           )}
+  
         </div>
 
         <button
             type="submit"
-            className={`w-full bg-[#FFA726] text-[#233D4D] justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-lg font-bold transition whitespace-nowrap`}
+            className={`w-full bg-[#FFA726] text-[#233D4D] justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-xl font-bold transition whitespace-nowrap`}
             disabled={!isValid}
         >
           Continue

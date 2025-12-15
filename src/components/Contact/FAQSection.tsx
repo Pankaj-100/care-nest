@@ -58,7 +58,7 @@ const FAQSection = () => {
 
   return (
     <div className="w-full md:w-1/2 space-y-4">
-      <h2 className="lg:text-5xl text-4xl font-medium text-[var(--navy)] font-Urbanist leading-tight">
+      <h2 className="lg:text-5xl text-4xl font-semibold text-[var(--navy)] font-Urbanist leading-tight">
         {faq?.sectionTitle || "Have Questions?\nWe Have Answers!"}
       </h2>
       <p className="text-lg text-[var(--navy)]/70 ">
@@ -76,7 +76,7 @@ const FAQSection = () => {
             <span className="text-[32px]">{openIndex === index ? "-" : "+"}</span>
           </button>
           {openIndex === index && (
-            <p className="text-lg text-[#98A2B3] leading-5 mt-2">
+            <p className="text-lg text-[#7b818a] leading-5 mt-2">
               {item.answer}
             </p>
           )}

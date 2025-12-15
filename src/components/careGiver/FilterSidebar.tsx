@@ -147,18 +147,18 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
       
       {/* Gender - Changed to radio buttons */}
       <div>
-        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
-        <div className="space-y-1 text-[#767e8a]">
+        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
+        <div className="space-y-2">
           {GENDERS.map((g) => (
-            <label key={g} className={`block text-md text-[var(--coolgray)] font-medium ${urbanist.className}`}>
+            <label key={g} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
               <input
                 type="radio"
                 name="gender"
                 checked={gender === g}
                 onChange={() => handleGenderChange(g)}
-                className="mr-2 accent-[#233D4D]"
+                className="mr-2 accent-[#233D4D] cursor-pointer"
               />
-              {g.charAt(0).toUpperCase() + g.slice(1)}
+              <span>{g.charAt(0).toUpperCase() + g.slice(1)}</span>
             </label>
           ))}
         </div>
@@ -183,60 +183,64 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
 
       {/* Location - Changed to radio buttons */}
       <div>
-        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
-        {LOCATIONS.map((loc) => (
-          <label key={loc.label} className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
-            <input
-              type="radio"
-              name="location"
-              checked={locationRange === loc.label}
-              onChange={() => handleLocationChange(loc.label)}
-              className="mr-2 accent-[#233D4D]"
-            />
-            {loc.label}
-          </label>
-        ))}
+        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
+        <div className="space-y-2">
+          {LOCATIONS.map((loc) => (
+            <label key={loc.label} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+              <input
+                type="radio"
+                name="location"
+                checked={locationRange === loc.label}
+                onChange={() => handleLocationChange(loc.label)}
+                className="mr-2 accent-[#233D4D] cursor-pointer"
+              />
+              <span>{loc.label}</span>
+            </label>
+          ))}
+        </div>
       </div>
 
       {/* PRN - Changed to radio buttons */}
       <div>
-        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
-        <label className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
-          <input
-            type="radio"
-            name="prn"
-            className="mr-2 accent-[#233D4D]"
-            checked={prn === true}
-            onChange={() => handlePrnChange(true)}
-          />
-          As Needed
-        </label>
-        <label className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
-          <input
-            type="radio"
-            name="prn"
-            className="mr-2 accent-[#233D4D]"
-            checked={prn === false}
-            onChange={() => handlePrnChange(false)}
-          />
-          Fixed Schedule
-        </label>
+        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
+        <div className="space-y-2">
+          <label className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+            <input
+              type="radio"
+              name="prn"
+              className="mr-2 accent-[#233D4D] cursor-pointer"
+              checked={prn === true}
+              onChange={() => handlePrnChange(true)}
+            />
+            <span>As Needed</span>
+          </label>
+          <label className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+            <input
+              type="radio"
+              name="prn"
+              className="mr-2 accent-[#233D4D] cursor-pointer"
+              checked={prn === false}
+              onChange={() => handlePrnChange(false)}
+            />
+            <span>Fixed Schedule</span>
+          </label>
+        </div>
       </div>
       
       {/* Experience - Changed to radio buttons */}
       <div>
-        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
-        <div className="space-y-1">
+        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
+        <div className="space-y-2">
           {EXPERIENCES.map((exp, idx) => (
-            <label key={idx} className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
+            <label key={idx} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
               <input
                 type="radio"
                 name="experience"
                 checked={experience?.min === exp.min && experience?.max === exp.max}
                 onChange={() => handleExperienceChange(exp)}
-                className="mr-2 accent-[#233D4D]"
+                className="mr-2 accent-[#233D4D] cursor-pointer"
               />
-              {exp.label}
+              <span>{exp.label}</span>
             </label>
           ))}
         </div>
@@ -244,18 +248,20 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
 
       {/* Languages - Keep as checkboxes for multiple selection */}
       <div>
-        <h4 className={`text-lg font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
-        {LANGUAGES.map((lang) => (
-          <label key={lang} className={`block text-md text-[#767e8a] font-medium ${urbanist.className}`}>
-            <input
-              type="checkbox"
-              checked={languages.includes(lang)}
-              onChange={() => handleLanguageChange(lang)}
-              className="mr-2 accent-[#233D4D]"
-            />
-            {lang}
-          </label>
-        ))}
+        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
+        <div className="space-y-2">
+          {LANGUAGES.map((lang) => (
+            <label key={lang} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+              <input
+                type="checkbox"
+                checked={languages.includes(lang)}
+                onChange={() => handleLanguageChange(lang)}
+                className="mr-2 accent-[#233D4D] cursor-pointer"
+              />
+              <span>{lang}</span>
+            </label>
+          ))}
+        </div>
       </div>
     </aside>
   );

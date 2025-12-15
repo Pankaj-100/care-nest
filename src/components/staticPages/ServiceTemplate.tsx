@@ -177,8 +177,8 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
       <div className="w-full bg-gray-50 py-20 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-16">
           {/* Image: above content on mobile, beside on md+ */}
-          <div className="w-full md:w-auto flex justify-center mb-4 md:mb-0 md:order-2">
-            <div className="relative w-92 h-66 sm:w-80 sm:h-64 md:w-80 md:h-64 lg:w-116 lg:h-72">
+          <div className="w-full md:w-auto flex justify-center mb-5 md:mb-0 md:order-2">
+            <div className="relative mt-22 w-92 h-92 sm:w-80 sm:h-64 md:w-80 md:h-64 lg:w-116 lg:h-92">
               <Image
                 src={serviceData.description3Image || "/service-default.jpg"}
                 alt={`${serviceData.serviceName} service`}
@@ -226,7 +226,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
             {contactBannerData.description}
           </p>
           <a href="/contact">
-            <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-10 py-5 rounded-full text-xl transition-colors duration-300 flex items-center gap-2 mx-auto">
+            <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-12 py-6 rounded-full text-2xl transition-colors duration-300 flex items-center gap-2 mx-auto">
               {contactBannerData.buttonText}
               <span className="text-xl">→</span>
             </button>

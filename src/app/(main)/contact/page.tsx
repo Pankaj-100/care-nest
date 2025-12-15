@@ -14,12 +14,12 @@ export default function page() {
           <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:mr-24">
             {/* Left Section */}
             <div className="space-y-4 lg:max-w-lg">
-              <h2 className="lg:text-6xl text-4xl text-[var(--navy)] font-medium leading-tight">
+              <h2 className="lg:text-6xl text-4xl text-[var(--navy)] font-semibold leading-tight">
                 Get in Touch. We’ll Respond Shortly
               </h2>
-              <p className="text-[#667085] text-md  leading-6">
-                If you have any questions or concerns about CareLinix, please
-                don’t hesitate to reach out using the contact details below.
+              <p className="text-[#667085] text-lg  leading-6">
+                If you have any questions or concerns about CareWorks, please don’t 
+                hesitate to reach out using the contact details below.
               </p>
               <ContactInfo />
             </div>

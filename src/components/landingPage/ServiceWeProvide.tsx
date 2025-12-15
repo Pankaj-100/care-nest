@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  Service1,
-  Service2,
-  Service3,
-  Service4,
-  Service5,
-  Service7,
-} from "../icons/page";
+
 
 type ApiService = {
   id: string;

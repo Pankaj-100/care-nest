@@ -32,13 +32,13 @@ const ChoosingPath: React.FC = () => {
                   sizes="96px"
                 />
               </div>
-              <h2 className="font-semibold text-2xl">Find trusted caregivers</h2>
+              <h2 className="font-semibold text-2xl">Find Trusted Caregivers</h2>
               <p className="text-md text-[#747d8d] leading-relaxed max-w-[270px]">
                 Search for trusted caregivers near you  it&apos;s free and easy.
               </p>
               <YellowButton
                 onClick={() => (window.location.href = "/zip-code")}
-                className="mt-2 px-7 py-6 text-md font-semibold"
+                className="mt-2 px-8 py-6 min-w-[200px] text-md font-semibold"
               >
                 Find Caregiver
               </YellowButton>
@@ -56,13 +56,13 @@ const ChoosingPath: React.FC = () => {
                   sizes="112px"
                 />
               </div>
-              <h2 className="font-semibold text-2xl">Work as a caregiver</h2>
+              <h2 className="font-semibold text-2xl">Work As A Caregiver</h2>
               <p className="text-md text-[#747d8d] leading-relaxed max-w-[270px]">
                 Build your profile and explore job <br /> opportunities.
               </p>
               <YellowButton
                 onClick={() => (window.location.href = "https://carenest-caregiver.vercel.app/signup")}
-                className="mt-2 px-7 py-6 text-md font-semibold"
+                className="mt-2 px-8 py-6 min-w--[200px] text-md font-semibold"
               >
                 Find caregiving job
               </YellowButton>

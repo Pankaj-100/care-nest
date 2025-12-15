@@ -11,12 +11,13 @@ export default function FAQSection({ faqData }: { faqData: ApiFaqItem }) {
     <div className="w-full bg-[#F7F7F3] py-20 px-4">
       <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16">
         <div className="flex-1 lg:pr-8">
-          <p className="text-[#F2A307] font-semibold text-lg mb-4">
+          
+          <h2 className="text-4xl lg:text-2xl mb-3 font-bold text-[#F2A307] leading-tight">
+            General FAQ's
+          </h2>
+          <p className="text-[#233D4D] font-semibold text-4xl mb-4">
             {faqData.sectionTitle}
           </p>
-          <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] leading-tight">
-            Frequently asked questions
-          </h2>
         </div>
         <div className="flex-1 bg-[#233D4D0A] space-y-4">
           {faqData.faqItems.map((faq, index) => (

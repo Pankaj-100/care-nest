@@ -12,8 +12,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "CareNest",
-  description: "CareNest is a platform for care Provider and care Seeker.",
+  title: "CareWorks | Careseeker",
+  description: "CareWorks is a platform for care Provider and care Seeker.",
 };
 
 export default function RootLayout({
@@ -23,6 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/Logo-2.svg" />
+      </head>
       <body
         className={`${roboto.className} text-[var(--blue-gray)]  antialiased`}
       >

@@ -66,7 +66,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
   const sectionImageSrc = pageData?.sectionImage || "/veterans/image4.png";
 
   return (
-    <div className="flex flex-col items-center py-6 md:py-10">
+    <div className="flex flex-col items-center pt-6 md:pt-10 pb-0">
       {/* Header Section */}
       <div className="w-full max-w-5xl px-4 md:px-6 lg:px-0 mt-6 md:mt-10 flex flex-col md:flex-row justify-between items-center mb-8 md:mb-10 gap-6 text-center md:text-left">
         <div className="w-full md:w-1/2 flex flex-col items-center md:items-start">
@@ -91,14 +91,14 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
           alt="Veteran 1"
           width={232}
           height={264}
-          className="w-24 sm:w-32 md:w-40 h-auto object-cover rounded-xl shadow-md"
+          className="w-24 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
         />
         <Image
           src={image2Src}
           alt="Veteran 2"
           width={232}
           height={264}
-          className="w-24 sm:w-32 md:w-40 h-auto object-cover rounded-xl shadow-md"
+          className="w-24 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
         />
         <div className="relative">
           <Image
@@ -106,7 +106,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             alt="Veteran 3"
             width={232}
             height={264}
-            className="w-24 sm:w-32 md:w-40 h-auto object-cover rounded-xl shadow-md"
+            className="w-24 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
           />
           {/* Yellow design image, position as needed
           <Image src="/veterans/yellow.png" alt="Yellow Design" width={104} height={104} className="absolute bottom-0 right-1 w-26 h-26" /> */}
@@ -141,9 +141,9 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             <Image
               src={sectionImageSrc}
               alt="Veterans Banner"
-              width={420}
-              height={320}
-              className="h-auto max-w-xs sm:max-w-sm rounded-xl object-cover"
+              width={520}
+              height={520}
+              className="h-auto max-w-lg sm:max-w-lg   rounded-xl object-cover"
             />
           </div>
         </div>
@@ -170,30 +170,26 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             ) : (
               faqItems.map((item, idx) => {
                 const isOpen = openFaqIdx === idx;
-                const hasAnswer = item.answer && item.answer !== '.';
+                const safeHasAnswer = !!(item.answer && item.answer.trim() && item.answer.trim() !== '.');
                 return (
-                  <div key={item.id} className="rounded-xl bg-[#233D4D0A] p-4 sm:p-5 shadow-sm">
+                  <div key={`${item.id}-${idx}`} className="rounded-xl bg-[#233D4D0A] p-4 sm:p-5 shadow-sm">
                     <button
                       type="button"
                       className="w-full mb-2 flex items-center justify-between text-sm sm:text-base md:text-md font-semibold text-[#233D4D] gap-3 focus:outline-none"
                       aria-expanded={isOpen}
-                      aria-controls={`faq-answer-${item.id}`}
-                      onClick={() => {
-                        if (!hasAnswer) return;
-                        setOpenFaqIdx(isOpen ? null : idx);
-                      }}
-                      style={{ background: 'none', border: 0, padding: 0, cursor: hasAnswer ? 'pointer' : 'default' }}
+                      aria-controls={`faq-answer-${item.id}-${idx}`}
+                      onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
+                      style={{ background: 'none', border: 0, padding: 0, cursor: 'pointer' }}
                     >
                       <span>{item.question}</span>
-                      <span className="text-2xl font-bold text-[#233D4D]">{hasAnswer ? (isOpen ? '—' : '+') : '+'}</span>
+                      <span className="text-2xl font-bold text-[#233D4D]">{isOpen ? '—' : '+'}</span>
                     </button>
-                    {hasAnswer && isOpen && (
-                      <p
-                        id={`faq-answer-${item.id}`}
-                        className="text-xs sm:text-sm md:text-base leading-relaxed text-[#233D4D]"
-                      >
-                        {item.answer}
-                      </p>
+                    {isOpen && (
+                      <div
+                        id={`faq-answer-${item.id}-${idx}`}
+                        className="text-xs sm:text-sm md:text-base leading-relaxed text-[#233D4D] prose prose-slate max-w-none"
+                        dangerouslySetInnerHTML={{ __html: safeHasAnswer ? item.answer : '' }}
+                      />
                     )}
                   </div>
                 );
@@ -218,14 +214,12 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             Of The US Armed Forces.
           </p>
           <a href="/contact">
-          <button className="inline-flex cursor-pointer items-center gap-2 font-semibold rounded-full bg-[#233D4D] px-8 md:px-10 py-3 md:py-5 text-sm sm:text-base md:text-lg text-white transition hover:bg-[#1a2c38]">
+          <button className="inline-flex cursor-pointer items-center gap-2 font-semibold rounded-full bg-[#233D4D] px-12 md:px-12 py-6 md:py-6 text-xl sm:text-xl md:text-xl text-white transition hover:bg-[#1a2c38]">
             Contact Us <span className="ml-1">&#8594;</span>
           </button>
           </a>
         </div>
       </div>
-      {/* Reduce white gap below contact banner */}
-      <div className="w-full" style={{ marginTop: '-3rem', paddingBottom: '3' }}></div>
     </div>
   );
 }

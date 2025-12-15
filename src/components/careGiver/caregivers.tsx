@@ -105,7 +105,7 @@ const CaregiversPage = () => {
     if (data?.data?.caregivers) {
       const enriched = data.data.caregivers.map((c: Caregiver) => ({
         ...c,
-        isBookmarked: false,
+        isBookmarked: c.isBookmarked ?? false, // Use API value
       }));
       setCaregivers(enriched);
       console.log("Loaded caregivers:", enriched.length);
@@ -306,7 +306,7 @@ const CaregiversPage = () => {
         </div>
 
         <div className="flex-1 flex flex-col">
-          <div className="flex lg:flex-row flex-col justify-between lg:items-center mb-4 text-sm gap-y-4">
+          <div className="flex flex-col mb-4 text-sm gap-2">
             <div className="flex gap-4 items-center">
               <h2 className="text-md font-medium h-max text-gray-600">
                 <span className="text-[var(--yellow)]">
@@ -323,7 +323,7 @@ const CaregiversPage = () => {
               </button>
             </div>
 
-            {/* Show active filters count - improved logic for boolean filters */}
+            {/* Show active filters count - moved to left side under results */}
             {Object.keys(filters).some(key => {
               const value = filters[key as keyof CaregiverFilters];
               if (Array.isArray(value)) {
@@ -335,7 +335,7 @@ const CaregiversPage = () => {
               return value !== undefined && value !== null && value !== '';
             }) && (
               <div className="flex items-center gap-2 text-[16px] font-medium">
-                <span className="text-gray-500 text-[16px] font-medium ">
+                <span className="text-gray-500 text-[18px] font-medium">
                   Filters active
                 </span>
                 <button

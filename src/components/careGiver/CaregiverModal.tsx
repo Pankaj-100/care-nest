@@ -141,6 +141,11 @@ const ModalContent: React.FC<{
   const [bookmarkCaregiver, { isLoading: bookmarking }] = useBookmarkCaregiverMutation();
   const [bookmarked, setBookmarked] = useState(isBookmarked);
 
+  // Sync bookmark state when prop changes (e.g., after refresh)
+  useEffect(() => {
+    setBookmarked(isBookmarked);
+  }, [isBookmarked, caregiverId]);
+
   const avatarSrc =
     caregiver.avatar && typeof caregiver.avatar === "string" && caregiver.avatar.trim() !== ""
       ? caregiver.avatar.startsWith("http")
@@ -166,7 +171,7 @@ const ModalContent: React.FC<{
   return (
     <div className="flex flex-col md:grid md:grid-cols-[260px_1fr] h-full">
       {/* Left sidebar */}
-      <aside className="bg-[#F6F8F4] p-3 sm:p-4 flex-shrink-0">
+      <aside className="bg-[#F6F8F4] p-3 sm:p-4 flex-shrink-0 overflow-y-auto max-h-[90vh] sm:max-h-[85vh] md:max-h-[80vh]">
         <div className="flex flex-col items-center text-center">
           <div className="relative">
             <Image
@@ -187,7 +192,7 @@ const ModalContent: React.FC<{
           </div>
 
           {/* Caregiver Name and Selected Badge */}
-          <h2 className="mt-4 sm:mt-5 text-lg sm:text-[26px] font-semibold text-[#233D4D] leading-tight flex items-center gap-2 sm:gap-3">
+          <h2 className="mt-4 sm:mt-5 text-lg sm:text-[26px] font-semibold text-[#233D4D] leading-tight flex items-center gap-2 sm:gap-3 break-words">
             {caregiver.name}
             {typeof window !== "undefined" &&
               window.location.pathname.includes("/profile") &&
@@ -206,7 +211,7 @@ const ModalContent: React.FC<{
             <InfoRow label="Experience" value={`${caregiver.experience ?? 0}+ Years`} />
             <InfoRow
               label="Available Distance"
-              value={caregiver.location ? `${caregiver.location}` : "—"}
+              value={caregiver.location ? `${caregiver.location}` : "N/A"}
             />
             <InfoRow
               label="Gender"
