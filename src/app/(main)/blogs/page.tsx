@@ -21,14 +21,22 @@ async function fetchBlogs(page: number, pageSize: number) {
   return {};
 }
 
-export default async function BlogsPage({ searchParams }: { searchParams?: { [key: string]: string | string[] } }) {
-  // SSR pagination via search params
-  const page = Number((searchParams?.page ?? 1)) || 1;
-  const pageSize = 9;
+export default async function BlogsPage({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }> 
+}) {
+  // Await searchParams in Next.js 15+
+  const params = await searchParams;
+  const rawPage = Array.isArray(params?.page) ? params.page[0] : params?.page;
+  const page = Math.max(1, Number(rawPage) || 1);
+  const pageSize = 10;
+  
   const data = await fetchBlogs(page, pageSize);
   const blogs = data.blogs ?? [];
   const pagination = data.pagination ?? {};
-  const totalPages = pagination.totalPages ?? 1;
+  const totalItems = Number(pagination.totalItems ?? blogs.length) || blogs.length;
+  const totalPages = Number(pagination.totalPages) || Math.max(1, Math.ceil(totalItems / pageSize));
 
   if (!Array.isArray(blogs) || blogs.length === 0) {
     return (
