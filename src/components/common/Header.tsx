@@ -12,6 +12,7 @@ import CustomDrawer from "./CustomDrawer";
 import { MdMenu as MenuIcon } from "react-icons/md";
 import Cookies from "js-cookie";
 import { profileIcon } from "../icons/page";
+import { useGetUnreadCountQuery } from "@/store/api/notificationApi";
 
 export interface NavbarTypes {
   title: string;
@@ -25,17 +26,36 @@ const Header = () => {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [isLoggedInUser, setIsLoggedIn] = useState(false);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
 
   const isValidToken = Cookies.get("authToken") ? true : false;
+  const token = Cookies.get("authToken");
+
+  // Get unread notification count
+  const { data: unreadCountData, refetch: refetchUnreadCount } = useGetUnreadCountQuery(undefined, {
+    skip: !token, // Only fetch if user is logged in
+  });
+
+  const unreadCount = unreadCountData?.data?.unreadCount || 0;
 
   const path = usePathname();
+
+  // Fix hydration issues
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleOpenMenu = () => {
     setOpenMenu((prev) => !prev);
   };
+
   const handleNotificationOpen = () => {
     setOpenNotifications((prev) => !prev);
+    // Refetch unread count when opening notifications
+    if (token) {
+      refetchUnreadCount();
+    }
   };
 
   useEffect(() => {
@@ -62,7 +82,7 @@ const Header = () => {
     };
   }, []);
 
-  const unseenNotifications = true;
+  const unseenNotifications = mounted && unreadCount > 0;
 
   // Build menu
   const NavbarMenuTitle: NavbarTypes[] = [
@@ -138,9 +158,20 @@ const Header = () => {
 
       <div className="flex lg:flex-row flex-col items-center gap-4 lg:gap-6 xl:gap-10 lg:mt-0 mt-6 w-full lg:w-auto">
         {isLoggedInUser && (
-          <button className="relative lg:block hidden" onClick={handleNotificationOpen} aria-label="Notifications">
+          <button className="relative lg:block hidden" onClick={handleNotificationOpen} aria-label={`Notifications ${unreadCount > 0 ? `(${unreadCount} unread)` : ''}`}>
             <NotificationIcon size={28} className="lg:w-7 lg:h-7" />
-            {unseenNotifications && (
+            {/* Show unread notification indicator */}
+            {mounted && unreadCount > 0 && (
+              <div className="absolute -top-1 -right-1">
+                <div className="relative inline-flex rounded-full h-4 w-4 bg-red-500 items-center justify-center">
+                  <span className="text-white text-xs font-bold">
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </span>
+                </div>
+              </div>
+            )}
+            {/* Fallback for SSR - static dot */}
+            {!mounted && unreadCount > 0 && (
               <div className="w-2 h-2 rounded-full bg-[var(--golden-yellow)] absolute top-0 right-[0.1rem]" />
             )}
           </button>
@@ -217,10 +248,21 @@ const Header = () => {
             <button
               className="relative flex items-center justify-center"
               onClick={handleNotificationOpen}
-              aria-label="Notifications"
+              aria-label={`Notifications ${unreadCount > 0 ? `(${unreadCount} unread)` : ''}`}
             >
               <NotificationIcon size={26} className="w-7 h-7" />
-              {unseenNotifications && (
+              {/* Show unread notification indicator */}
+              {mounted && unreadCount > 0 && (
+                <div className="absolute -top-1 -right-1">
+                  <div className="relative inline-flex rounded-full h-4 w-4 bg-red-500 items-center justify-center">
+                    <span className="text-white text-xs font-bold">
+                      {unreadCount > 9 ? "9+" : unreadCount}
+                    </span>
+                  </div>
+                </div>
+              )}
+              {/* Fallback for SSR - static dot */}
+              {!mounted && unreadCount > 0 && (
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--golden-yellow)] absolute -top-1 -right-1" />
               )}
             </button>

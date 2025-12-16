@@ -48,6 +48,7 @@ export interface ScheduleCareProps {
   }[];
   isEditMode?: boolean;
   bookingId?: string;
+  lockStartAndMeetingDates?: boolean;
 }
 
 interface BookingResponse {
@@ -102,6 +103,7 @@ const ScheduleCare = ({
   initialWeeklySchedule,
   isEditMode,
   bookingId,
+  lockStartAndMeetingDates = false,
 }: ScheduleCareProps) => {
   const [createBooking, { isLoading: isBooking }] = useCreateBookingMutation();
   const [editBooking, { isLoading: isEditing }] = useEditBookingMutation();
@@ -342,9 +344,15 @@ const ScheduleCare = ({
     e.preventDefault();
     setFormError(null);
 
-    // Validate meeting date and start date
-    if (!meetingDate) return setFormError("Please provide preferred meeting date");
-    if (!startDate) return setFormError("Please provide service start date");
+    // Validate dates only when relevant
+    if (!isEditMode) {
+      if (!meetingDate) return setFormError("Please provide preferred meeting date");
+      if (!startDate) return setFormError("Please provide service start date");
+    } else if (!lockStartAndMeetingDates) {
+      // In edit mode, validate only if fields are not locked
+      if (!meetingDate) return setFormError("Please provide preferred meeting date");
+      if (!startDate) return setFormError("Please provide service start date");
+    }
 
     // Only validate startDate in edit mode
     if (isEditMode) {
@@ -582,7 +590,7 @@ const ScheduleCare = ({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 h-screen">
+    <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/20 h-screen">
       <div className="absolute inset-0" onClick={OnClose} />
       <div
         className="relative z-50 w-full max-w-2xl bg-white rounded-2xl p-4 sm:p-6 shadow-lg overflow-y-auto max-h-[80vh]"
@@ -600,7 +608,7 @@ const ScheduleCare = ({
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-[var(--navy)] font-semibold text-base">Selected Caregivers</h2>
           {/* Hide Change button on /profile route */}
-          {typeof window !== "undefined" && !window.location.pathname.includes("/profile") && (
+          {typeof window !== "undefined" && !window.location.pathname.includes("/recent-booking") && (
             <button
               type="button"
               onClick={() => {
@@ -694,39 +702,43 @@ const ScheduleCare = ({
         </div>
 
         {/* Dates */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="block text-[var(--navy)] font-semibold text-base mb-1">
-              Preferred Meeting Date
-            </label>
-            <div className="relative">
-              <DatePicker
-                selected={meetingDate}
-                onChange={(date) => setMeetingDate(date)}
-                minDate={new Date()}
-                dateFormat="dd-MM-yyyy"
-                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
-                popperClassName="!z-[9999]"
-              />
-              <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
-            </div>
-          </div>
-          <div>
-            <label className="block text-[var(--navy)] font-semibold text-base mb-1">
-              Service Start Date
-            </label>
-            <div className="relative">
-              <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                minDate={new Date()}
-                dateFormat="dd-MM-yyyy"
-                className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
-                 popperClassName="!z-[9999]"
-              />
-              <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
-            </div>
-          </div>
+        <div className={`grid gap-4 mb-4 ${lockStartAndMeetingDates ? 'grid-cols-1 sm:grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}>
+          {!lockStartAndMeetingDates && (
+            <>
+              <div>
+                <label className="block text-[var(--navy)] font-semibold text-base mb-1">
+                  Preferred Meeting Date
+                </label>
+                <div className="relative">
+                  <DatePicker
+                    selected={meetingDate}
+                    onChange={(date) => setMeetingDate(date)}
+                    minDate={new Date()}
+                    dateFormat="dd-MM-yyyy"
+                    className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                    popperClassName="!z-[9999]"
+                  />
+                  <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[var(--navy)] font-semibold text-base mb-1">
+                  Service Start Date
+                </label>
+                <div className="relative">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    minDate={new Date()}
+                    dateFormat="dd-MM-yyyy"
+                    className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                    popperClassName="!z-[9999]"
+                  />
+                  <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+                </div>
+              </div>
+            </>
+          )}
           {isEditMode && (
             <div>
               <label className="block text-[var(--navy)] font-semibold text-base mb-1">
@@ -742,7 +754,7 @@ const ScheduleCare = ({
                   popperClassName="!z-[9999]"
                   className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
                 />
-                <CalenderIcon className="absolute right-4 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+                <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
               </div>
             </div>
           )}

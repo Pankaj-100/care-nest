@@ -26,6 +26,11 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
   const [bookingDetails, setBookingDetails] = useState(booking);
   const [showAllTimings, setShowAllTimings] = useState(false);
 
+  // Caregiver assigned (hired/accepted/active) -> lock start & meeting date edits
+  const caregiverAssigned = booking.caregivers?.some((cg) =>
+    ["hired", "accepted", "active"].includes((cg.status || "").toLowerCase())
+  ) || false;
+
   const handleOpen = () => setOpenDialog(false);
 
   const handleCancelBooking = async () => {
@@ -299,6 +304,7 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
             initialWeeklySchedule={bookingDetails.weeklySchedule}
             isEditMode={true}
             bookingId={bookingDetails.bookingId}
+            lockStartAndMeetingDates={caregiverAssigned}
           />
         )}
       </main>

@@ -1,37 +1,48 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL;
+const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || "https://carenest-backend-8y2y.onrender.com";
+// const SOCKET_URL = "http://localhost:4000";
 
- export interface SocketMessage {
-    id: string;
-    conversationId: string;
-    fromUserId: string;
-    toUserId: string;
-    message: string;
-    createdAt: string;
-    hasRead: boolean;
-  }
+interface UseSocketReturn {
+  sendMessage: (toUserId: string, message: string) => void;
+  onNewMessage: (callback: (msg: any) => void) => void;
+  onNewNotification: (callback: (notification: any) => void) => void;
+  disconnect: () => void;
+}
 
-export const useSocket = (token?: string) => {
+export const useSocket = (token?: string): UseSocketReturn => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
     if (!token) return;
 
+    console.log("Attempting socket connection to:", SOCKET_URL);
+
     socketRef.current = io(SOCKET_URL, {
       auth: { token },
-      transports: ["websocket"],
+      transports: ["websocket", "polling"],
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionAttempts: 5,
+      timeout: 10000,
     });
 
     socketRef.current.on("connect", () => {
       console.log("Socket connected:", socketRef.current?.id);
       socketRef.current?.emit("join");
+      // User is automatically in their notification room now
+      console.log("User automatically subscribed to notifications via room join");
     });
 
     socketRef.current.on("connect_error", (err) => {
-      console.error("Socket connection error:", err.message);
+      console.warn("Socket connection error (notifications may not work):", err.message);
+      // Don't throw error, just log it - app should still work without socket
+    });
+
+    socketRef.current.on("disconnect", (reason) => {
+      console.log("Socket disconnected:", reason);
     });
 
     return () => {
@@ -47,9 +58,21 @@ export const useSocket = (token?: string) => {
     }
   };
 
-  const onNewMessage = (callback: (msg: SocketMessage) => void) => {
+  const onNewMessage = (callback: (msg: any) => void) => {
     socketRef.current?.on("new_message", callback);
   };
 
-  return { sendMessage, onNewMessage };
+  const onNewNotification = (callback: (notification: any) => void) => {
+    socketRef.current?.on("new_notification", callback);
+  };
+
+  const disconnect = () => {
+    socketRef.current?.disconnect();
+  };
+  return { 
+    sendMessage, 
+    onNewMessage, 
+    onNewNotification,
+    disconnect 
+  };
 };

@@ -253,24 +253,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                 </div>
 
                 {apiStatus === "completed" ? (
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="w-14 h-14 flex items-center justify-center bg-[#F2A307] rounded-full text-lg leading-none"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedBooking({ id: booking.bookingId, caregiverId: "" });
-                        setIsScheduleCareOpen(true);
-                      }}
-                    >
-                      <Image
-                        src="/Recent/reload.png"
-                        alt="reschedule"
-                        width={16}
-                        height={16}
-                        className="w-4 h-4"
-                      />
-                    </div>
-                  </div>
+                  <div className="flex items-center gap-3" />
                 ) : (
                   <div className="flex items-center gap-3">
                     {(apiStatus === "requested" ||

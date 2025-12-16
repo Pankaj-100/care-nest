@@ -8,6 +8,7 @@ import { profileApi } from './api/profileApi';
 import { bookingApi } from './api/bookingApi';
 import { blogApi } from './api/blogApi';
 import { serviceApi } from './api/serviceApi';
+import { notificationApi } from './api/notificationApi';
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     [bookingApi.reducerPath]: bookingApi.reducer,
     [blogApi.reducerPath]: blogApi.reducer,
     [serviceApi.reducerPath]: serviceApi.reducer,
+    [notificationApi.reducerPath]: notificationApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -26,7 +28,8 @@ export const store = configureStore({
       profileApi.middleware,
       bookingApi.middleware,
       blogApi.middleware,
-      serviceApi.middleware
+      serviceApi.middleware,
+      notificationApi.middleware
     ),
 });
 
