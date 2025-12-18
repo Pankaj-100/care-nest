@@ -56,9 +56,29 @@ const FAQ = () => {
   }, [API_BASE]);
 
   return (
-    <div className="flex lg:flex-row flex-col bg-[var(--navy)] lg:px-18 px-8 lg:py-18 py-12">
-      <div>
-        <div className="relative w-full h-48 lg:w-38 sm:ml-8">
+    <div className="flex lg:flex-row flex-col bg-[var(--navy)] lg:px-18 px-8 lg:py-18 py-12 relative overflow-hidden">
+      {/* Upward Yellow Dotted Line - Top Right */}
+      <div className="absolute top-0 right-0 w-32 h-32 lg:block hidden -mr-5 -mt-5">
+        <Image
+          src="/care-provider/upward.png"
+          alt="decorative line"
+          fill
+          className="object-contain"
+        />
+      </div>
+
+      {/* Downward Yellow Dotted Line - Bottom Left */}
+      <div className="absolute bottom-0 left-0 w-32 h-32 lg:block hidden -ml-5 -mb-5">
+        <Image
+          src="/care-provider/down.png"
+          alt="decorative line"
+          fill
+          className="object-contain"
+        />
+      </div>
+
+      <div className="relative z-10">
+        <div className= "relative w-full h-48 lg:w-38 sm:ml-15">
           <Image
             src={"/care-provider-cta.png"}
             alt="faq"
@@ -66,11 +86,11 @@ const FAQ = () => {
             className="rounded-t-[3rem] rounded-b-[3rem] object-cover"
           />
         </div>
-        <h1 className="mt-6 text-[var(--yellow)] font-medium lg:text-5xl text-3xl lg:w-2/3">
+        <h1 className="mt-6 ml-15 text-[var(--yellow)] font-medium lg:text-5xl text-3xl lg:w-2/3">
           {faq?.sectionTitle || "Curious About Caregiving on Our Platform? We’ve Got Answers!"}
         </h1>
       </div>
-      <div className="lg:w-1/2 lg:mt-0 mt-4">
+      <div className="lg:w-1/2 mr-8 lg:mt-0 mt-4">
         {loading && <div className="text-white">Loading FAQs...</div>}
         {error && <div className="text-red-400">{error}</div>}
         {!loading && !error && Array.isArray(faq?.faqItems) && faq.faqItems.length > 0 && faq.faqItems.map((item, index) => (

@@ -15,7 +15,7 @@ export default function page() {
             {/* Left Section */}
             <div className="space-y-4 lg:max-w-lg">
               <h2 className="lg:text-6xl text-4xl text-[var(--navy)] font-semibold leading-tight">
-                Get in Touch. We’ll Respond Shortly
+                Get In Touch. We’ll Respond Shortly
               </h2>
               <p className="text-[#667085] text-lg  leading-6">
                 If you have any questions or concerns about CareWorks, please don’t 

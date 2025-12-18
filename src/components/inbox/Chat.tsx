@@ -1,15 +1,20 @@
 "use client";
 import React, { useEffect, useRef } from "react";
+import Image from "next/image";
 import DP from "@/components/common/DP";
 import user1ProfilePic from "@/assets/profilepic1.png";
 import { chatMessageType } from "@/lib/interface-types";
 import ProfilePic from "@/assets/profilepic1.png";
 import { format, isToday, isYesterday } from "date-fns";
+import { useAppSelector } from "@/store/hooks";
 
 interface Props {
   messages: chatMessageType[];
   otherUserDetails?: { name: string; avatar: string | null };
 }
+
+// CDN base for relative avatar paths
+const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
 
 // Group messages by date
 function groupMessagesByDate(messages: chatMessageType[]) {
@@ -28,6 +33,13 @@ function groupMessagesByDate(messages: chatMessageType[]) {
 
 const Chat = ({ messages, otherUserDetails }: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const myAvatar = useAppSelector((s) => s.profile.avatar);
+
+  const myResolvedAvatar = myAvatar
+    ? myAvatar.startsWith("http")
+      ? myAvatar
+      : `${cdnURL}/${myAvatar.replace(/^\/+/, "")}`
+    : null;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -42,7 +54,16 @@ const Chat = ({ messages, otherUserDetails }: Props) => {
       ref={containerRef}
     >
       {messages.length === 0 && (
-        <div className="self-center text-gray-400">No messages yet</div>
+        <div className="flex flex-col items-center justify-center h-full gap-4">
+          <div className="w-48 h-48 sm:w-56 sm:h-56 relative">
+            <Image
+              src="/Inbox-no-message.png"
+              alt="No messages"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
       )}
 
       {Object.entries(groupedMessages).map(([dateLabel, msgs]) => (
@@ -63,11 +84,13 @@ const Chat = ({ messages, otherUserDetails }: Props) => {
               >
                 <DP
                   url={
-                    isOther && otherUserDetails?.avatar
-                      ? ProfilePic
-                      : isOther
-                      ? user1ProfilePic
-                      : ProfilePic
+                    isOther
+                      ? otherUserDetails?.avatar
+                        ? otherUserDetails.avatar.startsWith("http")
+                          ? otherUserDetails.avatar
+                          : `${cdnURL}/${otherUserDetails.avatar.replace(/^\/+/, "")}`
+                        : user1ProfilePic
+                      : myResolvedAvatar || ProfilePic
                   }
                   alt={isOther ? otherUserDetails?.name || "User" : "You"}
                   className="!w-8 !h-8 sm:!w-10 sm:!h-10 rounded-full"

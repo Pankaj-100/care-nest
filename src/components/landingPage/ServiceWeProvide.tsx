@@ -62,6 +62,28 @@ const ServiceWeProvide: React.FC = () => {
     };
   }, [API_BASE]);
 
+  // Map API careType values to actual route slugs
+  const careTypeSlugMap: Record<string, string> = {
+    "companion care": "/service/companion-care",
+    "home maker service": "/service/home-maker",
+    "specialized care": "/service/specialized-care",
+    "personal care": "/service/personal-care",
+    "sitter services": "/service/sitter-service",
+    "transportation": "/service/transportation",
+  };
+
+  const buildServicePath = (careType?: string, fallbackName?: string) => {
+    const key = (careType || fallbackName || "").toLowerCase().trim();
+    if (key && careTypeSlugMap[key]) {
+      return careTypeSlugMap[key];
+    }
+    // Fallback: best-effort slug from provided text
+    const slug = key
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    return "/service/" + slug;
+  };
+
 
   // Only use API data for display list
   const displayList = apiServices;
@@ -107,11 +129,8 @@ const ServiceWeProvide: React.FC = () => {
 
                   <button
                     onClick={() => {
-                      // Fallback: try to build a route from serviceName, or go to home
-                      const slug = service.serviceName
-                        ? "/service/" + service.serviceName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
-                        : "/";
-                      window.location.href = slug;
+                      const path = buildServicePath(service.careType, service.serviceName);
+                      window.location.href = path || "/";
                     }}
                     className="mt-auto flex items-center gap-2 font-semibold text-md cursor-pointer transition text-[#233D4D] hover:text-[#F2A307] group-hover:text-[#F2A307]"
                   >

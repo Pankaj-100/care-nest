@@ -22,12 +22,48 @@ function SigninForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [showEmailSuggestions, setShowEmailSuggestions] = useState(false);
 
   const router = useRouter();
   const [signin, { isLoading }] = useSigninMutation();
   const pendingBooking = useAppSelector(state => state.booking.pendingBooking);
   const dispatch = useAppDispatch();
   const [createBooking] = useCreateBookingMutation();
+
+  const getEmailSuggestions = () => {
+    if (!email || !email.includes("@")) return [];
+    
+    const [username, domain] = email.split("@");
+    if (!username) return [];
+    
+    const commonDomains = [
+      "gmail.com",
+      "yahoo.com",
+      "outlook.com",
+      "hotmail.com",
+      "icloud.com",
+      "aol.com",
+    ];
+    
+    if (!domain) {
+      return commonDomains.map(d => `${username}@${d}`);
+    }
+    
+    return commonDomains
+      .filter(d => d.startsWith(domain.toLowerCase()))
+      .map(d => `${username}@${d}`);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    setShowEmailSuggestions(value.includes("@") && !value.endsWith(".com"));
+  };
+
+  const handleEmailSuggestionClick = (suggestion: string) => {
+    setEmail(suggestion);
+    setShowEmailSuggestions(false);
+  };
 
   const handleSubmit = async () => {
     if (!email || !password) {
@@ -98,16 +134,33 @@ function SigninForm() {
 
   return (
     <div className="my-6 flex flex-col gap-4">
-      <TextInput
-        text={email}
-        setText={setEmail}
-        Icon={EmailIcon}
-        type="email"
-        placeholder="Enter Email ID"
-        className="text-xl placeholder:text-xl"
-        autoComplete="email"
-        inputMode="email"
-      />
+      <div className="relative">
+        <TextInput
+          text={email}
+          setText={setEmail}
+          Icon={EmailIcon}
+          type="email"
+          placeholder="Enter Email ID"
+          className="text-xl placeholder:text-xl"
+          autoComplete="email"
+          inputMode="email"
+          onChange={handleEmailChange}
+          onBlur={() => setTimeout(() => setShowEmailSuggestions(false), 200)}
+        />
+        {showEmailSuggestions && getEmailSuggestions().length > 0 && (
+          <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-lg mt-1 max-h-48 overflow-y-auto z-50">
+            {getEmailSuggestions().map((suggestion, index) => (
+              <div
+                key={index}
+                className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors"
+                onClick={() => handleEmailSuggestionClick(suggestion)}
+              >
+                {suggestion}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       <PasswordInput
         text={password}

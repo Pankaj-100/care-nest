@@ -25,7 +25,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
   const dispatch = useDispatch();
   const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
 
-  const { data: profileData } = useGetProfileQuery();
+  const { data: profileData, isLoading } = useGetProfileQuery();
   const [updateAvatar] = useUpdateAvatarMutation();
   const [removeAvatar] = useRemoveAvatarMutation();
 
@@ -151,95 +151,126 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
   return (
     <>
       <div className="hidden md:block w-full md:w-1/4 p-6 shadow-lg rounded-lg h-[520px] mt-10">
-        {/* Profile Info */}
-        <div className="mt-2 flex flex-row items-start gap-2 mb-6 border-b border-[#00000033] py-1">
-          <div className="relative w-[68px] h-[68px] flex-shrink-0 group">
-            <Image
-              src={avatar || "/Recent/profile.png"}
-              alt="User Avatar"
-              width={68}
-              height={68}
-              className="w-[68px] h-[68px] rounded-full object-cover"
-              onError={(e) => {
-                // Fallback to default image on error
-                const target = e.target as HTMLImageElement;
-                target.src = "/Recent/profile.png";
-              }}
-              unoptimized={avatar?.startsWith('blob:') || false} // For temporary blob URLs
-            />
-            {/* X icon appears only on hover and centered */}
-            {avatar && (
-              <button
-                type="button"
-                onClick={handleRemoveAvatar}
-                className="absolute inset-0 flex items-center cursor-pointer justify-center bg-black/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                aria-label="Remove profile image"
-              >
-                <span className="bg-white rounded-full p-1 shadow">
-                  <X size={15} />
-                </span>
-              </button>
-            )}
-            <label
-              htmlFor="profileImageUpload"
-              className="absolute bottom-0 right-0 cursor-pointer w-6 h-6 flex items-center justify-center transition"
-              style={{ transform: "translate(30%, 30%)" }}
-            >
-              <span className="w-5 h-5 flex items-center justify-center">{editprofileimage}</span>
-            </label>
-            <input
-              type="file"
-              id="profileImageUpload"
-              className="hidden"
-              accept="image/*"
-              onChange={handleAvatarChange}
-            />
-          </div>
+        {isLoading ? (
+          /* Skeleton Loading State */
+          <div className="animate-pulse">
+            {/* Profile Info Skeleton */}
+            <div className="mt-2 flex flex-row items-start gap-3 mb-6 border-b border-[#00000033] pb-1">
+              <div className="w-[68px] h-[68px] rounded-full bg-gray-300 flex-shrink-0"></div>
+              <div className="flex flex-col flex-1 min-w-0 space-y-2">
+                <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+              </div>
+            </div>
 
-          <div className="flex flex-col flex-1 min-w-0">
-            <h2 className="text-2xl font-bold text-[var(--navy)] break-words">
-              {name || "Your Name"}
-            </h2>
+            {/* Menu Items Skeleton */}
+            <ul className="space-y-7">
+              {[1, 2, 3, 4, 5, 6].map((item, idx) => (
+                <li
+                  key={item}
+                  className={`flex items-center justify-between gap-2 px-4 py-2 ${
+                    idx !== 5 ? "border-b border-[#00000033]" : ""
+                  }`}
+                >
+                  <div className="h-4 bg-gray-300 rounded w-32"></div>
+                  <div className="w-2 h-2 bg-gray-300 rounded"></div>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        ) : (
+          <>
+            {/* Profile Info */}
+            <div className="mt-2 flex flex-row items-start gap-3 mb-6 border-b border-[#00000033] pb-1">
+              <div className="relative w-[68px] h-[68px] flex-shrink-0 group">
+                <Image
+                  src={avatar || "/Recent/profile.png"}
+                  alt="User Avatar"
+                  width={68}
+                  height={68}
+                  className="w-[68px] h-[68px] rounded-full object-cover"
+                  onError={(e) => {
+                    // Fallback to default image on error
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/Recent/profile.png";
+                  }}
+                  unoptimized={avatar?.startsWith('blob:') || false} // For temporary blob URLs
+                />
+                {/* X icon appears only on hover and centered */}
+                {avatar && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveAvatar}
+                    className="absolute inset-0 flex items-center cursor-pointer justify-center bg-black/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    aria-label="Remove profile image"
+                  >
+                    <span className="bg-white rounded-full p-1 shadow">
+                      <X size={15} />
+                    </span>
+                  </button>
+                )}
+                <label
+                  htmlFor="profileImageUpload"
+                  className="absolute bottom-0 right-0 cursor-pointer w-6 h-6 flex items-center justify-center transition"
+                  style={{ transform: "translate(30%, 30%)" }}
+                >
+                  <span className="w-5 h-5 flex items-center justify-center">{editprofileimage}</span>
+                </label>
+                <input
+                  type="file"
+                  id="profileImageUpload"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                />
+              </div>
 
-        {/* Menu Items */}
-        <ul className="space-y-7">
-          {profileItem.map((item, idx) => (
-            <li
-              key={item.id}
-              onClick={() => {
-                if (item.name === "Logout") {
-                  setShowLogout(true);
-                  return;
-                }
-                if (item.name === "Delete Account") {
-                  setShowDelete(true);
-                  return;
-                }
-                if (item.route) {
-                  router.push(item.route);
-                } else {
-                  onSelect(item.name);
-                }
-              }}
-              className={`cursor-pointer flex items-center justify-between gap-2 px-4 py-2 font-Urbanist text-[var(--navy)] transition duration-200 ease-in-out ${
-                selected === item.name
-                  ? "bg-yellow-400 rounded-full font-semibold"
-                  : "hover:bg-[#F2A307] hover:rounded-full"
-              } ${idx !== profileItem.length - 1 ? "border-b border-[#00000033]" : ""}`}
-            >
-              <span>{item.name}</span>
-              <Image
-                src={item.icon}
-                alt="arrow"
-                width={9}
-                height={9}
-                className="w-2 h-2"
-              />
-            </li>
-          ))}
-        </ul>
+              <div className="flex flex-col flex-1 min-w-0">
+                <h2 className="text-base font-bold text-[var(--navy)] break-words leading-tight line-clamp-4">
+                  {name || "Your Name"}
+                </h2>
+              </div>
+            </div>
+
+            {/* Menu Items */}
+            <ul className="space-y-7">
+              {profileItem.map((item, idx) => (
+                <li
+                  key={item.id}
+                  onClick={() => {
+                    if (item.name === "Logout") {
+                      setShowLogout(true);
+                      return;
+                    }
+                    if (item.name === "Delete Account") {
+                      setShowDelete(true);
+                      return;
+                    }
+                    if (item.route) {
+                      router.push(item.route);
+                    } else {
+                      onSelect(item.name);
+                    }
+                  }}
+                  className={`cursor-pointer flex items-center justify-between gap-2 px-4 py-2 font-Urbanist text-[var(--navy)] transition duration-200 ease-in-out ${
+                    selected === item.name
+                      ? "bg-yellow-400 rounded-full font-semibold"
+                      : "hover:bg-[#F2A307] hover:rounded-full"
+                  } ${idx !== profileItem.length - 1 ? "border-b border-[#00000033]" : ""}`}
+                >
+                  <span>{item.name}</span>
+                  <Image
+                    src={item.icon}
+                    alt="arrow"
+                    width={9}
+                    height={9}
+                    className="w-2 h-2"
+                  />
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
 
       {/* Logout dialog (mounted when requested) */}

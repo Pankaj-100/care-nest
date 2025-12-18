@@ -287,6 +287,7 @@ const CaregiversPage = () => {
             key={sidebarKey}
             onFilterChange={handleFilterChange}
             initialFilters={{}} // Always empty unless restoring from saved state
+            isLoading={isLoading}
           />
         </div>
 
@@ -301,6 +302,7 @@ const CaregiversPage = () => {
               key={sidebarKey}
               onFilterChange={handleFilterChange}
               initialFilters={{}}
+              isLoading={isLoading}
             />
           </CustomSheet>
         </div>
@@ -365,9 +367,32 @@ const CaregiversPage = () => {
               </div>
             )}
             {isLoading && (
-              <div className="col-span-2 text-center py-8">
-                <p>Searching caregivers...</p>
-              </div>
+              <>
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="bg-white rounded-2xl p-4 shadow-sm animate-pulse">
+                    {/* Avatar Skeleton */}
+                    <div className="w-full h-40 bg-gray-300 rounded-xl mb-4"></div>
+                    
+                    {/* Content Skeleton */}
+                    <div className="space-y-3">
+                      {/* Name Skeleton */}
+                      <div className="h-5 bg-gray-300 rounded w-3/4"></div>
+                      
+                      {/* Specialty Skeleton */}
+                      <div className="h-4 bg-gray-200 rounded w-full"></div>
+                      
+                      {/* Experience & Price Skeleton */}
+                      <div className="flex gap-2 mt-3">
+                        <div className="h-8 bg-gray-300 rounded-full flex-1"></div>
+                        <div className="h-8 bg-gray-300 rounded-full flex-1"></div>
+                      </div>
+                      
+                      {/* Button Skeleton */}
+                      <div className="h-10 bg-gray-300 rounded-full mt-4"></div>
+                    </div>
+                  </div>
+                ))}
+              </>
             )}
             {mappedCaregiversForCards.map(c => (
               <CaregiverCard

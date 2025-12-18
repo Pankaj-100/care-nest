@@ -1,6 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { WeeklyScheduleSlot } from "@/types/Booking";
 
+export interface SelectedCaregiver {
+  id: string;
+  name: string;
+  avatar: string;
+  specialty: string;
+  experience: string;
+  price: string;
+}
+
 interface PendingBookingPayload {
   startDate: string;
   endDate?: string;
@@ -14,14 +23,16 @@ interface PendingBookingPayload {
 interface BookingState {
   careseekerZipcode: number | null;
   requiredBy: string;
-  serviceIds: string[]; // Make sure this exists
+  serviceIds: string[];
+  selectedCaregivers: SelectedCaregiver[];
   pendingBooking: PendingBookingPayload | null;
 }
 
 const initialState: BookingState = {
   careseekerZipcode: null,
   requiredBy: "",
-  serviceIds: [], // Initialize as empty array
+  serviceIds: [],
+  selectedCaregivers: [],
   pendingBooking: null,
 };
 
@@ -38,14 +49,24 @@ const bookingSlice = createSlice({
     setServiceIds(state, action: PayloadAction<string[]>) {
       state.serviceIds = action.payload;
     },
+    setSelectedCaregivers(state, action: PayloadAction<SelectedCaregiver[]>) {
+      state.selectedCaregivers = action.payload;
+    },
     setPendingBooking: (state, action) => {
       state.pendingBooking = action.payload;
     },
     clearPendingBooking: (state) => {
       state.pendingBooking = null;
     },
+    clearBookingState: (state) => {
+      state.careseekerZipcode = null;
+      state.requiredBy = "";
+      state.serviceIds = [];
+      state.selectedCaregivers = [];
+      state.pendingBooking = null;
+    },
   },
 });
 
-export const { setCareseekerZipcode, setRequiredBy, setServiceIds, setPendingBooking, clearPendingBooking } = bookingSlice.actions;
+export const { setCareseekerZipcode, setRequiredBy, setServiceIds, setSelectedCaregivers, setPendingBooking, clearPendingBooking, clearBookingState } = bookingSlice.actions;
 export default bookingSlice.reducer;

@@ -346,7 +346,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         >
           <button
             type="submit"
-            className={`w-full flex items-center justify-center text-center lg:ml-12 px-5 py-3 sm:px-5 sm:py-3.5 lg:px-6 lg:py-4 cursor-pointer rounded-4xl text-base sm:text-md font-semibold transition whitespace-nowrap
+            className={`w-full flex items-center justify-center text-center lg:ml-12 px-5 py-3 sm:px-5 sm:py-5 lg:px-6 lg:py-4.8 cursor-pointer rounded-4xl text-base sm:text-md font-semibold transition whitespace-nowrap
               bg-[#FFA726] text-[#233D4D] hover:brightness-105`}
           >
             Search Caregiver

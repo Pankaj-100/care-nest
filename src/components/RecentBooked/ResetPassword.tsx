@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { FiLock } from "react-icons/fi";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { useChangePasswordMutation } from "@/store/api/profileApi";
 import Image from "next/image";
@@ -96,10 +96,14 @@ const ResetPassword = () => {
             <button
               type="button"
               onClick={() => toggleVisibility(field.name as keyof typeof showPassword)}
-              className="text-gray-500 focus:outline-none ml-3"
+              className="text-gray-500 focus:outline-none ml-3 hover:text-gray-700 transition-colors"
               title="Toggle password visibility"
             >
-              <FiLock className="text-xl" />
+              {showPassword[field.name as keyof typeof showPassword] ? (
+                <FiEye className="text-xl" />
+              ) : (
+                <FiEyeOff className="text-xl" />
+              )}
             </button>
           </div>
         ))}

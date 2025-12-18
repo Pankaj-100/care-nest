@@ -426,11 +426,22 @@ export default function AboutUs() {
 
         {/* Our Mission Banner */}
         <div className="w-screen bg-[#233D4D] py-14 flex items-center justify-center relative left-1/2 right-1/2 -mx-[50vw]">
-          <div className="flex flex-row items-center justify-between w-full max-w-[1800px] px-0 md:px-20">
+          <div className="flex flex-row items-center justify-between w-full max-w-[1800px] px-0 md:px-20 relative">
+            {/* Exclamatory Mark - Decorative */}
+            <div className="absolute left-4 -top-5 pointer-events-none">
+              <Image
+                src="/aboutUs/exclamatory.png"
+                alt="decorative"
+                width={200}
+                height={200}
+                className="w-22 h-22 md:w-22 md:h-22 object-contain"
+              />
+            </div>
+            
             <div className="flex-1 flex flex-col justify-center">
-              <h2 className="text-[#F2A307] font-bold text-[60px] leading-none mb-6">Our Mission</h2>
+              <h2 className="text-[#F2A307] font-bold text-[60px] ml-10 leading-none mb-6">Our Mission</h2>
               <div
-                className="text-white text-2xl font-light leading-relaxed max-w-2xl"
+                className="text-white ml-25 text-2xl font-light leading-relaxed max-w-2xl"
                 dangerouslySetInnerHTML={{ __html: about.missionDescription ?? "" }}
               />
             </div>
@@ -514,7 +525,7 @@ export default function AboutUs() {
       </div>
 
       {/* Compassionate Care Banner */}
-      <div className="w-full bg-[#F2A307] py-3 px-8 flex flex-col md:flex-row items-center justify-between">
+      <div className="w-full bg-[#F2A307] py-0 px-8 flex flex-col md:flex-row items-center justify-between">
         <div className="flex-1">
           <h2 className="text-white font-bold ml-20 text-4xl mb-4">
             Compassionate Care, Just A <br /> Call Away

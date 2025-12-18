@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { allServicesData } from './data';
@@ -223,7 +224,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
             {contactBannerData.title}
           </h2>
           <p className="text-lg lg:text-2xl text-white font-light leading-relaxed mb-4 max-w-7xl mx-auto">
-            {contactBannerData.description}
+            Make The Call That Can Improve Your Life Or That Of A Loved One. Contact Us Today To Inquire About <span className="text-[#233D4D]">Our Houston Based Home Care Services</span> And To Find A Solution That Fits Your Budgetary Needs And Your Lifestyle.
           </p>
           <a href="/contact">
             <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-12 py-6 rounded-full text-2xl transition-colors duration-300 flex items-center gap-2 mx-auto">

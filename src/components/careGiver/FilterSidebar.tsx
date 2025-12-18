@@ -48,9 +48,10 @@ interface CaregiverFilters {
 interface FilterSidebarProps {
   onFilterChange: (filters: CaregiverFilters) => void;
   initialFilters?: CaregiverFilters;
+  isLoading?: boolean;
 }
 
-const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarProps) => {
+const FilterSidebar = ({ onFilterChange, initialFilters = {}, isLoading = false }: FilterSidebarProps) => {
   // Update state to handle single selections (not arrays)
   const [gender, setGender] = useState<string>(""); // Single selection
   const [price, setPrice] = useState<{ min: number; max: number } | null>(null); // Single selection
@@ -143,126 +144,151 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {} }: FilterSidebarPro
 
   return (
     <aside className={`w-full md:w-[250px] border rounded-xl p-4 space-y-4 ${urbanist.className}`}>
-      <h2 className={`text-xl font-bold mb-4 text-[var(--navy)] ${urbanist.className}`}>Filters & Sort</h2>
-      
-      {/* Gender - Changed to radio buttons */}
-      <div>
-        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
-        <div className="space-y-2">
-          {GENDERS.map((g) => (
-            <label key={g} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
-              <input
-                type="radio"
-                name="gender"
-                checked={gender === g}
-                onChange={() => handleGenderChange(g)}
-                className="mr-2 accent-[#233D4D] cursor-pointer"
-              />
-              <span>{g.charAt(0).toUpperCase() + g.slice(1)}</span>
-            </label>
+      {isLoading ? (
+        /* Skeleton Loading State */
+        <div className="animate-pulse space-y-6">
+          {/* Title Skeleton */}
+          <div className="h-7 bg-gray-300 rounded w-32 mb-4"></div>
+
+          {/* Filter Section Skeleton (repeated 5 times for each filter category) */}
+          {[1, 2, 3, 4, 5].map((section) => (
+            <div key={section}>
+              <div className="h-5 bg-gray-300 rounded w-24 mb-3"></div>
+              <div className="space-y-2">
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                    <div className="h-4 bg-gray-200 rounded flex-1"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      ) : (
+        <>
+          <h2 className={`text-xl font-bold mb-4 text-[var(--navy)] ${urbanist.className}`}>Filters & Sort</h2>
+          
+          {/* Gender - Changed to radio buttons */}
+          <div>
+            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
+            <div className="space-y-2">
+              {GENDERS.map((g) => (
+                <label key={g} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+                  <input
+                    type="radio"
+                    name="gender"
+                    checked={gender === g}
+                    onChange={() => handleGenderChange(g)}
+                    className="mr-2 accent-[#233D4D] cursor-pointer"
+                  />
+                  <span>{g.charAt(0).toUpperCase() + g.slice(1)}</span>
+                </label>
+              ))}
+            </div>
+          </div>
 
-      {/* Price - Changed to radio buttons 
-        <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Price (Hourly Rate)</h4>
-        {PRICES.map((range, idx) => (
-          <label key={idx} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
-            <input
-              type="radio"
-              name="price"
-              checked={price?.min === range.min && price?.max === range.max}
-              onChange={() => handlePriceChange(range)}
-              className="mr-2 accent-[#233D4D]"
-            />
-            {range.label}
-          </label>
-        ))}
-      </div>  */}
+          {/* Price - Changed to radio buttons 
+            <h4 className={`text-md font-semibold mb-4 text-[var(--navy)] ${urbanist.className}`}>Price (Hourly Rate)</h4>
+            {PRICES.map((range, idx) => (
+              <label key={idx} className={`block text-sm text-[#767e8a] font-medium ${urbanist.className}`}>
+                <input
+                  type="radio"
+                  name="price"
+                  checked={price?.min === range.min && price?.max === range.max}
+                  onChange={() => handlePriceChange(range)}
+                  className="mr-2 accent-[#233D4D]"
+                />
+                {range.label}
+              </label>
+            ))}
+          </div>  */}
 
 
-      {/* Location - Changed to radio buttons */}
-      <div>
-        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
-        <div className="space-y-2">
-          {LOCATIONS.map((loc) => (
-            <label key={loc.label} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
-              <input
-                type="radio"
-                name="location"
-                checked={locationRange === loc.label}
-                onChange={() => handleLocationChange(loc.label)}
-                className="mr-2 accent-[#233D4D] cursor-pointer"
-              />
-              <span>{loc.label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
+          {/* Location - Changed to radio buttons */}
+          <div>
+            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
+            <div className="space-y-2">
+              {LOCATIONS.map((loc) => (
+                <label key={loc.label} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+                  <input
+                    type="radio"
+                    name="location"
+                    checked={locationRange === loc.label}
+                    onChange={() => handleLocationChange(loc.label)}
+                    className="mr-2 accent-[#233D4D] cursor-pointer"
+                  />
+                  <span>{loc.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
 
-      {/* PRN - Changed to radio buttons */}
-      <div>
-        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
-        <div className="space-y-2">
-          <label className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
-            <input
-              type="radio"
-              name="prn"
-              className="mr-2 accent-[#233D4D] cursor-pointer"
-              checked={prn === true}
-              onChange={() => handlePrnChange(true)}
-            />
-            <span>As Needed</span>
-          </label>
-          <label className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
-            <input
-              type="radio"
-              name="prn"
-              className="mr-2 accent-[#233D4D] cursor-pointer"
-              checked={prn === false}
-              onChange={() => handlePrnChange(false)}
-            />
-            <span>Fixed Schedule</span>
-          </label>
-        </div>
-      </div>
-      
-      {/* Experience - Changed to radio buttons */}
-      <div>
-        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
-        <div className="space-y-2">
-          {EXPERIENCES.map((exp, idx) => (
-            <label key={idx} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
-              <input
-                type="radio"
-                name="experience"
-                checked={experience?.min === exp.min && experience?.max === exp.max}
-                onChange={() => handleExperienceChange(exp)}
-                className="mr-2 accent-[#233D4D] cursor-pointer"
-              />
-              <span>{exp.label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
+          {/* PRN - Changed to radio buttons */}
+          <div>
+            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
+            <div className="space-y-2">
+              <label className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+                <input
+                  type="radio"
+                  name="prn"
+                  className="mr-2 accent-[#233D4D] cursor-pointer"
+                  checked={prn === true}
+                  onChange={() => handlePrnChange(true)}
+                />
+                <span>As Needed</span>
+              </label>
+              <label className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+                <input
+                  type="radio"
+                  name="prn"
+                  className="mr-2 accent-[#233D4D] cursor-pointer"
+                  checked={prn === false}
+                  onChange={() => handlePrnChange(false)}
+                />
+                <span>Fixed Schedule</span>
+              </label>
+            </div>
+          </div>
+          
+          {/* Experience - Changed to radio buttons */}
+          <div>
+            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
+            <div className="space-y-2">
+              {EXPERIENCES.map((exp, idx) => (
+                <label key={idx} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+                  <input
+                    type="radio"
+                    name="experience"
+                    checked={experience?.min === exp.min && experience?.max === exp.max}
+                    onChange={() => handleExperienceChange(exp)}
+                    className="mr-2 accent-[#233D4D] cursor-pointer"
+                  />
+                  <span>{exp.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
 
-      {/* Languages - Keep as checkboxes for multiple selection */}
-      <div>
-        <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
-        <div className="space-y-2">
-          {LANGUAGES.map((lang) => (
-            <label key={lang} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
-              <input
-                type="checkbox"
-                checked={languages.includes(lang)}
-                onChange={() => handleLanguageChange(lang)}
-                className="mr-2 accent-[#233D4D] cursor-pointer"
-              />
-              <span>{lang}</span>
-            </label>
-          ))}
-        </div>
-      </div>
+          {/* Languages - Keep as checkboxes for multiple selection */}
+          <div>
+            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
+            <div className="space-y-2">
+              {LANGUAGES.map((lang) => (
+                <label key={lang} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
+                  <input
+                    type="checkbox"
+                    checked={languages.includes(lang)}
+                    onChange={() => handleLanguageChange(lang)}
+                    className="mr-2 accent-[#233D4D] cursor-pointer"
+                  />
+                  <span>{lang}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </aside>
   );
 };

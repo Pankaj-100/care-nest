@@ -102,11 +102,11 @@ return (
 						className="bg-[#F7F7F3] rounded-xl px-4 sm:px-6 py-4 sm:py-5 shadow-sm cursor-pointer transition"
 						onClick={() => setOpenIdx(openIdx === idx ? -1 : idx)}
 					>
-						<div className="flex items-center justify-between">
-							<span className=" font-medium text-[#233D4D] text-lg sm:text-xl">
-								{faq.question}
-							</span>
-							<span className="text-xl sm:text-lg text-[#233D4D]">
+					<div className="flex items-center justify-between gap-4">
+						<span className="font-medium text-[#233D4D] text-lg sm:text-xl text-left flex-1">
+							{faq.question}
+						</span>
+						<span className="text-xl sm:text-lg text-[#233D4D] flex-shrink-0">
 								{openIdx === idx ? "−" : "+"}
 							</span>
 						</div>

@@ -31,7 +31,7 @@ export const allServicesData = {
       ],
       descriptions: [
         "You have the flexibility to choose the level of care and the location of care. Our services are completely customizable to your specific needs. Whether you need short-term or long-term home care, CareWorks offers convenient, dependable home care services you can trust.",
-        "Make the call that can improve your life or that of a loved one. Contact us today to inquire about our Houston based home care services and to find a solution that fits your budgetary needs and your lifestyle. Whether your loved one needs daily assistance or occasional support, CareWorks offers flexible, reliable personal care in Houston, TX, designed to fit your family's schedule and budget."
+        "Make the call that can improve your life or that of a loved one. Contact us today to inquire about \"our Houston based yo home care\" services and to find a solution that fits your budgetary needs and your lifestyle. Whether your loved one needs daily assistance or occasional support, CareWorks offers flexible, reliable personal care in Houston, TX, designed to fit your family's schedule and budget."
       ],
       imagePath: "/care-service/service.png"
     },

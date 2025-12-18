@@ -1,6 +1,7 @@
 "use client";
 import CaregiverModal from "@/components/careGiver/CaregiverModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import RightBookingsPanel from "@/components/RecentBooked/RightSide";
 import { Sidebar } from "@/components/RecentBooked/Sidebar";
 import ResetPassword from "@/components/RecentBooked/ResetPassword";
@@ -16,20 +17,41 @@ import { useGetBookmarkedCaregiversQuery, useBookmarkCaregiverMutation } from "@
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import BookSuccessful from "@/components/careGiver/BookSuccessful";
 import { toast } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setSelectedCaregivers, clearBookingState, type SelectedCaregiver } from "@/store/slices/bookingSlice";
 
 const SavedCaregiversPanel = () => {
   const { data, isLoading, isError, refetch } = useGetBookmarkedCaregiversQuery();
   const [removeBookmarkedCaregiver] = useBookmarkCaregiverMutation();
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
-  const [selectedCaregivers, setSelectedCaregivers] = useState<string[]>([]);
+  const [selectedCaregiverIds, setSelectedCaregiverIds] = useState<string[]>([]);
   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+
+  // Get Redux state
+  const reduxSelectedCaregivers = useAppSelector(state => state.booking.selectedCaregivers);
+  const serviceIds = useAppSelector(state => state.booking.serviceIds);
+  const requiredBy = useAppSelector(state => state.booking.requiredBy);
+  const careseekerZipcode = useAppSelector(state => state.booking.careseekerZipcode);
+
+  // Auto-open schedule modal when returning from booking flow
+  useEffect(() => {
+    const openSchedule = searchParams.get("openSchedule");
+    if (openSchedule === "true" && reduxSelectedCaregivers.length > 0 && serviceIds.length > 0 && requiredBy) {
+      setIsScheduleOpen(true);
+      // Clean up URL
+      window.history.replaceState({}, '', '/profile?tab=saved-caregivers');
+    }
+  }, [searchParams, reduxSelectedCaregivers, serviceIds, requiredBy]);
 
   if (isLoading) return <div>Loading saved caregivers...</div>;
   if (isError || !data?.data?.givers) return <div>No saved caregivers found.</div>;
 
   const mappedCaregiversForSchedule = data.data.givers
-    .filter(giver => selectedCaregivers.includes(giver.id))
+    .filter(giver => selectedCaregiverIds.includes(giver.id))
     .map(giver => ({
       id: giver.id,
       name: giver.name,
@@ -40,7 +62,7 @@ const SavedCaregiversPanel = () => {
     }));
 
   const handleAddCaregiver = (id: string) => {
-    setSelectedCaregivers(prev =>
+    setSelectedCaregiverIds(prev =>
       prev.includes(id)
         ? prev.filter(cgId => cgId !== id) // Remove caregiver if already selected
         : prev.length < 3
@@ -97,7 +119,7 @@ const SavedCaregiversPanel = () => {
                 experience={typeof giver.experience === "string" ? giver.experience : giver.experience ? `${giver.experience} Years` : "0+ Years"}
                 isBookmarked={true}
                 heightClass="h-30"
-                isSelected={selectedCaregivers.includes(giver.id)}
+                isSelected={selectedCaregiverIds.includes(giver.id)}
                 onClick={() => setSelectedCaregiverId(giver.id)}
                 onBookmarkToggle={() => handleRemoveBookmark(giver.id)}
               />
@@ -105,10 +127,28 @@ const SavedCaregiversPanel = () => {
           </div>
           <div className="mt-8 sm:mt-10  text-center max-w-xl mx-auto">
             <button
-              disabled={selectedCaregivers.length < 1}
-              onClick={() => setIsScheduleOpen(true)}
+              disabled={selectedCaregiverIds.length < 1}
+              onClick={() => {
+                // Store selected caregivers in Redux and redirect to service selection
+                const caregiverData: SelectedCaregiver[] = data.data.givers
+                  .filter(giver => selectedCaregiverIds.includes(giver.id))
+                  .map(giver => ({
+                    id: giver.id,
+                    name: giver.name,
+                    avatar: giver.avatar ?? "/care-giver/boy-icon.png",
+                    specialty: giver.services.join(", "),
+                    experience: typeof giver.experience === "string" ? giver.experience : giver.experience ? `${giver.experience} Years` : "0+ Years",
+                    price: giver.price ? `₹${giver.price}` : "N/A",
+                  }));
+                
+                // Store in Redux for later use
+                dispatch(setSelectedCaregivers(caregiverData));
+                
+                // Redirect to service selection page (find-job)
+                router.push("/find-job");
+              }}
               className={`w-full px-8 sm:px-12 cursor-pointer py-3 sm:py-4 text-[var(--navy)] text-base sm:text-xl bg-yellow-500 rounded-full font-semibold transition
-                ${selectedCaregivers.length >= 1 ? "hover:shadow-md" : "cursor-not-allowed opacity-50"}`}
+                ${selectedCaregiverIds.length >= 1 ? "hover:shadow-md" : "cursor-not-allowed opacity-50"}`}
             >
               Proceed
             </button>
@@ -122,16 +162,29 @@ const SavedCaregiversPanel = () => {
         onClose={() => setSelectedCaregiverId(null)}
         onAddCaregiver={handleAddCaregiver}
         isBookmarked={true}
-         isSelected={selectedCaregivers.includes(selectedCaregiverId ?? "")} // <-- Add this line
+         isSelected={selectedCaregiverIds.includes(selectedCaregiverId ?? "")} // <-- Add this line
       />
 
-      {/* ScheduleCare Modal */}
+      {/* ScheduleCare Modal - use Redux caregivers if available */}
       <ScheduleCare
         isOpen={isScheduleOpen}
-        OnClose={() => setIsScheduleOpen(false)}
-        selectedCaregivers={mappedCaregiversForSchedule}
-        // Pass a callback to show success modal if needed
-        onBookingSuccess={() => setShowSuccessModal(true)}
+        OnClose={() => {
+          setIsScheduleOpen(false);
+          // Clear Redux state after closing
+          dispatch(clearBookingState());
+        }}
+        selectedCaregivers={
+          reduxSelectedCaregivers.length > 0 
+            ? reduxSelectedCaregivers 
+            : mappedCaregiversForSchedule
+        }
+        onBookingSuccess={() => {
+          setShowSuccessModal(true);
+          dispatch(clearBookingState());
+        }}
+        serviceIds={serviceIds}
+        requiredBy={requiredBy}
+        zipcode={careseekerZipcode ?? undefined}
       />
 
       {/* Booking Success Modal */}

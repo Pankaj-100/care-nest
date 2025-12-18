@@ -13,9 +13,10 @@ import { toast } from "react-toastify";
 
 interface BookingDetailsProps {
   booking: Booking;
+  isLoading?: boolean;
 }
 
-export default function BookingDetails({ booking }: BookingDetailsProps) {
+export default function BookingDetails({ booking, isLoading = false }: BookingDetailsProps) {
   const router = useRouter(); // <-- added router
   const [openDeleteDialog, setOpenDialog] = useState(false);
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
@@ -82,6 +83,69 @@ export default function BookingDetails({ booking }: BookingDetailsProps) {
   };
 
   if (!booking) return <div className="p-4">No booking selected</div>;
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:gap-8 max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-8 md:py-10 bg-[#F8F9FA]">
+        <main className="flex-1">
+          {/* Header Skeleton */}
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-0">
+            <div className="h-8 bg-gray-300 rounded w-64 animate-pulse"></div>
+            <div className="flex gap-2 sm:gap-4">
+              <div className="h-10 bg-gray-300 rounded-lg w-20 animate-pulse"></div>
+              <div className="h-10 bg-gray-300 rounded-lg w-32 animate-pulse"></div>
+            </div>
+          </div>
+
+          {/* Booking Details Card Skeleton */}
+          <div className="relative w-full bg-white rounded-2xl shadow-sm px-4 py-6 sm:px-8 sm:py-8 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
+              {/* Column 1 */}
+              <div className="flex flex-col gap-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="h-4 bg-gray-300 rounded w-24 mb-2"></div>
+                    <div className="h-6 bg-gray-200 rounded w-40"></div>
+                  </div>
+                ))}
+              </div>
+              {/* Column 2 */}
+              <div className="flex flex-col gap-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="h-4 bg-gray-300 rounded w-32 mb-2"></div>
+                    <div className="h-6 bg-gray-200 rounded w-36"></div>
+                  </div>
+                ))}
+              </div>
+              {/* Column 3 */}
+              <div className="flex flex-col gap-4">
+                <div className="animate-pulse">
+                  <div className="h-4 bg-gray-300 rounded w-40 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-full mb-1"></div>
+                  <div className="h-6 bg-gray-200 rounded w-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Caregivers List Skeleton */}
+          <div className="space-y-4">
+            {[1, 2].map((i) => (
+              <div key={i} className="bg-white rounded-2xl p-4 flex items-center gap-4 shadow-sm animate-pulse">
+                <div className="w-16 h-16 rounded-full bg-gray-300"></div>
+                <div className="flex-1 space-y-2">
+                  <div className="h-5 bg-gray-300 rounded w-32"></div>
+                  <div className="h-4 bg-gray-200 rounded w-24"></div>
+                  <div className="h-8 bg-gray-200 rounded w-28"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </main>
+      </div>
+    );
+  }
 
 
   // Helper to format weekly schedule as array

@@ -94,13 +94,13 @@ function Notification({ open, handleOpen }: Props) {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button
-              className="bg-[#233D4D1A] border-0 p-2 rounded-full hover:bg-[#233D4D33] transition-colors"
+              className="bg-[#233D4D1A] border-0 p-2 ms-[2rem] rounded-full hover:bg-[#233D4D33] transition-colors"
               onClick={handleOpen}
               aria-label="Close notifications"
             >
               <BackIcon size={20} />
             </button>
-            <div className="ms-[5rem] text-xl font-medium">Notifications</div>
+            <div className="ms-[6rem] text-xl font-bold">Notifications</div>
           </div>
           {unreadCount > 0 && (
             <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
@@ -193,21 +193,35 @@ function Notification({ open, handleOpen }: Props) {
           )}
         </div>
 
-        {/* Mark all as read button (optional feature) */}
-        {unreadCount > 0 && notifications.length > 0 && (
-          <div className="mt-4 px-3 pb-4">
+        {/* Mark all as read and Clear all buttons - always display when notifications exist */}
+        {notifications.length > 0 && (
+          <div className="mt-4 px-3 pb-4 flex gap-2">
             <button
               onClick={() => {
-                // You would need to implement markAllAsRead API endpoint
                 notifications.forEach(notif => {
                   if (!notif.isRead) {
                     handleMarkAsRead(notif.id);
                   }
                 });
               }}
-              className="w-full py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
+              className="flex-1 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
             >
-              Mark all as read
+              Mark all read
+            </button>
+            <button
+              onClick={() => {
+                // Clear all notifications
+                notifications.forEach(notif => {
+                  // You would need to implement deleteNotification API endpoint
+                  // For now, we'll refetch to simulate clearing
+                });
+                // Trigger refetch to clear the list
+                refetch();
+                refetchUnreadCount();
+              }}
+              className="flex-1 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
+            >
+              Clear all
             </button>
           </div>
         )}

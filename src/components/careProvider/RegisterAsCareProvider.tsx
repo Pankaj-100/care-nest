@@ -19,6 +19,7 @@ const RegisterAsCareProvider = () => {
   const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [showEmailSuggestions, setShowEmailSuggestions] = useState(false);
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
@@ -34,6 +35,42 @@ const RegisterAsCareProvider = () => {
     if (!description.trim()) newErrors.description = "Description is required.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const getEmailSuggestions = () => {
+    if (!email || !email.includes("@")) return [];
+    
+    const [username, domain] = email.split("@");
+    if (!username) return [];
+    
+    const commonDomains = [
+      "gmail.com",
+      "yahoo.com",
+      "outlook.com",
+      "hotmail.com",
+      "icloud.com",
+      "aol.com",
+    ];
+    
+    if (!domain) {
+      // If user hasn't typed domain yet, show all suggestions
+      return commonDomains.map(d => `${username}@${d}`);
+    }
+    
+    // Filter domains that start with what user typed
+    return commonDomains
+      .filter(d => d.startsWith(domain.toLowerCase()))
+      .map(d => `${username}@${d}`);
+  };
+
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    setShowEmailSuggestions(value.includes("@") && !value.endsWith(".com"));
+  };
+
+  const handleEmailSuggestionClick = (suggestion: string) => {
+    setEmail(suggestion);
+    setShowEmailSuggestions(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -116,13 +153,16 @@ const RegisterAsCareProvider = () => {
               onChange={setFullName}
               error={errors.fullName}
             />
-            <Input
+            <EmailInput
               placeholder="Enter Email ID"
               icon="/email-icon.svg"
-              type="email"
               value={email}
-              onChange={setEmail}
+              onChange={handleEmailChange}
               error={errors.email}
+              suggestions={getEmailSuggestions()}
+              showSuggestions={showEmailSuggestions}
+              onSuggestionClick={handleEmailSuggestionClick}
+              onBlur={() => setTimeout(() => setShowEmailSuggestions(false), 200)}
             />
             <Input
               placeholder="Enter Phone Number"
@@ -191,6 +231,52 @@ const Input = ({ placeholder, icon, type = "text", value, onChange, error }: Inp
           onChange={(e) => onChange(e.target.value)}
         />
       </div>
+      {error && <span className="text-red-500 text-sm mt-1 ml-2">{error}</span>}
+    </div>
+  );
+};
+
+interface EmailInputProps {
+  placeholder: string;
+  icon: string;
+  value: string;
+  onChange: (value: string) => void;
+  error?: string;
+  suggestions: string[];
+  showSuggestions: boolean;
+  onSuggestionClick: (suggestion: string) => void;
+  onBlur: () => void;
+}
+
+const EmailInput = ({ placeholder, icon, value, onChange, error, suggestions, showSuggestions, onSuggestionClick, onBlur }: EmailInputProps) => {
+  return (
+    <div className="flex flex-col mb-5 relative">
+      <div className="flex bg-white rounded-3xl p-4 items-center gap-x-3">
+        <div className="relative w-5 h-5">
+          <Image src={icon} alt="icon" fill />
+        </div>
+        <input
+          type="email"
+          placeholder={placeholder}
+          className="outline-none w-full"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onBlur={onBlur}
+        />
+      </div>
+      {showSuggestions && suggestions.length > 0 && (
+        <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-lg mt-1 max-h-48 overflow-y-auto z-10">
+          {suggestions.map((suggestion, index) => (
+            <div
+              key={index}
+              className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors"
+              onClick={() => onSuggestionClick(suggestion)}
+            >
+              {suggestion}
+            </div>
+          ))}
+        </div>
+      )}
       {error && <span className="text-red-500 text-sm mt-1 ml-2">{error}</span>}
     </div>
   );

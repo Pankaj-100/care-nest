@@ -92,7 +92,7 @@ function MessageList({ handleOpenMessages }: Props) {
                           chat?.profilePic
                             ? chat.profilePic.startsWith("http")
                               ? chat.profilePic
-                              : `${cdnURL}${chat.profilePic.replace(/^\/+/, "")}`
+                              : `${cdnURL}/${chat.profilePic.replace(/^\/+/, "")}`
                             : ProfilePic
                         }
                         alt={chat?.name}

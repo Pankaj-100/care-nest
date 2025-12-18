@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { YellowButton } from "../common/CustomButton";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setRequiredBy } from "@/store/slices/bookingSlice";
 
 const RECIPIENT_OPTIONS = [
@@ -62,6 +62,10 @@ const NeedService: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+  // Check if we have selected caregivers from saved caregivers flow
+  const selectedCaregivers = useAppSelector(state => state.booking.selectedCaregivers);
+  const hasSelectedCaregivers = selectedCaregivers.length > 0;
+
   const handleSelect = useCallback((val: string) => {
     setSelected(val);
   }, []);
@@ -69,8 +73,15 @@ const NeedService: React.FC = () => {
   const handleNext = async () => {
     if (!selected) return;
     setSubmitting(true);
-    dispatch(setRequiredBy(selected)); // Store only requiredBy in redux
-    router.push("/care-giver");
+    dispatch(setRequiredBy(selected)); // Store requiredBy in redux
+    
+    // If coming from saved caregivers flow, redirect back to saved-caregiver page with schedule modal
+    if (hasSelectedCaregivers) {
+      router.push('/saved-caregiver?openSchedule=true');
+    } else {
+      // Normal flow - go to caregiver search
+      router.push("/care-giver");
+    }
     setSubmitting(false);
   };
 

@@ -1,6 +1,6 @@
 import { Roboto } from "next/font/google";
 import type { Metadata } from "next";
-import "./globals.css";
+import "../../globals.css";
 import { Providers } from "./Provider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

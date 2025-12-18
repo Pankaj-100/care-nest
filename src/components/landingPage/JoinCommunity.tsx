@@ -32,7 +32,7 @@ const JoinCommunity = () => {
         </div>
       </div>
 
-      <div className="w-full sm:w-1/2 lg:w-auto flex flex-col items-center justify-center sm:order-1 order-0">
+      <div className="w-full sm:w-1/2 lg:w-auto flex mr-7 flex-col items-center justify-center sm:order-1 order-0">
         <div className="flex gap-3">
           <div>
             <div className="relative w-6 h-6 sm:w-8 sm:h-8 -ml-6 sm:-ml-12">

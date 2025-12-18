@@ -181,8 +181,8 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
                       onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
                       style={{ background: 'none', border: 0, padding: 0, cursor: 'pointer' }}
                     >
-                      <span>{item.question}</span>
-                      <span className="text-2xl font-bold text-[#233D4D]">{isOpen ? '—' : '+'}</span>
+                      <span className="text-left flex-1">{item.question}</span>
+                      <span className="text-2xl font-bold text-[#233D4D] flex-shrink-0">{isOpen ? '—' : '+'}</span>
                     </button>
                     {isOpen && (
                       <div

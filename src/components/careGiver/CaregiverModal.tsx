@@ -97,7 +97,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
   if (!isOpen || !caregiverId) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-2 sm:px-4">
+    <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/30 px-2 sm:px-4 pt-20 md:pt-0">
       <div className="relative w-full max-w-lg sm:max-w-2xl md:max-w-3xl max-h-[90vh] sm:max-h-[85vh] md:max-h-[80vh] overflow-hidden rounded-2xl bg-white shadow-2xl flex flex-col">
         {/* Close */}
         <button
@@ -215,7 +215,7 @@ const ModalContent: React.FC<{
             />
             <InfoRow
               label="Gender"
-              value={caregiver.gender ?? "—"}
+              value={caregiver.gender ?? "N/A"}
             />
           </div>
 
