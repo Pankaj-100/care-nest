@@ -15,7 +15,7 @@ const ChoosingPath: React.FC = () => {
           {/* Extended heading section with background */}
           <div className=" mx-4 px-4 py-6 mb-6 rounded-none">
             <h1 className="text-center text-3xl sm:text-4xl font-semibold mb-1">
-              Choose the path that suits your needs best.
+              Choose The Path That Suits Your Needs Best.
             </h1>
           </div>
 

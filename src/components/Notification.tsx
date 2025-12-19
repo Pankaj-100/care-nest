@@ -18,7 +18,7 @@ interface Props {
 
 function Notification({ open, handleOpen }: Props) {
   const [page, setPage] = useState(1);
-  const limit = 20;
+  const limit = 5;
   
   const token = Cookies.get("authToken");
   const { data, isLoading, isError, refetch } = useGetNotificationsQuery(

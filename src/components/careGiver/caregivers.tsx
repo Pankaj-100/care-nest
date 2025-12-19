@@ -28,6 +28,7 @@ interface Caregiver {
   services: string[];
   gender?: string;
   isBookmarked?: boolean;
+  verified?: boolean;
 }
 
 interface CaregiverFilters {
@@ -238,6 +239,7 @@ const CaregiversPage = () => {
     experience: `${c.experience} Years`,
     price: c.price ? `$${c.price}/hr` : "N/A",
     isBookmarked: c.isBookmarked ?? false,
+    verified: c.verified ?? false,
   }));
 
   // When passing data to ScheduleCare component, include Redux data
@@ -403,6 +405,7 @@ const CaregiversPage = () => {
                 experience={c.experience}
                 isBookmarked={c.isBookmarked}
                 isSelected={selectedCaregivers.some(cg => cg.id === c.id)}
+                isVerified={c.verified}
                 onClick={() => handleCardClick(c.id)}
                 onBookmarkToggle={() => handleBookmarkToggle(c.id)}
               />

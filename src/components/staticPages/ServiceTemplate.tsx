@@ -116,10 +116,8 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
     const paragraphs = html
       .split(/<\/?p>/gi)
       .map(p => p.trim())
-      .filter(p => p.length > 0)
-      .map(p => p.replace(/<\/?[^>]+(>|$)/g, "").trim())
       .filter(p => p.length > 0);
-    return paragraphs.length > 0 ? paragraphs : [html.replace(/<\/?[^>]+(>|$)/g, "").trim()].filter(p => p.length > 0);
+    return paragraphs.length > 0 ? paragraphs : [html];
   };
 
   // SSR fallback
@@ -150,9 +148,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
           </h2>
           <div className="space-y-8 text-lg text-gray-700 leading-relaxed max-w-5xl mx-auto">
             {parseHtmlToParagraphs(serviceData.description2 || "").map((paragraph, index) => (
-              <p key={index}>
-                {paragraph}
-              </p>
+              <div key={index} dangerouslySetInnerHTML={{ __html: paragraph }} />
             ))}
           </div>
         </div>
@@ -167,9 +163,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
           </div>
           <div className="flex-1 space-y-6">
             {parseHtmlToParagraphs(serviceData.description1 || "").map((paragraph, index) => (
-              <p key={index} className="text-lg text-gray-700 leading-relaxed">
-                {paragraph}
-              </p>
+              <div key={index} className="text-lg text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: paragraph }} />
             ))}
           </div>
         </div>
@@ -209,9 +203,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
         </div>
         <div className="max-w-6xl mx-auto mt-16 space-y-6">
           {parseHtmlToParagraphs(serviceData.description3 || "").map((description, index) => (
-            <p key={index} className="text-lg text-gray-700 leading-relaxed">
-              {description}
-            </p>
+            <div key={index} className="text-lg text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: description }} />
           ))}
         </div>
       </div>

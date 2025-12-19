@@ -10,10 +10,63 @@ interface Props {
 function AuthLayout({ image, children }: Props) {
   return (
     <div className="w-full h-full py-8 md:px-20 bg-[#F7F7F3] px-5 flex flex-col">
-      <div className="grid grid-cols-12 h-full flex-1 min-h-0">
+      {/* Mobile/Tablet: Logo and Hero Section (visible < lg) */}
+      <div className="lg:hidden flex flex-col items-center w-full mb-8">
+        <div className="mb-6">
+          <Link href="/">
+            <Image src={"/auth/logo-1.png"} alt="Logo" width={180} height={100} className="cursor-pointer" />
+          </Link>
+        </div>
+        
+        {/* Mobile/Tablet: Hero Image Section with background designs behind card */}
+        <div className="relative w-full">
+          {/* Background design images behind the white card */}
+          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <div className="absolute left-[-1rem] top-[-1rem] z-0">
+              <Image
+                src="/auth/design.png"
+                alt="Design"
+                width={70}
+                height={70}
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <div className="absolute right-[-1rem] bottom-[-1rem] z-0">
+              <Image src="/auth/design.png" alt="Design" width={70} height={70} style={{ objectFit: "cover" }} />
+            </div>
+          </div>
+
+          {/* Foreground white card */}
+          <div className="relative z-10 bg-white rounded-2xl p-4">
+            <div className="relative h-40 w-full mb-4">
+              <Image
+                src={image}
+                alt="Caregiver Hero"
+                fill
+                className="object-cover rounded-lg"
+              />
+            </div>
+            <h2 className="text-lg font-bold text-[#233D4D] text-center">
+              Find Trusted Caregivers for Your Loved Ones at Home
+            </h2>
+            <p className="text-[#98A2B3] text-center text-sm">
+              Connect with verified professionals who provide compassionate, personalized care for seniors—right where they feel safest.
+            </p>
+          </div>
+        </div>
+
+        {/* Render page content (children) below hero for mobile/tablet */}
+        <div className="w-full mt-6">
+          {children}
+        </div>
+
+      </div>
+
+      {/* Desktop (lg+): Two-column layout */}
+      <div className="hidden lg:grid grid-cols-12 h-full flex-1 min-h-0">
         {/* Left form */}
         <div className="col-start-1 md:col-end-5 col-end-13 flex flex-col min-h-0">
-          <div className="mb-0">
+          <div className="mb-6 hidden lg:block">
             <Link href="/">
               <Image src={"/auth/logo-1.png"} alt="Logo" width={180} height={100} className="cursor-pointer" />
             </Link>
@@ -21,8 +74,8 @@ function AuthLayout({ image, children }: Props) {
           <div className="h-full ">{children}</div>
         </div>
 
-        {/* Right image */}
-        <div className="md:block hidden relative col-start-6 col-end-13 h-max mt-20 ">
+        {/* Right image - Desktop only */}
+        <div className="lg:block hidden relative col-start-6 col-end-13 h-max mt-20 ">
           {/* Background design image - behind the white background */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <div className="absolute left-[-3rem] top-[-2.2rem] ">
@@ -61,7 +114,7 @@ function AuthLayout({ image, children }: Props) {
             </div>
           </div>
         </div>
-              <div className="py-10"></div>
+        <div className="py-10"></div>
       </div>
 
     </div>

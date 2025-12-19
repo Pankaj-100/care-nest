@@ -2,6 +2,8 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { YellowButton } from "../common/CustomButton";
+import {PhoneIcon4, DescriptionIcon, AddressIcon, zipCodeIcon, MailIcon4, GenderIcon } from "../icons/page"
+import { Phone } from "lucide-react";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -155,7 +157,7 @@ const RegisterAsCareProvider = () => {
             />
             <EmailInput
               placeholder="Enter Email ID"
-              icon="/email-icon.svg"
+              icon={MailIcon4}
               value={email}
               onChange={handleEmailChange}
               error={errors.email}
@@ -166,7 +168,7 @@ const RegisterAsCareProvider = () => {
             />
             <Input
               placeholder="Enter Phone Number"
-              icon="/phone-icon.svg"
+              icon={PhoneIcon4}
               type="tel"
               value={phoneNumber}
               onChange={(val) => setPhoneNumber(val.replace(/[^\d]/g, ""))}
@@ -174,7 +176,7 @@ const RegisterAsCareProvider = () => {
             />
             <Input
               placeholder="Enter Gender"
-              icon="/gender-icon.svg"
+              icon={GenderIcon}
               type="text"
               value={gender}
               onChange={setGender}
@@ -182,7 +184,7 @@ const RegisterAsCareProvider = () => {
             />
             <Input
               placeholder="Enter Address"
-              icon="/map-icon.svg"
+              icon={AddressIcon}
               type="text"
               value={address}
               onChange={setAddress}
@@ -190,13 +192,13 @@ const RegisterAsCareProvider = () => {
             />
             <Input
               placeholder="Enter Zipcode"
-              icon="/correct-notcorrect-icon.svg"
+              icon={AddressIcon}
               type="text"
               value={zipcode}
               onChange={(val) => setZipcode(val.replace(/[^\d]/g, ""))}
               error={errors.zipcode}
             />
-            <InputArea value={description} onChange={setDescription} error={errors.description} />
+            <InputArea icon={DescriptionIcon} value={description} onChange={setDescription} error={errors.description} />
             <YellowButton className="w-full mt-8 text-lg py-6" disabled={submitting}>
               {submitting ? "Submitting..." : "Submit"}
             </YellowButton>
@@ -209,7 +211,7 @@ const RegisterAsCareProvider = () => {
 
 interface InputProps {
   placeholder: string;
-  icon: string;
+  icon: string | React.ComponentType<React.SVGProps<SVGSVGElement>>;
   type: string;
   value: string;
   onChange: (value: string) => void;
@@ -217,11 +219,16 @@ interface InputProps {
 }
 
 const Input = ({ placeholder, icon, type = "text", value, onChange, error }: InputProps) => {
+  const Icon = typeof icon === 'string' ? null : icon;
   return (
     <div className="flex flex-col mb-5">
-      <div className="flex bg-white rounded-3xl p-4 items-center gap-x-3">
+      <div className="flex bg-white rounded-3xl p-4 items-center gap-x-5">
         <div className="relative w-5 h-5">
-          <Image src={icon} alt="icon" fill />
+          {typeof icon === 'string' ? (
+            <Image src={icon} alt="icon" fill />
+          ) : (
+            Icon && <Icon />
+          )}
         </div>
         <input
           type={type}
@@ -238,7 +245,7 @@ const Input = ({ placeholder, icon, type = "text", value, onChange, error }: Inp
 
 interface EmailInputProps {
   placeholder: string;
-  icon: string;
+  icon: string | React.ComponentType<React.SVGProps<SVGSVGElement>>;
   value: string;
   onChange: (value: string) => void;
   error?: string;
@@ -249,11 +256,16 @@ interface EmailInputProps {
 }
 
 const EmailInput = ({ placeholder, icon, value, onChange, error, suggestions, showSuggestions, onSuggestionClick, onBlur }: EmailInputProps) => {
+  const Icon = typeof icon === 'string' ? null : icon;
   return (
     <div className="flex flex-col mb-5 relative">
-      <div className="flex bg-white rounded-3xl p-4 items-center gap-x-3">
+      <div className="flex bg-white rounded-3xl p-4 items-center gap-x-5">
         <div className="relative w-5 h-5">
-          <Image src={icon} alt="icon" fill />
+          {typeof icon === 'string' ? (
+            <Image src={icon} alt="icon" fill />
+          ) : (
+            Icon && <Icon />
+          )}
         </div>
         <input
           type="email"
@@ -283,17 +295,23 @@ const EmailInput = ({ placeholder, icon, value, onChange, error, suggestions, sh
 };
 
 interface InputAreaProps {
+  icon?: string | React.ComponentType<React.SVGProps<SVGSVGElement>>;
   value: string;
   onChange: (value: string) => void;
   error?: string;
 }
 
-const InputArea = ({ value, onChange, error }: InputAreaProps) => {
+const InputArea = ({ icon, value, onChange, error }: InputAreaProps) => {
+  const Icon = typeof icon === 'string' ? null : icon;
   return (
     <div className="flex flex-col mb-5">
       <div className="flex items-start bg-white rounded-3xl p-3 gap-3">
         <div className="w-6 h-6 min-w-[24px] relative mt-2">
-          <Image src="/write-icon.svg" alt="write icon" fill />
+          {typeof icon === 'string' ? (
+            <Image src={icon} alt="icon" fill />
+          ) : (
+            Icon ? <Icon /> : <Image src="/write-icon.svg" alt="write icon" fill />
+          )}
         </div>
         <textarea
           className="w-full rounded-2xl p-2 outline-none resize-none"

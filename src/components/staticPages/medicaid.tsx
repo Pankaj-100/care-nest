@@ -195,9 +195,9 @@ export default function MedicaidCASProgram() {
             
             {/* Step 1 */}
             <div className="flex items-center justify-between mt-8 mb-16">
-              <div className="w-2/5 text-right pr-8">
+              <div className="w-2/5 text-right pr-9">
                 <h3 className="text-[#F2A307] text-2xl font-semibold mb-2">Verify Medicaid Eligibility</h3>
-                <p className="text-white text-lg text-right leading-relaxed">Confirm that you meet Medicaid income and <br/> resource limits. You can check this through your <br/> state&apos;s Medicaid office or website.</p>
+                <p className="text-white text-lg text-right">Confirm that you meet Medicaid income and <br/> resource limits. You can check this through your <br/> state&apos;s Medicaid office or website.</p>
               </div>
               
               <div className="absolute left-1/2 transform -translate-x-1/2 z-20">
@@ -501,7 +501,7 @@ export default function MedicaidCASProgram() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Call the INTAKE number: <span className="font-semibold">713-692-1635</span>
+                    Call the INTAKE number: <a href="tel:713-692-1635" className="font-semibold text-[#233D4D] hover:underline focus:underline">713-692-1635</a>
                   </li>
                 </ul>
               </div>
@@ -716,7 +716,7 @@ export default function MedicaidCASProgram() {
               </div>
             </div>
             
-            <a href="tel:8322372273">
+            <a href="tel:2-1-1">
               <button className="bg-[#F2A307] text-white px-8 py-4 rounded-full font-light text-lg flex items-center gap-2 hover:bg-[#e6950a] transition">
                 <PhoneIcon2/> Call 2-1-1
               </button>

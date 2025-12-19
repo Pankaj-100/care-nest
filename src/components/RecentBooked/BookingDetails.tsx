@@ -67,7 +67,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
       };
       const result = await editBooking({ bookingId: booking.bookingId, payload }).unwrap();
       if (result.success) {
-        toast.success("Meeting details updated successfully!");
+        toast.success("Booking details updated successfully!");
         setIsEditing(false);
         setBookingDetails(prev => ({
           ...prev,

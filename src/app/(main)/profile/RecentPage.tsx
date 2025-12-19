@@ -120,6 +120,7 @@ const SavedCaregiversPanel = () => {
                 isBookmarked={true}
                 heightClass="h-30"
                 isSelected={selectedCaregiverIds.includes(giver.id)}
+                isVerified={giver.verified}
                 onClick={() => setSelectedCaregiverId(giver.id)}
                 onBookmarkToggle={() => handleRemoveBookmark(giver.id)}
               />

@@ -35,6 +35,7 @@ interface CaregiverDetail {
   languages?: string[];
   gender?: string;
   distanceMiles?: number;
+  verified?: boolean;
 }
 
 const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
@@ -182,13 +183,15 @@ const ModalContent: React.FC<{
               className="h-24 w-24 sm:h-36 sm:w-36 rounded-full object-cover ring-2 ring-white shadow"
             />
             {/* Verified tick */}
-            <Image
-              src="/care-giver/verified.png"
-              alt="Verified"
-              width={20}
-              height={20}
-              className="absolute -bottom-1 -right-1 h-5 w-5 sm:h-7 sm:w-7"
-            />
+            {caregiver.verified && (
+              <Image
+                src="/care-giver/verified.png"
+                alt="Verified"
+                width={20}
+                height={20}
+                className="absolute -bottom-1 -right-1 h-5 w-5 sm:h-7 sm:w-7"
+              />
+            )}
           </div>
 
           {/* Caregiver Name and Selected Badge */}

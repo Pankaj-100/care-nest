@@ -24,7 +24,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   onClick,
   onBookmarkToggle,
   isSelected = false,
-  isVerified = true,                     // default to true (show badge)
+  isVerified = false,                  
   verifiedIconSrc = "/care-giver/verified.png", // place this in /public
   heightClass,
 }) => {

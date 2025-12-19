@@ -11,9 +11,19 @@ const ZipCodePage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [zip, setZip] = useState("");
   const [touched, setTouched] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Only allow exactly 5 digits
   const isValid = /^\d{5}$/.test(zip);
+
+  // Simple static suggestion list; in real-world we could swap with API
+  const zipcodeSuggestions = [
+    "77001", "77002", "77003", "77004", "77005",
+    "77006", "77007", "77008", "77009", "77010",
+    "77011", "77012", "77013", "77014", "77015"
+  ];
+
+  const filteredSuggestions = zipcodeSuggestions.filter((z) => z.startsWith(zip) && z !== zip).slice(0, 5);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -56,14 +66,34 @@ const ZipCodePage: React.FC = () => {
               onChange={(e) => {
                 const next = e.target.value.replace(/\D/g, "").slice(0, 5);
                 setZip(next);
+                setShowSuggestions(next.length > 0 && filteredSuggestions.length > 0);
               }}
-              onBlur={() => setTouched(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
               className="w-full rounded-full bg-white border border-gray-200 focus:border-gray-300 focus:ring-0 outline-none py-4 pl-12 pr-5 text-lg text-gray-900 transition"
               maxLength={5}
               autoFocus
               aria-invalid={touched && !isValid}
               aria-describedby="zip-empty zip-error zip-prev"
             />
+            {showSuggestions && filteredSuggestions.length > 0 && (
+              <div className="absolute left-0 right-0 mt-2 bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden z-20">
+                {filteredSuggestions.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    className="w-full text-left px-4 py-3 hover:bg-gray-50 text-gray-800 text-base"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      setZip(s);
+                      setShowSuggestions(false);
+                      setTouched(false);
+                    }}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           {touched && zip.length === 0 && (
             <p

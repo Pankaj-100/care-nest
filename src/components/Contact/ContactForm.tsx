@@ -137,11 +137,11 @@ const ContactForm: React.FC = () => {
       }
 
       // success
-      toast.success(json?.message ?? "Contact us form submitted successfully");
+      toast.success(json?.message ?? "Contact us form submitted successfully, We will respond shortly!");
       setFormData({ name: "", email: "", message: "", zipcode: "", phone: "" });
     } catch (err) {
-      console.error("Inquiry submit error:", err);
-      toast.error("Failed to submit inquiry");
+      console.error("Contact us form submit error:", err);
+      toast.error("Failed to submit contact us form. Please try again later.");
     } finally {
       setLoading(false);
     }

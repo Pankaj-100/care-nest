@@ -208,6 +208,7 @@ export interface BookmarkedCaregiver {
   experience: number;
   price: number;
   services: string[];
+  verified?: boolean;
 }
 
 export interface GetBookmarksResponse {

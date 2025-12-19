@@ -44,6 +44,7 @@ export default function AboutUs() {
   const [about, setAbout] = useState<AboutPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -80,6 +81,30 @@ export default function AboutUs() {
       controller.abort();
     };
   }, [API_BASE]);
+
+  // Team slider logic - moved before early returns
+  const team = about?.teamMembers ?? [];
+  const itemsPerPage = 4;
+  const totalSlides = Math.max(1, Math.ceil(team.length / itemsPerPage));
+  
+  const handlePrevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+  };
+
+  const handleNextSlide = () => {
+    setCurrentSlide((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
+  };
+
+  // Auto-scroll effect - moved before early returns
+  useEffect(() => {
+    if (team.length <= itemsPerPage) return;
+    
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [currentSlide, team.length, itemsPerPage, totalSlides]);
 
   // Keep UI unchanged when loading / error: render minimal notices (doesn't modify inline CSS)
   if (loading) {
@@ -192,7 +217,20 @@ export default function AboutUs() {
 
   const people = about.keyPeople ?? [];
   const values = about.ourValues ?? [];
-  const team = about.teamMembers ?? [];
+
+  const displayedTeam = (team.length > 0 
+    ? team.slice(currentSlide * itemsPerPage, (currentSlide + 1) * itemsPerPage)
+    : [
+        { image: "/aboutUs/member1.png", name: "Jennifer", role: "Chief Officer" },
+        { image: "/aboutUs/member2.png", name: "Member 2", role: "Role 2" },
+        { image: "/aboutUs/member1.png", name: "Member 3", role: "Role 3" },
+        { image: "/aboutUs/member3.png", name: "Member 4", role: "Role 4" },
+      ]
+  ).map(member => ({
+    image: member.image ?? "/aboutUs/member1.png",
+    name: member.name,
+    role: member.role ?? "",
+  }));
 
   return (
     <div className="bg-[#ffffff] min-h-screen w-full relative font-urbanist">
@@ -267,7 +305,7 @@ export default function AboutUs() {
               ) : (
                 <>
                   <div>
-                    <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">{p.personTitle ?? "Key Person"}</h4>
+                    <h4 className="text-[#F2A307] font-semibold mb-2 text-xl">{p.personTitle ?? "Key Person"}</h4>
                     <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">{p.personName}</h2>
                     <p
                       className="text-gray-700 text-xl mb-4"
@@ -294,7 +332,7 @@ export default function AboutUs() {
             {/* Owner Section */}
             <div className="grid md:grid-cols-2 mt-10 gap-12 items-center mb-20">
               <div>
-                <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Owner Of CareWorks</h4>
+                <h4 className="text-[#F2A307] font-semibold mb-2 text-xl">Owner Of CareWorks</h4>
                 <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">Ruby Agrawal</h2>
                 <p className="text-gray-700 text-xl mb-4">
                   The dedicated owner of CareWorks in Houston, brings over 25 years of management expertise and a deep-rooted connection to the community she&apos;s called home for three decades.
@@ -329,7 +367,7 @@ export default function AboutUs() {
                 />
               </div>
               <div className="md:order-2">
-                <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Founder Of CareWorks</h4>
+                <h4 className="text-[#F2A307] font-semibold mb-2 text-2xl">Founder Of CareWorks</h4>
                 <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">William Hardy</h2>
                 <p className="text-gray-700 text-xl mb-4">
                   He is former president of CareWorks, is a respected leader in Houston&apos;s eldercare community. He&apos;s a passionate advocate for senior dignity and well-being, with decades of service and outreach. William has actively contributed to organizations like the Alzheimer&apos;s Association, Elder Service Providers Network, and United Way.
@@ -346,7 +384,7 @@ export default function AboutUs() {
             {/* Co-Founder Section */}
             <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
               <div>
-                <h4 className="text-[#F2A307] font-semibold mb-2 text-3xl">Co-Founder Of CareWorks</h4>
+                <h4 className="text-[#F2A307] font-semibold mb-2 text-2xl">Co-Founder Of CareWorks</h4>
                 <h2 className="text-[var(--navy)] font-bold text-3xl mb-4">Holly Hardy</h2>
                 <p className="text-gray-700 text-xl mb-4">
                   He is vice president of CareWorks in Houston, Texas is a person that has a special place in her heart for those dealing with a loved one that is suffering from Dementia. Her dad was diagnosed with Dementia in 2000. She is
@@ -472,53 +510,50 @@ export default function AboutUs() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 justify-center">
+            <div className="relative flex items-center gap-4 justify-center">
+              {/* Left Arrow */}
+              {team.length > itemsPerPage && (
+                <button
+                  onClick={handlePrevSlide}
+                  className="absolute -left-16 z-10 w-12 h-12 bg-[#233D4D] rounded-full flex items-center justify-center text-white hover:bg-[#1a2c3b] transition shadow-lg"
+                  aria-label="Previous slide"
+                >
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              )}
+
               <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
-                {team.length > 0 ? (
-                  team.map((member) => (
-                    <div key={member.id} className="relative rounded-lg overflow-hidden flex flex-col items-center justify-end pb-6 group w-full h-[320px]">
-                      <Image
-                        src={member.image ?? "/aboutUs/member1.png"}
-                        alt={member.name}
-                        width={320}
-                        height={320}
-                        className="w-full h-[320px] object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#233D4D] via-[#233D4D]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end pb-4">
-                        <div className="text-white text-xl font-bold">{member.name}</div>
-                        <div className="text-white text-base">{member.role}</div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                    // fallback static members
-                    (
-                    [
-                      { image: "/aboutUs/member1.png", name: "Jennifer", role: "Chief Officer" },
-                      { image: "/aboutUs/member2.png", name: "Member 2", role: "Role 2" },
-                      { image: "/aboutUs/member1.png", name: "Member 3", role: "Role 3" },
-                      { image: "/aboutUs/member3.png", name: "Member 4", role: "Role 4" },
-                    ] as Array<{ image: string; name: string; role: string }>
-                    ).map((member, idx) => (
-                    <div
-                      key={idx}
-                      className="relative rounded-lg overflow-hidden flex flex-col items-center justify-end pb-6 group w-full h-[320px]"
-                    >
-                      <Image
+                {displayedTeam.map((member, idx) => (
+                  <div key={idx} className="relative rounded-lg overflow-hidden flex flex-col items-center justify-end pb-6 group w-full h-[320px]">
+                    <Image
                       src={member.image}
                       alt={member.name}
                       width={320}
                       height={320}
                       className="w-full h-[320px] object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#233D4D] via-[#233D4D]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end pb-4">
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#233D4D] via-[#233D4D]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end pb-4">
                       <div className="text-white text-xl font-bold">{member.name}</div>
                       <div className="text-white text-base">{member.role}</div>
-                      </div>
                     </div>
-                    ))
-                  )}
                   </div>
+                ))}
+              </div>
+
+              {/* Right Arrow */}
+              {team.length > itemsPerPage && (
+                <button
+                  onClick={handleNextSlide}
+                  className="absolute -right-16 z-10 w-12 h-12 bg-[#233D4D] rounded-full flex items-center justify-center text-white hover:bg-[#1a2c3b] transition shadow-lg"
+                  aria-label="Next slide"
+                >
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -527,7 +562,7 @@ export default function AboutUs() {
       {/* Compassionate Care Banner */}
       <div className="w-full bg-[#F2A307] py-0 px-8 flex flex-col md:flex-row items-center justify-between">
         <div className="flex-1">
-          <h2 className="text-white font-bold ml-20 text-4xl mb-4">
+          <h2 className="text-white font-bold mt-5 ml-20 text-4xl mb-4">
             Compassionate Care, Just A <br /> Call Away
           </h2>
           <p className="text-white text-xl ml-20 font-light mb-8 leading-relaxed">
@@ -535,7 +570,7 @@ export default function AboutUs() {
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center ml-20 gap-3 bg-[#233D4D] text-white px-6 py-4 rounded-full font-light text-xl hover:bg-[#1a2c3b] transition"
+            className="inline-flex mb-4 items-center ml-20 gap-3 bg-[#233D4D] text-white px-8 py-5 rounded-full font-semibold text-xl hover:bg-[#1a2c3b] transition"
           >
             Contact Us
             <span className="ml-2">&#8594;</span>

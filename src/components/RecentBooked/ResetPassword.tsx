@@ -45,6 +45,38 @@ const ResetPassword = () => {
       return toast.error("New password and confirmation do not match.");
     }
 
+    if (newPassword === currentPassword) {
+      return toast.error("New password must be different from current password.");
+    }
+
+    const passwordRules = [
+      {
+        test: newPassword.length >= 8,
+        message: "Password must be at least 8 characters.",
+      },
+      {
+        test: /[A-Z]/.test(newPassword),
+        message: "Include at least one uppercase letter.",
+      },
+      {
+        test: /[a-z]/.test(newPassword),
+        message: "Include at least one lowercase letter.",
+      },
+      {
+        test: /\d/.test(newPassword),
+        message: "Include at least one number.",
+      },
+      {
+        test: /[^A-Za-z0-9]/.test(newPassword),
+        message: "Include at least one special character.",
+      },
+    ];
+
+    const failedRule = passwordRules.find((rule) => !rule.test);
+    if (failedRule) {
+      return toast.error(failedRule.message);
+    }
+
     try {
       const res = await changePassword({ currentPassword, newPassword }).unwrap();
       toast.success(res.message || "Password changed successfully.");
