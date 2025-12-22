@@ -50,6 +50,10 @@ const Header = () => {
     setOpenMenu((prev) => !prev);
   };
 
+  const handleCloseMenu = () => {
+    setOpenMenu(false);
+  };
+
   const handleNotificationOpen = () => {
     setOpenNotifications((prev) => !prev);
     // Refetch unread count when opening notifications
@@ -152,11 +156,12 @@ const Header = () => {
             index={index}
             openDropdownIndex={openDropdownIndex}
             setOpenDropdownIndex={setOpenDropdownIndex}
+            onNavigate={handleCloseMenu}
           />
         ))}
       </nav>
 
-      <div className="flex lg:flex-row flex-col items-center gap-4 lg:gap-6 xl:gap-10 lg:mt-0 mt-6 w-full lg:w-auto">
+      <div className="hidden lg:flex items-center gap-6 xl:gap-10 lg:mt-0 w-full lg:w-auto">
         {isLoggedInUser && (
           <button className="relative lg:block hidden" onClick={handleNotificationOpen} aria-label={`Notifications ${unreadCount > 0 ? `(${unreadCount} unread)` : ''}`}>
             <NotificationIcon size={28} className="lg:w-7 lg:h-7" />
@@ -190,7 +195,7 @@ const Header = () => {
         {isLoggedInUser && (
           <Link
             href="/profile"
-            className="group flex items-center justify-center rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-7 py-2 text-base lg:text-lg shadow-md hover:brightness-105 transition gap-2 min-w-[140px]"
+            className="hidden lg:flex items-center justify-center rounded-full bg-[var(--yellow)] text-[var(--navy)] font-bold px-7 py-2 text-base lg:text-lg shadow-md hover:brightness-105 transition gap-2 min-w-[140px]"
             style={{ minHeight: 48 }}
           >
             <span className="flex items-center justify-center mr-2">
@@ -320,7 +325,7 @@ const Header = () => {
               
               {/* Mobile-only profile menu items */}
               {isLoggedInUser && (
-                <div className="lg:hidden mt-4">
+                <div className="lg:hidden mt-1">
                   <nav className="flex flex-col gap-4 w-full">
                     {mobileProfileMenuItems.map((item, index) => (
                       <Link
@@ -332,6 +337,7 @@ const Header = () => {
                             Cookies.remove("authToken");
                             window.location.href = "/signin";
                           }
+                          handleCloseMenu();
                         }}
                         className="text-base text-white hover:text-[var(--yellow)] transition-colors py-2"
                       >
@@ -359,51 +365,55 @@ const NavbarMenu = ({
   index,
   openDropdownIndex,
   setOpenDropdownIndex,
+  onNavigate,
 }: NavbarTypes & {
   index: number;
   openDropdownIndex: number | null;
   setOpenDropdownIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  onNavigate?: () => void;
 }) => {
   const isActive = path === link;
   const isDropdownOpen = openDropdownIndex === index;
+  const hasDropdown = title === "Services" || title === "Who We Are" || title === "Login" || title === "Locations";
 
   return (
     <div
-      className="flex items-center gap-x-1 cursor-pointer relative w-full lg:w-auto justify-start py-2 lg:py-0"
+      className="flex flex-col items-start gap-y-1 lg:flex-row lg:items-center lg:gap-x-1 cursor-pointer relative w-full lg:w-auto justify-start py-2 lg:py-0"
     >
-      {link ? (
-        <Link
-          href={link}
-          className={`${
-            isActive ? "text-[var(--yellow)]" : "text-white"
-          } text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] hover:text-[var(--yellow)] transition-colors`}
-        >
-          {title}
-        </Link>
-      ) : (
-        <span 
-          className="text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] "
-          onClick={() => {
-            if (title === "Services" || title === "Login" || title === "Who We Are" || title === "Locations") {
-              setOpenDropdownIndex(isDropdownOpen ? null : index);
-            }
-          }}
-        >
-          {title}
-        </span>
-      )}
-
-      {(title === "Services" || title === "Who We Are" || title === "Login" || title === "Locations") && (
-        <ChevronDown 
-          size={18} 
-          className="lg:w-[18px] lg:h-[18px] xl:w-[20px] xl:h-[20px]"
-          onClick={() => {
-            if (title === "Services" || title === "Login" || title === "Who We Are" || title === "Locations") {
-              setOpenDropdownIndex(isDropdownOpen ? null : index);
-            }
-          }}
-        />
-      )}
+      <div className="flex items-center gap-2">
+        {link && !hasDropdown ? (
+          <Link
+            href={link}
+            className={`${
+              isActive ? "text-[var(--yellow)]" : "text-white"
+            } text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] hover:text-[var(--yellow)] transition-colors`}
+            onClick={() => {
+              setOpenDropdownIndex(null);
+              onNavigate?.();
+            }}
+          >
+            {title}
+          </Link>
+        ) : (
+          <button
+            type="button"
+            className={`${isActive ? "text-[var(--yellow)]" : "text-white"} text-left text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] flex items-center gap-2`}
+            onClick={() => {
+              if (hasDropdown) {
+                setOpenDropdownIndex(isDropdownOpen ? null : index);
+              }
+            }}
+          >
+            {title}
+            {hasDropdown && (
+              <ChevronDown
+                size={18}
+                className="lg:w-[18px] lg:h-[18px] xl:w-[20px] xl:h-[20px]"
+              />
+            )}
+          </button>
+        )}
+      </div>
 
       {/* Dropdowns - only show on desktop (lg+) */}
       {(title === "Services" || title === "Who We Are" || title === "Login" || title === "Locations") && (
@@ -422,7 +432,10 @@ const NavbarMenu = ({
                       rel="noopener noreferrer"
                       className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-[var(--navy)]/5 focus:bg-[var(--navy)]/5 block w-full transition-colors"
                       style={{ outline: 'none' }}
-                      onClick={() => setOpenDropdownIndex(null)}
+                      onClick={() => {
+                        setOpenDropdownIndex(null);
+                        onNavigate?.();
+                      }}
                     >
                       {item.title}
                     </a>
@@ -431,7 +444,10 @@ const NavbarMenu = ({
                       href={item.link || '#'}
                       className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-[var(--navy)]/5 focus:bg-[var(--navy)]/5 block w-full transition-colors"
                       style={{ outline: 'none' }}
-                      onClick={() => setOpenDropdownIndex(null)}
+                      onClick={() => {
+                        setOpenDropdownIndex(null);
+                        onNavigate?.();
+                      }}
                     >
                       {item.title}
                     </Link>
@@ -443,6 +459,43 @@ const NavbarMenu = ({
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* Mobile dropdown (inline reveal) */}
+      {hasDropdown && isDropdownOpen && services && (
+        <div className="lg:hidden mt-2 w-full pl-3 text-[0.95rem] text-white/85">
+          <div className="flex flex-col gap-2">
+            {services.map((item, idx) => (
+              <React.Fragment key={idx}>
+                {item.link && item.link.startsWith("http") ? (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-0.5 font-medium hover:text-[var(--yellow)] transition-colors"
+                      onClick={() => {
+                        setOpenDropdownIndex(null);
+                        onNavigate?.();
+                      }}
+                  >
+                    {item.title}
+                  </a>
+                ) : (
+                  <Link
+                    href={item.link || "#"}
+                    className="py-0.5 font-medium hover:text-[var(--yellow)] transition-colors"
+                      onClick={() => {
+                        setOpenDropdownIndex(null);
+                        onNavigate?.();
+                      }}
+                  >
+                    {item.title}
+                  </Link>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       )}
     </div>

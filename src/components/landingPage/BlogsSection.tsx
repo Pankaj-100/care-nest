@@ -113,6 +113,25 @@ const BlogsSection = () => {
             ))
           : latest.map((b) => <BlogCard key={b.id} {...b} />)}
       </div>
+
+      {/* Load More Button */}
+      <LoadMoreButton />
+    </div>
+  );
+};
+
+const LoadMoreButton = () => {
+  const router = useRouter();
+
+  return (
+    <div className="flex justify-center mt-10 sm:mt-14 lg:mt-16">
+      <button
+        type="button"
+        onClick={() => router.push("/blogs")}
+        className="px-10 sm:px-10 py-3 sm:py-4 hover-underline  text-xl sm:text-xl font-semibold text-[var(--navy)] rounded-full hover:whitespace-normal cursor-pointer"
+      >
+        Load More
+      </button>
     </div>
   );
 };

@@ -166,13 +166,13 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
         Recent Bookings
       </h2>
 
-      <div className="flex flex-wrap gap-3 mb-8 cursor-pointer">
+      <div className="grid grid-cols-3 gap-3 md:flex md:flex-wrap md:gap-3 mb-8 cursor-pointer">
         {["All", "Pending", "Accepted", "Active", "Completed", "Cancel"].map(
           (status) => (
             <button
               key={status}
               onClick={() => setSelectedStatus(status)}
-              className={`px-8 py-3 rounded-full text-lg md:text-lg cursor-pointer font-semibold ${
+              className={`w-full md:w-auto px-5 py-2.5 rounded-full text-sm sm:text-base md:text-lg font-semibold transition-colors ${
                 selectedStatus === status
                   ? "bg-[var(--navy)] text-white"
                   : "border border-[var(--navy)] text-[var(--navy)]"
@@ -211,10 +211,9 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
               <div
                 key={booking.bookingId}
                 onClick={() => router.push(`/recent-booking/${booking.bookingId}`)}
-                className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-lg w-full"
+                className="relative flex items-start md:items-center gap-3 md:gap-5 bg-white p-5 md:p-6 rounded-3xl shadow-md md:shadow-lg w-full max-w-xl mx-auto"
               >
-                <div className="flex items-center cursor-pointer gap-6">
-                  <div className="w-16 h-16 bg-[var(--navy)] rounded-full flex items-center justify-center">
+                <div className="w-14 h-14 md:w-16 md:h-16 bg-[var(--navy)] rounded-full flex-shrink-0 flex items-center justify-center">
                     <Image
                       src="/Recent/calendar.png"
                       alt="calendar"
@@ -223,81 +222,72 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                       className="w-7 h-7"
                     />
                   </div>
-                  <div>
-                    <p className="font-semibold text-xl md:text-2xl text-[var(--navy)]">
-                      #{booking.bookingId}
-                    </p>
-                    <p className="text-sm md:text-base text-gray-600">
-                      {booking.careType}
-                    </p>
-                    <div className="flex gap-3 mt-2 text-xs md:text-sm text-gray-600  items-center">
-                      <div className="flex items-center gap-2 border px-6 py-2 rounded-full border-gray-400 text-md font-md">
-                        <Image
-                          src="/Recent/c.png"
-                          alt="date"
-                          width={14}
-                          height={14}
-                          className="w-3.5 h-3.5"
-                        />
-                        {new Date(booking.bookedOn).toLocaleDateString()}
-                      </div>
-                      <div
-                        className={`px-6 py-2 rounded-full text-lg font-semibold ${
-                          statusColor[apiStatus] || "bg-gray-200 text-gray-700"
-                        }`}
-                      >
-                        {uiStatus}
-                      </div>
+                <div className="flex flex-col gap-2 pr-12 md:pr-20 w-full">
+                  <p className="font-semibold text-lg md:text-2xl text-[var(--navy)] leading-tight max-w-[180px] md:max-w-none overflow-hidden whitespace-nowrap text-ellipsis md:overflow-visible md:whitespace-normal md:text-clip">
+                    #{booking.bookingId}
+                  </p>
+                  <p className="text-sm md:text-base text-gray-600 leading-tight">
+                    {booking.careType}
+                  </p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mt-2 text-sm md:text-base text-gray-600">
+                    <div className="inline-flex self-start w-fit md:self-auto items-center gap-2 border px-4 py-2 md:px-5 rounded-full border-[var(--navy)] text-[var(--navy)] md:border-gray-300 md:text-gray-700 font-medium bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+                      <Image
+                        src="/Recent/c.png"
+                        alt="date"
+                        width={14}
+                        height={14}
+                        className="w-3.5 h-3.5"
+                      />
+                      {new Date(booking.bookedOn).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
+                    </div>
+                    <div
+                      className={`inline-flex self-start w-fit md:self-auto px-4 py-2 md:px-5 rounded-full text-sm md:text-lg font-semibold shadow-[0_1px_3px_rgba(0,0,0,0.06)] ${
+                        statusColor[apiStatus] || "bg-gray-200 text-gray-700"
+                      }`}
+                    >
+                      {uiStatus}
                     </div>
                   </div>
                 </div>
 
-                {apiStatus === "completed" ? (
-                  <div className="flex items-center gap-3" />
-                ) : (
-                  <div className="flex items-center gap-3">
-                    {(apiStatus === "requested" ||
-                      apiStatus === "pending" ||
-                      apiStatus === "active" ||
-                      apiStatus === "accepted") && (
-                      <div
-                        className={`w-14 h-14 flex items-center justify-center rounded-full text-lg leading-none cursor-pointer ${
-                          isCancelling
-                            ? "bg-gray-300 cursor-not-allowed"
-                            : "" // Changed from bg to border
-                        }`}
-                        onClick={(e) => {
-                          if (isCancelling) return;
-                          e.stopPropagation();
-                          const caregiverId =
-                            booking.caregivers?.find(
-                              (c) => c?.isFinalSelection && c?.id
-                            )?.id ??
-                            booking.caregivers?.find(
-                              (c) => !c?.isDeleted && c?.id
-                            )?.id ??
-                            "";
-                          if (!caregiverId)
-                            return toast.error(
-                              "No caregiver found for this booking."
-                            );
-                          setSelectedBooking({
-                            id: booking.bookingId,
-                            caregiverId,
-                          });
-                          setOpenDialog(true);
-                        }}
-                        aria-disabled={isCancelling}
-                      >
-                        <Image
-                          src="/cancel.png"
-                          alt="cancel"
-                          width={45}
-                          height={45}
-                          className="w-13 h-13   cursor-pointer"
-                        />
-                      </div>
-                    )}
+                {(apiStatus === "requested" ||
+                  apiStatus === "pending" ||
+                  apiStatus === "active" ||
+                  apiStatus === "accepted") && (
+                  <div
+                    className={`absolute top-3 right-3 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full text-lg leading-none cursor-pointer shadow-[0_2px_6px_rgba(0,0,0,0.12)] ${
+                      isCancelling ? "bg-gray-300 cursor-not-allowed" : ""
+                    }`}
+                    onClick={(e) => {
+                      if (isCancelling) return;
+                      e.stopPropagation();
+                      const caregiverId =
+                        booking.caregivers?.find(
+                          (c) => c?.isFinalSelection && c?.id
+                        )?.id ??
+                        booking.caregivers?.find(
+                          (c) => !c?.isDeleted && c?.id
+                        )?.id ??
+                        "";
+                      if (!caregiverId)
+                        return toast.error(
+                          "No caregiver found for this booking."
+                        );
+                      setSelectedBooking({
+                        id: booking.bookingId,
+                        caregiverId,
+                      });
+                      setOpenDialog(true);
+                    }}
+                    aria-disabled={isCancelling}
+                  >
+                    <Image
+                      src="/cancel.png"
+                      alt="cancel"
+                      width={36}
+                      height={36}
+                      className="w-8 h-8 md:w-10 md:h-10 cursor-pointer"
+                    />
                   </div>
                 )}
               </div>

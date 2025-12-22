@@ -84,6 +84,21 @@ const HeroSection = () => {
   const descriptionLines = getDescriptionLines(displayDescription);
   
   const googleReviewLink = heroData?.googleReviewLink || "#";
+  // Convert any HTML in description to plain text for mobile rendering
+  const toPlainText = (html: string) => {
+    if (!html) return "";
+    try {
+      if (typeof window !== "undefined") {
+        const el = document.createElement("div");
+        el.innerHTML = html;
+        return (el.textContent || el.innerText || "").replace(/\s+/g, " ").trim();
+      }
+    } catch (_) {
+      // fallback below
+    }
+    return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  };
+  const mobileDescription = toPlainText(heroData?.description || descriptionLines.join(" "));
 
   return (
     <div className="relative h-auto min-h-[600px] lg:h-[550px] bg-[#233D4D] pb-20 lg:pb-0">
@@ -156,19 +171,26 @@ const HeroSection = () => {
           </h1>
           
           <div className="my-4 sm:my-6">
-            <p className="font-light text-sm sm:text-base lg:text-lg text-center lg:text-left ">
-              {loading ? (
-                <>
-                  <span className="inline-block h-4 w-3/4 bg-gray-600/30 rounded animate-pulse" />
-                  <br />
-                  <span className="inline-block h-4 w-2/3 bg-gray-600/30 rounded animate-pulse mt-2" />
-                </>
-              ) : (
-                <span
-                  dangerouslySetInnerHTML={{ __html: heroData?.description || descriptionLines.join('<br />') }}
-                />
-              )}
-            </p>
+            {loading ? (
+              <p className="text-center lg:text-left">
+                <span className="inline-block h-4 w-3/4 bg-gray-600/30 rounded animate-pulse" />
+                <br />
+                <span className="inline-block h-4 w-2/3 bg-gray-600/30 rounded animate-pulse mt-2" />
+              </p>
+            ) : (
+              <>
+                {/* Mobile: compact paragraph without hard breaks */}
+                <p className="lg:hidden text-[13px] leading-6 font-normal text-white/90 text-center max-w-[36ch] mx-auto">
+                  {mobileDescription}
+                </p>
+                {/* Desktop: preserve author-provided breaks but tighten paragraph spacing */}
+                <div className="hidden lg:block font-light text-base lg:text-lg leading-7 text-left [&_p]:mt-0 [&_p]:mb-0 [&_p]:leading-7">
+                  <div
+                    dangerouslySetInnerHTML={{ __html: heroData?.description || descriptionLines.join('<br />') }}
+                  />
+                </div>
+              </>
+            )}
           </div>
 
           {/* Button + Reviews Badge */}
@@ -191,7 +213,7 @@ const HeroSection = () => {
             <button
               type="button"
               onClick={() => window.location.href = '/contact'}
-              className="px-5 py-3 sm:px-6 sm:py-3.5 cursor-pointer lg:px-8 lg:py-4 mb-2 text-sm sm:text-base lg:text-lg rounded-4xl font-semibold flex items-center gap-2 bg-[var(--yellow)] text-[var(--navy)] hover:bg-[var(--yellow-light)] transition-all duration-300 ease-in-out shadow-md"
+              className="px-5 py-3 sm:px-6 sm:py-3.5 cursor-pointer lg:px-8 lg:py-4 mb-4 text-sm sm:text-base lg:text-lg rounded-4xl font-semibold flex items-center gap-2 bg-[var(--yellow)] text-[var(--navy)] hover:bg-[var(--yellow-light)] transition-all duration-300 ease-in-out shadow-md"
             >
               <span>Contact Us</span>
               <ArrowIcon className="w-6 h-6 ml-2" />

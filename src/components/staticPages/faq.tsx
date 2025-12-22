@@ -66,12 +66,12 @@ return (
 				<h1 className="text-[var(--navy)] font-semibold text-xl sm:text-3xl mb-4 sm:mb-6 text-left">
 					Find quick answers to the most common questions about CareWorks, our services and how the platform works. If you need more help, our team is always here to support you.  
 				</h1>
-				<p className="text-gray-500 text-base sm:text-lg mb-4 text-justify">
+				{/* <p className="text-gray-500 text-base sm:text-lg mb-4 text-justify"> 
 					Your privacy is very important to us. Accordingly, we have
 					developed this Policy in order for you to understand how 
 					we collect, use, communicate and disclose and make use 
 					of personal information. The following outlines our privacy policy.
-				</p>
+				</p>*/}
 			</div>
 			<div className="flex justify-center order-1 md:order-2 mb-4 md:mb-0">
 				<Image

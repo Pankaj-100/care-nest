@@ -63,14 +63,6 @@ const footerLink: linkItems[] = [
   // { title: "Recalls", link: "/recalls" },
 ];
 
-const socialLink: linkItems[] = [
-  { icons: youtube, link: "/" },
-  { icons: tiktok, link: "/" },
-  { icons: linkedin, link: "/" },
-  { icons: instagram, link: "/" },
-  { icons: facebook, link: "/" },
-];
-
 const Footer = () => {
   const [footerData, setFooterData] = useState<FooterData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -129,8 +121,6 @@ const Footer = () => {
 
   const displayDescription = footerData?.footerDescription || 
     "CareWorks provides compassionate, \n personalized eldercare services that \n support seniors and their families with \n dignity and respect.";
-
-  const displaySocialLinks = dynamicSocialLinks.length > 0 ? dynamicSocialLinks : socialLink;
   return (
     <div className="pt-1 pb-1 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-12 items-start">
@@ -142,27 +132,29 @@ const Footer = () => {
           <p className={`text-lg text-[#FFFFFF] font-light `}>
             {displayDescription}
           </p>
-          <div className="mt-5 flex items-center gap-4">
-            {displaySocialLinks.map((item, i) => (
-              <Link
-                href={item.link}
-                key={i}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-20 h-20 flex items-center justify-center rounded-full   transition-colors"
-                aria-label={`Visit our ${item.icons ? "social" : "social"} link`}
-              >
-                <div className="relative mt-2 w-13 h-13">
-                  <Image
-                    src={item.icons || ""}
-                    alt="social icon"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </Link>
-            ))}
-          </div>
+          {dynamicSocialLinks.length > 0 && (
+            <div className="mt-5 flex items-center gap-4">
+              {dynamicSocialLinks.map((item, i) => (
+                <Link
+                  href={item.link}
+                  key={i}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-20 h-20 flex items-center justify-center rounded-full transition-colors"
+                  aria-label="Visit our social link"
+                >
+                  <div className="relative mt-2 w-13 h-13">
+                    <Image
+                      src={item.icons || ""}
+                      alt="social icon"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Company Links */}
