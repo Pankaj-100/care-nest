@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 // Removed NavbarDropdown import; will implement dropdown inline
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Notification from "../Notification";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
 import CustomDrawer from "./CustomDrawer";
@@ -28,6 +28,7 @@ const Header = () => {
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   const isValidToken = Cookies.get("authToken") ? true : false;
   const token = Cookies.get("authToken");
@@ -332,10 +333,12 @@ const Header = () => {
                         key={index}
                         href={item.link}
                         onClick={(e) => {
+                          e.preventDefault();
                           if (item.action === "logout") {
-                            e.preventDefault();
                             Cookies.remove("authToken");
-                            window.location.href = "/signin";
+                            router.push("/signin");
+                          } else if (item.link) {
+                            router.push(item.link);
                           }
                           handleCloseMenu();
                         }}

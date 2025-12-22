@@ -211,7 +211,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
               <div
                 key={booking.bookingId}
                 onClick={() => router.push(`/recent-booking/${booking.bookingId}`)}
-                className="relative flex items-start md:items-center gap-3 md:gap-5 bg-white p-5 md:p-6 rounded-3xl shadow-md md:shadow-lg w-full max-w-xl mx-auto"
+                className="relative flex items-start md:items-center gap-3 md:gap-5 bg-white p-5 md:p-6 rounded-3xl shadow-md md:shadow-lg w-full max-w-3xl mx-auto"
               >
                 <div className="w-14 h-14 md:w-16 md:h-16 bg-[var(--navy)] rounded-full flex-shrink-0 flex items-center justify-center">
                     <Image
@@ -255,8 +255,8 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                   apiStatus === "active" ||
                   apiStatus === "accepted") && (
                   <div
-                    className={`absolute top-3 right-3 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full text-lg leading-none cursor-pointer shadow-[0_2px_6px_rgba(0,0,0,0.12)] ${
-                      isCancelling ? "bg-gray-300 cursor-not-allowed" : ""
+                    className={`absolute top-1/2 right-3 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full text-lg leading-none cursor-pointer shadow-[0_2px_6px_rgba(0,0,0,0.12)] ${
+                      isCancelling ? "bg-gray-300 cursor-not-allowed" : "bg-[#FF5C5F]"
                     }`}
                     onClick={(e) => {
                       if (isCancelling) return;
