@@ -33,7 +33,7 @@ const FloatingContactButton = () => {
       `}</style>
       
       <Link
-        href="/contact"
+        href="tel:8322372273"
         className="fixed bottom-6 right-6 z-[9999] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-[var(--yellow)] text-[var(--navy)] shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 pulse-animation group"
         aria-label="Contact Us"
       >
