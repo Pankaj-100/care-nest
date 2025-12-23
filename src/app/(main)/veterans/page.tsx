@@ -1,6 +1,10 @@
 
 import VeteransFinancialAssistance, { VeteransApiData, VeteransFaqApi, FaqItem } from "@/components/staticPages/veterans";
 
+export const metadata = {
+  title: "Veterans",
+};
+
 async function fetchVeteransData(): Promise<VeteransApiData | null> {
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
   const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/veterans-home-care`;

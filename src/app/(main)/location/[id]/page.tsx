@@ -1,6 +1,10 @@
 import React from "react";
 import LocationTemplate from "@/components/staticPages/locationTemplate";
 
+export const metadata = {
+  title: "Locations",
+};
+
 interface PageProps {
   params: Promise<{
     id: string;

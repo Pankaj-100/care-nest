@@ -13,7 +13,10 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "CareWorks | Careseeker",
+  title: {
+    template: "%s | CareWorks | Careseeker",
+    default: "CareWorks | Careseeker",
+  },
   description: "CareWorks is a platform for care Provider and care Seeker.",
 };
 

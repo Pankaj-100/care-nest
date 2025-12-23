@@ -2,6 +2,11 @@ import Section3 from "@/components/Blog/Section3";
 import CardSection from "@/components/Blog/CardSection";
 import HeroSectionCareProvider from "@/components/careProvider/HeroSectionCareProvider";
 
+
+export const metadata = {
+  title: "Blogs",
+};
+
 // allow dynamic server fetches (params-dependent) so Next doesn't throw the sync-dynamic-apis error
 export const dynamic = "force-dynamic";
 

@@ -3,6 +3,10 @@ import ContactInfo from "@/components/common/ContactInfo";
 import ContactForm from "@/components/Contact/ContactForm";
 import FAQBlock from "@/components/Contact/FAQBlock";
 
+export const metadata = {
+  title: "Contact",
+};
+
 export default function page() {
   return (
     <>
@@ -18,7 +22,7 @@ export default function page() {
                 Get In Touch. We’ll Respond Shortly
               </h2>
               <p className="text-[#667085] text-lg  leading-6">
-                If you have any questions or concerns about CareWorks, please don’t 
+                If you have any questions or concerns about CareWorks, please don’t
                 hesitate to reach out using the contact details below.
               </p>
               <ContactInfo />

@@ -2,6 +2,10 @@ import HeroSectionCareProvider from "@/components/careProvider/HeroSectionCarePr
 import ServiceTemplate, { type ApiServiceItem } from "@/components/staticPages/ServiceTemplate";
 import { allServicesData } from "@/components/staticPages/data";
 
+export const metadata = {
+  title: "Services",
+};
+
 function slugToTitle(slug: string) {
   return decodeURIComponent(slug)
     .replace(/-/g, " ")

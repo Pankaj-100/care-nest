@@ -6,6 +6,10 @@ import RegisterAsCareProvider from "@/components/careProvider/RegisterAsCareProv
 import TestimonialCareProvider from "@/components/careProvider/TestimonialCareProvider";
 import React from "react";
 
+export const metadata = {
+  title: "Care Provider",
+};
+
 const page = () => {
   return (
     <>

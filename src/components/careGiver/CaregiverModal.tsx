@@ -211,7 +211,7 @@ const ModalContent: React.FC<{
           </h2>
 
           <div className="mt-5 sm:mt-7 space-y-3 sm:space-y-4 w-full">
-            <InfoRow label="Experience" value={`${caregiver.experience ?? 0}+ Years`} />
+            <InfoRow label="Experience" value={caregiver.experience ? `${caregiver.experience}+ Years` : "N/A"} />
             <InfoRow
               label="Available Distance"
               value={caregiver.location ? `${caregiver.location}` : "N/A"}
