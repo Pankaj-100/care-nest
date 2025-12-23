@@ -311,20 +311,20 @@ const CaregiversPage = () => {
 
         <div className="flex-1 flex flex-col">
           <div className="flex flex-col mb-4 text-sm gap-2">
-            <div className="flex gap-4 items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
+              <button
+                onClick={() => setOpenFilter(p => !p)}
+                className="lg:hidden self-start flex items-center gap-2 bg-[var(--yellow)] text-[var(--navy)] px-5 py-2.5 rounded-full shadow-md active:scale-[0.98]"
+              >
+                <FilterIcon size={18} />
+                <span className="font-semibold">Filter</span>
+              </button>
               <h2 className="text-md font-medium h-max text-gray-600">
                 <span className="text-[var(--yellow)]">
                   {isLoading ? "Loading..." : caregivers.length + " Results"}
                 </span>{" "}
                 Found Based on Your Search
               </h2>
-              <button
-                onClick={() => setOpenFilter(p => !p)}
-                className="flex items-center gap-1 lg:hidden"
-              >
-                <FilterIcon size={15} />
-                Filter
-              </button>
             </div>
 
             {/* Show active filters count - moved to left side under results */}
@@ -462,6 +462,7 @@ const CaregiversPage = () => {
           onClose={() => setShowSuccessModal(false)}
         />
       )}
+
     </div>
   );
 };

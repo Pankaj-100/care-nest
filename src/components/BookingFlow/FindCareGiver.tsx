@@ -131,7 +131,7 @@ const FindCareGiver: React.FC = () => {
           <p>Failed to load services.</p>
         </div>
       ) : (
-        <div className="max-w-4xl mx-auto grid gap-8 md:gap-x-10 md:gap-y-12 md:grid-cols-3 lg:grid-cols-3 place-items-start">
+        <div className="max-w-4xl mx-auto grid gap-8 md:gap-x-10 md:gap-y-12 md:grid-cols-3 lg:grid-cols-3 place-items-center md:place-items-start">
           {mergedServices.map((service) => {
             // Add validation for service data
             if (!service || !service.id || !service.name) {

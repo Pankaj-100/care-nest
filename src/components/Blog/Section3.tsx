@@ -24,7 +24,7 @@ const Section3: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
   const desc = blog?.description ?? "What the data says about the harm of unnecessary medical tests...";
 
   return (
-    <div className="relative flex items-center justify-center h-[450px] mt-16 px-4 sm:px-6">
+    <div className="relative flex items-center justify-center h-[450px] mt-5 px-4 sm:px-6">
       <div className="relative w-full max-w-7xl h-[390px] rounded-3xl overflow-hidden">
         <div className="relative w-full h-full">
           <Image

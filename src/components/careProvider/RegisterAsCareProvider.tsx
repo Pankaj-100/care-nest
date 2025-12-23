@@ -124,7 +124,7 @@ const RegisterAsCareProvider = () => {
   };
 
   return (
-    <div className="flex h-auto relative">
+    <div className="flex flex-col lg:flex-row h-auto relative">
       {showSuccess && (
         <div className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
           <div className="max-w-md w-full rounded-2xl bg-green-600 text-white px-4 py-3 shadow-lg text-center text-sm md:text-base">
@@ -132,7 +132,7 @@ const RegisterAsCareProvider = () => {
           </div>
         </div>
       )}
-      <div className="relative   lg:min-h-[800px] lg:min-w-1/2">
+      <div className="relative w-full h-[550px] sm:h-[650px] lg:min-h-[1100px] lg:min-w-1/2">
         <Image
           src={"/register-care-provider.jpg"}
           alt="faq"
@@ -140,7 +140,7 @@ const RegisterAsCareProvider = () => {
           style={{ objectFit: "cover" }}
         />
       </div>
-      <div className="lg:px-20 px-8 lg:py-20 py-12 flex justify-center bg-[var(--whiteSmoke)] lg:min-w-1/2">
+      <div className="lg:px-20 px-8 lg:py-20 py-12 flex justify-center bg-[var(--whiteSmoke)] lg:min-w-1/2 w-full">
         <div>
           <h1 className="text-4xl font-semibold  text-[var(--navy)]">
             Start Caring, Start Earning –  <br />Register as a Caregiver Now

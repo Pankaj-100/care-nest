@@ -10,13 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import HeroSectionProtected from "../common/HeroSectionProtected";
+
 import { BrowseCaregiver } from "../landingPage/HeroSection";
+import HeroSectionCareProvider from "../careProvider/HeroSectionCareProvider";
 
 export const CareGiverHero = () => {
   return (
     <div className="relative  ">
-      <HeroSectionProtected title="Find A Caregiver" />
+      <HeroSectionCareProvider title="Find A Caregiver" />
 
       <div className="lg:flex items-center justify-center lg:absolute sm:-bottom-20  bottom-0 lg:-translate-x-1/2 lg:left-[890px] lg:m-0 m-4">
         <BrowseCaregiver

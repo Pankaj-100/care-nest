@@ -21,7 +21,7 @@ export const CustomCard = ({
   date,
 }: CustomCardProp) => {
   return (
-    <div className="p-4 w-full max-w-md  rounded-2xl ">
+    <div className="p-4 w-full max-w-xl px-0  rounded-2xl ">
       {/* Image Section */}
       <div className="w-full  h-56 relative rounded-2xl overflow-hidden mb-4">
         <Image

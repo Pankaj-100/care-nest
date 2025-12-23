@@ -141,12 +141,12 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Location Section */}
-      <div className="w-full bg-white py-20 px-4">
+      <div className="w-full bg-white py-8 sm:py-10 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-5xl lg:text-5xl font-bold text-[#233D4D] mb-16">
+          <h2 className="text-4xl sm:text-5xl font-bold text-[#233D4D] mb-8 sm:mb-16">
             {serviceData.title2}
           </h2>
-          <div className="space-y-8 text-lg text-gray-700 leading-relaxed max-w-5xl mx-auto">
+          <div className="space-y-6 sm:space-y-8 text-lg text-gray-700 leading-relaxed max-w-5xl mx-auto">
             {parseHtmlToParagraphs(serviceData.description2 || "").map((paragraph, index) => (
               <div key={index} dangerouslySetInnerHTML={{ __html: paragraph }} />
             ))}
@@ -154,14 +154,14 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
         </div>
       </div>
       {/* Main Section */}
-      <div className="w-full bg-[#F7F7F3] py-16 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+      <div className="w-full bg-[#F7F7F3] py-10 sm:py-16 px-4">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
           <div className="flex-1 lg:pr-8">
-            <h1 className="text-5xl lg:text-5xl font-bold text-[#233D4D] leading-tight mb-8">
+            <h1 className="text-4xl sm:text-5xl font-bold text-[#233D4D] leading-tight mb-6 sm:mb-8">
               {serviceData.title1}
             </h1>
           </div>
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 space-y-4 sm:space-y-6">
             {parseHtmlToParagraphs(serviceData.description1 || "").map((paragraph, index) => (
               <div key={index} className="text-lg text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: paragraph }} />
             ))}
@@ -169,10 +169,10 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
         </div>
       </div>
       {/* Services We Provide Section */}
-      <div className="w-full bg-gray-50 py-20 px-4">
+      <div className="w-full bg-gray-50 py-12 sm:py-20 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-16">
-          {/* Image: above content on mobile, beside on md+ */}
-          <div className="w-full md:w-auto flex justify-center mb-5 md:mb-0 md:order-2">
+          {/* Image: below content on mobile, beside on md+ */}
+          <div className="w-full md:w-auto flex justify-center order-2 md:order-2 mt-5 md:mt-0">
             <div className="relative mt-22 w-92 h-92 sm:w-80 sm:h-64 md:w-80 md:h-64 lg:w-116 lg:h-92">
               <Image
                 src={serviceData.description3Image || "/service-default.jpg"}
@@ -183,8 +183,8 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
               />
             </div>
           </div>
-          <div className="flex-1 md:order-1">
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] mb-12">
+          <div className="flex-1 order-1 md:order-1">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#233D4D] mb-8 sm:mb-12">
               {serviceData.title3}
             </h2>
             <div className="space-y-4">
@@ -201,7 +201,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto mt-16 space-y-6">
+        <div className="max-w-6xl mx-auto mt-10 sm:mt-16 space-y-4 sm:space-y-6">
           {parseHtmlToParagraphs(serviceData.description3 || "").map((description, index) => (
             <div key={index} className="text-lg text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: description }} />
           ))}

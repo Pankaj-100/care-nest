@@ -78,15 +78,15 @@ const FAQ = () => {
       </div>
 
       <div className="relative z-10">
-        <div className= "relative w-full h-48 lg:w-38 sm:ml-15">
+        <div className="relative w-full max-w-[240px] h-86 sm:h-96 lg:w-38 lg:h-80 lg:ml-15 mx-auto lg:mx-0 overflow-hidden rounded-[4rem]">
           <Image
             src={"/care-provider-cta.png"}
             alt="faq"
             fill
-            className="rounded-t-[3rem] rounded-b-[3rem] object-cover"
+            className="object-cover"
           />
         </div>
-        <h1 className="mt-6 ml-15 text-[var(--yellow)] font-medium lg:text-5xl text-3xl lg:w-2/3">
+        <h1 className="mt-6 lg:ml-15 text-[var(--yellow)] font-medium lg:text-5xl text-left text-3xl lg:w-2/3">
           {faq?.sectionTitle || "Curious About Caregiving on Our Platform? We’ve Got Answers!"}
         </h1>
       </div>

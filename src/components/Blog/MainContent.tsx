@@ -31,7 +31,7 @@ const MainContent: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
   const content = blog?.content ?? "";
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12">
+    <div className="w-full max-w-4xl md:max-w-5xl mx-auto px-0 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12">
       <div className="rounded-lg overflow-hidden mb-6 w-full h-[220px] sm:h-[320px] md:h-[380px] lg:h-[420px] relative">
         <Image
           src={imageSrc}

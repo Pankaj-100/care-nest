@@ -60,10 +60,10 @@ return (
 		{/* Top FAQ Banner Section */}
 		<div className="w-full max-w-6xl flex flex-col md:grid md:grid-cols-2 gap-8 items-center mb-16 px-4">
 			<div className="order-2 md:order-1">
-				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-2xl sm:text-3xl">
+				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-2xl sm:text-3xl text-center md:text-left">
 					FAQ&apos;s
 				</h4>
-				<h1 className="text-[var(--navy)] font-semibold text-xl sm:text-3xl mb-4 sm:mb-6 text-left">
+			<h1 className="text-[var(--navy)] font-semibold text-xl sm:text-3xl mb-4 sm:mb-6 text-center md:text-left">
 					Find quick answers to the most common questions about CareWorks, our services and how the platform works. If you need more help, our team is always here to support you.  
 				</h1>
 				{/* <p className="text-gray-500 text-base sm:text-lg mb-4 text-justify"> 
@@ -86,12 +86,12 @@ return (
 		{/* General FAQ Section */}
 		<div className="w-full max-w-6xl flex flex-col md:grid md:grid-cols-2 gap-8 items-start px-4">
 			<div>
-				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-xl sm:text-3xl">
+				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-xl sm:text-3xl text-center md:text-left">
 					General FAQ&apos;s
 				</h4>
-				<h2 className="text-[var(--navy)] font-semibold text-2xl sm:text-5xl mb-4 sm:mb-6">
-					{faq?.sectionTitle || "What You Need To Know"}
-				</h2>
+			<h2 className="text-[var(--navy)] font-semibold text-2xl sm:text-5xl mb-4 sm:mb-6 text-center md:text-left max-w-xl md:max-w-none mx-auto md:mx-0">
+				{faq?.sectionTitle || "What You Need To Know"}
+		</h2>
 			</div>
 			<div className="flex flex-col gap-4">
 				{loading && <div className="text-[var(--navy)]">Loading FAQs...</div>}
@@ -125,8 +125,8 @@ return (
 
 			{/* Banner Section */}
 			<div className="w-full bg-[#F7F0D3] py-8 px-0 mt-8 flex items-center justify-center">
-				<div className="flex flex-col md:flex-row items-center justify-between w-full max-w-7xl px-4">
-					<div className="flex-1 md:pl-8 order-2 md:order-1">
+				<div className="flex flex-col-reverse md:flex-row justify-between w-full max-w-7xl px-4">
+					<div className="flex-1 md:pl-8 order-2 md:order-1 md:text-left">
 						<h2 className="text-[var(--navy)] font-semibold text-2xl sm:text-5xl mb-4 sm:mb-6 leading-tight">
 							Compassionate Care, Just A Call Away
 						</h2>
@@ -147,7 +147,7 @@ return (
 							alt="Caregiver Banner"
 							width={260}
 							height={160}
-							className="w-[200px] h-[120px] sm:w-[320px] sm:h-[200px] md:w-[467px] md:h-[282px] object-contain rounded-2xl"
+							className="w-[200px] mt-5 h-[120px] sm:w-[320px] sm:h-[200px] md:w-[467px] md:h-[282px] object-contain rounded-2xl"
 						/>
 					</div>
 				</div>

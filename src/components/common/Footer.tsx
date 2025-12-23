@@ -58,7 +58,7 @@ const link: linkSection[] = [
 const footerLink: linkItems[] = [
   { title: "Terms", link: "/terms" },
   { title: "Privacy", link: "/privacy" },
-  { title: "Cookies", link: "/cookies" },
+  // { title: "Cookies", link: "/cookies" },
   { title: "Legal", link: "/legal" },
   // { title: "Recalls", link: "/recalls" },
 ];
@@ -123,7 +123,7 @@ const Footer = () => {
     "CareWorks provides compassionate, \n personalized eldercare services that \n support seniors and their families with \n dignity and respect.";
   return (
     <div className="pt-1 pb-1 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-8 items-start">
         {/* Logo and Description */}
         <div className="lg:col-span-2 mt-1">
           <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-4">
@@ -133,26 +133,29 @@ const Footer = () => {
             {displayDescription}
           </p>
           {dynamicSocialLinks.length > 0 && (
-            <div className="mt-5 flex items-center gap-4">
-              {dynamicSocialLinks.map((item, i) => (
-                <Link
-                  href={item.link}
-                  key={i}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-20 h-20 flex items-center justify-center rounded-full transition-colors"
-                  aria-label="Visit our social link"
-                >
-                  <div className="relative mt-2 w-13 h-13">
-                    <Image
-                      src={item.icons || ""}
-                      alt="social icon"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </Link>
-              ))}
+            <div className="mt-5 flex flex-col gap-3">
+              <p className="text-base font-medium mt-5 text-[#F2A307]">Follow us on Social Platforms</p>
+              <div className="flex items-center gap-4">
+                {dynamicSocialLinks.map((item, i) => (
+                  <Link
+                    href={item.link}
+                    key={i}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-20 h-20 flex items-center justify-center rounded-full transition-colors"
+                    aria-label="Visit our social link"
+                  >
+                    <div className="relative mt-2 w-16 h-16">
+                      <Image
+                        src={item.icons || ""}
+                        alt="social icon"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -192,7 +195,7 @@ const Footer = () => {
 
 
       {/* Proud Partners Section - match expected image */}
-      <div className="flex flex-col items-center my-12">
+      <div className="flex flex-col items-center mt-1 mb-1">
         <div className="w-full flex flex-col items-center">
           <h3 className="text-2xl font-medium mb-5 text-white text-left w-full max-w-md" style={{ marginLeft: '40px' }}>Proud Partners</h3>
           <div className="flex flex-row flex-wrap justify-end items-end gap-12 w-full max-w-6xl mb-12">
@@ -237,7 +240,7 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="sm:w-auto w-full flex justify-center sm:order-0 order-1">
+        <div className="sm:w-auto w-full flex justify-end sm:order-0 order-1 ml-auto text-right">
           <p className="text-lg text-[#FFFFFF] font-medium">
             © 2024 Copyright | All rights reserved
           </p>

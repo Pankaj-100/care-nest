@@ -43,7 +43,7 @@ const BookSuccessful = ({ isModalOpen, onClose }: BookSuccessfulProps) => {
 
         {/* Message */}
         <p className="text-gray-500 text-center mb-5 sm:mb-6 text-xs sm:text-sm leading-relaxed">
-          You have booked caregivers; You will receive an email shortly. we will choose the best one for you and let you know.
+          You have booked caregivers You will receive an email shortly. we will choose the best one for you and let you know.
         </p>
 
         {/* Action Button */}

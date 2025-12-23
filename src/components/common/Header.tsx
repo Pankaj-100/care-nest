@@ -336,7 +336,7 @@ const Header = () => {
                           e.preventDefault();
                           if (item.action === "logout") {
                             Cookies.remove("authToken");
-                            router.push("/signin");
+                            router.push("/");
                           } else if (item.link) {
                             router.push(item.link);
                           }

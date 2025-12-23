@@ -49,6 +49,19 @@ const IntroductionWithCTA = () => {
           </h1>
         </div>
 
+        {/* Mobile Image Under Heading */}
+        <div className="relative mt-6 w-full max-w-[320px] h-64 mx-auto lg:hidden">
+          <div className="absolute inset-0 translate-y-3 w-full h-full bg-[var(--navy)] rounded-tl-[6rem] rounded-br-[6rem]"></div>
+          <div className="absolute inset-0 z-10">
+            <Image
+              src={"/care-provider-cta.png"}
+              alt="care provider CTA"
+              fill
+              className="rounded-tl-[6rem] rounded-br-[6rem] object-cover"
+            />
+          </div>
+        </div>
+
         <div className="my-5 w-full max-w-[90%]">
           <p className="text-[var(--navy)] text-xl sm:text-xl" dangerouslySetInnerHTML={{__html: description || description}}>
           </p>
@@ -63,8 +76,8 @@ const IntroductionWithCTA = () => {
       </div>
 
       {/* Right Image Section */}
-      <div className="relative w-full sm:w-2/3 lg:w-1/3 h-80 lg:h-2/3 mx-auto lg:mx-0">
-        <div className="absolute right-5 lg:right-20 top-10 w-full h-78 bg-[var(--navy)] rounded-tl-[6rem] rounded-br-[6rem]"></div>
+      <div className="relative hidden lg:block w-full sm:w-2/3 lg:w-1/3 h-80 lg:h-2/3 mx-auto lg:mx-0">
+        <div className="absolute right-5 lg:right-20 top-10 w-full h-80 bg-[var(--navy)] rounded-tl-[6rem] rounded-br-[6rem]"></div>
         <div className="absolute right-8 lg:right-28 w-full h-80 z-10">
           <Image
             src={"/care-provider-cta.png"}

@@ -44,7 +44,7 @@ export default async function WhoWeAre() {
     <div className="w-full flex flex-col items-center bg-white">
       {/* Top Section */}
       <div className="w-full max-w-7xl mt-10 flex flex-col lg:flex-row items-start justify-between mb-16 px-4 sm:px-6">
-        <h1 className="text-3xl mt-15 sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#233D4D] mb-6 lg:mb-0 lg:mr-12 whitespace-pre-line lg:w-1/2">
+        <h1 className="text-3xl mt-15 sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#233D4D] mb-6 lg:mb-0 lg:mr-12 whitespace-pre-line w-full text-center lg:text-left lg:w-1/2">
           {who.mainHeading || "Who We Are"}
         </h1>
         <div
@@ -92,20 +92,20 @@ export default async function WhoWeAre() {
         
       </section>
 
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center px-4 sm:px-0">
         <Image
           src={heroImage}
           alt="Caregiver with senior outdoors"
           width={1600}
           height={700}
-          className="w-full max-w-9xl h-[580px] object-cover shadow"
+          className="w-full max-w-9xl h-[280px] sm:h-[360px] md:h-[450px] lg:h-[580px] object-cover shadow"
           priority
         />
       </div>
 
       {/* Our Promise Section */}
       <section className="w-full max-w-7xl flex flex-col md:flex-row items-start justify-between mt-25 mb-19 px-4">
-        <h2 className="text-5xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line md:w-1/3">
+        <h2 className="text-5xl font-bold text-[#233D4D] mb-8 md:mb-0 md:mr-12 whitespace-pre-line w-full text-center md:text-left md:w-1/3">
           {who.promiseHeading ?? "Our Promise"}
         </h2>
         <div
@@ -115,7 +115,7 @@ export default async function WhoWeAre() {
       </section>
 
       {/* Contact Banner Section */}
-      <section className="w-full relative flex justify-start items-center py-10 sm:py-16 md:py-20 mt-4">
+      <section className="w-full relative flex flex-col md:flex-row justify-center md:justify-start items-center py-10 sm:py-16 md:py-20 mt-4">
         <div className="absolute inset-0 w-full h-full z-0">
           <Image
             src="/whoWeAre/image6.png"
@@ -142,11 +142,11 @@ export default async function WhoWeAre() {
           />
         </div>
 
-        <div className="relative z-30 max-w-2xl px-4 sm:px-8 py-8 sm:py-12 flex flex-col items-start ml-0 sm:ml-27">
-          <h2 className="text-[#F2A307] text-2xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-8">
+        <div className="relative z-30 w-full max-w-2xl px-4 sm:px-8 py-8 sm:py-12 flex flex-col items-center md:items-start md:ml-27">
+          <h2 className="text-[#F2A307] text-2xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-8 text-center md:text-left">
             Contact Us Today For More Information
           </h2>
-          <p className="text-white text-base sm:text-lg md:text-2xl mb-4 sm:mb-8">
+          <p className="text-white text-sm sm:text-base md:text-lg lg:text-2xl mb-4 sm:mb-8 text-center md:text-left max-w-xs sm:max-w-sm md:max-w-2xl">
             Make The Call That Can Improve Your Life Or That Of A Loved One.
             Contact Us Today To Inquire About Our Houston Based Home Care Services
             And To Find A Solution That Fits Your Budgetary Needs And Your

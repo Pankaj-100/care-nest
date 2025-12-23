@@ -199,7 +199,7 @@ export default function ManageProfile() {
             <button
               type="submit"
               disabled={isUpdating || hasErrors}
-              className={`flex items-center gap-2 cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition font-semibold ${
+              className={`hidden sm:flex items-center gap-2 cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-2 rounded-full transition font-semibold ${
                 isUpdating || hasErrors ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
@@ -291,6 +291,20 @@ export default function ManageProfile() {
               />
             </div>
           )}
+
+          {/* Mobile Save Button - appears below fields on mobile only */}
+          <button
+            type="submit"
+            disabled={isUpdating || hasErrors}
+            className={`flex sm:hidden items-center justify-center gap-2 w-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-3 rounded-full transition font-semibold mt-6 ${
+              isUpdating || hasErrors ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {isUpdating ? "Saving..." : "Save"}{" "}
+            <span>
+              <Image src="/Recent/file.png" alt="save" width={20} height={20} />
+            </span>
+          </button>
         </form>
       </div>
 
