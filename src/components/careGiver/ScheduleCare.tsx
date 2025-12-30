@@ -348,10 +348,28 @@ const ScheduleCare = ({
     if (!isEditMode) {
       if (!meetingDate) return setFormError("Please provide preferred meeting date");
       if (!startDate) return setFormError("Please provide service start date");
+      const meetingMid = meetingDate ? new Date(meetingDate) : null;
+      const startMid = startDate ? new Date(startDate) : null;
+      if (meetingMid && startMid) {
+        meetingMid.setHours(0, 0, 0, 0);
+        startMid.setHours(0, 0, 0, 0);
+        if (startMid < meetingMid) {
+          return setFormError("Service Start Date cannot be earlier than the Preferred Meeting Date.");
+        }
+      }
     } else if (!lockStartAndMeetingDates) {
       // In edit mode, validate only if fields are not locked
       if (!meetingDate) return setFormError("Please provide preferred meeting date");
       if (!startDate) return setFormError("Please provide service start date");
+      const meetingMid = meetingDate ? new Date(meetingDate) : null;
+      const startMid = startDate ? new Date(startDate) : null;
+      if (meetingMid && startMid) {
+        meetingMid.setHours(0, 0, 0, 0);
+        startMid.setHours(0, 0, 0, 0);
+        if (startMid < meetingMid) {
+          return setFormError("Service Start Date cannot be earlier than the Preferred Meeting Date.");
+        }
+      }
     }
 
     // Only validate startDate in edit mode
@@ -406,7 +424,7 @@ const ScheduleCare = ({
       return setFormError("You missed service selection, start the booking from home page.");
 
     if (selectedCaregivers.length < 1) return setFormError("Select at least one caregiver.");
-    if (selectedDays.length === 0) return setFormError("Select at least one meeting day.");
+    if (selectedDays.length === 0) return setFormError("Select atleast one meeting duration day");
 
     // Build weeklySchedule array
     const weeklySchedule: { weekDay: number; startTime: string; endTime: string }[] = [];
@@ -607,8 +625,8 @@ const ScheduleCare = ({
         {/* Selected caregivers */}
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-[var(--navy)] font-semibold text-base">Selected Caregivers</h2>
-          {/* Hide Change button on /profile route */}
-          {typeof window !== "undefined" && !window.location.pathname.includes("/recent-booking") && (
+          {/* Hide Change button on /profile route or saved-caregivers tab */}
+          {typeof window !== "undefined" && !window.location.pathname.includes("/recent-booking") && !window.location.pathname.includes("/profile") && (
             <button
               type="button"
               onClick={() => {

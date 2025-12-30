@@ -148,12 +148,22 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
   }
 
 
+  // Helper to convert 24-hour time to 12-hour format with AM/PM
+  const formatTime12Hour = (time24: string): string => {
+    if (!time24) return time24;
+    const [hours, minutes] = time24.split(':');
+    const hour = parseInt(hours, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    return `${hour12}:${minutes} ${ampm}`;
+  };
+
   // Helper to format weekly schedule as array
   const formatWeeklyScheduleArr = (schedule: WeeklyScheduleSlot[]) => {
     if (!schedule?.length) return [];
     return schedule.map(
       (slot) =>
-        `${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][slot.weekDay]} - ${slot.startTime} to ${slot.endTime}`
+        `${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][slot.weekDay]} - ${formatTime12Hour(slot.startTime)} to ${formatTime12Hour(slot.endTime)}`
     );
   };
 
@@ -308,7 +318,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
                 <h4 className="font-semibold text-xl text-[#233D4D]">{cg.name ?? "Unknown"}</h4>
                 <p className="text-base text-[#7A8699]">Elderly Care</p>
                 <div className="flex gap-2 mt-2">
-                  <span className="border-1 border-[#B0B7C3] rounded-full px-4 py-1 text-base font-semibold text-[#233D4D] bg-white">
+                  <span className="border-1 border-[#dcdfe6] rounded-full px-4 py-1 text-base font-semibold text-[#233D4D] bg-white">
                     {cg.experience ? `${cg.experience} +Years` : "N/A"}
                   </span>
                 </div>

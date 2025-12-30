@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { MapIcon } from "../icons/page";
 import { useAppDispatch, useAppSelector } from "../../store/hooks"; // Adjust path as needed
 import { setCareseekerZipcode } from "@/store/slices/bookingSlice"; // Adjust path as needed
@@ -28,7 +29,14 @@ const ZipCodePage: React.FC = () => {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setTouched(true);
-    if (!isValid) return;
+    if (!isValid) {
+      if (zip.length === 0) {
+        toast.error("Please fill the zipcode");
+      } else if (zip.length < 5) {
+        toast.error("Please enter 5 digits zipcode");
+      }
+      return;
+    }
     const cleanZip = zip.trim();
     if (Number(cleanZip) === 0) return;
     dispatch(setCareseekerZipcode(Number(cleanZip))); // Store in redux
@@ -103,7 +111,7 @@ const ZipCodePage: React.FC = () => {
               Please fill the zipcode.
             </p>
           )}
-          {touched && !isValid && zip.length > 0 && (
+          {touched && zip.length > 0 && zip.length < 5 && (
             <p
               id="zip-error"
               className="text-xs text-red-600 mt-2 ml-1 font-medium"
@@ -116,8 +124,7 @@ const ZipCodePage: React.FC = () => {
 
         <button
             type="submit"
-            className={`w-full bg-[#FFA726] text-[#233D4D] justify-center px-5 py-3 h-[46px] cursor-pointer rounded-3xl text-xl font-bold transition whitespace-nowrap`}
-            disabled={!isValid}
+            className={`w-full bg-[#FFA726] text-[#233D4D] justify-center px-5 py-3 h-[46px] cursor-pointer hover:bg-[#FFB74D] rounded-3xl text-xl font-bold transition whitespace-nowrap`}
         >
           Continue
         </button>

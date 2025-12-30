@@ -123,14 +123,14 @@ const Footer = () => {
     "CareWorks provides compassionate, \n personalized eldercare services that \n support seniors and their families with \n dignity and respect.";
   return (
     <div className="pt-1 pb-1 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mb-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-0 items-start">
         {/* Logo and Description */}
-        <div className="lg:col-span-2 mt-1">
+        <div className="lg:col-span-2 mt-0">
           <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-4">
             <Image src="/Logo_1.svg" alt="Carenest logo" fill priority />
           </Link>
           <p className={`text-lg text-[#FFFFFF] font-light `}>
-            {displayDescription}
+            CareWorks provides compassionate, <br/> personalized eldercare services that <br/> support seniors and their families <br/>with dignity and respect.
           </p>
           {dynamicSocialLinks.length > 0 && (
             <div className="mt-5 flex flex-col gap-3">
@@ -142,7 +142,7 @@ const Footer = () => {
                     key={i}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-20 h-20 flex items-center justify-center rounded-full transition-colors"
+                    className="w-22 h-22 flex items-center justify-center rounded-full transition-colors"
                     aria-label="Visit our social link"
                   >
                     <div className="relative mt-2 w-16 h-16">
@@ -192,24 +192,24 @@ const Footer = () => {
         </div>
       </div>
 
-
-
-      {/* Proud Partners Section - match expected image */}
-      <div className="flex flex-col items-center mt-1 mb-1">
-        <div className="w-full flex flex-col items-center">
-          <h3 className="text-2xl font-medium mb-5 text-white text-left w-full max-w-md" style={{ marginLeft: '40px' }}>Proud Partners</h3>
-          <div className="flex flex-row flex-wrap justify-end items-end gap-12 w-full max-w-6xl mb-12">
-            <Image src="/partners/veterans-care.png" alt="Veterans Care Coordination" width={220} height={60} className="object-contain h-16 w-auto" />
-            <Image src="/partners/caring-com.png" alt="Caring.com" width={90} height={90} className="object-contain h-16 w-auto" />
-            <Image src="/partners/a-place-for-mom.png" alt="A Place for Mom" width={220} height={60} className="object-contain h-16 w-auto" />
-            <Image src="carescout.png" alt="Carescout Qualtiy network" width={90} height={90} className="object-contain h-16 w-auto" />
+      <div className="py-0">
+        {/* Proud Partners Section - match expected image */}
+        <div className="flex flex-col items-center mb-2">
+          <div className="w-full flex flex-col items-center">
+            <h3 className="text-2xl font-medium mb-3 text-white text-left w-full max-w-md" style={{ marginLeft: '40px' }}>Proud Partners</h3>
+            <div className="flex flex-row flex-wrap justify-end items-end gap-12 w-full max-w-6xl mb-4">
+              <Image src="/partners/veterans-care.png" alt="Veterans Care Coordination" width={220} height={60} className="object-contain h-16 w-auto" />
+              <Image src="/partners/caring-com.png" alt="Caring.com" width={90} height={90} className="object-contain h-16 w-auto" />
+              <Image src="/partners/a-place-for-mom.png" alt="A Place for Mom" width={220} height={60} className="object-contain h-16 w-auto" />
+              <Image src="carescout.png" alt="Carescout Qualtiy network" width={90} height={90} className="object-contain h-16 w-auto" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Newsletter and CAREWORKS branding */}
-      <div className="my-7 flex items-center justify-between flex-wrap gap-y-5">
-        <div>
+      <div className="my-1 flex items-center justify-center flex-wrap gap-y-1">
+        {/* <div> 
           <h3 className="text-xl font-medium lg:mb-3">Subscribe to our newsletter</h3>
           <div className="flex">
             <input
@@ -221,9 +221,9 @@ const Footer = () => {
               <ChevronRight />
             </button>
           </div>
-        </div>
+        </div> */}
         <div>
-          <h1 className="font-bold xl:text-[105px] lg:text-[80px] text-gray-400/30 tracking-widest sm:mt-0 mt-2">
+          <h1 className="font-bold xl:text-[135px] lg:text-[80px] text-gray-400/30 tracking-widest sm:mt-0 mt-2">
             CAREWORKS
           </h1>
         </div>

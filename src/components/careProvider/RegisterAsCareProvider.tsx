@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { YellowButton } from "../common/CustomButton";
 import {PhoneIcon4, DescriptionIcon, AddressIcon, zipCodeIcon, MailIcon4, GenderIcon } from "../icons/page"
-import { Phone } from "lucide-react";
+import { PiCity } from "react-icons/pi";
+
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -16,6 +18,7 @@ const RegisterAsCareProvider = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [gender, setGender] = useState("");
   const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [description, setDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -31,9 +34,15 @@ const RegisterAsCareProvider = () => {
     if (!phoneNumber.trim()) newErrors.phoneNumber = "Phone Number is required.";
     else if (!/^\d{10}$/.test(phoneNumber.replace(/\D/g, ""))) newErrors.phoneNumber = "Enter a valid 10-digit phone number.";
     if (!gender.trim()) newErrors.gender = "Gender is required.";
+    if (!city.trim()) newErrors.city = "City is required.";
     if (!address.trim()) newErrors.address = "Address is required.";
-    if (!zipcode.trim()) newErrors.zipcode = "Zipcode is required.";
-    else if (!/^\d{5}$/.test(zipcode)) newErrors.zipcode = "Enter a valid 5-digit zipcode.";
+    if (!zipcode.trim()) {
+      newErrors.zipcode = "Please fill 5 digit zipcode";
+    } else if (!/^\d{5}$/.test(zipcode)) {
+      const msg = "Please enter valid 5 digits zipcode";
+      newErrors.zipcode = msg;
+      toast.error(msg);
+    }
     if (!description.trim()) newErrors.description = "Description is required.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -93,6 +102,7 @@ const RegisterAsCareProvider = () => {
           email,
           phoneNumber,
           gender,
+          city,
           address,
           zipcode,
           description,
@@ -109,6 +119,7 @@ const RegisterAsCareProvider = () => {
       setEmail("");
       setPhoneNumber("");
       setGender("");
+      setCity("");
       setAddress("");
       setZipcode("");
       setDescription("");
@@ -181,6 +192,14 @@ const RegisterAsCareProvider = () => {
               value={gender}
               onChange={setGender}
               error={errors.gender}
+            />
+             <Input
+              placeholder="Enter City"
+              icon={PiCity}
+              type="text"
+              value={city}
+              onChange={setCity}
+              error={errors.city}
             />
             <Input
               placeholder="Enter Address"

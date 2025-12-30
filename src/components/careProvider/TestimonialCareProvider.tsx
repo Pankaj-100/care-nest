@@ -100,6 +100,22 @@ export const Testimonial = ({ testimonials }: TestimonialProps) => {
 
   const hasTestimonials = testimonials.length > 0;
 
+  // Reset to first slide when new data arrives
+  useEffect(() => {
+    setIndex(0);
+  }, [testimonials.length]);
+
+  // Auto-advance slides every 4 seconds when multiple testimonials exist
+  useEffect(() => {
+    if (testimonials.length <= 1) return;
+    const id = setInterval(() => {
+      setIndex((prev) =>
+        prev === testimonials.length - 1 ? 0 : prev + 1
+      );
+    }, 3000);
+    return () => clearInterval(id);
+  }, [testimonials.length]);
+
   const prevSlide = () =>
     setIndex((prev) =>
       prev === 0 ? testimonials.length - 1 : prev - 1

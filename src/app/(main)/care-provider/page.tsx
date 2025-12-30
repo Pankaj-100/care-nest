@@ -7,7 +7,7 @@ import TestimonialCareProvider from "@/components/careProvider/TestimonialCarePr
 import React from "react";
 
 export const metadata = {
-  title: "Care Provider",
+  title: "Become A Caregiver",
 };
 
 const page = () => {

@@ -248,30 +248,16 @@ const ModalContent: React.FC<{
                   : "Save Caregiver"}
             </button>
 
-            {/* Show Message button instead of Add/Remove when in BookingDetails page */}
-            {typeof window !== "undefined" && window.location.pathname.includes("/profile") ? (
-              <button
-                type="button"
-                className="w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold bg-[#F2A307] text-[#233D4D] hover:bg-yellow-400 transition"
-                onClick={() => {
-                  // Redirect to messages or open chat with caregiver
-                  window.location.href = `/inbox?caregiverId=${caregiverId}`;
-                }}
-              >
-                Message
-              </button>
-            ) : (
-              <button
-                onClick={() => caregiverId && onAddCaregiver(caregiverId)}
-                className={`w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition ${
-                  isSelected
-                    ? "border-2 border-[#F2A307] text-[#F2A307] bg-white hover:bg-red-50"
-                    : "bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--navy)]"
-                }`}
-              >
-                {isSelected ? "Remove Caregiver" : "+ Add Caregiver"}
-              </button>
-            )}
+            <button
+              onClick={() => caregiverId && onAddCaregiver(caregiverId)}
+              className={`w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition ${
+                isSelected
+                  ? "border-2 border-[#F2A307] text-[#F2A307] bg-white hover:bg-red-50"
+                  : "bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--navy)]"
+              }`}
+            >
+              {isSelected ? "Remove Caregiver" : "+ Add Caregiver"}
+            </button>
           </div>
         </div>
       </aside>

@@ -211,7 +211,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
               <div
                 key={booking.bookingId}
                 onClick={() => router.push(`/recent-booking/${booking.bookingId}`)}
-                className="relative flex items-start md:items-center gap-3 md:gap-5 bg-white p-5 md:p-6 rounded-3xl shadow-md md:shadow-lg w-full max-w-3xl mx-auto"
+                className="relative flex items-start md:items-center gap-3 md:gap-5 bg-white p-5 md:p-3 rounded-3xl shadow-md md:shadow-lg w-full max-w-3xl mx-auto"
               >
                 <div className="w-14 h-14 md:w-16 md:h-16 bg-[var(--navy)] rounded-full flex-shrink-0 flex items-center justify-center">
                     <Image

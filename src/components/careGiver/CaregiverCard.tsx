@@ -29,17 +29,21 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   heightClass,
 }) => {
   const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
-  // Fix: Show '0 Years' if experience is null, undefined, or not a number
-  let experienceDisplay = experience;
+  // Normalize experience: default to 0, show as "X+ Years"
+  let experienceDisplay = "0+ Years";
   if (
-    experience === null ||
-    experience === undefined ||
-    experience === "null Years" ||
-    experience === "undefined Years" ||
-    experience === "NaN Years" ||
-    (typeof experience === "string" && experience.match(/^null|undefined|NaN/i))
+    experience !== null &&
+    experience !== undefined &&
+    !(typeof experience === "string" && experience.match(/^null|undefined|NaN/i))
   ) {
-    experienceDisplay = "0 Years";
+    const numericExp = typeof experience === "number"
+      ? experience
+      : parseFloat(String(experience).replace(/[^0-9.]/g, ""));
+
+    if (Number.isFinite(numericExp) && numericExp >= 0) {
+      const years = Math.max(0, Math.floor(numericExp));
+      experienceDisplay = `${years}+ Years`;
+    }
   }
 
   return (

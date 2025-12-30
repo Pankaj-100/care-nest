@@ -120,7 +120,7 @@ const ServiceWeProvide: React.FC = () => {
                   </div>
 
                   <h3 className="font-semibold text-xl mb-4 font-urbanist text-[#233D4D] group-hover:text-[#F2A307] transition-colors duration-200">
-                    {service.serviceName}
+                    {service.careType}
                   </h3>
 
                   <p className="text-lg font-urbanist mb-8 text-[#233D4D] group-hover:text-white transition-colors duration-200">

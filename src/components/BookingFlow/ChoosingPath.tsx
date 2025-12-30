@@ -64,7 +64,7 @@ const ChoosingPath: React.FC = () => {
                 onClick={() => (window.location.href = "https://carenest-caregiver.vercel.app/signup")}
                 className="mt-2 px-8 py-6 min-w--[200px] text-md font-semibold"
               >
-                Find caregiving job
+                Find Caregiving Job
               </YellowButton>
             </div>
           </div>

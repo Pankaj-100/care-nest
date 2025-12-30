@@ -104,27 +104,27 @@ const SavedCaregiversPanel = () => {
             <p className="text-sm sm:text-base">Select caregivers to book their services (Select at least 1)</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            {data.data.givers.map((giver) => (
-              <CaregiverCard
-                key={giver.id}
-                name={giver.name}
-                avatar={
-                  giver.avatar
-                    ? giver.avatar.startsWith("http")
-                      ? giver.avatar
-                      : `https://creative-story.s3.us-east-1.amazonaws.com/${giver.avatar.replace(/^\/+/, "")}`
-                    : "/care-giver/boy-icon.png"
-                }
-                specialty={"General care"}
-                experience={typeof giver.experience === "string" ? giver.experience : giver.experience ? `${giver.experience} Years` : "0+ Years"}
-                isBookmarked={true}
-                heightClass="h-30"
-                isSelected={selectedCaregiverIds.includes(giver.id)}
-                isVerified={giver.verified}
-                onClick={() => setSelectedCaregiverId(giver.id)}
-                onBookmarkToggle={() => handleRemoveBookmark(giver.id)}
-              />
-            ))}
+              {data.data.givers.map((giver) => (
+                <CaregiverCard
+                  key={giver.id}
+                  name={giver.name}
+                  avatar={
+                    giver.avatar
+                      ? giver.avatar.startsWith("http")
+                        ? giver.avatar
+                        : `https://creative-story.s3.us-east-1.amazonaws.com/${giver.avatar.replace(/^\/+/,"")}`
+                      : "/care-giver/boy-icon.png"
+                  }
+                  specialty={giver.services && giver.services.length > 0 ? giver.services.join(", ") : "General care"}
+                  experience={typeof giver.experience === "string" ? giver.experience : giver.experience ? `${giver.experience} Years` : "0+ Years"}
+                  isBookmarked={true}
+                  heightClass="h-30"
+                  isSelected={selectedCaregiverIds.includes(giver.id)}
+                  isVerified={giver.verified}
+                  onClick={() => setSelectedCaregiverId(giver.id)}
+                  onBookmarkToggle={() => handleRemoveBookmark(giver.id)}
+                />
+              ))}
           </div>
           <div className="mt-8 sm:mt-10  text-center max-w-xl mx-auto">
             <button

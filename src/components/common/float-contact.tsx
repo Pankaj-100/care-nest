@@ -45,7 +45,7 @@ const FloatingContactButton = () => {
         
         {/* Tooltip on hover - desktop only */}
         <span className="hidden lg:block absolute right-full mr-3 px-4 py-2 bg-[var(--navy)] text-white text-sm font-semibold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-          Contact Us
+          832-237-2273
         </span>
       </Link>
     </>

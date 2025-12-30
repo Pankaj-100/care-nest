@@ -66,10 +66,15 @@ function SignupForm() {
       case "zipCode":
         if (!value.trim()) return "Zip code is required";
         return /^\d{5}$/.test(value.trim()) ? "" : "Zip code must be 5 digits";
-      case "password":
-        return value.length >= 6
-          ? ""
-          : "Password must be at least 6 characters";
+        case "password": {
+          // At least 8 characters, one uppercase, one lowercase, one number, one special symbol
+          if (value.length < 8) return "Password must be at least 8 characters";
+          if (!/[A-Z]/.test(value)) return "Password must include an uppercase letter";
+          if (!/[a-z]/.test(value)) return "Password must include a lowercase letter";
+          if (!/[0-9]/.test(value)) return "Password must include a number";
+          if (!/[!@#$%^&*(),.?":{}|<>_\-+=~`\[\]\/\\]/.test(value)) return "Password must include a special symbol";
+          return "";
+        }
       case "confirmPassword":
         return value === password ? "" : "Passwords do not match";
       default:

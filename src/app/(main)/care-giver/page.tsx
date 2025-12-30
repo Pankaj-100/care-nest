@@ -3,7 +3,7 @@ import CaregiversPage from "../../../components/careGiver/caregivers";
 import { Suspense } from "react";
 
 export const metadata = {
-  title: "Care Giver",
+  title: "Find A Caregiver",
 };
 
 export default function Page() {

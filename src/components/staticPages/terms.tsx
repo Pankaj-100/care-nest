@@ -79,7 +79,7 @@ export default function Terms() {
       <h4 className="text-center text-[var(--yellow)] font-semibold mb-2 text-3xl">
         Let&apos;s Talk About Terms
       </h4>
-      <h1 className="text-center text-[var(--navy)] font-bold text-6xl mb-6">
+      <h1 className="text-center text-[var(--navy)] font-bold text-5xl mb-6">
         Terms and Conditions
       </h1>
       <div
