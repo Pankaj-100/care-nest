@@ -89,8 +89,8 @@ const ServiceWeProvide: React.FC = () => {
   const displayList = apiServices;
 
   return (
-    <div className="flex flex-col justify-center w-full min-h-screen bg-[#F7F0D3] px-4 py-12">
-      <h1 className="font-semibold text-6xl mt-15 text-center mb-12 text-[#233D4D] font-urbanist">
+    <div className="flex flex-col justify-center w-full min-h-screen bg-[#F7F0D3] px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+      <h1 className="font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-3 sm:mt-10 lg:mt-15 text-center mb-8 sm:mb-10 lg:mb-12 text-[#233D4D] font-urbanist">
         Services We Provide
       </h1>
 

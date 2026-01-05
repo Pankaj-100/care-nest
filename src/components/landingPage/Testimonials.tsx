@@ -73,14 +73,23 @@ const Testimonials: React.FC = () => {
 
   return (
     <div className="py-12 sm:py-20 bg-[var(--whiteSmoke)] px-4 sm:px-10 lg:px-24 xl:px-28">
-      <div className="text-center flex items-center justify-center mb-10">
-        <div className="flex flex-col font-semibold text-3xl sm:text-4xl lg:text-5xl capitalize items-center gap-2 sm:gap-3">
+      <div className="text-center flex items-center justify-center mb-8 sm:mb-10 lg:mb-12">
+        {/* Mobile: 3 lines */}
+        <div className="flex lg:hidden flex-col font-semibold text-2xl sm:text-3xl capitalize items-center gap-1 sm:gap-2 px-2">
+          <div>Trusted by Houston</div>
+          <div>Families Who Count on</div>
+          <div>Quality Care</div>
+        </div>
+        
+        {/* Desktop: 2 lines */}
+        <div className="hidden lg:flex flex-col font-semibold md:text-4xl lg:text-5xl capitalize items-center gap-2 lg:gap-3">
           <div>Trusted by Houston Families</div>
           <div>Who Count on Quality Care</div>
         </div>
       </div>
 
-      <CustomCarousel plugins={[Autoplay({ delay: 3500, stopOnInteraction: false })]}>
+      <div className="px-2 sm:px-6 lg:px-12 xl:px-16">
+        <CustomCarousel plugins={[Autoplay({ delay: 3500, stopOnInteraction: false })]}>
         {loading
           ? // show 3 skeleton slides while loading
             [0, 1, 2].map((i) => (
@@ -156,6 +165,7 @@ const Testimonials: React.FC = () => {
               );
             })}
       </CustomCarousel>
+      </div>
     </div>
   );
 };

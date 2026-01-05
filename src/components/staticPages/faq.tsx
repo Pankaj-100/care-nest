@@ -73,7 +73,7 @@ return (
 					of personal information. The following outlines our privacy policy.
 				</p>*/}
 			</div>
-			<div className="flex justify-center order-1 md:order-2 mb-4 md:mb-0">
+			<div className="flex justify-center order-2 md:order-2 mb-4 md:mb-0">
 				<Image
 					src="/faq1.png"
 					alt="FAQ Banner"
@@ -84,7 +84,7 @@ return (
 			</div>
 		</div>
 		{/* General FAQ Section */}
-		<div className="w-full max-w-6xl flex flex-col md:grid md:grid-cols-2 gap-8 items-start px-4">
+		<div className="w-full max-w-6xl flex flex-col md:grid md:grid-cols-2 gap-8 items-center md:items-start px-4">
 			<div>
 				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-xl sm:text-3xl text-center md:text-left">
 					General FAQ&apos;s
@@ -147,7 +147,7 @@ return (
 							alt="Caregiver Banner"
 							width={260}
 							height={160}
-							className="w-[200px] mt-5 h-[120px] sm:w-[320px] sm:h-[200px] md:w-[467px] md:h-[282px] object-contain rounded-2xl"
+							className="w-[300px] mt-7 h-[260px] sm:w-[320px] sm:h-[200px] md:w-[467px] md:h-[282px] object-contain mb-0 rounded-2xl"
 						/>
 					</div>
 				</div>

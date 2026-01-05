@@ -26,6 +26,7 @@ const Header = () => {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [isLoggedInUser, setIsLoggedIn] = useState(false);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
+  const [mobileLoginDropdownOpen, setMobileLoginDropdownOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
@@ -240,9 +241,36 @@ const Header = () => {
         <div className="flex items-center gap-4 lg:hidden">
           {!isLoggedInUser ? (
             <>
-              <Link href="/signin" className="text-white font-light text-base">
-                Login
-              </Link>
+              <div className="relative">
+                <button 
+                  onClick={() => setMobileLoginDropdownOpen(!mobileLoginDropdownOpen)}
+                  className="text-white font-light text-base flex items-center gap-1"
+                >
+                  Login
+                  <ChevronDown size={16} className={`transition-transform ${mobileLoginDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileLoginDropdownOpen && (
+                  <div className="absolute top-full right-0 mt-2 min-w-[180px] rounded-lg bg-white text-[var(--navy)] overflow-hidden shadow-lg z-[9999]">
+                    <a
+                      href="/signin"
+                      className="px-3 py-3 text-sm font-semibold cursor-pointer hover:bg-orange-500 hover:text-white block w-full transition-colors"
+                      onClick={() => setMobileLoginDropdownOpen(false)}
+                    >
+                      Login as Care Seeker
+                    </a>
+                    <div className="mx-3 h-px bg-[var(--navy)]/10" />
+                    <a
+                      href="https://carenest-caregiver.vercel.app/signin"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-3 text-sm font-semibold cursor-pointer hover:bg-orange-500 hover:text-white block w-full transition-colors"
+                      onClick={() => setMobileLoginDropdownOpen(false)}
+                    >
+                      Login as Care Giver
+                    </a>
+                  </div>
+                )}
+              </div>
               <Link
                 href="/choose-path"
                 className="text-[var(--yellow)] font-light text-base"
@@ -433,7 +461,7 @@ const NavbarMenu = ({
                       href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-[var(--navy)]/5 focus:bg-[var(--navy)]/5 block w-full transition-colors"
+                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-orange-500 hover:text-white focus:bg-orange-500 block w-full transition-colors"
                       style={{ outline: 'none' }}
                       onClick={() => {
                         setOpenDropdownIndex(null);
@@ -445,7 +473,7 @@ const NavbarMenu = ({
                   ) : (
                     <Link
                       href={item.link || '#'}
-                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-[var(--navy)]/5 focus:bg-[var(--navy)]/5 block w-full transition-colors"
+                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-orange-500 hover:text-white focus:bg-orange-500 block w-full transition-colors"
                       style={{ outline: 'none' }}
                       onClick={() => {
                         setOpenDropdownIndex(null);
@@ -467,7 +495,7 @@ const NavbarMenu = ({
 
       {/* Mobile dropdown (inline reveal) */}
       {hasDropdown && isDropdownOpen && services && (
-        <div className="lg:hidden mt-2 w-full pl-3 text-[0.95rem] text-white/85">
+        <div className="lg:hidden mt-2 w-full pl-3 text-[1.15rem] text-white/85">
           <div className="flex flex-col gap-2">
             {services.map((item, idx) => (
               <React.Fragment key={idx}>
@@ -476,7 +504,7 @@ const NavbarMenu = ({
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-0.5 font-medium hover:text-[var(--yellow)] transition-colors"
+                    className="py-2 px-3 font-medium text-white hover:bg-orange-500 rounded transition-colors block"
                       onClick={() => {
                         setOpenDropdownIndex(null);
                         onNavigate?.();
@@ -487,7 +515,7 @@ const NavbarMenu = ({
                 ) : (
                   <Link
                     href={item.link || "#"}
-                    className="py-0.5 font-medium hover:text-[var(--yellow)] transition-colors"
+                    className="py-2 px-3 font-medium text-white hover:bg-orange-500 rounded transition-colors block"
                       onClick={() => {
                         setOpenDropdownIndex(null);
                         onNavigate?.();

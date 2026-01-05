@@ -90,7 +90,7 @@ const FAQ = () => {
           {faq?.sectionTitle || "Curious About Caregiving on Our Platform? We’ve Got Answers!"}
         </h1>
       </div>
-      <div className="lg:w-1/2 mr-8 lg:mt-0 mt-4">
+      <div className="lg:w-1/2 lg:mr-8 mt-8 lg:mt-0 w-full">
         {loading && <div className="text-white">Loading FAQs...</div>}
         {error && <div className="text-red-400">{error}</div>}
         {!loading && !error && Array.isArray(faq?.faqItems) && faq.faqItems.length > 0 && faq.faqItems.map((item, index) => (

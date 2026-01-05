@@ -344,7 +344,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
           onAddCaregiver={() => {}}
           isBookmarked={false}
           isSelected={booking.status === "hired" || booking.status === "completed"}
-          bookingStatus={booking.status} // <-- pass status as prop
+          bookingStatus={booking.status}
         />
 
         {/* Cancel Booking Dialog */}

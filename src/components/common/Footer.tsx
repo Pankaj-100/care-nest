@@ -39,6 +39,8 @@ const link: linkSection[] = [
       { title: "Become A Caregiver", link: "/care-provider" },
       { title: "Who We Are", link: "/who-we-are" },
       { title: "We Accept Medicaid", link: "/medicaid" },
+      { title: "Admin panel", link: "https://carenest-admin.vercel.app/signin"},
+      { title: "Caregiver", link: "https://carenest-caregiver.vercel.app/signin" },
     ],
     "Other Services": [
       { title: "Transportation", link: "/service/transportation" },
@@ -129,7 +131,7 @@ const Footer = () => {
           <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-4">
             <Image src="/Logo_1.svg" alt="Carenest logo" fill priority />
           </Link>
-          <p className={`text-lg text-[#FFFFFF] font-light `}>
+          <p className={`text-lg text-[#FFFFFF] mt-0 font-light `}>
             CareWorks provides compassionate, <br/> personalized eldercare services that <br/> support seniors and their families <br/>with dignity and respect.
           </p>
           {dynamicSocialLinks.length > 0 && (
@@ -223,7 +225,7 @@ const Footer = () => {
           </div>
         </div> */}
         <div>
-          <h1 className="font-bold xl:text-[135px] lg:text-[80px] text-gray-400/30 tracking-widest sm:mt-0 mt-2">
+          <h1 className="font-bold text-5xl sm:text-6xl md:text-7xl lg:text-[80px] xl:text-[135px] text-gray-400/30 tracking-widest sm:mt-0 mt-2">
             CAREWORKS
           </h1>
         </div>
@@ -231,7 +233,7 @@ const Footer = () => {
 
       <hr className="relative left-1/2 right-1/2 -mx-[50vw] w-screen border-0 h-px bg-white/20 my-6" />
 
-      <div className="flex flex-wrap gap-y-4 items-center justify-between sm:my-4 sm:mt-4 mt-8">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-y-4 items-center justify-center sm:justify-between sm:my-4 sm:mt-4 mt-8">
         <div className="flex items-center justify-around sm:w-auto w-full gap-x-5">
           {footerLink.map((item, i) => (
             <Link href={item.link} key={i} className="text-lg text-gray-200">
@@ -240,14 +242,10 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="sm:w-auto w-full flex justify-end sm:order-0 order-1 ml-auto text-right">
+        <div className="w-full sm:w-auto flex justify-center sm:justify-end order-1 sm:order-0 text-center sm:text-right">
           <p className="text-lg text-[#FFFFFF] font-medium">
             © 2024 Copyright | All rights reserved
           </p>
-        </div>
-
-        <div className="flex sm:w-auto w-full justify-around items-center gap-x-5">
-          {/* Social links relocated under description */}
         </div>
       </div>
     </div>

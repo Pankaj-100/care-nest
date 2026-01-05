@@ -87,10 +87,10 @@ export default function ResourcesPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center py-16 px-4">
-      <h4 className="text-center text-[var(--yellow)] font-semibold mb-4 text-3xl">
+      <h4 className="text-center text-[var(--yellow)] font-semibold mb-4 text-2xl lg:text-3xl">
         Essential Resources That Support Seniors on Their Care Journey
       </h4>
-      <h1 className="text-center text-[var(--navy)] font-bold text-4xl mb-6">
+      <h1 className="text-center text-[var(--navy)] font-bold text-3xl lg:text-4xl mb-6">
         {data.title}
       </h1>
       <p className="max-w-4xl text-lg text-center text-gray-500 mb-8 ">

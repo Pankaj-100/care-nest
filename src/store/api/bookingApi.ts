@@ -226,7 +226,7 @@ interface ProfileViewResponse {
 
 export const bookingApi = createApi({
   reducerPath: 'bookingApi',
-  tagTypes: ['Booking', 'Bookmark'],
+  tagTypes: ['Booking', 'Bookmark', 'BookmarkedCaregivers'],
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
 
@@ -319,7 +319,7 @@ export const bookingApi = createApi({
         url: `/api/v1/bookmarks/${caregiverId}`,
         method: 'POST',
       }),
-      invalidatesTags: ['Bookmark'],
+      invalidatesTags: ['Bookmark', 'BookmarkedCaregivers'],
     }),
 
     getBookmarkedCaregivers: builder.query<GetBookmarksResponse, void>({
@@ -327,7 +327,7 @@ export const bookingApi = createApi({
         url: "/api/v1/bookmarks",
         method: "GET",
       }),
-      providesTags: ['Bookmark'],
+      providesTags: ['Bookmark', 'BookmarkedCaregivers'],
     }),
 
     trackCaregiverView: builder.mutation<ProfileViewResponse, string>({

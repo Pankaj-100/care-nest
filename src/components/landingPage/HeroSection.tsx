@@ -180,7 +180,7 @@ const HeroSection = () => {
             ) : (
               <>
                 {/* Mobile: compact paragraph without hard breaks */}
-                <p className="lg:hidden text-[13px] leading-6 font-normal text-white/90 text-center max-w-[36ch] mx-auto">
+                <p className="lg:hidden text-[15px] leading-6 font-normal text-white/90 text-center max-w-[36ch] mx-auto">
                   {mobileDescription}
                 </p>
                 {/* Desktop: preserve author-provided breaks but tighten paragraph spacing */}
@@ -206,14 +206,14 @@ const HeroSection = () => {
                 alt="5.0 rating - 20+ Google Reviews"
                 width={250}
                 height={54}
-                className="h-auto w-[180px] sm:w-[200px] lg:w-[230px] object-contain"
+                className="h-auto w-[190px] sm:w-[210px] lg:w-[230px] object-contain"
                 priority
               />
             </a>
             <button
               type="button"
               onClick={() => window.location.href = '/contact'}
-              className="px-5 py-3 sm:px-6 sm:py-3.5 cursor-pointer lg:px-8 lg:py-4 mb-4 text-sm sm:text-base lg:text-lg rounded-4xl font-semibold flex items-center gap-2 bg-[var(--yellow)] text-[var(--navy)] hover:bg-[var(--yellow-light)] transition-all duration-300 ease-in-out shadow-md"
+              className="px-5 py-3 sm:px-6 sm:py-3.5 cursor-pointer lg:px-8 lg:py-4 mb-4 text-md sm:text-base lg:text-lg rounded-4xl font-semibold flex items-center gap-2 bg-[var(--yellow)] text-[var(--navy)] hover:bg-[var(--yellow-light)] transition-all duration-300 ease-in-out shadow-md"
             >
               <span>Contact Us</span>
               <ArrowIcon className="w-6 h-6 ml-2" />
@@ -309,7 +309,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
       ${noDescription ? "lg:grid lg:grid-cols-12 lg:gap-6" : "lg:grid lg:grid-cols-12 lg:gap-6"}`}
     >
       {!noDescription && (
-        <div className="col-span-12 lg:col-span-5 space-y-2 lg:ml-8 mb-4 lg:mb-0">
+        <div className="col-span-12 lg:col-span-5 space-y-2 lg:ml-8 mb-4 lg:mb-0 text-center lg:text-left">
           <h3 className="font-semibold text-lg sm:text-xl">
             {title ?? (isCaregiversPage ? "Select Caregivers" : "Browse Caregivers")}
           </h3>
@@ -327,14 +327,14 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         noValidate
         className={`flex flex-col gap-3 sm:gap-4 col-span-12 ${
           !noDescription ? "lg:col-span-7" : "lg:col-span-12"
-        } lg:grid lg:grid-cols-12`}
+        } lg:grid lg:grid-cols-12 items-center lg:items-end text-center lg:text-left`}
       >
         <div
           className={`flex flex-col col-span-12 ${
             !noDescription ? "lg:col-span-7 lg:mr-3" : "lg:col-span-8"
-          }`}
+          } w-full`}
         >
-          <label className="mb-2 font-semibold text-base sm:text-lg lg:text-xl" htmlFor="zip-input">
+          <label className="mb-2 font-semibold text-lg sm:text-xl lg:text-xl text-center lg:text-left" htmlFor="zip-input">
             Provide Zip code
           </label>
           <input
@@ -348,19 +348,19 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
               const val = e.target.value.replace(/[^0-9]/g, "").slice(0, 5);
               setZipCode(val);
             }}
-            className="w-full lg:w-[280px] rounded-full outline-none border py-3 px-4 sm:py-3.5 sm:px-5 lg:py-4 lg:px-6 text-gray-900 text-base sm:text-lg focus:border-gray-400 focus:ring-0 border-gray-400"
+            className="w-full lg:w-[280px] rounded-full outline-none border py-4 px-5 sm:py-4 sm:px-6 lg:py-4 lg:px-6 text-gray-900 text-base sm:text-lg focus:border-gray-400 focus:ring-0 border-gray-400 mx-auto lg:mx-0"
             maxLength={5}
             autoComplete="postal-code"
           />
         </div>
         <div
-          className={`col-span-12 flex items-end ${
-            !noDescription ? "lg:col-span-4" : "lg:col-span-4"
-          }`}
+          className={`col-span-12 flex items-center justify-center ${
+            !noDescription ? "lg:col-span-4 lg:justify-end" : "lg:col-span-4"
+          } w-full`}
         >
           <button
             type="submit"
-            className={`w-full flex items-center justify-center text-center lg:ml-12 px-5 py-3 sm:px-5 sm:py-5 lg:px-6 lg:py-4.8 cursor-pointer rounded-4xl text-base sm:text-md font-semibold transition whitespace-nowrap
+            className={`w-full flex items-center justify-center text-center lg:ml-12 px-5 py-4 sm:px-6 sm:py-4 lg:px-6 lg:py-4.8 cursor-pointer rounded-4xl text-base sm:text-lg font-semibold transition whitespace-nowrap
               bg-[#FFA726] text-[#233D4D] hover:brightness-105`}
           >
             Search Caregiver

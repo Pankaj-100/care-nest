@@ -158,7 +158,7 @@ const ModalContent: React.FC<{
     if (!caregiver.id) return;
     try {
       await bookmarkCaregiver(caregiver.id).unwrap();
-      setBookmarked((prev) => !prev);
+      // Instead of toggling local state, rely on prop update from parent after RTK Query refetch
       toast.success(
         bookmarked
           ? "Caregiver removed successfully!"
@@ -244,7 +244,7 @@ const ModalContent: React.FC<{
               {bookmarking
                 ? "Saving..."
                 : bookmarked
-                  ? "Saved Caregiver"
+                  ? "Remove Saved Caregiver"
                   : "Save Caregiver"}
             </button>
 

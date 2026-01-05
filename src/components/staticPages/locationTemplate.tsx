@@ -79,10 +79,10 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="bg-white py-26 px-6 md:px-8 lg:px-24">
+      <section className="bg-white py-15 px-6 md:px-8 lg:px-24">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 items-start">
           <div>
-            <h1 className="text-5xl md:text-5xl font-bold text-[#2C3E50] mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C3E50] mb-6 leading-tight">
               {data.heroTitle}
             </h1>
           </div>
@@ -107,9 +107,9 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
       </section>
 
       {/* Why Choose Section */}
-      <section className="bg-[#F5F5DC] py-26 px-6 md:px-8 lg:px-24">
+      <section className="bg-[#F5F5DC] py-13 px-6 md:px-8 lg:px-24">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl md:text-4xl lg:text-5xl font-bold text-center text-[#2C3E50] mb-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center text-[#2C3E50] mb-8">
             {data.whyChooseTitle}
           </h2>
           <div className="space-y-4">
@@ -131,7 +131,7 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
       {/* Services Section */}
       <section className="bg-white py-16 px-6 md:px-8 lg:px-24">
         <div className="max-w-8xl mx-auto">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-[#2C3E50] mb-4">
+          <h2 className="text-3xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center text-[#2C3E50] mb-4">
             {(() => {
               const [line1, line2] = splitIntoTwoLines(data.servicesIntro);
               if (!line2) return line1;
@@ -156,18 +156,18 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
             </p>
           )}
 
-          <div className="space-y-12">
+          <div className="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
             {data.services.map((service, index) => (
               <div
                 key={index}
-                className={`grid md:grid-cols-2 gap-8 items-center ${
+                className={`grid md:grid-cols-2 gap-6 md:gap-6 items-center ${
                   index % 2 === 1 ? "md:flex-row-reverse" : ""
                 }`}
               >
                 {index % 2 === 0 ? (
                   <>
                     <div>
-                      <h4 className="text-4xl font-bold text-[#2C3E50] mb-4">
+                      <h4 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold text-[#2C3E50] mb-4">
                         {service.title}
                       </h4>
                       <ul className="space-y-3">
@@ -213,7 +213,7 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
                       />
                     </div>
                     <div className="order-1 md:order-2">
-                      <h4 className="text-5xl font-bold text-[#2C3E50] mb-4">
+                      <h4 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold text-[#2C3E50] mb-4">
                         {service.title}
                       </h4>
                       <ul className="space-y-3">
@@ -265,7 +265,7 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
             <div className="space-y-12">
               {/* Care Designed Section */}
               <div>
-                <h2 className="text-4xl md:text-4xl font-bold text-[#2C3E50] mb-6">
+                <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold text-[#2C3E50] mb-6">
                   {data.careDesignedTitle}
                 </h2>
                 <p className="text-gray-700 text-lg leading-relaxed text-justify">
@@ -275,7 +275,7 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
 
               {/* Proudly Serving Section */}
               <div>
-                <h3 className="text-4xl md:text-3xl font-bold text-[#2C3E50] mb-4">
+                <h3 className="text-2xl sm:text-3xl md:text-3xl font-bold text-[#2C3E50] mb-4">
                   {data.proudlyServingTitle}
                 </h3>
                 <p className="text-gray-700  text-lg leading-relaxed text-justify">
@@ -285,7 +285,7 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
 
               {/* Steady Partner Section */}
               <div>
-                <h3 className="text-4xl md:text-3xl font-bold text-[#2C3E50] mb-4">
+                <h3 className="text-2xl sm:text-3xl md:text-3xl font-bold text-[#2C3E50] mb-4">
                   {data.steadyPartnerTitle}
                 </h3>
                 <p className="text-gray-700 text-lg leading-relaxed text-justify">
@@ -301,7 +301,7 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
     {/* Contact Banner Section */}
     <div className="w-full bg-[#F2A307] py-10 px-2">
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] mb-4 leading-tight">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#233D4D] mb-4 leading-tight">
           Get In Touch With Us
         </h2>
         <p className="text-lg lg:text-2xl text-white font-light leading-relaxed mb-4 max-w-7xl mx-auto">

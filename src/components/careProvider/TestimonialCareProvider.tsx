@@ -131,14 +131,14 @@ export const Testimonial = ({ testimonials }: TestimonialProps) => {
       <div className="mb-6 flex justify-start">{quotes}</div>
 
       {/* Testimonial Text */}
-      <p className="text-gray-600 text-sm sm:text-xl leading-relaxed">
+      <p className="text-gray-600 text-lg sm:text-xl leading-relaxed">
         {hasTestimonials
           ? testimonials[index].description
           : "Working with CareWorks has been life-changing. The support and meaningful connections with clients make every day rewarding."}
       </p>
 
       {/* Author */}
-      <p className="mt-4 font-bold text-base sm:text-xl text-[var(--navy)]">
+      <p className="mt-4 font-bold text-md sm:text-xl text-[var(--navy)]">
         {hasTestimonials ? testimonials[index].name : "Caregiver"}
       </p>
 

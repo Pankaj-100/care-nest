@@ -47,7 +47,7 @@ const PerkOfCareProvider = () => {
 
   return (
     <div className="w-full bg-[var(--cream)] px-6 sm:px-8 lg:px-18 py-10 lg:py-18">
-      <h1 className="font-semibold text-4xl sm:text-4xl lg:text-5xl leading-tight text-[var(--navy)] w-full">
+      <h1 className="font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight text-[var(--navy)] w-full">
         {/* {title} */}
         Perks Of Joining As A<br />Caregiver On Our Platform
       </h1>
