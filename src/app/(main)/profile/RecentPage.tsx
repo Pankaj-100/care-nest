@@ -85,7 +85,7 @@ const SavedCaregiversPanel = () => {
 
   return (
     <div className="p-3 sm:p-4 md:p-6 mt-6 md:mt-10">
-      <h2 className="text-xl sm:text-2xl font-bold">Saved Caregivers</h2>
+      <h2 className="text-2xl text-center sm:text-left sm:text-2xl font-bold">Saved Caregivers</h2>
       {data.data.givers.length === 0 ? (
         <div className="flex flex-col items-center justify-center mt-8 sm:mt-10 space-y-4">
           <div className="relative w-40 h-40 sm:w-64 sm:h-64">

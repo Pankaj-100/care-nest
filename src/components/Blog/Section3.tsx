@@ -62,7 +62,7 @@ const Section3: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
             {title}
           </h2>
 
-          <p className="text-sm sm:text-lg font-medium leading-[120%] font-urbanist">
+          <p className="text-base sm:text-lg font-medium leading-[130%] font-urbanist">
             {desc}
           </p>
 

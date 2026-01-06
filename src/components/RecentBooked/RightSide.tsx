@@ -161,18 +161,18 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
     );
 
   return (
-    <div className="w-full p-8 mt-10">
-      <h2 className="text-4xl  font-semibold text-[var(--navy)] mb-6 font-Urbanist">
+    <div className="w-full p-3 sm:p-4 md:p-6 lg:p-8 mt-0 lg:mt-3">
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
         Recent Bookings
       </h2>
 
-      <div className="grid grid-cols-3 gap-3 md:flex md:flex-wrap md:gap-3 mb-8 cursor-pointer">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:flex md:flex-wrap md:gap-3 mb-6 sm:mb-8 cursor-pointer w-full">
         {["All", "Pending", "Accepted", "Active", "Completed", "Cancel"].map(
           (status) => (
             <button
               key={status}
               onClick={() => setSelectedStatus(status)}
-              className={`w-full md:w-auto px-5 py-2.5 rounded-full text-sm sm:text-base md:text-lg font-semibold transition-colors ${
+              className={`w-full md:w-auto px-3 sm:px-5 py-2 sm:py-2.5 rounded-full text-sm sm:text-sm md:text-lg font-semibold transition-colors flex items-center justify-center text-center ${
                 selectedStatus === status
                   ? "bg-[var(--navy)] text-white"
                   : "border border-[var(--navy)] text-[var(--navy)]"
@@ -199,7 +199,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
           </p>
         </div>
       ) : (
-        <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-4 w-full">
+        <div className="space-y-4 sm:space-y-6 max-h-[70vh] overflow-y-auto w-full">
           {filteredBookings.map((booking) => {
             const apiStatus = booking.status?.toLowerCase?.() || "";
             const uiStatus =
@@ -211,7 +211,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
               <div
                 key={booking.bookingId}
                 onClick={() => router.push(`/recent-booking/${booking.bookingId}`)}
-                className="relative flex items-start md:items-center gap-3 md:gap-5 bg-white p-5 md:p-3 rounded-3xl shadow-md md:shadow-lg w-full max-w-3xl mx-auto"
+                className="relative flex items-start md:items-center gap-3 md:gap-5 bg-white p-4 sm:p-5 md:p-3 rounded-3xl shadow-md md:shadow-lg w-full mx-auto"
               >
                 <div className="w-14 h-14 md:w-16 md:h-16 bg-[var(--navy)] rounded-full flex-shrink-0 flex items-center justify-center">
                     <Image

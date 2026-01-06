@@ -42,12 +42,12 @@ const BookSuccessful = ({ isModalOpen, onClose }: BookSuccessfulProps) => {
         </h2>
 
         {/* Message */}
-        <p className="text-gray-500 text-center mb-5 sm:mb-6 text-xs sm:text-sm leading-relaxed">
+        <p className="text-gray-500 text-center mb-5 sm:mb-6 text-md sm:text-md leading-relaxed">
           You have booked caregivers You will receive an email shortly. we will choose the best one for you and let you know.
         </p>
 
         {/* Action Button */}
-        <CustomButton className="w-full text-sm sm:text-base py-3 sm:py-4" onClick={handleGoToRecentBooking}>
+        <CustomButton className="w-full text-sm sm:text-base py-4 sm:py-5" onClick={handleGoToRecentBooking}>
           Go to Recent Booking
         </CustomButton>
       </div>

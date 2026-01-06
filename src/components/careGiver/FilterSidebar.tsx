@@ -143,7 +143,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {}, isLoading = false 
   }, [gender, price, languages, prn, locationRange, experience, isInitialized]);
 
   return (
-    <aside className={`w-full md:w-[250px] border rounded-xl px-4 pb-4 pt-22 md:pt-4 space-y-4 ${urbanist.className}`}>
+    <aside className={`w-full md:w-[250px] border rounded-xl px-3 sm:px-4 pb-4 pt-4 md:pt-4 space-y-3 ${urbanist.className}`}>
       {isLoading ? (
         /* Skeleton Loading State */
         <div className="animate-pulse space-y-6">
@@ -167,11 +167,11 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {}, isLoading = false 
         </div>
       ) : (
         <>
-          <h2 className={`text-xl font-bold mb-4 text-[var(--navy)] ${urbanist.className}`}>Filters & Sort</h2>
+          <h2 className={`text-lg sm:text-xl font-bold mb-3 text-[var(--navy)] ${urbanist.className}`}>Filters & Sort</h2>
           
           {/* Gender - Changed to radio buttons */}
           <div>
-            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
+            <h4 className={`text-base sm:text-lg font-semibold mb-2 text-[var(--navy)] ${urbanist.className}`}>Gender</h4>
             <div className="space-y-2">
               {GENDERS.map((g) => (
                 <label key={g} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
@@ -207,7 +207,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {}, isLoading = false 
 
           {/* Location - Changed to radio buttons */}
           <div>
-            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
+            <h4 className={`text-base sm:text-lg font-semibold mb-2 text-[var(--navy)] ${urbanist.className}`}>Location</h4>
             <div className="space-y-2">
               {LOCATIONS.map((loc) => (
                 <label key={loc.label} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
@@ -226,7 +226,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {}, isLoading = false 
 
           {/* PRN - Changed to radio buttons */}
           <div>
-            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
+            <h4 className={`text-base sm:text-lg font-semibold mb-2 text-[var(--navy)] ${urbanist.className}`}>PRN (Pro re nata)</h4>
             <div className="space-y-2">
               <label className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
                 <input
@@ -253,7 +253,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {}, isLoading = false 
           
           {/* Experience - Changed to radio buttons */}
           <div>
-            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
+            <h4 className={`text-base sm:text-lg font-semibold mb-2 text-[var(--navy)] ${urbanist.className}`}>Experience</h4>
             <div className="space-y-2">
               {EXPERIENCES.map((exp, idx) => (
                 <label key={idx} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>
@@ -272,7 +272,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {}, isLoading = false 
 
           {/* Languages - Keep as checkboxes for multiple selection */}
           <div>
-            <h4 className={`text-lg font-semibold mb-3 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
+            <h4 className={`text-base sm:text-lg font-semibold mb-2 text-[var(--navy)] ${urbanist.className}`}>Language</h4>
             <div className="space-y-2">
               {LANGUAGES.map((lang) => (
                 <label key={lang} className={`flex items-center text-md text-[var(--coolgray)] font-medium cursor-pointer ${urbanist.className}`}>

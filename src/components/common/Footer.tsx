@@ -125,17 +125,17 @@ const Footer = () => {
     "CareWorks provides compassionate, \n personalized eldercare services that \n support seniors and their families with \n dignity and respect.";
   return (
     <div className="pt-1 pb-1 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-0 items-start">
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-6 lg:gap-4 mb-0 items-start">
         {/* Logo and Description */}
-        <div className="lg:col-span-2 mt-0">
-          <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-4">
+        <div className="col-span-2 lg:col-span-2 mt-0 flex flex-col items-center lg:items-start">
+          <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-0">
             <Image src="/Logo_1.svg" alt="Carenest logo" fill priority />
           </Link>
-          <p className={`text-lg text-[#FFFFFF] mt-0 font-light `}>
+          <p className={`text-lg text-[#FFFFFF] mt-0 font-light text-center lg:text-left`}>
             CareWorks provides compassionate, <br/> personalized eldercare services that <br/> support seniors and their families <br/>with dignity and respect.
           </p>
           {dynamicSocialLinks.length > 0 && (
-            <div className="mt-5 flex flex-col gap-3">
+            <div className="mt-5 flex flex-col gap-3 items-center lg:items-start">
               <p className="text-base font-medium mt-5 text-[#F2A307]">Follow us on Social Platforms</p>
               <div className="flex items-center gap-4">
                 {dynamicSocialLinks.map((item, i) => (
@@ -163,20 +163,20 @@ const Footer = () => {
         </div>
 
         {/* Company Links */}
-        <div className="mt-8 text-xl flex flex-col justify-start h-full">
+        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full">
           <FooterLink title="Company" links={link[0]["Company"]} />
         </div>
         
         {/* Other Services */}
-        <div className="mt-8 text-xl flex flex-col justify-start h-full">
+        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full">
           <FooterLink title="Other Services" links={link[0]["Other Services"]} />
         </div>
         
         {/* Locations we cover */}
-        <div className="mt-8 text-xl flex flex-col justify-start h-full">
+        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full">
           {loading ? (
             <div>
-              <p className="font-medium mb-6 text-white">Locations we cover</p>
+              <p className="font-medium mb-6 text-white text-center lg:text-left">Locations we cover</p>
               <div className="space-y-2">
                 <div className="h-4 bg-gray-700 rounded animate-pulse w-32" />
                 <div className="h-4 bg-gray-700 rounded animate-pulse w-28" />
@@ -189,21 +189,27 @@ const Footer = () => {
         </div>
         
         {/* Quick Links */}
-        <div className="mt-8 text-xl flex flex-col justify-start h-full">
+        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full">
           <FooterLink title="Quick Links" links={link[0]["Quick Links"]} />
         </div>
       </div>
 
-      <div className="py-0">
+      <div className="py-10 lg:py-0">
         {/* Proud Partners Section - match expected image */}
-        <div className="flex flex-col items-center mb-2">
+        <div className="flex flex-col items-center mb-0 lg:mb-2">
           <div className="w-full flex flex-col items-center">
-            <h3 className="text-2xl font-medium mb-3 text-white text-left w-full max-w-md" style={{ marginLeft: '40px' }}>Proud Partners</h3>
-            <div className="flex flex-row flex-wrap justify-end items-end gap-12 w-full max-w-6xl mb-4">
-              <Image src="/partners/veterans-care.png" alt="Veterans Care Coordination" width={220} height={60} className="object-contain h-16 w-auto" />
-              <Image src="/partners/caring-com.png" alt="Caring.com" width={90} height={90} className="object-contain h-16 w-auto" />
-              <Image src="/partners/a-place-for-mom.png" alt="A Place for Mom" width={220} height={60} className="object-contain h-16 w-auto" />
-              <Image src="carescout.png" alt="Carescout Qualtiy network" width={90} height={90} className="object-contain h-16 w-auto" />
+            <h3 className="text-2xl font-medium mb-3 text-white text-center lg:text-left w-full lg:max-w-md" style={{ marginLeft: '0px' }}>Proud Partners</h3>
+            <div className="flex flex-col lg:flex-row lg:flex-wrap justify-center lg:justify-end items-center lg:items-end gap-6 lg:gap-12 w-full max-w-6xl mb-4">
+              {/* First row - single wide image */}
+              <div className="flex justify-center w-full lg:w-auto">
+                <Image src="/partners/veterans-care.png" alt="Veterans Care Coordination" width={220} height={60} className="object-contain h-12 lg:h-16 w-auto" />
+              </div>
+              {/* Second row - three images */}
+              <div className="flex flex-row flex-nowrap lg:flex-wrap justify-center lg:justify-end items-center gap-4 lg:gap-12 w-full lg:w-auto">
+                <Image src="/partners/caring-com.png" alt="Caring.com" width={90} height={90} className="object-contain h-10 lg:h-16 w-auto flex-shrink-0" />
+                <Image src="/partners/a-place-for-mom.png" alt="A Place for Mom" width={220} height={60} className="object-contain h-10 lg:h-16 w-auto flex-shrink-0" />
+                <Image src="/carescout.png" alt="Carescout Qualtiy network" width={90} height={90} className="object-contain h-10 lg:h-16 w-auto flex-shrink-0" />
+              </div>
             </div>
           </div>
         </div>
@@ -225,7 +231,7 @@ const Footer = () => {
           </div>
         </div> */}
         <div>
-          <h1 className="font-bold text-5xl sm:text-6xl md:text-7xl lg:text-[80px] xl:text-[135px] text-gray-400/30 tracking-widest sm:mt-0 mt-2">
+          <h1 className="font-bold text-5xl sm:text-6xl md:text-7xl lg:text-[80px] xl:text-[135px] text-gray-400/30 tracking-widest sm:mt-0 mt-0">
             CAREWORKS
           </h1>
         </div>
@@ -261,8 +267,8 @@ const FooterLink = ({
 }) => {
   return (
     <div>
-      <p className="font-medium mb-6 text-white">{title}</p>
-      <ul className="flex flex-col gap-3">
+      <p className="font-medium mb-6 text-white text-start lg:text-left">{title}</p>
+      <ul className="flex flex-col gap-3 items-start">
         {links.map((item, index) => (
           <li key={index}>
             <Link 

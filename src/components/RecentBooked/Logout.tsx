@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 import ActionDialog from "../common/ActionDialog";
 import {logouts } from "@/lib/svg_icons";
@@ -26,9 +27,12 @@ const Logout = ({ goTo }: goToProps) => {
         icon={logouts}
         confirmText="Logout"
         handleConfirm={() => {
+          toast.success("Logged out successfully");
           Cookies.remove("authToken");
           handleOpen();
-          router.push("/");
+          setTimeout(() => {
+            router.push("/");
+          }, 400);
         }}
         heading="Account Logout"
         subheading="Are you sure you want to Logout your Account?"

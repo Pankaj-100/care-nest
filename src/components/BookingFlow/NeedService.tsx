@@ -149,7 +149,7 @@ const NeedService: React.FC = () => {
           <YellowButton
             onClick={handleNext}
             disabled={submitting}
-            className={`w-full px-4 py-4 text-base sm:text-lg md:text-xl font-bold rounded-full sm:py-5 md:py-6 md:px-65 ${
+            className={`w-full px-4 py-7 text-xl sm:text-lg md:text-xl font-bold rounded-full sm:py-5 md:py-6 md:px-65 ${
               !selected.length
                 ? "opacity-50 cursor-not-allowed pointer-events-none"
                 : ""

@@ -148,12 +148,12 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <div className="w-full md:w-[41rem] lg:p-10 p-4 text-lg px-14 bg-[var(--cream)] rounded-3xl shadow-md ">
+    <div className="w-full md:w-[41rem] bg-[var(--cream)] rounded-3xl shadow-md px-4 py-6 sm:px-6 sm:py-7 lg:px-10 lg:py-10 text-lg">
       <form
         onSubmit={handleSubmit}
         className="space-y-4 lg:mt-10 mt-3 lg:mb-10 mb-4 "
       >
-        <h3 className="text-3xl font-semibold text-[var(--navy)] mb-4">
+        <h3 className="text-2xl lg:text-3xl font-semibold text-[var(--navy)] mb-4">
           Get In Touch With Us
         </h3>
 
@@ -171,7 +171,7 @@ const ContactForm: React.FC = () => {
             value={formData.name}
             onChange={handleChange}
             placeholder="Enter Name"
-            className={`w-full pl-12 pr-4 max-w-xl px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.name ? 'border-red-500' : ''}`}
+            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.name ? 'border-red-500' : ''}`}
             required
           />
           {errors.name && (
@@ -193,7 +193,7 @@ const ContactForm: React.FC = () => {
             value={formData.email}
             onChange={handleChange}
             placeholder="Enter EmailID"
-            className={`w-full pl-12 pr-4 max-w-xl px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.email ? 'border-red-500' : ''}`}
+            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.email ? 'border-red-500' : ''}`}
             required
           />
           {errors.email && (
@@ -216,7 +216,7 @@ const ContactForm: React.FC = () => {
             onChange={handleNumericInput}
             placeholder="Enter Zip code"
             maxLength={5}
-            className={`w-full pl-12 pr-4 max-w-xl px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.zipcode ? 'border-red-500' : ''}`}
+            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.zipcode ? 'border-red-500' : ''}`}
             required
           />
           {errors.zipcode && (
@@ -239,7 +239,7 @@ const ContactForm: React.FC = () => {
             onChange={handleNumericInput}
             placeholder="Enter Phone No"
             maxLength={10}
-            className={`w-full pl-12 pr-4 max-w-xl px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.phone ? 'border-red-500' : ''}`}
+            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.phone ? 'border-red-500' : ''}`}
             required
           />
           {errors.phone && (
@@ -263,7 +263,7 @@ const ContactForm: React.FC = () => {
             value={formData.message}
             onChange={handleChange}
             placeholder="Write a brief description"
-            className={`w-full max-w-xl pl-12 pr-4 px-4 py-3 border bg-white rounded-3xl focus:outline-none ${errors.message ? 'border-red-500' : ''}`}
+            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-3xl focus:outline-none ${errors.message ? 'border-red-500' : ''}`}
             required
           />
           {errors.message && (
@@ -274,7 +274,7 @@ const ContactForm: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full cursor-pointer max-w-xl bg-[var(--navy)] text-white py-3 rounded-full transition-colors disabled:opacity-60"
+          className="w-full cursor-pointer bg-[var(--navy)] text-white py-3 rounded-full transition-colors disabled:opacity-60"
         >
           {loading ? "Submitting..." : "Submit"}
         </button>

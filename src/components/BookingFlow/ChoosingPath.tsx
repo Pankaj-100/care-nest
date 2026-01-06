@@ -11,10 +11,10 @@ const ChoosingPath: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F7F3]">
       <main className="flex-1 w-full">
-        <section className="max-w-5xl mx-auto px-4 pt-14 pb-24">
+        <section className="max-w-5xl mx-auto px-4 pt-5 lg:pt-14 pb-24">
           {/* Extended heading section with background */}
           <div className=" mx-4 px-4 py-6 mb-6 rounded-none">
-            <h1 className="text-center text-3xl sm:text-4xl font-semibold mb-1">
+            <h1 className="text-center text-2xl sm:text-4xl font-semibold mb-0 lg:mb-1">
               Choose The Path That Suits Your Needs Best.
             </h1>
           </div>

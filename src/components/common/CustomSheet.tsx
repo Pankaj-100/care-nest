@@ -26,7 +26,7 @@ function CustomSheet({
       <SheetDescription className="hidden"></SheetDescription>
 
       <SheetContent
-        className={`md:w-[calc(100%-17rem)] w-full !max-w-full  ${className} overflow-y-auto ${
+        className={`md:w-[calc(100%-17rem)] w-full !max-w-full pt-16 md:pt-10 pb-6 z-[120] ${className} overflow-y-auto ${
           !showCrossButton ? "[&>button:first-of-type]:hidden " : ""
         } `}
       >

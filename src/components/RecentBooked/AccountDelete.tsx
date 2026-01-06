@@ -31,7 +31,11 @@ const AccountDelete = ({ goTo }: goToProps) => {
       toast.success(res.message || "Account deleted successfully.");
       dispatch(clearAuth());
       Cookies.remove("authToken");
-      router.push("/signin"); // or redirect to landing page
+      setOpenDialog(false);
+      goTo("Manage Profile");
+      setTimeout(() => {
+        router.push("/signin"); // or redirect to landing page
+      }, 400);
     } catch (err: unknown) {
   if (typeof err === "object" && err !== null && "data" in err) {
     const errorData = err as { data?: { message?: string } };

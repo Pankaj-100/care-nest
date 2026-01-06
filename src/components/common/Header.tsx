@@ -13,6 +13,8 @@ import { MdMenu as MenuIcon } from "react-icons/md";
 import Cookies from "js-cookie";
 import { profileIcon } from "../icons/page";
 import { useGetUnreadCountQuery } from "@/store/api/notificationApi";
+import Logout from "../RecentBooked/Logout";
+import AccountDelete from "../RecentBooked/AccountDelete";
 
 export interface NavbarTypes {
   title: string;
@@ -216,10 +218,13 @@ const Header = () => {
     { title: "Manage Profile", link: "/profile" },
     { title: "Recent Booking", link: "/recent-booking" },
     { title: "Saved Caregivers", link: "/saved-caregiver" },
-    { title: "Reset Password", link: "/reset-password" },
-    { title: "Delete Account", link: "/profile?action=delete" },
+    { title: "Reset Password", link: "/password-reset" },
+    { title: "Delete Account", link: "/profile", action: "delete" },
     { title: "Log Out", link: "/signin", action: "logout" },
   ];
+
+  const [showMobileLogout, setShowMobileLogout] = useState(false);
+  const [showMobileDelete, setShowMobileDelete] = useState(false);
 
   return (
     <>
@@ -363,12 +368,15 @@ const Header = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           if (item.action === "logout") {
-                            Cookies.remove("authToken");
-                            router.push("/");
+                            handleCloseMenu();
+                            setShowMobileLogout(true);
+                          } else if (item.action === "delete") {
+                            handleCloseMenu();
+                            setShowMobileDelete(true);
                           } else if (item.link) {
                             router.push(item.link);
+                            handleCloseMenu();
                           }
-                          handleCloseMenu();
                         }}
                         className="text-base text-white hover:text-[var(--yellow)] transition-colors py-2"
                       >
@@ -384,6 +392,24 @@ const Header = () => {
       </div>
 
       <Notification open={openNotifications} handleOpen={handleNotificationOpen} />
+
+          {/* Mobile Logout Dialog */}
+          {showMobileLogout && (
+            <Logout
+              goTo={() => {
+                setShowMobileLogout(false);
+              }}
+            />
+          )}
+
+          {/* Mobile Delete Account Dialog */}
+          {showMobileDelete && (
+            <AccountDelete
+              goTo={() => {
+                setShowMobileDelete(false);
+              }}
+            />
+          )}
     </>
   );
 };

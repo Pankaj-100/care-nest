@@ -82,7 +82,7 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
       <section className="bg-white py-15 px-6 md:px-8 lg:px-24">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 items-start">
           <div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C3E50] mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-3xl text-center lg:text-left md:text-4xl lg:text-5xl font-bold text-[#2C3E50] mb-0 lg:mb-6 leading-tight">
               {data.heroTitle}
             </h1>
           </div>
@@ -248,7 +248,7 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
       </section>
 
       {/* Care Designed & Community Section */}
-      <section className="bg-white py-16 px-6 md:px-8 lg:px-24">
+      <section className="bg-white py-3 lg:py-16 px-6 md:px-8 lg:px-24">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             {/* Left side - Image */}

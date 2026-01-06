@@ -3,14 +3,21 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import { X } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { setProfile } from "../../store/profileSlice";
 
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
   useGetRequiredByQuery,
   useUpdateRequiredByMutation,
+  useUpdateAvatarMutation,
+  useRemoveAvatarMutation,
 } from "@/store/api/profileApi";
 import { MailIcon, UserIcon, LocationIcon, dailerIcon } from "../icons/page";
+import { editprofileimage } from "@/lib/svg_icons";
 
 // Add a narrow type for API profile (no any)
 type ProfileApi = {
@@ -21,6 +28,7 @@ type ProfileApi = {
   mobile?: string;
   zipcode?: number | string;
   zipCode?: number | string;
+  avatar?: string | null;
 };
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,11 +45,25 @@ const CARE_RECIPIENT_OPTIONS = [
 ];
 
 export default function ManageProfile() {
+  const dispatch = useDispatch();
+  const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
+  
   const { data: profile, isLoading: isFetching } = useGetProfileQuery();
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
+  const [updateAvatar] = useUpdateAvatarMutation();
+  const [removeAvatar] = useRemoveAvatarMutation();
 
   const { data: requiredBy, isLoading: isRequiredByLoading } = useGetRequiredByQuery();
   const [updateRequiredBy, { isLoading: isUpdatingRequiredBy }] = useUpdateRequiredByMutation();
+  
+  const profileState = useSelector((state: RootState) => state.profile) as {
+    name: string;
+    email: string;
+    avatar: string | null;
+    address: string;
+    mobile: string;
+    gender: string;
+  };
 
   const [form, setForm] = useState({
     name: "",
@@ -64,6 +86,16 @@ export default function ManageProfile() {
     zipcode: "",
   });
 
+  // Helper function to construct proper avatar URL
+  const getAvatarUrl = (avatarPath: string | null | undefined): string | null => {
+    if (!avatarPath) return null;
+    if (avatarPath.startsWith('http://') || avatarPath.startsWith('https://')) {
+      return avatarPath;
+    }
+    const cleanPath = avatarPath.replace(/^\/+/, '');
+    return `${cdnURL}/${cleanPath}`;
+  };
+
   useEffect(() => {
     if (profile) {
       const p = profile as ProfileApi;
@@ -84,10 +116,21 @@ export default function ManageProfile() {
         address: p.address || "",
         mobile: p.mobile || "",
         zipcode: normalizedZip !== undefined ? String(normalizedZip) : "",
-        careRecipient: "", // or p.careRecipient if available from API
+        careRecipient: "",
       });
+      
+      // Update Redux state with avatar
+      const avatarUrl = getAvatarUrl(p.avatar);
+      dispatch(setProfile({
+        name: p.name || "",
+        email: p.email || "",
+        avatar: avatarUrl,
+        address: p.address || "",
+        mobile: p.mobile || "",
+        gender: p.gender || "",
+      }));
     }
-  }, [profile]);
+  }, [profile, dispatch]);
 
   useEffect(() => {
     if (requiredBy) {
@@ -131,6 +174,59 @@ export default function ManageProfile() {
   };
 
   const hasErrors = Object.values(errors).some((msg) => msg);
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Please upload a valid image file (JPEG, PNG, GIF, WebP)');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size should be less than 5MB');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await updateAvatar(formData).unwrap();
+      if (res?.success) {
+        const localAvatarURL = URL.createObjectURL(file);
+        dispatch(setProfile({
+          ...profileState,
+          avatar: localAvatarURL,
+        }));
+        toast.success("Profile image updated successfully");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+    } catch (error) {
+      console.error('Avatar upload error:', error);
+      toast.error("Failed to update profile image");
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    try {
+      const res = await removeAvatar().unwrap();
+      if (res?.success) {
+        dispatch(setProfile({
+          ...profileState,
+          avatar: null,
+        }));
+        toast.success("Profile image removed successfully");
+      }
+    } catch (error) {
+      console.error('Avatar removal error:', error);
+      toast.error("Failed to remove profile image");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -192,8 +288,60 @@ export default function ManageProfile() {
     <div>
       <div className="bg-[#FFFFFF] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto mt-10">
         <form onSubmit={handleSubmit}>
-          <div className="flex justify-between items-center mb-6 border-b pb-6">
-            <h2 className="text-3xl font-semibold leading-8 text-[var(--navy)]">
+          {/* Mobile Profile Header */}
+          <div className="md:hidden flex items-center gap-6 mb-6 pb-6 border-b">
+            <div className="relative w-20 h-20 flex-shrink-0 group">
+              <Image
+                src={profileState.avatar || "/Recent/profile.png"}
+                alt="User Avatar"
+                width={80}
+                height={80}
+                className="w-20 h-20 rounded-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/Recent/profile.png";
+                }}
+                unoptimized={profileState.avatar?.startsWith('blob:') || false}
+              />
+              {profileState.avatar && (
+                <button
+                  type="button"
+                  onClick={handleRemoveAvatar}
+                  className="absolute inset-0 flex items-center cursor-pointer justify-center bg-black/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  aria-label="Remove profile image"
+                >
+                  <span className="bg-white rounded-full p-1 shadow">
+                    <X size={16} />
+                  </span>
+                </button>
+              )}
+              <label
+                htmlFor="mobileProfileImageUpload"
+                className="absolute bottom-0 right-0 cursor-pointer w-6 h-6 flex items-center justify-center transition"
+                style={{ transform: "translate(20%, 20%)" }}
+              >
+                <span className="w-5 h-5 flex items-center justify-center">{editprofileimage}</span>
+              </label>
+              <input
+                type="file"
+                id="mobileProfileImageUpload"
+                className="hidden"
+                accept="image/*"
+                onChange={handleAvatarChange}
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg font-bold text-[var(--navy)] truncate">
+                {profileState.name || form.name || "Your Name"}
+              </h2>
+              <p className="text-sm text-gray-500 truncate">
+                {profileState.email || form.email || "your@email.com"}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-6 border-b pb-6 text-center sm:text-left">
+            <h2 className="text-2xl lg:text-3xl font-semibold leading-8 text-[var(--navy)]">
               Personal Information
             </h2>
             <button
@@ -241,7 +389,7 @@ export default function ManageProfile() {
               />
               <div className="space-y-1">
                 <div
-                  className={`flex items-center bg-[#F8F8F8] px-4 py-4 rounded-full border ${
+                  className={`flex items-center gap-3 bg-[#F8F8F8] px-4 py-4 rounded-full border ${
                     errors.gender ? "border-red-500 ring-2 ring-red-400" : "focus-within:ring-2 ring-yellow-400"
                   }`}
                 >
@@ -256,7 +404,7 @@ export default function ManageProfile() {
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
                   </select>
-                  <span className="text-xl ml-12 text-gray-500">
+                  <span className="text-xl text-gray-500 flex-shrink-0">
                     {UserIcon()}
                   </span>
                 </div>
@@ -296,7 +444,7 @@ export default function ManageProfile() {
           <button
             type="submit"
             disabled={isUpdating || hasErrors}
-            className={`flex sm:hidden items-center justify-center gap-2 w-full cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 py-3 rounded-full transition font-semibold mt-6 ${
+            className={`flex sm:hidden items-center justify-center gap-2 w-full cursor-pointer bg-[#F2A307] hover:bg-yellow-500 text-[var(--navy)] px-4 py-3 rounded-full transition font-semibold mt-6 ${
               isUpdating || hasErrors ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -374,7 +522,7 @@ function InputField({
   return (
     <div className="space-y-1">
       <div
-        className={`flex items-center bg-[#F8F8F8] px-4 py-4 rounded-full border ${
+        className={`flex items-center gap-3 bg-[#F8F8F8] px-4 py-4 rounded-full border ${
           disabled
             ? "bg-[#FFFFFF] cursor-not-allowed"
             : error
@@ -396,7 +544,7 @@ function InputField({
           }`}
           inputMode={type === "tel" ? "numeric" : undefined}
         />
-        <span className={`text-xl ml-12 ${disabled ? "text-gray-400" : "text-gray-500"}`}>
+        <span className={`text-xl ${disabled ? "text-gray-400" : "text-gray-500"} flex-shrink-0`}>
           {icon}
         </span>
       </div>

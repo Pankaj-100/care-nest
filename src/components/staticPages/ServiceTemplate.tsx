@@ -157,7 +157,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
       <div className="w-full bg-[#F7F7F3] py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
           <div className="flex-1 lg:pr-8">
-            <h1 className="text-4xl sm:text-5xl font-bold text-[#233D4D] leading-tight mb-6 sm:mb-8">
+            <h1 className="text-4xl sm:text-5xl font-bold text-[#233D4D] leading-tight mb-0 sm:mb-8">
               {serviceData.title1}
             </h1>
           </div>
@@ -173,7 +173,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-16">
           {/* Image: below content on mobile, beside on md+ */}
           <div className="w-full md:w-auto flex justify-center order-2 md:order-2 mt-5 md:mt-0">
-            <div className="relative mt-22 w-92 h-92 sm:w-80 sm:h-64 md:w-80 md:h-64 lg:w-116 lg:h-92">
+            <div className="relative mt-4 lg:mt-22 w-92 h-92 sm:w-80 sm:h-64 md:w-80 md:h-64 lg:w-116 lg:h-92">
               <Image
                 src={serviceData.description3Image || "/service-default.jpg"}
                 alt={`${serviceData.serviceName} service`}

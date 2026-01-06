@@ -181,7 +181,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
               booking.status !== "canceled" ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="border border-[#e89923] font-semibold text-[#FFA726] px-3 sm:px-4 py-2 rounded-lg hover:bg-[#FFF3E0] transition text-sm sm:text-base"
+                className="border border-[#e89923] font-semibold text-[#FFA726] px-4 sm:px-5 py-3 rounded-lg hover:bg-[#FFF3E0] transition text-base sm:text-base"
               >
                 Edit
               </button>
@@ -190,7 +190,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
             {/* Hide Cancel button for completed bookings */}
             {booking.status === "cancelled" || booking.status === "canceled" ? (
               <button
-                className="border border-[#D1D5DB] text-[#6B7280] font-semibold px-3 sm:px-4 py-2 rounded-lg bg-[#F3F4F6] text-sm sm:text-base"
+                className="border border-[#D1D5DB] text-[#6B7280] font-semibold px-4 sm:px-5 py-3 rounded-lg bg-[#F3F4F6] text-base sm:text-base"
                 disabled
               >
                 Cancelled
@@ -198,7 +198,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
             ) : booking.status !== "completed" ? (
               <button
                 onClick={() => setOpenDialog(true)}
-                className="border border-[#ee4a47] text-[#ee4a47] font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-[#f0eaea] transition text-sm sm:text-base"
+                className="border border-[#ee4a47] text-[#ee4a47] font-semibold px-4 sm:px-5 py-3 rounded-lg hover:bg-[#f0eaea] transition text-base sm:text-base"
                 disabled={isCancelling}
               >
                 {isCancelling ? "Cancelling..." : "Cancel Booking"}
@@ -325,11 +325,12 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
               </div>
               {(booking.status === "accepted" && cg.status === "hired") ||
                 (booking.status === "completed" && cg.status === "completed") ? (
-                <span className="bg-[#2F3C51] text-white px-6 py-2 rounded-full text-base font-semibold flex items-center gap-2 ml-auto">
-                  <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+                <span className="bg-[#2F3C51] text-white px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold flex items-center gap-1 sm:gap-2 ml-auto">
+                  <svg width="14" height="14" className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" fill="none" viewBox="0 0 18 18">
                     <path d="M6.75 13.5L2.25 9L3.3075 7.9425L6.75 11.3775L14.6925 3.4425L15.75 4.5L6.75 13.5Z" fill="white"/>
                   </svg>
-                  Selected Caregiver
+                  <span className="hidden sm:inline">Selected Caregiver</span>
+                  <span className="sm:hidden">Selected</span>
                 </span>
               ) : null}
             </div>

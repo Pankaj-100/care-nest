@@ -7,11 +7,11 @@ interface Props {
 }
 
 const HeroSectionProtected = ({ title, className }: Props) => {
-const classes = `absolute text-4xl sm:text-5xl lg:text-7xl text-white lg:left-28 left-6 sm:left-8 font-medium -translate-y-1/2 sm:w-auto w-[90%] top-1/2 lg:whitespace-nowrap ${className}`;
+  const heading = title ? title : "Become A Care Provider";
 
   return (
     <div className="relative">
-      <div className="relative h-[241px]">
+      <div className="relative h-[220px] sm:h-[260px] lg:h-[320px]">
         <Image
           src={"/hero-section.png"}
           alt="Logo"
@@ -20,16 +20,29 @@ const classes = `absolute text-4xl sm:text-5xl lg:text-7xl text-white lg:left-28
         />
       </div>
 
+      {/* Responsive gradient: vertical on mobile, horizontal on desktop */}
       <div
-        className="absolute top-0 left-0 h-full w-full pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to left, rgba(35, 61, 77, 0) 0%, rgba(35, 61, 77, 0.85) 40%, rgba(35, 61, 77, 0.95) 100%)",
+            "linear-gradient(180deg, rgba(35, 61, 77, 0) 0%, rgba(35, 61, 77, 0.35) 45%, rgba(35, 61, 77, 0.85) 85%, rgba(35, 61, 77, 0.95) 100%)",
+        }}
+      ></div>
+      <div
+        className="absolute inset-0 pointer-events-none hidden lg:block"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(35, 61, 77, 0.92) 0%, rgba(35, 61, 77, 0.75) 30%, rgba(35, 61, 77, 0.25) 70%, rgba(35, 61, 77, 0) 100%)",
         }}
       ></div>
 
-      <h1 className={classes}>{title ? title : "Become A Care Provider"}</h1>
-      
+      <div className="absolute inset-0 flex items-end">
+        <h1
+          className={`text-3xl sm:text-4xl lg:text-5xl text-white font-medium px-6 sm:px-8 lg:px-28 pb-6 sm:pb-8 lg:pb-10 leading-tight lg:leading-[1.1] ${className}`}
+        >
+          {heading}
+        </h1>
+      </div>
     </div>
   );
 };

@@ -551,6 +551,32 @@ const ScheduleCare = ({
     setIsDragging(null);
   };
 
+  // Touch event handlers for mobile
+  const handleTouchStart = (type: "start" | "end") => (e: React.TouchEvent) => {
+    e.preventDefault();
+    setIsDragging(type);
+  };
+
+  const handleTouchMove = (d: Day) => (e: React.TouchEvent) => {
+    if (!isDragging) return;
+
+    const touch = e.touches[0];
+    const target = e.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const percentage = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+    const minutes = Math.round(percentage * 24 * 60 / 15) * 15; // Round to 15-minute intervals
+
+    if (isDragging === "start") {
+      changeStartTime(d, minutes);
+    } else if (isDragging === "end") {
+      changeEndTime(d, minutes);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(null);
+  };
+
   // Add this useEffect for global mouse events
   useEffect(() => {
     const handleGlobalMouseUp = () => setIsDragging(null);
@@ -720,7 +746,7 @@ const ScheduleCare = ({
         </div>
 
         {/* Dates */}
-        <div className={`grid gap-4 mb-4 ${lockStartAndMeetingDates ? 'grid-cols-1 sm:grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}>
+        <div className={`grid gap-4 mb-4 ${lockStartAndMeetingDates ? 'grid-cols-1 md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
           {!lockStartAndMeetingDates && (
             <>
               <div>
@@ -733,10 +759,10 @@ const ScheduleCare = ({
                     onChange={(date) => setMeetingDate(date)}
                     minDate={new Date()}
                     dateFormat="dd-MM-yyyy"
-                    className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                    className="!w-full border border-gray-400 rounded-full py-3 pl-4 lg:pr-15 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
                     popperClassName="!z-[9999]"
                   />
-                  <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+                  <CalenderIcon className="absolute ml-40 lg:ml-55 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
                 </div>
               </div>
               <div>
@@ -749,10 +775,10 @@ const ScheduleCare = ({
                     onChange={(date) => setStartDate(date)}
                     minDate={new Date()}
                     dateFormat="dd-MM-yyyy"
-                    className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                    className="!w-full border border-gray-400 rounded-full py-3 pl-4 lg:pr-15 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
                     popperClassName="!z-[9999]"
                   />
-                  <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+                  <CalenderIcon className="absolute ml-40 lg:ml-55 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
                 </div>
               </div>
             </>
@@ -770,9 +796,9 @@ const ScheduleCare = ({
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Select Date"
                   popperClassName="!z-[9999]"
-                  className="!w-full border border-gray-400 rounded-full py-3 pl-4 pr-32 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
+                  className="!w-full border border-gray-400 rounded-full py-3 pl-4  text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
                 />
-                <CalenderIcon className="absolute right-2 top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
+                  <CalenderIcon className="absolute ml-40  top-1/2 -translate-y-1/2 opacity-70 h-[18px] w-[18px] pointer-events-none" />
               </div>
             </div>
           )}
@@ -842,6 +868,8 @@ const ScheduleCare = ({
                         onMouseMove={handleMouseMove(d)}
                         onMouseUp={handleMouseUp}
                         onMouseLeave={handleMouseUp}
+                        onTouchMove={handleTouchMove(d)}
+                        onTouchEnd={handleTouchEnd}
                       >
                         {/* Background track */}
                         <div className="w-full h-1 bg-gray-300 rounded-full"></div>
@@ -865,6 +893,7 @@ const ScheduleCare = ({
                             zIndex: 40,
                           }}
                           onMouseDown={handleMouseDown("start")}
+                          onTouchStart={handleTouchStart("start")}
                         ></div>
 
                         {/* End handle */}
@@ -877,6 +906,7 @@ const ScheduleCare = ({
                             zIndex: 40,
                           }}
                           onMouseDown={handleMouseDown("end")}
+                          onTouchStart={handleTouchStart("end")}
                         ></div>
                       </div>
                     </div>
