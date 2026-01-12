@@ -82,11 +82,11 @@ export default async function WhoWeAre() {
 
       {/* Our Caregiver Network Section */}
       <section className="w-full bg-[#F7F7F3] py-15 flex flex-col items-center mt-20">
-        <h2 className="text-2xl lg:text-5xl font-bold text-[#233D4D] mb-6 text-center">
+        <h2 className="text-3xl lg:text-5xl font-bold text-[#233D4D] mb-6 text-center">
           {who.caregiverNetworkHeading ?? "Our Caregiver Network"}
         </h2>
         <div
-          className="text-[#233D4D] text-base sm:text-lg md:text-lg md:w-2/3  max-w-6xl text-center mb-4 leading-snug px-4"
+          className="text-[#233D4D] text-lg sm:text-lg md:text-lg md:w-2/3  max-w-6xl text-center mb-4 leading-snug px-4"
           dangerouslySetInnerHTML={{ __html: who.caregiverNetworkDescription ?? "" }}
         />
         
@@ -121,7 +121,7 @@ export default async function WhoWeAre() {
             src="/whoWeAre/image6.png"
             alt="Contact Banner"
             fill
-            className="object-cover"
+            className="object-cover object-right  md:object-center"
             priority
           />
           <div

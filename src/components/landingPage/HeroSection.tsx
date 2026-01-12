@@ -213,7 +213,7 @@ const HeroSection = () => {
             <button
               type="button"
               onClick={() => window.location.href = '/contact'}
-              className="px-5 py-3 sm:px-6 sm:py-3.5 cursor-pointer lg:px-8 lg:py-4 mb-4 text-md sm:text-base lg:text-lg rounded-4xl font-semibold flex items-center gap-2 bg-[var(--yellow)] text-[var(--navy)] hover:bg-[var(--yellow-light)] transition-all duration-300 ease-in-out shadow-md"
+              className="px-8 py-4 sm:px-7 sm:py-6 cursor-pointer lg:px-8 lg:py-4 mb-4 text-md sm:text-base lg:text-lg rounded-4xl font-semibold flex items-center gap-2 bg-[var(--yellow)] text-[var(--navy)] hover:bg-[var(--yellow-light)] transition-all duration-300 ease-in-out shadow-md"
             >
               <span>Contact Us</span>
               <ArrowIcon className="w-6 h-6 ml-2" />

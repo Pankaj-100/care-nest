@@ -75,7 +75,7 @@ const Testimonials: React.FC = () => {
     <div className="py-12 sm:py-20 bg-[var(--whiteSmoke)] px-4 sm:px-10 lg:px-24 xl:px-28">
       <div className="text-center flex items-center justify-center mb-8 sm:mb-10 lg:mb-12">
         {/* Mobile: 3 lines */}
-        <div className="flex lg:hidden flex-col font-semibold text-2xl sm:text-3xl capitalize items-center gap-1 sm:gap-2 px-2">
+        <div className="flex lg:hidden flex-col font-semibold text-3xl sm:text-4xl capitalize items-center gap-1 sm:gap-2 px-2">
           <div>Trusted by Houston</div>
           <div>Families Who Count on</div>
           <div>Quality Care</div>

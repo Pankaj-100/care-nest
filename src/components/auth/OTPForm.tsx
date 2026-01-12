@@ -112,7 +112,7 @@ function OTPForm({ isEmailVerify }: Props) {
   }, []);
 
   return (
-    <div className="mt-[8rem]">
+    <div className=" mt-0 lg:mt-[8rem]">
       <ToastContainer position="top-center" />
 
       <div className="font-semibold text-2xl">OTP Verification</div>

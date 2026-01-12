@@ -40,7 +40,7 @@ const IntroductionWithCTA = () => {
   }, []);
 
   return (
-    <div className="flex lg:flex-row flex-col justify-around gap-y-10 relative bg-[var(--whiteSmoke)] lg:h-[475px] h-max lg:p-16 p-8">
+    <div className="flex lg:flex-row flex-col justify-around gap-y-10 relative bg-[var(--whiteSmoke)] lg:h-[495px] h-max lg:p-16 p-8">
       {/* Left Text Section */}
       <div className="text-white lg:w-1/2 w-full">
         <div>

@@ -310,7 +310,7 @@ const CaregiversPage = () => {
         </div>
 
         <div className="flex-1 flex flex-col">
-          <div className="flex flex-col mb-4 text-sm gap-2">
+          <div className="flex flex-col mb-4 text-sm gap-1">
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
               <button
                 onClick={() => setOpenFilter(p => !p)}
@@ -421,7 +421,7 @@ const CaregiversPage = () => {
                 }
                 setIsScheduleOpen(true);
               }}
-              className={`lg:w-[25rem] w-full px-4 py-2 text-[var(--navy)] text-lg rounded-full font-semibold transition ${
+              className={`lg:w-[25rem]  w-full px-4 py-2 text-[var(--navy)] text-lg rounded-full font-semibold transition ${
                 mappedCaregiversForSchedule.length >= 1
                   ? "bg-[var(--yellow)] cursor-pointer hover:bg-yellow-400"
                   : "bg-[#233D4D1A] hover:cursor-not-allowed"

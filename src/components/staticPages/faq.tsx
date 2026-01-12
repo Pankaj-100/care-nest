@@ -141,7 +141,7 @@ return (
 							<span className="ml-2">&#8594;</span>
 						</a>
 					</div>
-					<div className="flex-1 flex justify-center md:justify-end md:pr-8 order-1 md:order-2 mb-6 md:mb-0">
+					<div className="flex-1 flex justify-center md:justify-end md:pr-8 order-1 md:order-2 mb-0 md:mb-0">
 						<Image
 							src="/faq2.png"
 							alt="Caregiver Banner"

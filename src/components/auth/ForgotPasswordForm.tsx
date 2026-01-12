@@ -53,7 +53,7 @@ function ForgotPasswordForm() {
   };
 
   return (
-    <div className="my-8 flex flex-col gap-4">
+    <div className="my-8 flex flex-col gap-2">
       <TextInput
         text={email}
         setText={setEmail}

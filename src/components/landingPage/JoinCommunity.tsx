@@ -19,7 +19,7 @@ const JoinCommunity = () => {
         </p>
 
         <YellowButton
-          className="px-6 sm:px-8 py-6 sm:py-8 lg:py-7 text-sm sm:text-base lg:text-lg"
+          className="px-10 sm:px-8 py-6 sm:py-8 lg:py-7 text-sm sm:text-base lg:text-lg"
           onClick={() =>
             (window.location.href = "https://carenest-caregiver.vercel.app/signup")
           }

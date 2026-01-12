@@ -150,14 +150,14 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
       </div>
 
       {/* FAQ Section - dynamic from API */}
-      <div className="w-full bg-white mt-12 md:mt-16 py-12 md:py-16">
+      <div className="w-full bg-white mt-0 md:mt-16 py-12 md:py-16">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 md:gap-12 md:flex-row px-4 md:px-6 items-start">
           {/* Left: Heading */}
           <div className="w-full md:w-5/12 text-center md:text-left">
-            <div className="mb-2 text-sm sm:text-base md:text-xl font-semibold text-[#F2A307]">
+            <div className="mb-2 text-md sm:text-base md:text-xl font-semibold text-[#F2A307]">
               General FAQ&apos;s
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-[#233D4D]">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight text-[#233D4D]">
               {faqSectionTitle.split(" ").slice(0, 3).join(" ")}
               <br />
               {faqSectionTitle.split(" ").slice(3).join(" ")}

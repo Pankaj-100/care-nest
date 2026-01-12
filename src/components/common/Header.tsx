@@ -255,7 +255,7 @@ const Header = () => {
                   <ChevronDown size={16} className={`transition-transform ${mobileLoginDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {mobileLoginDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 min-w-[180px] rounded-lg bg-white text-[var(--navy)] overflow-hidden shadow-lg z-[9999]">
+                  <div className="absolute top-full left-0 mt-2 min-w-[180px] rounded-lg bg-white text-[var(--navy)] overflow-hidden shadow-lg z-[9999]">
                     <a
                       href="/signin"
                       className="px-3 py-3 text-sm font-semibold cursor-pointer hover:bg-orange-500 hover:text-white block w-full transition-colors"
@@ -315,7 +315,7 @@ const Header = () => {
         <div className="lg:block hidden">{navContent}</div>
         
         <CustomDrawer
-          className="bg-[var(--navy)] text-white"
+          className="bg-[var(--navy)] text-lg text-white"
           open={openMenu}
           handleOpen={handleOpenMenu}
           direction="left"
@@ -361,28 +361,33 @@ const Header = () => {
               {isLoggedInUser && (
                 <div className="lg:hidden mt-1">
                   <nav className="flex flex-col gap-4 w-full">
-                    {mobileProfileMenuItems.map((item, index) => (
-                      <Link
-                        key={index}
-                        href={item.link}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          if (item.action === "logout") {
-                            handleCloseMenu();
-                            setShowMobileLogout(true);
-                          } else if (item.action === "delete") {
-                            handleCloseMenu();
-                            setShowMobileDelete(true);
-                          } else if (item.link) {
-                            router.push(item.link);
-                            handleCloseMenu();
-                          }
-                        }}
-                        className="text-base text-white hover:text-[var(--yellow)] transition-colors py-2"
-                      >
-                        {item.title}
-                      </Link>
-                    ))}
+                    {mobileProfileMenuItems.map((item, index) => {
+                      const isActive = path === item.link;
+                      return (
+                        <Link
+                          key={index}
+                          href={item.link}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (item.action === "logout") {
+                              handleCloseMenu();
+                              setShowMobileLogout(true);
+                            } else if (item.action === "delete") {
+                              handleCloseMenu();
+                              setShowMobileDelete(true);
+                            } else if (item.link) {
+                              router.push(item.link);
+                              handleCloseMenu();
+                            }
+                          }}
+                          className={`${
+                            isActive ? "text-[var(--yellow)]" : "text-white"
+                          } text-md hover:text-[var(--yellow)] transition-colors py-2`}
+                        >
+                          {item.title}
+                        </Link>
+                      );
+                    })}
                   </nav>
                 </div>
               )}
@@ -432,6 +437,8 @@ const NavbarMenu = ({
   const isActive = path === link;
   const isDropdownOpen = openDropdownIndex === index;
   const hasDropdown = title === "Services" || title === "Who We Are" || title === "Login" || title === "Locations";
+  const childMatch = hasDropdown && (services?.some((s) => s.link && path?.startsWith(s.link)) || false);
+  const sectionActive = isActive || childMatch || (hasDropdown && isDropdownOpen);
 
   return (
     <div
@@ -443,7 +450,7 @@ const NavbarMenu = ({
             href={link}
             className={`${
               isActive ? "text-[var(--yellow)]" : "text-white"
-            } text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] hover:text-[var(--yellow)] transition-colors`}
+            } text-lg lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] hover:text-[var(--yellow)] transition-colors`}
             onClick={() => {
               setOpenDropdownIndex(null);
               onNavigate?.();
@@ -454,7 +461,7 @@ const NavbarMenu = ({
         ) : (
           <button
             type="button"
-            className={`${isActive ? "text-[var(--yellow)]" : "text-white"} text-left text-[clamp(1rem,1.2vw,1.35rem)] lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] flex items-center gap-2`}
+            className={`${sectionActive ? "text-[var(--yellow)]" : "text-white"} text-left text-lg lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] flex items-center gap-2`}
             onClick={() => {
               if (hasDropdown) {
                 setOpenDropdownIndex(isDropdownOpen ? null : index);
@@ -525,31 +532,38 @@ const NavbarMenu = ({
           <div className="flex flex-col gap-2">
             {services.map((item, idx) => (
               <React.Fragment key={idx}>
-                {item.link && item.link.startsWith("http") ? (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="py-2 px-3 font-medium text-white hover:bg-orange-500 rounded transition-colors block"
+                {(() => {
+                  const isChildActive = !!(item.link && path?.startsWith(item.link));
+                  const base = `${isChildActive ? "text-[var(--yellow)]" : "text-white"} py-2 px-3 font-medium hover:text-[var(--yellow)] transition-colors block`;
+                  if (item.link && item.link.startsWith("http")) {
+                    return (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={base}
+                        onClick={() => {
+                          setOpenDropdownIndex(null);
+                          onNavigate?.();
+                        }}
+                      >
+                        {item.title}
+                      </a>
+                    );
+                  }
+                  return (
+                    <Link
+                      href={item.link || "#"}
+                      className={base}
                       onClick={() => {
                         setOpenDropdownIndex(null);
                         onNavigate?.();
                       }}
-                  >
-                    {item.title}
-                  </a>
-                ) : (
-                  <Link
-                    href={item.link || "#"}
-                    className="py-2 px-3 font-medium text-white hover:bg-orange-500 rounded transition-colors block"
-                      onClick={() => {
-                        setOpenDropdownIndex(null);
-                        onNavigate?.();
-                      }}
-                  >
-                    {item.title}
-                  </Link>
-                )}
+                    >
+                      {item.title}
+                    </Link>
+                  );
+                })()}
               </React.Fragment>
             ))}
           </div>

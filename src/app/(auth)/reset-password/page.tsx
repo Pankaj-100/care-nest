@@ -6,7 +6,7 @@ import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 function page() {
   return (
     <AuthLayout image="/auth/forgot-password.png">
-      <div className="mt-[8rem]">
+      <div className="mt-0 lg:mt-[8rem]">
         <div className="text-[var(--blue-gray)] font-semibold text-2xl">
           Reset Password
         </div>

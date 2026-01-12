@@ -47,7 +47,7 @@ const BookSuccessful = ({ isModalOpen, onClose }: BookSuccessfulProps) => {
         </p>
 
         {/* Action Button */}
-        <CustomButton className="w-full text-sm sm:text-base py-4 sm:py-5" onClick={handleGoToRecentBooking}>
+        <CustomButton className="w-full text-md sm:text-base py-5 sm:py-5" onClick={handleGoToRecentBooking}>
           Go to Recent Booking
         </CustomButton>
       </div>
