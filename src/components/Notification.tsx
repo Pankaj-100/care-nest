@@ -100,7 +100,7 @@ function Notification({ open, handleOpen }: Props) {
             >
               <BackIcon size={20} />
             </button>
-            <div className="ms-[6rem] text-xl font-bold">Notifications</div>
+            <div className="ms-[4rem] lg:ms-[5rem] text-xl font-bold">Notifications</div>
           </div>
           {unreadCount > 0 && (
             <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">

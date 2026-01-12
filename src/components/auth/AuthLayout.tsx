@@ -37,8 +37,8 @@ function AuthLayout({ image, children }: Props) {
           </div>
 
           {/* Foreground white card */}
-          <div className="relative z-10 bg-white rounded-2xl p-4">
-            <div className="relative h-40 w-full mb-4">
+          <div className="relative z-10 bg-white rounded-2xl p-4 md:p-6">
+            <div className="relative h-40 md:h-64 w-full mb-4 md:mb-6">
               <Image
                 src={image}
                 alt="Caregiver Hero"
@@ -46,10 +46,10 @@ function AuthLayout({ image, children }: Props) {
                 className="object-cover rounded-lg"
               />
             </div>
-            <h2 className="text-lg font-bold text-[#233D4D] text-center">
+            <h2 className="text-lg md:text-2xl font-bold text-[#233D4D] text-center">
               Find Trusted Caregivers for Your Loved Ones at Home
             </h2>
-            <p className="text-[#98A2B3] text-center text-sm">
+            <p className="text-[#98A2B3] text-center text-sm md:text-base md:mt-3">
               Connect with verified professionals who provide compassionate, personalized care for seniors—right where they feel safest.
             </p>
           </div>

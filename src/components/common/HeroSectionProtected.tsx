@@ -36,9 +36,9 @@ const HeroSectionProtected = ({ title, className }: Props) => {
         }}
       ></div>
 
-      <div className="absolute inset-0 flex items-end">
+      <div className="absolute inset-0 flex items-end justify-center lg:items-end lg:justify-start">
         <h1
-          className={`text-3xl sm:text-4xl lg:text-5xl text-white font-medium px-6 sm:px-8 lg:px-28 pb-6 sm:pb-8 lg:pb-10 leading-tight lg:leading-[1.1] ${className}`}
+          className={`text-3xl sm:text-4xl lg:text-5xl !text-center text-white font-medium px-6 sm:px-8 lg:px-28 pb-6 sm:pb-8 lg:pb-10 leading-tight lg:leading-[1.1] ${className}`}
         >
           {heading}
         </h1>

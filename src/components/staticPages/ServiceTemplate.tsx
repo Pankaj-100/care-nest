@@ -143,7 +143,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
       {/* Location Section */}
       <div className="w-full bg-white py-8 sm:py-10 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold text-[#233D4D] mb-8 sm:mb-16">
+          <h2 className="text-3xl sm:text-5xl font-bold text-[#233D4D] mb-8 sm:mb-16">
             {serviceData.title2}
           </h2>
           <div className="space-y-6 sm:space-y-8 text-lg text-gray-700 leading-relaxed max-w-5xl mx-auto">
@@ -157,7 +157,7 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
       <div className="w-full bg-[#F7F7F3] py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
           <div className="flex-1 lg:pr-8">
-            <h1 className="text-4xl sm:text-5xl font-bold text-[#233D4D] leading-tight mb-0 sm:mb-8">
+            <h1 className="text-3xl sm:text-5xl font-bold text-[#233D4D] leading-tight mb-0 sm:mb-8">
               {serviceData.title1}
             </h1>
           </div>
@@ -212,14 +212,14 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
       {/* Contact Banner Section */}
       <div className="w-full bg-[#F2A307] py-10 px-2">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold text-[#233D4D] mb-4 leading-tight">
+          <h2 className="text-3xl lg:text-5xl font-bold text-[#233D4D] mb-4 leading-tight">
             {contactBannerData.title}
           </h2>
           <p className="text-lg lg:text-2xl text-white font-light leading-relaxed mb-4 max-w-7xl mx-auto">
             Make The Call That Can Improve Your Life Or That Of A Loved One. Contact Us Today To Inquire About <span className="text-[#233D4D]">Our Houston Based Home Care Services</span> And To Find A Solution That Fits Your Budgetary Needs And Your Lifestyle.
           </p>
           <a href="/contact">
-            <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-12 py-6 rounded-full text-2xl transition-colors duration-300 flex items-center gap-2 mx-auto">
+            <button className="bg-[#233D4D] hover:bg-[#1a2a35] text-white font-semibold px-8 py-4 rounded-full text-2xl transition-colors duration-300 flex items-center gap-2 mx-auto">
               {contactBannerData.buttonText}
               <span className="text-xl">→</span>
             </button>

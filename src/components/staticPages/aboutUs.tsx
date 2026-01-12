@@ -257,7 +257,7 @@ export default function AboutUs() {
   return (
     <div className="bg-[#ffffff] min-h-screen w-full relative font-urbanist">
       {/* About Us Content - above everything */}
-      <div className="w-full max-w-7xl mx-auto pt-20 pb-8 px-4 sm:px-6 md:px-8">
+      <div className="w-full max-w-7xl mx-auto lg:pt-20 pt-7 pb-8 px-4 sm:px-6 md:px-8">
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div className="text-center md:text-left">
             <h4 className="text-[#F2A307] font-semibold mb-1 text-lg sm:text-xl md:text-2xl">About Us</h4>
@@ -484,44 +484,44 @@ export default function AboutUs() {
         </div>
 
         {/* Our Mission Banner */}
-        <div className="w-screen bg-[#233D4D] py-8 md:py-14 flex items-center justify-center relative left-1/2 right-1/2 -mx-[50vw]">
-          <div className="flex flex-col md:flex-row items-start md:items-center md:justify-between w-full max-w-[1800px] px-4 sm:px-6 md:px-20 relative">
+        <div className="w-screen bg-[#233D4D] py-8 md:py-10 lg:py-14 flex items-center justify-center relative left-1/2 right-1/2 -mx-[50vw]">
+          <div className="flex flex-col md:flex-row items-start md:items-start lg:items-center md:justify-between w-full max-w-[1800px] px-4 sm:px-6 md:px-8 lg:px-20 relative gap-6 md:gap-4 lg:gap-0">
             {/* Exclamatory Mark - Decorative */}
-            <div className="absolute left-4 top-2 md:left-4 md:top-4 pointer-events-none">
+            <div className="absolute left-4 top-2 md:left-5 lg:left-4 md:top-0 lg:top-4 pointer-events-none">
               <Image
                 src="/aboutUs/exclamatory.png"
                 alt="decorative"
                 width={200}
                 height={200}
-                className="w-12 h-12 sm:w-16 sm:h-16 md:w-22 md:h-22 object-contain"
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-12 md:h-12 lg:w-22 lg:h-22 object-contain"
               />
             </div>
             
-            <div className="flex-1 flex flex-col justify-start text-left pt-20 md:pt-0">
-              <h2 className="text-[#F2A307] font-bold text-4xl sm:text-4xl md:text-[60px] leading-tight md:leading-none mb-4 md:mb-6 md:ml-10">Our Mission</h2>
+            <div className="flex-1 flex flex-col justify-start text-left pt-20 md:pt-0 md:pr-4 lg:pr-0">
+              <h2 className="text-[#F2A307] font-bold text-4xl sm:text-4xl md:text-3xl lg:text-[60px] leading-tight md:leading-snug lg:leading-none mb-4 md:mb-3 lg:mb-6 md:ml-12 md:mt-5 lg:ml-10">Our Mission</h2>
               <div
-                className="text-[#FFFFFF99] text-base sm:text-lg md:text-xl font-light leading-relaxed max-w-xl md:ml-25 mb-8 md:mb-0"
+                className="text-[#FFFFFF99] text-base sm:text-lg md:text-base lg:text-xl font-light leading-relaxed max-w-xl md:max-w-md lg:max-w-xl md:ml-18 lg:ml-25 mb-8 md:mb-0"
                 dangerouslySetInnerHTML={{ __html: about.missionDescription ?? "" }}
               />
             </div>
-            <div className="flex-1 flex justify-center md:justify-end w-full md:w-auto mt-8 md:mt-0">
+            <div className="flex-1 flex justify-center md:justify-center lg:justify-end w-full md:w-auto md:mt-0">
               <Image
                 src="/aboutUs/wheelchair.png"
                 alt="Our Mission Banner"
                 width={500}
                 height={282}
-                className="w-80 sm:w-96 md:w-[500px] h-auto object-contain"
+                className="w-110 sm:w-96 md:w-82 lg:w-[500px] h-auto object-contain"
               />
             </div>
           </div>
         </div>
 
         {/* Meet Our Team Members Section */}
-        <div className="w-full bg-[#fff] py-9 px-4 sm:px-8">
+        <div className="w-full bg-[#fff] py-0 md:py-9 lg:py-9 px-4 sm:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
               <div>
-                <h2 className="text-[var(--navy)] font-bold text-3xl sm:text-4xl md:text-5xl mb-0 leading-tight">{about.meetTeamHeading ?? "Meet Our Team Members"}</h2>
+                <h2 className="text-[var(--navy)] font-bold text-center lg:text-left text-3xl sm:text-4xl md:text-5xl mb-0 leading-tight">{about.meetTeamHeading ?? "Meet Our Team Members"}</h2>
               </div>
               <div>
                 <div

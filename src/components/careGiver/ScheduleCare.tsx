@@ -692,8 +692,8 @@ const ScheduleCare = ({
                     </div>
 
                     <div className="flex-1 min-w-0"> {/* Added min-w-0 to prevent overflow */}
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-gray-900 truncate">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <h3 className="font-semibold text-gray-900 break-words">
                           {c.name}
                         </h3>
                         {c.isBookmarked && (

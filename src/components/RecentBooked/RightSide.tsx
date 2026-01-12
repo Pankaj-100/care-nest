@@ -162,7 +162,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
 
   return (
     <div className="w-full p-3 sm:p-4 md:p-6 lg:p-8 mt-0 lg:mt-3">
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
+      <h2 className="text-2xl text-center lg:text-start sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
         Recent Bookings
       </h2>
 

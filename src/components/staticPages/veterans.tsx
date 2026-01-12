@@ -79,7 +79,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             {headerTitle.split(" ").slice(2).join(" ") || "Assistance"}
           </h1>
         </div>
-        <p className="w-full md:w-1/2 text-[#233D4D] text-base sm:text-lg md:text-xl md:ml-6 text-center md:text-left">
+        <p className="w-full md:w-1/2 text-[#233D4D] text-lg sm:text-lg md:text-xl md:ml-6 text-center md:text-left">
           {headerDescription}
         </p>
       </div>
@@ -91,14 +91,14 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
           alt="Veteran 1"
           width={232}
           height={264}
-          className="w-24 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
+          className="w-28 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
         />
         <Image
           src={image2Src}
           alt="Veteran 2"
           width={232}
           height={264}
-          className="w-24 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
+          className="w-28 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
         />
         <div className="relative">
           <Image
@@ -106,7 +106,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             alt="Veteran 3"
             width={232}
             height={264}
-            className="w-24 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
+            className="w-28 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
           />
           {/* Yellow design image, position as needed
           <Image src="/veterans/yellow.png" alt="Yellow Design" width={104} height={104} className="absolute bottom-0 right-1 w-26 h-26" /> */}
@@ -118,7 +118,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
         <h2 className="text-3xl sm:text-4xl font-semibold text-[#233D4D] mb-4">
           {benefitsTitle}
         </h2>
-        <p className="text-[#233D4D] text-base sm:text-lg md:text-xl mb-8 md:mb-10">
+        <p className="text-[#233D4D] text-lg sm:text-lg md:text-xl mb-8 md:mb-10">
           {benefitsDescription}
         </p>
       </div>
@@ -127,11 +127,11 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
       <div className="w-full bg-[#F2E9CE] py-10 md:py-12 mt-12 md:mt-16">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-8 md:gap-10 md:flex-row px-4 md:px-6">
           <div className="w-full md:w-1/2">
-            <h3 className="mb-4 text-xl sm:text-2xl font-semibold text-[#233D4D]">
+            <h3 className="mb-4 text-2xl sm:text-2xl font-semibold text-[#233D4D]">
               {pageData?.title3 ||
                 "There Is Absolutely No Cost To The Veteran Or Their Surviving Spouse To Assist You With Preparing And Managing Your Application Approval Process With The VA, Including:"}
             </h3>
-            <ul className="mt-4 list-disc space-y-1 pl-5 text-sm sm:text-base md:text-lg text-[#233D4D] text-left">
+            <ul className="mt-4 list-disc space-y-1 pl-5 text-lg sm:text-base md:text-lg text-[#233D4D] text-left">
               {points.map((pt, idx) => (
                 <li key={idx}>{pt}</li>
               ))}
@@ -154,7 +154,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
         <div className="mx-auto flex max-w-6xl flex-col gap-8 md:gap-12 md:flex-row px-4 md:px-6 items-start">
           {/* Left: Heading */}
           <div className="w-full md:w-5/12 text-center md:text-left">
-            <div className="mb-2 text-md sm:text-base md:text-xl font-semibold text-[#F2A307]">
+            <div className="mb-2 text-lg sm:text-base md:text-xl font-semibold text-[#F2A307]">
               General FAQ&apos;s
             </div>
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight text-[#233D4D]">
@@ -175,7 +175,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
                   <div key={`${item.id}-${idx}`} className="rounded-xl bg-[#233D4D0A] p-4 sm:p-5 shadow-sm">
                     <button
                       type="button"
-                      className="w-full mb-2 flex items-center justify-between text-sm sm:text-base md:text-md font-semibold text-[#233D4D] gap-3 focus:outline-none"
+                      className="w-full mb-2 flex items-center justify-between text-md sm:text-base md:text-md font-semibold text-[#233D4D] gap-3 focus:outline-none"
                       aria-expanded={isOpen}
                       aria-controls={`faq-answer-${item.id}-${idx}`}
                       onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
@@ -187,7 +187,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
                     {isOpen && (
                       <div
                         id={`faq-answer-${item.id}-${idx}`}
-                        className="text-xs sm:text-sm md:text-base leading-relaxed text-[#233D4D] prose prose-slate max-w-none"
+                        className="text-md sm:text-sm md:text-base leading-relaxed text-[#233D4D] prose prose-slate max-w-none"
                         dangerouslySetInnerHTML={{ __html: safeHasAnswer ? item.answer : '' }}
                       />
                     )}
@@ -205,7 +205,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
           <h2 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-bold text-[#233D4D] leading-snug md:leading-tight">
             Contact Us Today For More Information
           </h2>
-          <p className="mb-6 max-w-5xl font-light text-base sm:text-lg md:text-2xl leading-relaxed text-white">
+          <p className="mb-6 max-w-5xl font-light text-md sm:text-lg md:text-2xl leading-relaxed text-white">
             We Are Proud To Help You Attain The Benefits You Have Earned As{" "}
             <br className="hidden md:block" />
             <span className="font-light text-lg sm:text-xl md:text-2xl text-[#233D4D]">
@@ -214,7 +214,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             Of The US Armed Forces.
           </p>
           <a href="/contact">
-          <button className="inline-flex cursor-pointer items-center gap-2 font-semibold rounded-full bg-[#233D4D] px-12 md:px-12 py-6 md:py-6 text-xl sm:text-xl md:text-xl text-white transition hover:bg-[#1a2c38]">
+          <button className="inline-flex cursor-pointer items-center gap-2 font-semibold rounded-full bg-[#233D4D] px-8 md:px-12 py-4 md:py-6 text-xl sm:text-xl md:text-xl text-white transition hover:bg-[#1a2c38]">
             Contact Us <span className="ml-1">&#8594;</span>
           </button>
           </a>

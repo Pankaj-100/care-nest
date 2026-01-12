@@ -49,11 +49,11 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`relative ${heightClass ?? "h-40"} flex flex-row items-center gap-3 sm:gap-6 rounded-2xl p-4 sm:p-4 bg-white shadow border cursor-pointer hover:shadow-lg transition`}
+      className={`relative ${heightClass ?? "h-32 sm:h-40"} flex flex-row items-center gap-3 sm:gap-6 rounded-2xl p-3 sm:p-4 bg-white shadow border cursor-pointer hover:shadow-lg transition`}
     >
       {/* Avatar with colored background */}
       <div className="relative flex-shrink-0">
-        <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full flex items-center justify-center">
+        <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-full flex items-center justify-center">
           <Image
             src={
               avatar && avatar.trim() !== "" && avatar !== "/care-giver/boy-icon.png"
@@ -65,16 +65,16 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
             alt={name}
             width={96}
             height={96}
-            className="w-14 h-14 sm:w-24 sm:h-24 rounded-full object-cover"
+            className="w-12 h-12 sm:w-20 sm:h-20 rounded-full object-cover"
           />
           {isSelected && (
-            <div className="absolute top-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-[var(--navy)] opacity-80 rounded-full flex items-center justify-center">
+            <div className="absolute top-0 left-0 w-12 h-12 sm:w-20 sm:h-20 bg-[var(--navy)] opacity-80 rounded-full flex items-center justify-center">
               <Image
                 src="/care-giver/tick.png"
                 alt="Selected"
-                width={40}
-                height={40}
-                className="w-8 h-8 sm:w-10 sm:h-10"
+                width={32}
+                height={32}
+                className="w-6 h-6 sm:w-8 sm:h-8"
               />
             </div>
           )}
@@ -84,7 +84,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
       {/* Info section */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <h3 className="text-lg sm:text-2xl font-semibold text-[var(--navy)] truncate">{name}</h3>
+          <h3 className="text-base sm:text-2xl font-semibold text-[var(--navy)] truncate">{name}</h3>
           {isVerified && (
             <Image
               src={verifiedIconSrc}
@@ -95,11 +95,11 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
             />
           )}
         </div>
-        <p className="text-[15px] sm:text-md font-normal text-[var(--cool-gray)] truncate">
+        <p className="text-sm sm:text-md font-normal text-[var(--cool-gray)] truncate">
           {specialty}
         </p>
         <div className="flex flex-row gap-2 sm:gap-4 mt-2 h-max text-xs sm:text-sm">
-          <div className="font-semibold border border-[var(--navy)] rounded-full px-4 py-1 text-[var(--navy)] h-max whitespace-nowrap bg-white">
+          <div className="font-semibold border border-[var(--navy)] rounded-full px-3 py-0.5 text-[var(--navy)] h-max whitespace-nowrap bg-white">
             {experienceDisplay}
           </div>
         </div>
@@ -107,7 +107,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
 
       {/* Bookmark Icon, vertically centered */}
       <div
-        className="ml-2 sm:ml-0 flex items-center justify-center w-9 h-9 rounded-full bg-[#233D4D1A] shadow cursor-pointer"
+        className="ml-2 sm:ml-0 flex items-center justify-center w-8 h-8 rounded-full bg-[#233D4D1A] shadow cursor-pointer"
         onClick={(e) => {
           e.stopPropagation();
           if (onBookmarkToggle) {
