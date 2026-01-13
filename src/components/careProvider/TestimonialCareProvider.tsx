@@ -66,7 +66,7 @@ const TestimonialCareProvider = () => {
               src={image1}
               alt="Care provider with client"
               fill
-              className="object-cover"
+              className="object-cover object-center md:object-[60%_35%] lg:object-center"
               sizes="(min-width:1280px) 36rem, (min-width:1024px) 30rem, (min-width:640px) 50vw, 100vw"
               priority
             />
@@ -76,7 +76,7 @@ const TestimonialCareProvider = () => {
               src={image2}
               alt="Conversation with client"
               fill
-              className="object-cover"
+              className="object-cover object-center md:object-[60%_25%] lg:object-center"
               sizes="(min-width:1280px) 26rem, (min-width:1024px) 22rem, (min-width:640px) 50vw, 100vw"
             />
           </div>

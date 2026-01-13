@@ -211,7 +211,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
               <div
                 key={booking.bookingId}
                 onClick={() => router.push(`/recent-booking/${booking.bookingId}`)}
-                className="relative flex items-start md:items-center gap-3 md:gap-5 bg-white p-4 sm:p-5 md:p-3 rounded-3xl shadow-md md:shadow-lg w-full mx-auto"
+                className="relative flex items-start md:items-start lg:items-center gap-3 md:gap-4 lg:gap-5 bg-white p-4 sm:p-5 md:p-4 lg:p-3 rounded-3xl shadow-md md:shadow-lg w-full mx-auto"
               >
                 <div className="w-14 h-14 md:w-16 md:h-16 bg-[var(--navy)] rounded-full flex-shrink-0 flex items-center justify-center">
                     <Image
@@ -222,8 +222,8 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                       className="w-7 h-7"
                     />
                   </div>
-                <div className="flex flex-col gap-2 pr-12 md:pr-20 w-full">
-                  <p className="font-semibold text-lg md:text-2xl text-[var(--navy)] leading-tight max-w-[180px] md:max-w-none overflow-hidden whitespace-nowrap text-ellipsis md:overflow-visible md:whitespace-normal md:text-clip">
+                <div className="flex flex-col gap-2 pr-12 md:pr-14 lg:pr-20 w-full">
+                  <p className="font-semibold text-lg md:text-xl lg:text-2xl text-[var(--navy)] leading-tight max-w-[180px] md:max-w-none overflow-hidden whitespace-nowrap text-ellipsis md:overflow-visible md:whitespace-normal md:text-clip">
                     #{booking.bookingId}
                   </p>
                   <p className="text-sm md:text-base text-gray-600 leading-tight">

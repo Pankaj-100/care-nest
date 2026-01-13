@@ -282,7 +282,7 @@ const CaregiversPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 lg:pt-28 px-0 pr-6 lg:pr-0 md:px-6 lg:px-30">
+    <div className="min-h-screen md:min-h-fit lg:min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 md:mb-8 lg:mb-8 lg:pt-28 px-0 pr-6 lg:pr-0 md:px-6 lg:px-30">
       <div className="flex flex-row gap-8 items-start">
         <div className="lg:block  hidden ">
           <FilterSidebar 
@@ -293,12 +293,12 @@ const CaregiversPage = () => {
           />
         </div>
 
-        <div className="lg:hidden block">
+        <div className="md:hidden block z-[9999]">
           <CustomSheet
             open={openFilter}
             handleOpen={() => setOpenFilter(p => !p)}
             showCrossButton
-            className="w-2/3 rounded-l-xl lg:hidden"
+            className="w-2/3 md:w-1/2 lg:w-2/3 rounded-l-xl z-[9999]"
           >
             <FilterSidebar
               key={sidebarKey}
@@ -412,7 +412,7 @@ const CaregiversPage = () => {
             ))}
           </div>
 
-          <div className="mt-10 lg:mb-0 mb-5 w-full text-center max-w-xl mx-auto">
+          <div className="mt-10 md:mt-6 lg:mt-10 mb-0 md:mb-0 lg:mb-0 w-full text-center max-w-xl mx-auto">
             <button
               onClick={() => {
                 if (mappedCaregiversForSchedule.length < 1) {

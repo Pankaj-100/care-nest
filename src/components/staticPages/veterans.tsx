@@ -143,7 +143,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
               alt="Veterans Banner"
               width={520}
               height={520}
-              className="h-auto max-w-lg sm:max-w-lg   rounded-xl object-cover"
+              className="h-auto max-w-lg sm:max-w-lg md:max-w-sm lg:max-w-lg   rounded-xl object-cover"
             />
           </div>
         </div>
@@ -157,7 +157,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             <div className="mb-2 text-lg sm:text-base md:text-xl font-semibold text-[#F2A307]">
               General FAQ&apos;s
             </div>
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight text-[#233D4D]">
+            <h2 className="text-2xl sm:text-4xl md:text-3xl font-bold leading-tight text-[#233D4D]">
               {faqSectionTitle.split(" ").slice(0, 3).join(" ")}
               <br />
               {faqSectionTitle.split(" ").slice(3).join(" ")}

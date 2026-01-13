@@ -143,7 +143,7 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {}, isLoading = false 
   }, [gender, price, languages, prn, locationRange, experience, isInitialized]);
 
   return (
-    <aside className={`w-full md:w-[250px] border rounded-xl px-3 sm:px-4 pb-4 pt-4 md:pt-4 space-y-3 ${urbanist.className}`}>
+    <aside className={`w-full md:w-[250px] border rounded-xl px-3 sm:px-4 pb-4 pt-4 md:pt-4 space-y-3 z-[9999] md:z-auto ${urbanist.className}`}>
       {isLoading ? (
         /* Skeleton Loading State */
         <div className="animate-pulse space-y-6">

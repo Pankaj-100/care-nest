@@ -148,6 +148,7 @@ const RegisterAsCareProvider = () => {
           src={"/register-care-provider.jpg"}
           alt="faq"
           fill
+          className="md:object-[55%_20%] object-cover"
           style={{ objectFit: "cover" }}
         />
       </div>

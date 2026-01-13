@@ -10,8 +10,8 @@ const cardBase =
 const ChoosingPath: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F7F3]">
-      <main className="flex-1 w-full">
-        <section className="max-w-5xl mx-auto px-4 pt-5 lg:pt-14 pb-24">
+      <main className="flex-1 w-full md:flex-none">
+        <section className="max-w-5xl mx-auto px-4 pt-5 lg:pt-14 pb-12 md:pb-2 lg:pb-24">
           {/* Extended heading section with background */}
           <div className=" mx-4 px-4 py-6 mb-6 rounded-none">
             <h1 className="text-center text-2xl sm:text-4xl font-semibold mb-0 lg:mb-1">
@@ -19,7 +19,7 @@ const ChoosingPath: React.FC = () => {
             </h1>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-4 lg:gap-10">
             {/* Card 1 */}
             <div className={cardBase}>
               <div className="h-32 flex items-center">
@@ -28,11 +28,11 @@ const ChoosingPath: React.FC = () => {
                   alt="Find caregiver illustration"
                   width={112}
                   height={112}
-                  className="w-24 h-24 object-contain"
+                  className="w-24 h-24 md:w-28 md:h-28 lg:w-24 lg:h-24 object-contain"
                   sizes="96px"
                 />
               </div>
-              <h2 className="font-semibold text-2xl">Find Trusted Caregivers</h2>
+              <h2 className="font-semibold text-xl md:text-lg lg:text-2xl">Find Trusted Caregivers</h2>
               <p className="text-md text-[#747d8d] leading-relaxed max-w-[270px]">
                 Search for trusted caregivers near you  it&apos;s free and easy.
               </p>
@@ -52,11 +52,11 @@ const ChoosingPath: React.FC = () => {
                   alt="Caregiver working illustration"
                   width={112}
                   height={112}
-                  className="w-28 h-28 object-contain"
+                  className="w-24 h-24 md:w-28 md:h-28 lg:w-28 lg:h-28 object-contain"
                   sizes="112px"
                 />
               </div>
-              <h2 className="font-semibold text-2xl">Work As A Caregiver</h2>
+              <h2 className="font-semibold text-xl md:text-lg lg:text-2xl">Work As A Caregiver</h2>
               <p className="text-md text-[#747d8d] leading-relaxed max-w-[270px]">
                 Build your profile and explore job <br /> opportunities.
               </p>

@@ -15,7 +15,7 @@ const urbanist = Urbanist({
 })
 
 const cardBase =
-  "relative flex flex-col items-center text-center gap-4 bg-white rounded-xl shadow-sm p-8 w-full max-w-[340px] border transition hover:shadow-md";
+  "relative flex flex-col items-center text-center gap-4 bg-white rounded-xl shadow-sm p-6 md:p-5 lg:p-8 w-full max-w-[340px] md:max-w-full lg:max-w-[340px] border transition hover:shadow-md";
 
 // Service image mapping based on service names from API
 const serviceImages: Record<string, string> = {
@@ -117,7 +117,7 @@ const FindCareGiver: React.FC = () => {
 
   return (
     <main className="w-full px-4 py-14 md:py-16 bg-[#F7F7F3]">
-      <h1 className="text-center text-[22px] md:text-[30px] font-semibold text-[var(--navy)] mb-12 leading-snug">
+      <h1 className="text-center text-[22px] md:text-[26px] lg:text-[30px] font-semibold text-[var(--navy)] mb-10 md:mb-12 leading-snug">
         Pick The Right Service For Your Home Care Needs.
       </h1>
 
@@ -131,7 +131,7 @@ const FindCareGiver: React.FC = () => {
           <p>Failed to load services.</p>
         </div>
       ) : (
-        <div className="max-w-4xl mx-auto grid gap-8 md:gap-x-10 md:gap-y-12 md:grid-cols-3 lg:grid-cols-3 place-items-center md:place-items-start">
+        <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6 lg:gap-8 place-items-center px-0 max-w-full md:max-w-5xl lg:max-w-6xl md:mx-auto lg:mx-auto">
           {mergedServices.map((service) => {
             // Add validation for service data
             if (!service || !service.id || !service.name) {
@@ -180,11 +180,11 @@ const FindCareGiver: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <h2 className={`font-bold text-2xl md:text-2xl text-[#233D4D]  ${urbanist.className}`}>
+                <h2 className={`font-bold text-xl md:text-lg lg:text-2xl text-[#233D4D]  ${urbanist.className}`}>
                   {service.name || "Unknown Service"}
                 </h2>
                 {/* Use highlight from merged data (highlights API) */}
-                <p className={`text-[15px] leading-relaxed whitespace-pre-line text-[#838b99] max-w-[270px] min-h-[2.5rem] ${urbanist.className}`}>
+                <p className={`text-[13px] md:text-[12px] lg:text-[15px] leading-relaxed whitespace-pre-line text-[#838b99] max-w-[270px] min-h-[2.5rem] md:min-h-[3rem] lg:min-h-[2.5rem] ${urbanist.className}`}>
                   {highlight}
                 </p>
                 {active && (

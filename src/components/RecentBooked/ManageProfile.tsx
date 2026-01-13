@@ -286,7 +286,7 @@ export default function ManageProfile() {
 
   return (
     <div>
-      <div className="bg-[#FFFFFF] shadow-md rounded-lg p-6 w-full max-w-5xl mx-auto mt-10">
+      <div className="bg-[#FFFFFF] shadow-md rounded-lg p-4 md:p-4 lg:p-6 w-full max-w-5xl mx-auto mt-10">
         <form onSubmit={handleSubmit}>
           {/* Mobile Profile Header */}
           <div className="md:hidden flex items-center gap-6 mb-6 pb-6 border-b">
@@ -340,7 +340,7 @@ export default function ManageProfile() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-6 border-b pb-6 text-center sm:text-left">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4 md:mb-4 lg:mb-6 border-b pb-4 md:pb-4 lg:pb-6 text-center sm:text-left">
             <h2 className="text-2xl lg:text-3xl font-semibold leading-8 text-[var(--navy)]">
               Personal Information
             </h2>
@@ -444,7 +444,7 @@ export default function ManageProfile() {
           <button
             type="submit"
             disabled={isUpdating || hasErrors}
-            className={`flex sm:hidden items-center justify-center gap-2 w-full cursor-pointer bg-[#F2A307] hover:bg-yellow-500 text-[var(--navy)] px-4 py-3 rounded-full transition font-semibold mt-6 ${
+            className={`flex sm:hidden items-center justify-center gap-2 w-full cursor-pointer bg-[#F2A307] hover:bg-yellow-500 text-[var(--navy)] px-4 py-3 rounded-full transition font-semibold mt-4 md:mt-4 lg:mt-6 ${
               isUpdating || hasErrors ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >

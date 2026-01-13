@@ -150,7 +150,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
 
   return (
     <>
-      <div className="hidden md:block w-full md:w-1/4 p-6 shadow-lg rounded-lg h-[520px] mt-10">
+      <div className="hidden md:block w-full md:w-1/3 lg:w-1/4 p-4 md:p-4 lg:p-6 shadow-lg rounded-lg h-auto md:h-[550px] lg:h-[520px] mt-10">
         {isLoading ? (
           /* Skeleton Loading State */
           <div className="animate-pulse">
@@ -164,11 +164,11 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
             </div>
 
             {/* Menu Items Skeleton */}
-            <ul className="space-y-7">
+            <ul className="space-y-4 md:space-y-4 lg:space-y-7">
               {[1, 2, 3, 4, 5, 6].map((item, idx) => (
                 <li
                   key={item}
-                  className={`flex items-center justify-between gap-2 px-4 py-2 ${
+                  className={`flex items-center justify-between gap-2 px-4 py-2 text-sm md:text-sm lg:text-base ${
                     idx !== 5 ? "border-b border-[#00000033]" : ""
                   }`}
                 >
@@ -233,7 +233,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
             </div>
 
             {/* Menu Items */}
-            <ul className="space-y-7">
+            <ul className="space-y-4 md:space-y-4 lg:space-y-7">
               {profileItem.map((item, idx) => (
                 <li
                   key={item.id}
@@ -252,7 +252,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
                       onSelect(item.name);
                     }
                   }}
-                  className={`cursor-pointer flex items-center justify-between gap-2 px-4 py-2 font-Urbanist text-[var(--navy)] transition duration-200 ease-in-out ${
+                  className={`cursor-pointer flex items-center justify-between gap-2 px-4 py-2 font-Urbanist text-sm md:text-sm lg:text-base text-[var(--navy)] transition duration-200 ease-in-out ${
                     selected === item.name
                       ? "bg-yellow-400 rounded-full font-semibold"
                       : "hover:bg-[#F2A307] hover:rounded-full"

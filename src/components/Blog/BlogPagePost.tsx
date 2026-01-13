@@ -15,7 +15,7 @@ type BlogItem = {
 
 const BlogPostPage: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
   return (
-    <div className="min-h-screen bg-white p-6 md:p-10 flex flex-col md:flex-row gap-8 lg:mx-[4.2rem] mx-[1.2rem] my-4 ">
+    <div className="min-h-screen bg-white p-6 md:p-10 flex flex-col lg:flex-row gap-8 lg:mx-[4.2rem] mx-[1.2rem] my-4 ">
       <MainContent blog={blog} />
       <Sidebar />
     </div>

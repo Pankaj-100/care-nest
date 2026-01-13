@@ -36,7 +36,7 @@ async function fetchRecentPosts() {
 const Sidebar = async () => {
   const posts = await fetchRecentPosts();
   return (
-    <div className="w-full md:w-1/3 space-y-8">
+    <div className="w-full lg:w-1/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 md:gap-8 lg:space-y-8 lg:block">
       <RecentPosts posts={posts} />
       <ContactInfo />
     </div>

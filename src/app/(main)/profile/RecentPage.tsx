@@ -103,7 +103,7 @@ const SavedCaregiversPanel = () => {
           <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 gap-2 sm:gap-0">
             <p className="text-sm sm:text-base">Select caregivers to book their services (Select at least 1)</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
               {data.data.givers.map((giver) => (
                 <CaregiverCard
                   key={giver.id}
