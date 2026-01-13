@@ -344,8 +344,18 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
           caregiverId={selectedCaregiverId}
           onAddCaregiver={() => {}}
           isBookmarked={false}
-          isSelected={booking.status === "hired" || booking.status === "completed"}
-          bookingStatus={booking.status}
+          isSelected={
+            selectedCaregiverId
+              ? booking.caregivers?.find(cg => cg.id === selectedCaregiverId)?.status === "hired" ||
+                booking.caregivers?.find(cg => cg.id === selectedCaregiverId)?.status === "accepted" ||
+                booking.caregivers?.find(cg => cg.id === selectedCaregiverId)?.status === "completed"
+              : false
+          }
+          bookingStatus={
+            selectedCaregiverId
+              ? booking.caregivers?.find(cg => cg.id === selectedCaregiverId)?.status
+              : undefined
+          }
         />
 
         {/* Cancel Booking Dialog */}

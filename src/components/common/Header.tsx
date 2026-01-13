@@ -506,7 +506,7 @@ const NavbarMenu = ({
                   ) : (
                     <Link
                       href={item.link || '#'}
-                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-orange-500 hover:text-white focus:bg-orange-500 block w-full transition-colors"
+                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-gray-600 hover:text-white focus:bg-[#233D4D] block w-full transition-colors"
                       style={{ outline: 'none' }}
                       onClick={() => {
                         setOpenDropdownIndex(null);

@@ -36,6 +36,7 @@ interface CaregiverDetail {
   gender?: string;
   distanceMiles?: number;
   verified?: boolean;
+  isBookmarked?: boolean;
 }
 
 const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
@@ -140,12 +141,15 @@ const ModalContent: React.FC<{
 }> = ({ raw, onAddCaregiver, isBookmarked, isSelected, caregiverId, bookingStatus }) => {
   const caregiver: CaregiverDetail = Array.isArray(raw) ? raw[0] : raw;
   const [bookmarkCaregiver, { isLoading: bookmarking }] = useBookmarkCaregiverMutation();
-  const [bookmarked, setBookmarked] = useState(isBookmarked);
+  
+  // Use API data as source of truth, fallback to prop
+  const apiBookmarkState = caregiver.isBookmarked ?? isBookmarked;
+  const [bookmarked, setBookmarked] = useState(apiBookmarkState);
 
-  // Sync bookmark state when prop changes (e.g., after refresh)
+  // Sync bookmark state when API data or prop changes
   useEffect(() => {
-    setBookmarked(isBookmarked);
-  }, [isBookmarked, caregiverId]);
+    setBookmarked(apiBookmarkState);
+  }, [apiBookmarkState, caregiverId]);
 
   const avatarSrc =
     caregiver.avatar && typeof caregiver.avatar === "string" && caregiver.avatar.trim() !== ""
@@ -158,11 +162,11 @@ const ModalContent: React.FC<{
     if (!caregiver.id) return;
     try {
       await bookmarkCaregiver(caregiver.id).unwrap();
-      // Instead of toggling local state, rely on prop update from parent after RTK Query refetch
+      setBookmarked(!bookmarked); // Toggle the state immediately
       toast.success(
-        bookmarked
-          ? "Caregiver removed successfully!"
-          : "Caregiver bookmarked successfully!"
+        !bookmarked
+          ? "Caregiver bookmarked successfully!"
+          : "Caregiver removed successfully!"
       );
     } catch {
       toast.error("login to bookmark caregiver.");
@@ -194,20 +198,24 @@ const ModalContent: React.FC<{
             )}
           </div>
 
-          {/* Caregiver Name and Selected Badge */}
-          <h2 className="mt-4 sm:mt-5 text-lg sm:text-[26px] font-semibold text-[#233D4D] leading-tight flex items-center gap-2 sm:gap-3 break-words">
+          {/* Selected Badge */}
+          {(isSelected || 
+            bookingStatus === "hired" || 
+            bookingStatus === "accepted" || 
+            bookingStatus === "active" || 
+            bookingStatus === "completed") && (
+              <span className="mt-3 bg-[#2F3C51] text-white px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm flex items-center justify-center gap-2 w-fit mx-auto">
+                <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+                  <path d="M6.75 13.5L2.25 9L3.3075 7.9425L6.75 11.3775L14.6925 3.4425L15.75 4.5L6.75 13.5Z" fill="white"/>
+                </svg>
+                Selected
+              </span>
+            )
+          }
+
+          {/* Caregiver Name */}
+          <h2 className="mt-2 sm:mt-2 text-lg sm:text-[26px] font-semibold text-[#233D4D] leading-tight break-words">
             {caregiver.name}
-            {typeof window !== "undefined" &&
-              window.location.pathname.includes("/profile") &&
-               (isSelected || bookingStatus === "hired" || bookingStatus === "completed") && (
-                <span className="bg-[#2F3C51] text-white px-3 sm:px-4 py-1 rounded-full text-xs sm:text-sm flex items-center gap-2">
-                  <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
-                    <path d="M6.75 13.5L2.25 9L3.3075 7.9425L6.75 11.3775L14.6925 3.4425L15.75 4.5L6.75 13.5Z" fill="white"/>
-                  </svg>
-                  Selected
-                </span>
-              )
-            }
           </h2>
 
           <div className="mt-5 sm:mt-7 space-y-3 sm:space-y-4 w-full">
@@ -254,10 +262,22 @@ const ModalContent: React.FC<{
                 isSelected
                   ? "border-2 border-[#F2A307] text-[#F2A307] bg-white hover:bg-red-50"
                   : "bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--navy)]"
-              }`}
+              } ${typeof window !== "undefined" && window.location.pathname.includes("/recent-booking") ? "hidden" : ""}`}
             >
               {isSelected ? "Remove Caregiver" : "+ Add Caregiver"}
             </button>
+
+            {typeof window !== "undefined" && window.location.pathname.includes("/recent-booking") && (
+              <button
+                onClick={() => {
+                  window.location.href = `/inbox`;
+                }}
+                className="w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--navy)] flex items-center justify-center gap-2"
+              >
+                
+                Message
+              </button>
+            )}
           </div>
         </div>
       </aside>

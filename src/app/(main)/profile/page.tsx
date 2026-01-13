@@ -6,7 +6,7 @@ import HeroSectionCareProvider from "@/components/careProvider/HeroSectionCarePr
 
 export default function Page() {
     const [selectedOption, setSelectedOption] = useState("Manage Profile");
-      const title = selectedOption === "Manage Profile" ? "My Profile" : selectedOption;
+      const title = selectedOption === "Manage Profile" ? "Manage Profile" : selectedOption;
   return (
     <>
   <HeroSectionCareProvider title={title} />    <RecentPage

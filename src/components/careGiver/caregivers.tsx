@@ -282,8 +282,8 @@ const CaregiversPage = () => {
   };
 
   return (
-    <div className="min-h-screen md:min-h-fit lg:min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 md:mb-8 lg:mb-8 lg:pt-28 px-0 pr-6 lg:pr-0 md:px-6 lg:px-30">
-      <div className="flex flex-row gap-8 items-start">
+    <div className="min-h-screen md:min-h-fit lg:min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 md:mb-2 lg:mb-8 lg:pt-28 px-3 sm:px-4 md:px-6 lg:px-30">
+      <div className="flex flex-col lg:flex-row gap-4 md:gap-5 lg:gap-8 items-start w-full">
         <div className="lg:block  hidden ">
           <FilterSidebar 
             key={sidebarKey}
@@ -354,7 +354,7 @@ const CaregiversPage = () => {
 
           {error && <div className="text-red-500 mb-4">Error loading caregivers.</div>}
 
-          <div className="sm:mt-0 mt-4 max-h-[800px] overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
+          <div className="sm:mt-0 mt-4 max-h-[800px] overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 lg:gap-6 w-full">
             {!isLoading && caregivers.length === 0 && (
               <div className="col-span-2 flex flex-col items-center justify-center py-8">
                 <Image

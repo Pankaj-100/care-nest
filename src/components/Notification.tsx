@@ -72,6 +72,12 @@ function Notification({ open, handleOpen }: Props) {
     }
   };
 
+  const loadPrevious = () => {
+    if (page > 1) {
+      setPage(prev => prev - 1);
+    }
+  };
+
   const formatTime = (dateString: string) => {
     try {
       return formatDistanceToNow(new Date(dateString), { addSuffix: true });
@@ -90,7 +96,7 @@ function Notification({ open, handleOpen }: Props) {
       handleOpen={handleOpen}
       className="md:!max-w-[28rem] !w-full rounded-l-3xl px-1 text-[var(--blue-gray)] mx-0 z-99999"
     >
-      <div className="mt-12">
+      <div className="mt-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button
@@ -186,6 +192,25 @@ function Notification({ open, handleOpen }: Props) {
             </button>
           )}
 
+          {notifications.length > 0 && (page > 1 || hasMore) && (
+            <div className="mt-4 flex gap-2">
+              <button
+                onClick={loadPrevious}
+                disabled={page === 1 || isLoading}
+                className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-center font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? "Loading..." : "← Previous"}
+              </button>
+              <button
+                onClick={loadMore}
+                disabled={!hasMore || isLoading}
+                className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-center font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? "Loading..." : "Next →"}
+              </button>
+            </div>
+          )}
+
           {notifications.length > 0 && !hasMore && (
             <div className="text-center py-4 text-gray-400 text-sm">
               No more notifications
@@ -195,7 +220,7 @@ function Notification({ open, handleOpen }: Props) {
 
         {/* Mark all as read and Clear all buttons - always display when notifications exist */}
         {notifications.length > 0 && (
-          <div className="mt-4 px-3 pb-4 flex gap-2">
+          <div className="lg:mt-9 mt-4 px-3 pb-2 flex gap-2">
             <button
               onClick={() => {
                 notifications.forEach(notif => {

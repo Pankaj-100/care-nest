@@ -112,9 +112,34 @@ const ScheduleCare = ({
   const serviceIdsRedux = useAppSelector((state) => state.booking.serviceIds);
   const careseekerZipcodeRedux = useAppSelector((state) => state.booking.careseekerZipcode);
 
-  const [startDate, setStartDate] = useState<Date | null>(initialStartDate || new Date());
-  const [endDate, setEndDate] = useState<Date | null>(initialEndDate || null);
-  const [meetingDate, setMeetingDate] = useState<Date | null>(initialMeetingDate || new Date());
+  // Helper to get tomorrow's date (minimum selectable date)
+  const getTomorrowDate = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    return tomorrow;
+  };
+
+  // Helper to normalize date (remove time component for proper comparison)
+  const normalizeDate = (date: Date | null): Date | null => {
+    if (!date) return null;
+    const normalized = new Date(date);
+    normalized.setHours(0, 0, 0, 0);
+    return normalized;
+  };
+
+  // Helper to get the max of two dates (used to ensure minDate never goes below tomorrow)
+  const getMaxDate = (date1: Date | null, date2: Date): Date => {
+    if (!date1) return date2;
+    const normalized1 = normalizeDate(date1);
+    return normalized1 && normalized1 > date2 ? normalized1 : date2;
+  };
+
+  const minSelectableDate = getTomorrowDate();
+
+  const [startDate, setStartDate] = useState<Date | null>(initialStartDate || minSelectableDate);
+  const [endDate, setEndDate] = useState<Date | null>(initialEndDate || minSelectableDate);
+  const [meetingDate, setMeetingDate] = useState<Date | null>(initialMeetingDate || minSelectableDate);
 
   // Helper to convert "09:00" to minutes
   const timeStrToMinutes = (str: string) => {
@@ -374,6 +399,8 @@ const ScheduleCare = ({
 
     // Only validate startDate in edit mode
     if (isEditMode) {
+      // Validate meeting duration days selection
+      if (selectedDays.length === 0) return setFormError("Select at least one meeting duration day");
 
       // Build weeklySchedule array
       const weeklySchedule: { weekDay: number; startTime: string; endTime: string }[] = [];
@@ -424,7 +451,7 @@ const ScheduleCare = ({
       return setFormError("You missed service selection, start the booking from home page.");
 
     if (selectedCaregivers.length < 1) return setFormError("Select at least one caregiver.");
-    if (selectedDays.length === 0) return setFormError("Select atleast one meeting duration day");
+    if (selectedDays.length === 0) return setFormError("Select at least one meeting duration day");
 
     // Build weeklySchedule array
     const weeklySchedule: { weekDay: number; startTime: string; endTime: string }[] = [];
@@ -757,7 +784,7 @@ const ScheduleCare = ({
                   <DatePicker
                     selected={meetingDate}
                     onChange={(date) => setMeetingDate(date)}
-                    minDate={new Date()}
+                    minDate={minSelectableDate}
                     dateFormat="dd-MM-yyyy"
                     className="!w-full border border-gray-400 rounded-full py-3 pl-4 lg:pr-15 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
                     popperClassName="!z-[9999]"
@@ -773,7 +800,7 @@ const ScheduleCare = ({
                   <DatePicker
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
-                    minDate={new Date()}
+                    minDate={minSelectableDate}
                     dateFormat="dd-MM-yyyy"
                     className="!w-full border border-gray-400 rounded-full py-3 pl-4 lg:pr-15 text-[var(--navy)] text-sm focus:ring-2 focus:ring-yellow-400"
                     popperClassName="!z-[9999]"
@@ -792,7 +819,7 @@ const ScheduleCare = ({
                 <DatePicker
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
-                  minDate={startDate || new Date()}
+                  minDate={getMaxDate(startDate, minSelectableDate)}
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Select Date"
                   popperClassName="!z-[9999]"

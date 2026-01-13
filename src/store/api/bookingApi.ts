@@ -39,6 +39,7 @@ interface CaregiverDetails {
   about: string;
   services: string[];
   whyChooseMe: Array<{ title: string; description: string }>;
+  isBookmarked?: boolean;
 }
 
 
@@ -226,7 +227,7 @@ interface ProfileViewResponse {
 
 export const bookingApi = createApi({
   reducerPath: 'bookingApi',
-  tagTypes: ['Booking', 'Bookmark', 'BookmarkedCaregivers'],
+  tagTypes: ['Booking', 'Bookmark', 'BookmarkedCaregivers', 'CaregiverDetails'],
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
 
@@ -248,6 +249,7 @@ export const bookingApi = createApi({
           params: cleaned,
         };
       },
+      providesTags: ['Bookmark'],
     }),
 
     getCaregiverDetails: builder.query<CaregiverDetailsResponse, string>({
@@ -255,8 +257,11 @@ export const bookingApi = createApi({
         url: `/api/v1/giver/search/${caregiverId}`,
         method: 'GET',
       }),
-    }),
 
+    providesTags: (result, error, caregiverId) => [
+      { type: 'CaregiverDetails', id: caregiverId },
+    ],
+  }),
     createBooking: builder.mutation<BookingResponse, BookingRequest>({
       query: (bookingData) => ({
         url: '/api/v1/booking',
@@ -319,7 +324,11 @@ export const bookingApi = createApi({
         url: `/api/v1/bookmarks/${caregiverId}`,
         method: 'POST',
       }),
-      invalidatesTags: ['Bookmark', 'BookmarkedCaregivers'],
+      invalidatesTags: (result, error, caregiverId) => [
+        'Bookmark',
+        'BookmarkedCaregivers',
+        { type: 'CaregiverDetails', id: caregiverId },
+      ],
     }),
 
     getBookmarkedCaregivers: builder.query<GetBookmarksResponse, void>({

@@ -137,7 +137,7 @@ const ContactForm: React.FC = () => {
       }
 
       // success
-      toast.success(json?.message ?? "Contact us form submitted successfully, We will respond shortly!");
+      toast.success("Contact us form submitted successfully, We will respond shortly!");
       setFormData({ name: "", email: "", message: "", zipcode: "", phone: "" });
     } catch (err) {
       console.error("Contact us form submit error:", err);

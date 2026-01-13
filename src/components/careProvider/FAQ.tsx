@@ -78,7 +78,7 @@ const FAQ = () => {
       </div>
 
       <div className="relative z-10">
-        <div className="relative w-full max-w-[240px] h-86 sm:h-96 lg:w-38 lg:h-80 lg:ml-15 mx-auto lg:mx-0 overflow-hidden rounded-[4rem]">
+        <div className="relative w-full max-w-[240px] h-86 sm:h-96 lg:w-58 lg:h-80 lg:ml-15 mx-auto lg:mx-0 overflow-hidden rounded-[4rem]">
           <Image
             src={"/care-provider-cta.png"}
             alt="faq"

@@ -17,7 +17,7 @@ const HeroSectionCareProvider = ({ title, textClasses }: Props) => {
           src="/hero-care-provider.jpg"
           alt="hero care provider"
           fill
-          style={{ objectFit: "cover", objectPosition: "right" }}
+          style={{ objectFit: "cover", objectPosition: "100% center" }}
           priority
         />
         {/* Overlay: mobile/tablet vertical, desktop horizontal */}

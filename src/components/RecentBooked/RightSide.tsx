@@ -154,7 +154,42 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
   const router = useRouter();
 
   if (isLoading)
-    return <div className="p-6 text-gray-500">Loading bookings...</div>;
+    return (
+      <div className="w-full p-3 sm:p-4 md:p-6 lg:p-8 mt-0 lg:mt-3">
+        <h2 className="text-2xl text-center lg:text-start sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
+          Recent Bookings
+        </h2>
+        <div className="space-y-4 sm:space-y-6 w-full">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={i}
+              className="relative flex items-start md:items-start lg:items-center gap-3 md:gap-4 lg:gap-5 bg-white p-4 sm:p-5 md:p-4 lg:p-3 rounded-3xl shadow-md md:shadow-lg w-full mx-auto animate-pulse"
+            >
+              {/* Calendar Icon Skeleton */}
+              <div className="w-14 h-14 md:w-16 md:h-16 bg-gray-300 rounded-full flex-shrink-0"></div>
+              
+              {/* Content Skeleton */}
+              <div className="flex flex-col gap-3 pr-12 md:pr-14 lg:pr-20 w-full flex-1">
+                {/* Booking ID Skeleton */}
+                <div className="h-6 bg-gray-300 rounded w-1/3"></div>
+                
+                {/* Care Type Skeleton */}
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                
+                {/* Date and Status Skeleton */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mt-2">
+                  <div className="h-8 bg-gray-300 rounded-full w-1/3"></div>
+                  <div className="h-8 bg-gray-300 rounded-full w-1/4"></div>
+                </div>
+              </div>
+              
+              {/* Cancel Button Skeleton */}
+              <div className="absolute top-1/2 right-3 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-gray-300 rounded-full"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   if (error)
     return (
       <div className="p-6 text-red-500">Failed to load bookings.</div>
@@ -166,7 +201,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
         Recent Bookings
       </h2>
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:flex md:flex-wrap md:gap-3 mb-6 sm:mb-8 cursor-pointer w-full">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:flex md:flex-wrap md:gap-3 lg:gap-5 mb-6 sm:mb-8 cursor-pointer w-full">
         {["All", "Pending", "Accepted", "Active", "Completed", "Cancel"].map(
           (status) => (
             <button
@@ -199,7 +234,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
           </p>
         </div>
       ) : (
-        <div className="space-y-4 sm:space-y-6 max-h-[70vh] overflow-y-auto w-full">
+        <div className="space-y-3 sm:space-y-6 max-h-[70vh] overflow-y-auto w-full lg:max-w-3xl">
           {filteredBookings.map((booking) => {
             const apiStatus = booking.status?.toLowerCase?.() || "";
             const uiStatus =
