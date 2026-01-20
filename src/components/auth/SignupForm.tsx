@@ -164,7 +164,7 @@ function SignupForm() {
         placeholder="Enter User Name"
         error={touched.name ? errors.name : ""}
         onBlur={() => handleBlur("name", name)}
-        className="text-xl placeholder:text-xl"
+        className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
       />
       <TextInput
         text={email}
@@ -174,7 +174,7 @@ function SignupForm() {
         placeholder="Enter Email ID"
         error={touched.email ? errors.email : ""}
         onBlur={() => handleBlur("email", email)}
-        className="text-xl placeholder:text-xl"
+        className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
       />
       <TextInput
         text={phone}
@@ -183,7 +183,7 @@ function SignupForm() {
         placeholder="Enter Phone Number"
         error={touched.phone ? errors.phone : ""}
         onBlur={() => handleBlur("phone", phone)}
-        className="text-xl placeholder:text-xl"
+        className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
       />
       <TextInput
         text={address}
@@ -192,7 +192,7 @@ function SignupForm() {
         placeholder="Enter Service Address"
         error={touched.address ? errors.address : ""}
         onBlur={() => handleBlur("address", address)}
-        className="text-xl placeholder:text-xl"
+        className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
       />
       {/* Zip Code */}
       <TextInput
@@ -204,7 +204,7 @@ function SignupForm() {
         type="tel"
         error={touched.zipCode ? errors.zipCode : ""}
         onBlur={() => handleBlur("zipCode", zipCode)}
-        className="text-xl placeholder:text-xl"
+        className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
       />
       <PasswordInput
         text={password}

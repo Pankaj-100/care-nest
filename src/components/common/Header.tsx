@@ -258,7 +258,7 @@ const Header = () => {
                   <div className="absolute top-full left-0 mt-2 min-w-[180px] rounded-lg bg-white text-[var(--navy)] overflow-hidden shadow-lg z-[9999]">
                     <a
                       href="/signin"
-                      className="px-3 py-3 text-sm font-semibold cursor-pointer hover:bg-orange-500 hover:text-white block w-full transition-colors"
+                      className="px-3 py-3 text-sm font-semibold cursor-pointer hover:bg-[#233D4D] hover:text-white block w-full transition-colors"
                       onClick={() => setMobileLoginDropdownOpen(false)}
                     >
                       Login as Care Seeker
@@ -268,7 +268,7 @@ const Header = () => {
                       href="https://carenest-caregiver.vercel.app/signin"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-3 text-sm font-semibold cursor-pointer hover:bg-orange-500 hover:text-white block w-full transition-colors"
+                      className="px-3 py-3 text-sm font-semibold cursor-pointer hover:bg-[#233D4D] hover:text-white block w-full transition-colors"
                       onClick={() => setMobileLoginDropdownOpen(false)}
                     >
                       Login as Care Giver
@@ -494,7 +494,7 @@ const NavbarMenu = ({
                       href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-orange-500 hover:text-white focus:bg-orange-500 block w-full transition-colors"
+                      className="px-3 py-3 text-md font-semibold cursor-pointer hover:bg-[#233D4D] hover:text-white focus:bg-[#233D4D] block w-full transition-colors"
                       style={{ outline: 'none' }}
                       onClick={() => {
                         setOpenDropdownIndex(null);

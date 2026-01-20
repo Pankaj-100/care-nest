@@ -416,9 +416,9 @@ const ScheduleCare = ({
       });
 
       const payload = {
-        startDate: startDate ? startDate.toISOString().slice(0, 10) : "",
-        meetingDate: meetingDate ? meetingDate.toISOString().slice(0, 10) : "",
-        endDate: endDate ? `${endDate.getFullYear()}-${(endDate.getMonth() + 1).toString().padStart(2, "0")}-${endDate.getDate().toString().padStart(2, "0")}` : null,
+        startDate: formatDateToString(startDate),
+        meetingDate: formatDateToString(meetingDate),
+        endDate: formatDateToString(endDate),
         weeklySchedule,
       };
 
@@ -476,9 +476,9 @@ const ScheduleCare = ({
 
     // API payload
     const payload = {
-      startDate: startDate ? startDate.toISOString().slice(0, 10) : "",
-      meetingDate: meetingDate ? meetingDate.toISOString().slice(0, 10) : "",
-      endDate: endDate ? endDate.toISOString().slice(0, 10) : undefined,
+      startDate: formatDateToString(startDate),
+      meetingDate: formatDateToString(meetingDate),
+      endDate: formatDateToString(endDate),
       serviceIds: effectiveServiceIds,
       careseekerZipcode: Number(effectiveZipcode),
       requiredBy: effectiveRequiredBy,
@@ -517,9 +517,9 @@ const ScheduleCare = ({
           setIsSuccessModalOpen(true);
           if (onBookingSuccess) {
             onBookingSuccess({
-              startDate: startDate ? startDate.toISOString().slice(0, 10) : "",
-              meetingDate: meetingDate ? meetingDate.toISOString().slice(0, 10) : "",
-              endDate: endDate ? endDate.toISOString().slice(0, 10) : "",
+              startDate: formatDateToString(startDate),
+              meetingDate: formatDateToString(meetingDate),
+              endDate: formatDateToString(endDate),
               weeklySchedule,
             });
           }
@@ -537,6 +537,15 @@ const ScheduleCare = ({
       }
     }
   };
+
+  // Helper for date formatting to YYYY-MM-DD without timezone conversion
+  function formatDateToString(date: Date | null): string {
+    if (!date) return "";
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   // Helper for time formatting - FIXED VERSION
   function fmtTime(minutes: number) {
@@ -819,7 +828,7 @@ const ScheduleCare = ({
                 <DatePicker
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
-                  minDate={getMaxDate(startDate, minSelectableDate)}
+                  minDate={startDate || minSelectableDate}
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Select Date"
                   popperClassName="!z-[9999]"

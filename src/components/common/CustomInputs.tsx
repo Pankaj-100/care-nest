@@ -37,7 +37,7 @@ export const TextInput = ({
           value={text}
           onChange={handleChange}
           {...props}
-          className={`w-full border-none text-lg focus-visible:ring-0 shadow-none placeholder:text-lg placeholder:text-gray-400 ${className}`}
+          className={`w-full border-none text-base sm:text-sm md:text-md lg:text-lg focus-visible:ring-0 shadow-none placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg placeholder:text-gray-400 ${className}`}
         />
       </div>
       {error && <p className="text-red-500 text-sm mt-1 ml-3">{error}</p>}
@@ -71,7 +71,7 @@ export const PasswordInput = ({
           type={showPassword ? "text" : "password"}
           value={text}
           onChange={handleChange}
-          className={`w-full border-none focus-visible:ring-0 shadow-none placeholder:text-lg placeholder:text-gray-400 ${className}`}
+          className={`w-full border-none text-base sm:text-sm md:text-md lg:text-lg focus-visible:ring-0 shadow-none placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg placeholder:text-gray-400 ${className}`}
           {...props}
         />
         <button

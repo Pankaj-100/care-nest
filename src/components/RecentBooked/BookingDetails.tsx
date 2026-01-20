@@ -85,45 +85,57 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
   if (!booking) return <div className="p-4">No booking selected</div>;
 
   if (isLoading) {
-    return (
+  return (
       <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:gap-8 max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-8 md:py-10 bg-[#F8F9FA]">
         <main className="flex-1">
           {/* Header Skeleton */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-0">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
             <div className="h-8 bg-gray-300 rounded w-64 animate-pulse"></div>
             <div className="flex gap-2 sm:gap-4">
-              <div className="h-10 bg-gray-300 rounded-lg w-20 animate-pulse"></div>
-              <div className="h-10 bg-gray-300 rounded-lg w-32 animate-pulse"></div>
+              <div className="h-10 bg-gray-300 rounded-lg w-24 animate-pulse"></div>
+              <div className="h-10 bg-gray-300 rounded-lg w-40 animate-pulse"></div>
             </div>
           </div>
 
           {/* Booking Details Card Skeleton */}
-          <div className="relative w-full bg-white rounded-2xl shadow-sm px-4 py-6 sm:px-8 sm:py-8 mb-6">
+          <div className="relative w-full bg-white rounded-2xl shadow-sm px-4 py-6 sm:px-8 sm:py-8 mb-6 animate-pulse">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
               {/* Column 1 */}
               <div className="flex flex-col gap-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="h-4 bg-gray-300 rounded w-24 mb-2"></div>
-                    <div className="h-6 bg-gray-200 rounded w-40"></div>
-                  </div>
-                ))}
+                <div>
+                  <div className="h-4 bg-gray-300 rounded w-24 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-40"></div>
+                </div>
+                <div>
+                  <div className="h-4 bg-gray-300 rounded w-20 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-36"></div>
+                </div>
+                <div>
+                  <div className="h-4 bg-gray-300 rounded w-24 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-44"></div>
+                </div>
               </div>
               {/* Column 2 */}
               <div className="flex flex-col gap-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="h-4 bg-gray-300 rounded w-32 mb-2"></div>
-                    <div className="h-6 bg-gray-200 rounded w-36"></div>
-                  </div>
-                ))}
+                <div>
+                  <div className="h-4 bg-gray-300 rounded w-32 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-40"></div>
+                </div>
+                <div>
+                  <div className="h-4 bg-gray-300 rounded w-28 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-36"></div>
+                </div>
+                <div>
+                  <div className="h-4 bg-gray-300 rounded w-20 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-32"></div>
+                </div>
               </div>
               {/* Column 3 */}
               <div className="flex flex-col gap-4">
-                <div className="animate-pulse">
-                  <div className="h-4 bg-gray-300 rounded w-40 mb-2"></div>
-                  <div className="h-6 bg-gray-200 rounded w-full mb-1"></div>
-                  <div className="h-6 bg-gray-200 rounded w-full"></div>
+                <div>
+                  <div className="h-4 bg-gray-300 rounded w-48 mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-full mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded w-5/6"></div>
                 </div>
               </div>
             </div>
@@ -132,13 +144,17 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
           {/* Caregivers List Skeleton */}
           <div className="space-y-4">
             {[1, 2].map((i) => (
-              <div key={i} className="bg-white rounded-2xl p-4 flex items-center gap-4 shadow-sm animate-pulse">
-                <div className="w-16 h-16 rounded-full bg-gray-300"></div>
+              <div key={i} className="bg-white rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 shadow-sm">
+                <div className="w-16 h-16 rounded-full bg-gray-300 flex-shrink-0 animate-pulse"></div>
                 <div className="flex-1 space-y-2">
-                  <div className="h-5 bg-gray-300 rounded w-32"></div>
-                  <div className="h-4 bg-gray-200 rounded w-24"></div>
-                  <div className="h-8 bg-gray-200 rounded w-28"></div>
+                  <div className="h-5 bg-gray-300 rounded w-40 animate-pulse"></div>
+                  <div className="h-4 bg-gray-200 rounded w-32 animate-pulse"></div>
+                  <div className="flex gap-2 mt-3">
+                    <div className="h-8 bg-gray-200 rounded-full w-32 animate-pulse"></div>
+                    <div className="h-8 bg-gray-200 rounded-full w-24 animate-pulse"></div>
+                  </div>
                 </div>
+                <div className="h-10 bg-gray-200 rounded-full w-40 sm:w-48 animate-pulse"></div>
               </div>
             ))}
           </div>
@@ -165,6 +181,27 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
       (slot) =>
         `${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][slot.weekDay]} - ${formatTime12Hour(slot.startTime)} to ${formatTime12Hour(slot.endTime)}`
     );
+  };
+
+  // Helper to parse date string (YYYY-MM-DD) in local timezone without UTC conversion
+  const parseDateLocal = (dateStr: string | null | undefined): Date | null => {
+    if (!dateStr) return null;
+
+    // If string contains time (ISO), rely on native Date to preserve the actual timestamp
+    if (dateStr.includes("T")) {
+      const isoDate = new Date(dateStr);
+      return Number.isNaN(isoDate.getTime()) ? null : isoDate;
+    }
+
+    const [yearStr, monthStr, dayPart] = dateStr.split("-");
+    const year = Number(yearStr);
+    const month = Number(monthStr);
+    const day = Number(dayPart?.split("T")[0]);
+
+    if ([year, month, day].some((n) => Number.isNaN(n))) return null;
+
+    const localDate = new Date(year, month - 1, day);
+    return Number.isNaN(localDate.getTime()) ? null : localDate;
   };
 
   return (
@@ -220,7 +257,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
                 <span className="block text-[#233D4D] text-base font-semibold mb-1">Booked On:</span>
                 <span className="block text-[#B0B7C3] text-lg font-md">
                   {bookingDetails.bookedOn
-                    ? new Date(bookingDetails.bookedOn).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                      ? parseDateLocal(bookingDetails.bookedOn)?.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
                     : "N/A"}
                 </span>
               </div>
@@ -228,7 +265,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
                 <span className="block text-[#233D4D] text-base font-semibold mb-1">Meeting Date:</span>
                 <span className="block text-[#B0B7C3] text-lg font-md">
                   {bookingDetails.meetingDate
-                    ? new Date(bookingDetails.meetingDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                      ? parseDateLocal(bookingDetails.meetingDate)?.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
                     : "N/A"}
                 </span>
               </div>
@@ -239,7 +276,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
                 <span className="block text-[#233D4D] text-base font-semibold mb-1">Service start Date:</span>
                 <span className="block text-[#B0B7C3] text-lg font-md">
                   {bookingDetails.startDate
-                    ? new Date(bookingDetails.startDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                      ? parseDateLocal(bookingDetails.startDate)?.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
                     : "N/A"}
                 </span>
               </div>
@@ -247,7 +284,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
                 <span className="block text-[#233D4D] text-base font-semibold mb-1">Service End Date:</span>
                 <span className="block text-[#B0B7C3] text-lg font-md">
                   {bookingDetails.endDate
-                    ? new Date(bookingDetails.endDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                      ? parseDateLocal(bookingDetails.endDate)?.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
                     : "N/A"}
                 </span>
               </div>

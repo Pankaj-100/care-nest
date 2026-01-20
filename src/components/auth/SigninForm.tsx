@@ -141,7 +141,7 @@ function SigninForm() {
           Icon={EmailIcon}
           type="email"
           placeholder="Enter Email ID"
-          className="text-xl placeholder:text-xl"
+          className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
           autoComplete="email"
           inputMode="email"
           onChange={handleEmailChange}
@@ -167,7 +167,7 @@ function SigninForm() {
         setText={setPassword}
         Icon={passwordIcon}
         placeholder="Enter Password"
-        className="text-xl placeholder:text-xl"
+        className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
       />
 
       <div className="flex items-center font-medium text-md space-x-2">

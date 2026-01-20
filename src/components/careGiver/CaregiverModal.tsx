@@ -226,7 +226,7 @@ const ModalContent: React.FC<{
             />
             <InfoRow
               label="Gender"
-              value={caregiver.gender ?? "N/A"}
+              value={caregiver.gender && caregiver.gender.trim() ? caregiver.gender : "N/A"}
             />
           </div>
 

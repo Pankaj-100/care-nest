@@ -254,7 +254,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
                   }}
                   className={`cursor-pointer flex items-center justify-between gap-2 px-4 py-2 font-Urbanist text-sm md:text-sm lg:text-base text-[var(--navy)] transition duration-200 ease-in-out ${
                     selected === item.name
-                      ? "bg-yellow-400 rounded-full font-semibold"
+                      ? "bg-[#F2A307] rounded-full font-semibold"
                       : "hover:bg-[#F2A307] hover:rounded-full"
                   } ${idx !== profileItem.length - 1 ? "border-b border-[#00000033]" : ""}`}
                 >

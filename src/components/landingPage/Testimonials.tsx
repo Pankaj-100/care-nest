@@ -123,11 +123,9 @@ const Testimonials: React.FC = () => {
                   key={t.id}
                   className="basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/3 px-2 flex justify-center"
                 >
-                  <a
-                    href="https://maps.app.goo.gl/iCk7qtVoxYZefKEF7"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-6 sm:p-8 w-full bg-white rounded-3xl h-full min-h-[260px] flex flex-col focus:outline-none focus:ring-2 focus:ring-[var(--yellow)]"
+                  <div
+                    onClick={() => window.open("https://maps.app.goo.gl/iCk7qtVoxYZefKEF7", "_blank")}
+                    className="p-6 sm:p-8 w-full bg-white rounded-3xl h-full min-h-[260px] flex flex-col cursor-pointer hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-[var(--yellow)]"
                   >
                     <div className="flex items-center gap-x-4 sm:gap-x-6 mb-4">
                       <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
@@ -153,14 +151,17 @@ const Testimonials: React.FC = () => {
                       <p className="text-base sm:text-lg font-medium flex-1 leading-relaxed">{displayText}</p>
                       {isLong && (
                         <button
-                          onClick={() => toggleExpanded(t.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleExpanded(t.id);
+                          }}
                           className="text-[var(--navy)] hover:text-[var(--yellow)] font-semibold text-sm sm:text-base mt-2 transition-colors self-start"
                         >
                           {isExpanded ? "Read less" : "Read more"}
                         </button>
                       )}
                     </div>
-                  </a>
+                  </div>
                 </CarouselItem>
               );
             })}
