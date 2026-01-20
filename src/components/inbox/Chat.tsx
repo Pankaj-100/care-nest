@@ -85,14 +85,10 @@ const Chat = ({ messages, otherUserDetails }: Props) => {
                 <DP
                   url={
                     isOther
-                      ? otherUserDetails?.avatar
-                        ? otherUserDetails.avatar.startsWith("http")
-                          ? otherUserDetails.avatar
-                          : `${cdnURL}/${otherUserDetails.avatar.replace(/^\/+/, "")}`
-                        : user1ProfilePic
+                      ? "/admin.png"
                       : myResolvedAvatar || ProfilePic
                   }
-                  alt={isOther ? otherUserDetails?.name || "User" : "You"}
+                  alt={isOther ? otherUserDetails?.name || "Admin" : "You"}
                   className="!w-8 !h-8 sm:!w-10 sm:!h-10 rounded-full"
                 />
                 <div className="flex flex-col text-sm sm:text-base text-black max-w-[15rem] sm:max-w-[21rem]">

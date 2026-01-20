@@ -122,7 +122,7 @@ export default function ResourcesPage() {
               href={card.redirectUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#233D4D] text-white px-3 py-2 rounded-full font-semibold text-md hover:bg-[#1a2c3b] transition"
+              className="inline-flex w-fit items-center gap-2 bg-[#233D4D] text-white px-3 py-2 rounded-full font-semibold text-md hover:bg-[#1a2c3b] transition"
             >
               Explore Resources
               <LinkIcon />

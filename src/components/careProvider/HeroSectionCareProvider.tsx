@@ -20,6 +20,7 @@ const HeroSectionCareProvider = ({ title, textClasses }: Props) => {
           style={{ objectFit: "cover", objectPosition: "100% center" }}
           priority
         />
+        
         {/* Overlay: mobile/tablet vertical, desktop horizontal */}
         <div
           className="absolute inset-0 pointer-events-none"

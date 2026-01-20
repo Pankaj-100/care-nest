@@ -1,4 +1,3 @@
-
 import Image from 'next/image';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { allServicesData } from './data';
@@ -113,11 +112,8 @@ export default async function ServiceTemplate({ careType, fallbackKey = "persona
   // Helper function to parse HTML content into paragraphs
   const parseHtmlToParagraphs = (html: string): string[] => {
     if (!html) return [];
-    const paragraphs = html
-      .split(/<\/?p>/gi)
-      .map(p => p.trim())
-      .filter(p => p.length > 0);
-    return paragraphs.length > 0 ? paragraphs : [html];
+    const paragraphs = html.match(/<p[\s\S]*?<\/p>/gi);
+    return paragraphs && paragraphs.length ? paragraphs : [html];
   };
 
   // SSR fallback

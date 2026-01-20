@@ -223,6 +223,7 @@ const ModalContent: React.FC<{
             <InfoRow
               label="Available Distance"
               value={caregiver.location ? `${caregiver.location}` : "N/A"}
+              isMultiline={true}
             />
             <InfoRow
               label="Gender"
@@ -405,9 +406,9 @@ const InfoRow: React.FC<{
   value: string; 
   isMultiline?: boolean;
 }> = ({ label, value, isMultiline = false }) => (
-  <div className={`text-sm text-[#6B778C] ${isMultiline ? 'space-y-1' : 'flex justify-between'}`}>
-    <span className={isMultiline ? 'block font-medium' : ''}>{label}</span>
-    <span className={`font-medium text-[#233D4D] ${isMultiline ? 'block text-xs leading-relaxed' : ''}`}>
+  <div className={`text-sm text-[#6B778C] ${isMultiline ? 'flex justify-between items-start' : 'flex justify-between'}`}>
+    <span className={isMultiline ? 'font-medium' : ''}>{label}</span>
+    <span className={`font-medium text-[#233D4D] ${isMultiline ? 'text-right' : ''}`}>
       {value}
     </span>
   </div>
