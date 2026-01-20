@@ -101,7 +101,7 @@ const HeroSection = () => {
   const mobileDescription = toPlainText(heroData?.description || descriptionLines.join(" "));
 
   return (
-    <div className="relative h-auto min-h-[600px] lg:h-[550px] bg-[#233D4D] pb-20 lg:pb-0">
+    <div className="relative h-auto min-h-[600px] lg:h-[550px] bg-[#233D4D] pb-0 lg:pb-0">
       {/* Mobile contact banner */}
       <a
         href={`tel:${heroData?.phoneNumber || "8322372273"}`}
@@ -134,7 +134,7 @@ const HeroSection = () => {
           <DesignIcon2 />
         </div>
 
-        <div className="absolute -top-3 -right-4 w-8 h-8 sm:w-10 sm:h-10 text-[#FFA726]">
+        <div className="absolute -top-3 -right-4 w-8 h-8 sm:w-6 sm:h-6 lg:w-10 lg:h-10 text-[#FFA726]">
           <DesignIcon3 />
         </div>
 
@@ -219,6 +219,19 @@ const HeroSection = () => {
               <ArrowIcon className="w-6 h-6 ml-2" />
             </button>
           </div>
+
+          {/* Mobile/Tablet Hero Image - below Contact Us button */}
+          <div className="lg:hidden mt-2 w-full mb-0 flex justify-center">
+            <div className="relative w-[320px] h-[240px] sm:w-[340px] sm:h-[250px]">
+              <Image
+                src="/home-image.png"
+                alt="Compassionate home care services"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
         </div>
 
         {/* Right side hero image - desktop only */}
@@ -243,7 +256,7 @@ const HeroSection = () => {
       </div>
 
       {/* Mobile/Tablet Browse Caregiver - in flow at bottom */}
-      <div className="lg:hidden px-4 sm:px-6 mt-8">
+      <div className="lg:hidden px-0 sm:px-0 mt-0">
         <BrowseCaregiver />
       </div>
     </div>
@@ -300,7 +313,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
 
   return (
     <div
-      className={`bg-white rounded-xl shadow-sm p-4 sm:p-5 lg:p-6 w-full mx-auto
+      className={`bg-white lg:rounded-xl shadow-sm p-4 sm:p-5 lg:p-6 w-full mx-auto
       ${
         isCaregiversPage
           ? "lg:w-[65vw] xl:max-w-6xl items-center"
