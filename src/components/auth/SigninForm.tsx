@@ -153,7 +153,10 @@ function SigninForm() {
               <div
                 key={index}
                 className="px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors"
-                onClick={() => handleEmailSuggestionClick(suggestion)}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  handleEmailSuggestionClick(suggestion);
+                }}
               >
                 {suggestion}
               </div>
