@@ -138,7 +138,7 @@ const ScheduleCare = ({
   const minSelectableDate = getTomorrowDate();
 
   const [startDate, setStartDate] = useState<Date | null>(initialStartDate || minSelectableDate);
-  const [endDate, setEndDate] = useState<Date | null>(initialEndDate || minSelectableDate);
+  const [endDate, setEndDate] = useState<Date | null>(initialEndDate || null);
   const [meetingDate, setMeetingDate] = useState<Date | null>(initialMeetingDate || minSelectableDate);
 
   // Helper to convert "09:00" to minutes
@@ -415,12 +415,22 @@ const ScheduleCare = ({
         }
       });
 
-      const payload = {
+      const payload: {
+        startDate: string;
+        meetingDate: string;
+        endDate?: string;
+        weeklySchedule: { weekDay: number; startTime: string; endTime: string }[];
+      } = {
         startDate: formatDateToString(startDate),
         meetingDate: formatDateToString(meetingDate),
-        endDate: formatDateToString(endDate),
         weeklySchedule,
       };
+
+      // Only include endDate if it has a valid value
+      const formattedEndDate = formatDateToString(endDate);
+      if (formattedEndDate) {
+        payload.endDate = formattedEndDate;
+      }
 
       try {
         if (bookingId) {
@@ -428,7 +438,12 @@ const ScheduleCare = ({
           if (isBookingResponse(result) && result.success) {
             OnClose();
             if (onBookingSuccess) {
-              onBookingSuccess(payload);
+              onBookingSuccess({
+                startDate: payload.startDate,
+                meetingDate: payload.meetingDate,
+                endDate: payload.endDate ?? null,
+                weeklySchedule: payload.weeklySchedule,
+              });
             }
           } else {
             setFormError(result.message || "Update failed. Please try again.");
@@ -475,16 +490,25 @@ const ScheduleCare = ({
     const effectiveZipcode = zipcode || careseekerZipcodeRedux;
 
     // API payload
-    const payload = {
+    const payload: {
+      startDate: string;
+      meetingDate: string;
+      serviceIds: string[];
+      careseekerZipcode: number;
+      requiredBy: string;
+      weeklySchedule: { weekDay: number; startTime: string; endTime: string }[];
+      shortlistedCaregiversIds: string[];
+    } = {
       startDate: formatDateToString(startDate),
       meetingDate: formatDateToString(meetingDate),
-      endDate: formatDateToString(endDate),
       serviceIds: effectiveServiceIds,
       careseekerZipcode: Number(effectiveZipcode),
       requiredBy: effectiveRequiredBy,
       weeklySchedule,
       shortlistedCaregiversIds,
     };
+
+    // DO NOT add endDate for new bookings - it's only for edit mode
 
     if (!isAuthenticated) {
       // Store booking data in redux and redirect to signin
@@ -496,36 +520,19 @@ const ScheduleCare = ({
 
     // Proceed with booking API call if authenticated
     try {
-      if (isEditMode && bookingId) {
-        const result = await editBooking({ bookingId, payload }).unwrap();
-        if (isBookingResponse(result) && result.success) {
-          OnClose();
-          if (onBookingSuccess) {
-            onBookingSuccess({
-              startDate: payload.startDate,
-              meetingDate: payload.meetingDate,
-              endDate: payload.endDate ?? "",
-              weeklySchedule: payload.weeklySchedule,
-            });
-          }
-        } else {
-          setFormError(result.message || "Update failed. Please try again.");
+      const result = await createBooking(payload).unwrap();
+      if (isBookingResponse(result) && result.success) {
+        setIsSuccessModalOpen(true);
+        if (onBookingSuccess) {
+          onBookingSuccess({
+            startDate: formatDateToString(startDate),
+            meetingDate: formatDateToString(meetingDate),
+            endDate: null, // New bookings don't have endDate
+            weeklySchedule,
+          });
         }
       } else {
-        const result = await createBooking(payload).unwrap();
-        if (isBookingResponse(result) && result.success) {
-          setIsSuccessModalOpen(true);
-          if (onBookingSuccess) {
-            onBookingSuccess({
-              startDate: formatDateToString(startDate),
-              meetingDate: formatDateToString(meetingDate),
-              endDate: formatDateToString(endDate),
-              weeklySchedule,
-            });
-          }
-        } else {
-          setFormError(result.message || "Booking failed. Please try again.");
-        }
+        setFormError(result.message || "Booking failed. Please try again.");
       }
     } catch (err: unknown) {
       if (typeof err === "object" && err !== null && "data" in err && typeof (err as { data?: { message?: string } }).data?.message === "string") {
