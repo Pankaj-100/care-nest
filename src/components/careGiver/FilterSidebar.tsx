@@ -107,10 +107,6 @@ const FilterSidebar = ({ onFilterChange, initialFilters = {}, isLoading = false 
     setGender(gender === selectedGender ? "" : selectedGender);
   };
 
-  // Handle price radio button changes (single selection)
-  // const handlePriceChange = (range: { min: number; max: number }) => {
-    // setPrice(price && price.min === range.min && price.max === range.max ? null : range);
-  // };
 
   // Update location handler
   const handleLocationChange = (label: string) => {

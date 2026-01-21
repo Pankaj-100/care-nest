@@ -89,7 +89,7 @@ return (
 				<h4 className="text-[var(--yellow)] font-semibold mb-2 text-xl sm:text-3xl text-center md:text-left">
 					General FAQ&apos;s
 				</h4>
-			<h2 className="text-[var(--navy)] font-semibold text-2xl sm:text-5xl mb-4 sm:mb-6 text-center md:text-left max-w-xl md:max-w-none mx-auto md:mx-0">
+			<h2 className="text-[var(--navy)] font-semibold text-2xl sm:text-2xl lg:text-5xl mb-4 sm:mb-6 text-center md:text-left max-w-xl md:max-w-none mx-auto md:mx-0">
 				{faq?.sectionTitle || "What You Need To Know"}
 		</h2>
 			</div>

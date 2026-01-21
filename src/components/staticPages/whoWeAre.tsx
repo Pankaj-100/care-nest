@@ -65,7 +65,7 @@ export default async function WhoWeAre() {
           let width = 260, height = 300, extraClass = "";
           if (idx === 0) { width = 250; height = 300; extraClass = "lg:h-[300px] h-[220px] md:h-[450px] lg:w-[250px]"; }
           if (idx === 1) { width = 260; height = 400; extraClass = "lg:h-[400px] lg:w-[260px]"; }
-          if (idx === 2) { width = 260; height = 400; extraClass = "lg:h-[400px] lg:w-[260px] -translate-y-20 md:-translate-y-42 lg:translate-y-0"; }
+          if (idx === 2) { width = 260; height = 400; extraClass = "lg:h-[400px] lg:w-[260px] md:h-[550px]  -translate-y-19 md:-translate-y-33 lg:translate-y-0"; }
           if (idx === 3) { width = 260; height = 400; extraClass = "lg:h-[300px] lg:w-[250px]"; }
           return (
             <Image

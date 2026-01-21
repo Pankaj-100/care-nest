@@ -228,7 +228,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex px-4 sm:px-6 lg:px-6 xl:px-10 py-4 sm:py-5 lg:py-6 items-center justify-between bg-[var(--navy)] text-white z-[2000] relative">
+      <div className="fixed top-0 left-0 w-full flex px-4 sm:px-6 lg:px-6 xl:px-10 py-4 sm:py-5 lg:py-6 items-center justify-between bg-[var(--navy)] text-white z-[9999]">
         <div className="flex items-center gap-3">
           <Link href="/">
             <Image 

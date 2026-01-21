@@ -126,7 +126,7 @@ const HeroSection = () => {
         </div>
 
         {/* Decorative icons */}
-        <div className="absolute top-0 left-3 w-10 h-10 sm:w-12 sm:h-12 lg:w-15 lg:h-15 text-[#FFA726] opacity-80">
+        <div className="absolute top-2 left-3 w-10 h-10 sm:w-12 sm:h-12 lg:w-15 lg:h-15 text-[#FFA726] opacity-80">
           <DesignIcon1 />
         </div>
 
@@ -134,14 +134,14 @@ const HeroSection = () => {
           <DesignIcon2 />
         </div>
 
-        <div className="absolute -top-3 -right-4 w-8 h-8 sm:w-6 sm:h-6 lg:w-10 lg:h-10 text-[#FFA726]">
+        <div className="absolute -top-0 -right-4 w-8 h-8 sm:w-6 sm:h-6 lg:w-10 lg:h-10 text-[#FFA726]">
           <DesignIcon3 />
         </div>
 
         {/* Floating phone badge - desktop only */}
         <a
           href={`tel:${heroData?.phoneNumber || "8322372273"}`}
-          className="hidden lg:flex items-center gap-4 rounded-full bg-[#F2E9CE] text-[#233D4D] px-10 py-3 text-lg lg:text-lg font-extrabold shadow-md absolute top-0 right-8 z-30"
+          className="hidden lg:flex mt-2.5 items-center gap-4 rounded-full bg-[#F2E9CE] text-[#233D4D] px-10 py-3 text-lg lg:text-lg font-extrabold shadow-md absolute top-1 right-8 z-30"
         >
           
           <RippleRadio />
@@ -235,7 +235,7 @@ const HeroSection = () => {
         </div>
 
         {/* Right side hero image - desktop only */}
-        <div className="absolute right-23 lg:right-53 top-[38%] -translate-y-1/2 w-[370px] h-[370px] lg:w-[430px] lg:h-[430px] z-10 hidden lg:block">
+        <div className="absolute right-23 lg:right-55 top-[38%] -translate-y-1/2 w-[370px] h-[370px] lg:w-[430px] lg:h-[430px] z-10 hidden lg:block">
           <div className="relative w-full h-full">
             <Image
               src="/main-hero-section.png"
@@ -373,7 +373,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
         >
           <button
             type="submit"
-            className={`w-full flex items-center justify-center text-center lg:ml-12 px-5 py-4 sm:px-6 sm:py-4 lg:px-6 lg:py-4.8 cursor-pointer rounded-4xl text-base sm:text-lg font-semibold transition whitespace-nowrap
+            className={`w-full flex items-center lg:text-md  justify-center text-center lg:ml-12 px-5 py-4 sm:px-6 sm:py-4 lg:px-6 lg:py-4.8 cursor-pointer rounded-4xl text-base sm:text-lg font-semibold transition whitespace-nowrap
               bg-[#FFA726] text-[#233D4D] hover:brightness-105`}
           >
             Search Caregiver

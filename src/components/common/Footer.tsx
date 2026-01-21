@@ -125,7 +125,7 @@ const Footer = () => {
     "CareWorks provides compassionate, \n personalized eldercare services that \n support seniors and their families with \n dignity and respect.";
   return (
     <div className="pt-1 pb-1 lg:px-29 md:px-12 px-6 bg-[var(--navy)] text-white overflow-hidden">
-      <div className="grid grid-cols-2 lg:grid-cols-6 gap-6 lg:gap-4 mb-0 items-start">
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-6 lg:gap-4 mb-0 items-start md:items-center md:justify-center">
         {/* Logo and Description */}
         <div className="col-span-2 lg:col-span-2 mt-0 flex flex-col items-center lg:items-start">
           <Link href="/" aria-label="Go to home" className="relative w-45 h-45 block cursor-pointer mb-0">
@@ -163,20 +163,20 @@ const Footer = () => {
         </div>
 
         {/* Company Links */}
-        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full">
+        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full md:items-center md:text-center lg:items-start lg:text-left">
           <FooterLink title="Company" links={link[0]["Company"]} />
         </div>
         
         {/* Other Services */}
-        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full">
+        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full md:items-center md:text-center lg:items-start lg:text-left">
           <FooterLink title="Other Services" links={link[0]["Other Services"]} />
         </div>
         
         {/* Locations we cover */}
-        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full">
+        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full md:items-center md:text-center lg:items-start lg:text-left">
           {loading ? (
             <div>
-              <p className="font-medium mb-6 text-white text-center lg:text-left">Locations we cover</p>
+              <p className="font-medium mb-6 text-white md:text-center lg:text-left">Locations we cover</p>
               <div className="space-y-2">
                 <div className="h-4 bg-gray-700 rounded animate-pulse w-32" />
                 <div className="h-4 bg-gray-700 rounded animate-pulse w-28" />
@@ -189,7 +189,7 @@ const Footer = () => {
         </div>
         
         {/* Quick Links */}
-        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full">
+        <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full md:items-center md:text-center lg:items-start lg:text-left">
           <FooterLink title="Quick Links" links={link[0]["Quick Links"]} />
         </div>
       </div>

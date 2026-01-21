@@ -11,7 +11,7 @@ export default function password_reset (){
     return (
         <>
       <HeroSectionCareProvider title="Reset Password" />
-      <div className="min-h-screen bg-[#F8F9FA] max-w-7xl mx-auto flex flex-col md:flex-row p-4 gap-4">
+      <div className=" bg-[#F8F9FA] max-w-7xl mx-auto flex flex-col md:flex-row p-4 gap-4">
         <Sidebar onSelect={setSelectedOption} selected={selectedOption} />
         <div className="w-full md:w-3/4">
           <ResetPassword />

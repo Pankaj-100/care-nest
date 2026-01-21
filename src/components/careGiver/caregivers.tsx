@@ -284,7 +284,7 @@ const CaregiversPage = () => {
   return (
     <div className="min-h-screen md:min-h-fit lg:min-h-screen bg-[#F8F9FA] lg:py-10 mb-8 md:mb-2 lg:mb-8 lg:pt-28 px-3 sm:px-4 md:px-6 lg:px-30">
       <div className="flex flex-col lg:flex-row gap-4 md:gap-5 lg:gap-8 items-start w-full">
-        <div className="lg:block  hidden ">
+        <div className=" hidden lg:block">
           <FilterSidebar 
             key={sidebarKey}
             onFilterChange={handleFilterChange}
@@ -293,7 +293,7 @@ const CaregiversPage = () => {
           />
         </div>
 
-        <div className="md:hidden block z-[9999]">
+        <div className="lg:hidden block z-[9999]">
           <CustomSheet
             open={openFilter}
             handleOpen={() => setOpenFilter(p => !p)}
