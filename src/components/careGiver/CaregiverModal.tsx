@@ -99,8 +99,23 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
   if (!isOpen || !caregiverId) return null;
 
   return (
-    <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/30 px-2 sm:px-4 pt-20 md:pt-0">
-      <div className="relative w-full max-w-lg sm:max-w-2xl md:max-w-3xl max-h-[90vh] sm:max-h-[85vh] md:max-h-[80vh] overflow-hidden rounded-2xl bg-white shadow-2xl flex flex-col">
+    <div className="fixed inset-x-0 top-[80px] bottom-0 z-[3000] flex items-center justify-center bg-black/30 px-2 sm:px-4 md:px-8">
+      {/* Overlay for outside click */}
+      <div
+        className="absolute inset-0"
+        onClick={onClose}
+        aria-label="Close modal"
+        tabIndex={-1}
+      />
+      <div
+        className="relative w-full
+        max-w-[98vw] sm:max-w-[90vw] md:max-w-[80vw] lg:max-w-3xl
+        box-border
+        max-h-[90vh] sm:max-h-[90vh] md:max-h-[90vh] lg:max-h-[80vh]
+        overflow-y-auto overflow-x-hidden
+        rounded-2xl bg-white shadow-2xl flex flex-col"
+        onClick={e => e.stopPropagation()} // Prevent closing when clicking inside modal
+      >
         {/* Close */}
         <button
           aria-label="Close"
@@ -176,7 +191,7 @@ const ModalContent: React.FC<{
   return (
     <div className="flex flex-col md:grid md:grid-cols-[260px_1fr] h-full">
       {/* Left sidebar */}
-      <aside className="bg-[#F6F8F4] p-3 sm:p-4 flex-shrink-0 overflow-y-auto max-h-[90vh] sm:max-h-[85vh] md:max-h-[80vh]">
+      <aside className="bg-[#F6F8F4] p-3 sm:p-4 flex-shrink-0 overflow-y-auto max-h-[calc(100vh-80px)] sm:max-h-[85vh] md:max-h-[80vh]">
         <div className="flex flex-col items-center text-center">
           <div className="relative">
             <Image

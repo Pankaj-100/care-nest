@@ -521,7 +521,7 @@ export default function AboutUs() {
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
               <div>
-                <h2 className="text-[var(--navy)] font-bold text-center lg:text-left text-3xl sm:text-4xl md:text-5xl mb-0 leading-tight">{about.meetTeamHeading ?? "Meet Our Team Members"}</h2>
+                <h2 className="text-[var(--navy)] font-bold text-center lg:text-left text-3xl sm:text-4xl mt-6 md:text-5xl mb-0 leading-tight">{about.meetTeamHeading ?? "Meet Our Team Members"}</h2>
               </div>
               <div>
                 <div
@@ -583,7 +583,15 @@ export default function AboutUs() {
                   <button
                     type="button"
                     onClick={handlePrevDesktop}
-                    className="absolute -left-15 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-[var(--navy)] bg-white flex items-center justify-center text-[var(--navy)] text-2xl hover:bg-[var(--navy)] hover:text-white transition"
+                    className="
+                      absolute
+                      left-2 md:-left-11 lg:-left-15
+                      top-1/2 -translate-y-1/2
+                      w-11 h-11 rounded-full border border-[var(--navy)] bg-white
+                      flex items-center justify-center text-[var(--navy)] text-2xl
+                      hover:bg-[var(--navy)] hover:text-white transition
+                      z-10
+                    "
                     aria-label="Previous team page"
                   >
                     &lt;
@@ -591,7 +599,15 @@ export default function AboutUs() {
                   <button
                     type="button"
                     onClick={handleNextDesktop}
-                    className="absolute -right-15 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-[var(--navy)] bg-white flex items-center justify-center text-[var(--navy)] text-2xl hover:bg-[var(--navy)] hover:text-white transition"
+                    className="
+                      absolute
+                      right-2 md:-right-11 lg:-right-15
+                      top-1/2 -translate-y-1/2
+                      w-11 h-11 rounded-full border border-[var(--navy)] bg-white
+                      flex items-center justify-center text-[var(--navy)] text-2xl
+                      hover:bg-[var(--navy)] hover:text-white transition
+                      z-10
+                    "
                     aria-label="Next team page"
                   >
                     &gt;

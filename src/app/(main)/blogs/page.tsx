@@ -73,7 +73,7 @@ export default async function BlogsPage({
           {Array.from({ length: totalPages }, (_, i) => (
             <a
               key={i + 1}
-              className={`px-3 py-1 rounded ${page === i + 1 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"}`}
+              className={`px-3 py-1 rounded ${page === i + 1 ? "bg-[#233D4D] text-white" : "bg-gray-200 text-gray-700"}`}
               href={`?page=${i + 1}`}
               aria-current={page === i + 1 ? "page" : undefined}
             >

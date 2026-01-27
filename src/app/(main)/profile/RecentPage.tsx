@@ -240,7 +240,7 @@ export function RecentPage({ selectedOption, setSelectedOption }: RecentPageProp
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] max-w-7xl mx-auto flex flex-col md:flex-row p-2 sm:p-4 gap-3 sm:gap-4">
+    <div className=" bg-[#F8F9FA] max-w-7xl mx-auto flex flex-col md:flex-row p-2 md:mb-5 sm:p-4 gap-3 lg:mb-20 sm:gap-4">
       <Sidebar onSelect={setSelectedOption} selected={selectedOption} />
       <div className="w-full md:w-3/4">{renderRightPanel()}</div>
     </div>

@@ -182,16 +182,6 @@ function Notification({ open, handleOpen }: Props) {
             </div>
           ))}
 
-          {hasMore && (
-            <button
-              onClick={loadMore}
-              className="mt-4 py-3 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-center font-medium"
-              disabled={isLoading}
-            >
-              {isLoading ? "Loading more..." : "Load More Notifications"}
-            </button>
-          )}
-
           {notifications.length > 0 && (page > 1 || hasMore) && (
             <div className="mt-4 flex gap-2">
               <button

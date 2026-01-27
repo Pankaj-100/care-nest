@@ -62,8 +62,9 @@ const MainContent: React.FC<{ blog?: BlogItem | null }> = ({ blog }) => {
         {title}
       </h1>
 
-      <div 
-        className="space-y-6 sm:space-y-8 text-[#667085] text-base sm:text-lg leading-relaxed prose prose-sm sm:prose-base max-w-none"
+      <div
+        className="space-y-6 sm:space-y-8 text-[#667085] text-base sm:text-lg leading-relaxed prose prose-sm sm:prose-base max-w-none break-words whitespace-pre-line overflow-x-auto prose-a:break-all"
+        style={{ wordBreak: "break-word" }}
         dangerouslySetInnerHTML={{
           __html: content || `
             <p>Caring for elderly loved ones at home is a heartfelt responsibility that requires attention, patience, and compassion. Ensuring comfort goes beyond physical needs—it includes emotional support, safety, and a sense of independence. Start by creating a safe and accessible environment.</p>

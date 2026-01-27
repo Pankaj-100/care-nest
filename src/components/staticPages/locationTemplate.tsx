@@ -101,7 +101,7 @@ export default async function LocationTemplate({ slug }: LocationTemplateProps) 
           src={data.heroImage || "/locationHero.png"}
           alt={`Home care services in ${data.city}`}
           fill
-          className="object-cover"
+          className="object-cover object-[40%_center] md:object-center"
           priority
         />
       </section>
