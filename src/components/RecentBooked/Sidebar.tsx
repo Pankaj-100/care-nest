@@ -23,7 +23,7 @@ interface SidebarProps {
 export function Sidebar({ onSelect, selected }: SidebarProps) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
+  const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
 
   const { data: profileData, isLoading } = useGetProfileQuery();
   const [updateAvatar] = useUpdateAvatarMutation();

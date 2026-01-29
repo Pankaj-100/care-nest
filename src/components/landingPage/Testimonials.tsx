@@ -16,7 +16,7 @@ type TestimonialItem = {
   createdAt?: string;
 };
 
-const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
+const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
 
 const Testimonials: React.FC = () => {
   const API_BASE =

@@ -46,7 +46,7 @@ const CARE_RECIPIENT_OPTIONS = [
 
 export default function ManageProfile() {
   const dispatch = useDispatch();
-  const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
+  const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
   
   const { data: profile, isLoading: isFetching } = useGetProfileQuery();
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();

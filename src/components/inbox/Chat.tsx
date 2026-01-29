@@ -14,7 +14,7 @@ interface Props {
 }
 
 // CDN base for relative avatar paths
-const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
+const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
 
 // Group messages by date
 function groupMessagesByDate(messages: chatMessageType[]) {
