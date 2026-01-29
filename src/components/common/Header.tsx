@@ -172,9 +172,9 @@ const Header = () => {
             {/* Show unread notification indicator */}
             {mounted && unreadCount > 0 && (
               <div className="absolute -top-1 -right-1">
-                <div className="relative inline-flex rounded-full h-4 w-4 bg-red-500 items-center justify-center">
-                  <span className="text-white text-xs font-bold">
-                    {unreadCount > 9 ? "9+" : unreadCount}
+                <div className="relative inline-flex rounded-full h-5 w-5 bg-red-500 items-center justify-center">
+                  <span className="text-white text-xs font-semibold">
+                    {unreadCount}
                   </span>
                 </div>
               </div>
@@ -295,7 +295,7 @@ const Header = () => {
                 <div className="absolute -top-1 -right-1">
                   <div className="relative inline-flex rounded-full h-4 w-4 bg-red-500 items-center justify-center">
                     <span className="text-white text-xs font-bold">
-                      {unreadCount > 9 ? "9+" : unreadCount}
+                      {unreadCount}
                     </span>
                   </div>
                 </div>
@@ -461,7 +461,7 @@ const NavbarMenu = ({
         ) : (
           <button
             type="button"
-            className={`${sectionActive ? "text-[var(--yellow)]" : "text-white"} text-left text-lg lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] flex items-center gap-2`}
+            className={`${sectionActive ? "text-[var(--yellow)]" : "text-white"} text-right text-lg lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] flex items-center gap-2`}
             onClick={() => {
               if (hasDropdown) {
                 setOpenDropdownIndex(isDropdownOpen ? null : index);
@@ -484,7 +484,7 @@ const NavbarMenu = ({
         <div className="relative hidden lg:block z-[999]">
           {isDropdownOpen && (
             <div
-              className="absolute top-full right-0 mt-6 min-w-[230px] rounded-2xl bg-white text-[var(--navy)] p-0 overflow-hidden shadow-xl border border-black/5 z-[999]"
+              className="absolute top-full -left-26 mt-6 min-w-[230px] rounded-2xl bg-white text-[var(--navy)] p-0 overflow-hidden shadow-xl border border-black/5 z-[999]"
               onMouseLeave={() => setOpenDropdownIndex(null)}
             >
               {services && services.map((item, idx) => (

@@ -7,6 +7,7 @@ export interface Caregiver {
   experience: number | null;
   price: number | null;
   isDeleted: boolean;
+  services: string[];
   isFinalSelection?: boolean;
 }
 
@@ -27,5 +28,5 @@ export interface Booking {
   status: string;
   caregivers: Caregiver[];
   weeklySchedule: WeeklyScheduleSlot[];
-  careType?: string;
+  careTypes?: string;
 }

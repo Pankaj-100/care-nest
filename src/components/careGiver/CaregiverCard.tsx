@@ -30,7 +30,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
 }) => {
   const cdnURL = "https://creative-story.s3.us-east-1.amazonaws.com";
   // Normalize experience: default to 0, show as "X+ Years"
-  let experienceDisplay = "0+ Years";
+  let experienceDisplay = "0 Years";
   if (
     experience !== null &&
     experience !== undefined &&
@@ -41,8 +41,16 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
       : parseFloat(String(experience).replace(/[^0-9.]/g, ""));
 
     if (Number.isFinite(numericExp) && numericExp >= 0) {
-      const years = Math.max(0, Math.floor(numericExp));
-      experienceDisplay = `${years}+ Years`;
+      if (numericExp === 99 || numericExp > 10) {
+        experienceDisplay = "10+ Years";
+      } else if (numericExp === 1) {
+        experienceDisplay = "1 Year";
+      } else if (numericExp === 0) {
+        experienceDisplay = "0 Years";
+      } else {
+        const years = Math.max(0, Math.floor(numericExp));
+        experienceDisplay = `${years} Years`;
+      }
     }
   }
 

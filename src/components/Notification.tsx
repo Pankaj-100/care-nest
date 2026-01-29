@@ -1,4 +1,3 @@
-// components/Notification.tsx
 "use client";
 import React, { useEffect, useState } from "react";
 import { IoIosArrowRoundBack as BackIcon } from "react-icons/io";
@@ -7,9 +6,11 @@ import Cookies from "js-cookie";
 
 import CustomSheet from "./common/CustomSheet";
 import { noNotificationIcon, Usernoty, Bookingnoty } from "@/lib/svg_icons";
-import { useGetNotificationsQuery, useMarkAsReadMutation, useGetUnreadCountQuery } from "../store/api/notificationApi";
+import { useGetNotificationsQuery, useMarkAsReadMutation, useGetUnreadCountQuery, useDeleteNotificationMutation, useClearAllNotificationsMutation  } from "../store/api/notificationApi";
 import { useSocket } from "@/hooks/use-socket";
 import { Notification as NotificationType } from "../lib/types/notification";
+import { Trash2Icon } from "lucide-react";
+import { toast } from "react-toastify";
 
 interface Props {
   open: boolean;
@@ -28,8 +29,10 @@ function Notification({ open, handleOpen }: Props) {
   
   const { data: unreadCountData, refetch: refetchUnreadCount } = useGetUnreadCountQuery();
   const [markAsRead] = useMarkAsReadMutation();
-  
   const { onNewNotification } = useSocket(token);
+  const [deleteNotification] = useDeleteNotificationMutation();
+  const [clearAllNotifications] = useClearAllNotificationsMutation();
+
   
   const notifications = data?.data?.notifications || [];
   const totalPages = data?.data?.totalPages || 0;
@@ -140,9 +143,7 @@ function Notification({ open, handleOpen }: Props) {
           {notifications.map((notification) => (
             <div
               key={notification.id}
-              className={`flex gap-x-3 items-start cursor-pointer hover:bg-gray-50 p-1 rounded-lg transition-colors ${
-                !notification.isRead ? "bg-blue-50 " : ""
-              }`}
+              className={`flex gap-x-3 items-start cursor-pointer hover:bg-gray-50 p-1 rounded-lg transition-colors ${!notification.isRead ? "bg-blue-50 " : ""}`}
               onClick={() => !notification.isRead && handleMarkAsRead(notification.id)}
             >
               {/* Unread indicator */}
@@ -179,6 +180,23 @@ function Notification({ open, handleOpen }: Props) {
                   </div>
                 </div>
               </div>
+              <button
+                className="ml-auto text-red-500 hover:text-red-700 text-xs"
+                title="Delete notification"
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  try {
+                    await deleteNotification(notification.id).unwrap();
+                    refetch();
+                    refetchUnreadCount();
+                    toast.success('Notification deleted successfully!', { position: 'top-left' });
+                  } catch {
+                    toast.error('Failed to delete notification.', { position: 'top-left' });
+                  }
+                }}
+              >
+                <Trash2Icon className="w-4 h-4"/>
+              </button>
             </div>
           ))}
 
@@ -224,13 +242,8 @@ function Notification({ open, handleOpen }: Props) {
               Mark all read
             </button>
             <button
-              onClick={() => {
-                // Clear all notifications
-                notifications.forEach(notif => {
-                  // You would need to implement deleteNotification API endpoint
-                  // For now, we'll refetch to simulate clearing
-                });
-                // Trigger refetch to clear the list
+              onClick={async () => {
+                await clearAllNotifications();
                 refetch();
                 refetchUnreadCount();
               }}

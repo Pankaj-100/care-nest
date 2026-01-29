@@ -291,7 +291,9 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
               <div>
                 <span className="block text-[#233D4D] text-base font-semibold mb-1">Care Type:</span>
                 <span className="block text-[#B0B7C3] text-lg font-md">
-                  {bookingDetails.careType ?? "Personal Care"}
+                  {Array.isArray(bookingDetails.careTypes) && bookingDetails.careTypes.length > 0
+                    ? bookingDetails.careTypes.map((ct: any) => ct.name).filter(Boolean).join(", ")
+                    : "N/A"}
                 </span>
               </div>
             </div>
@@ -353,10 +355,18 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-xl text-[#233D4D]">{cg.name ?? "Unknown"}</h4>
-                <p className="text-base text-[#7A8699]">Elderly Care</p>
+                <p className="text-base text-[#7A8699]">
+                  {Array.isArray(cg.services) && cg.services.length > 0
+                    ? cg.services.map((s: string | { name: string }) => typeof s === "string" ? s : s?.name).filter(Boolean).join(", ")
+                    : "N/A"}
+                </p>
                 <div className="flex gap-2 mt-2">
                   <span className="border-1 border-[#dcdfe6] rounded-full px-4 py-1 text-base font-semibold text-[#233D4D] bg-white">
-                    {cg.experience ? `${cg.experience} +Years` : "N/A"}
+                    {typeof cg.experience === "number"
+                      ? (cg.experience === 99 || cg.experience > 10)
+                        ? "10+ Years"
+                      : `${Math.max(0, Math.floor(cg.experience))}+ Years`
+                      : "N/A"}
                   </span>
                 </div>
               </div>

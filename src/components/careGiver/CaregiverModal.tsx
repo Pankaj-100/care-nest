@@ -99,7 +99,7 @@ const CaregiverModal: React.FC<CaregiverModalProps> = ({
   if (!isOpen || !caregiverId) return null;
 
   return (
-    <div className="fixed inset-x-0 top-[80px] bottom-0 z-[3000] flex items-center justify-center bg-black/30 px-2 sm:px-4 md:px-8">
+    <div className="fixed inset-0 top-[80px]  z-[3000] flex items-center justify-center bg-black/30 px-2 sm:px-4 md:px-8 pt-[98px] pb-12">
       {/* Overlay for outside click */}
       <div
         className="absolute inset-0"
@@ -234,7 +234,9 @@ const ModalContent: React.FC<{
           </h2>
 
           <div className="mt-5 sm:mt-7 space-y-3 sm:space-y-4 w-full">
-            <InfoRow label="Experience" value={caregiver.experience ? `${caregiver.experience}+ Years` : "N/A"} />
+            <InfoRow label="Experience" value={
+              getExperienceDisplay(caregiver.experience)
+            } />
             <InfoRow
               label="Available Distance"
               value={caregiver.location ? `${caregiver.location}` : "N/A"}
@@ -434,6 +436,22 @@ const Pill: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     {children}
   </div>
 );
+
+function getExperienceDisplay(experience: number | undefined | null) {
+  if (experience === 99 || (typeof experience === "number" && experience > 10)) {
+    return "10+ Years";
+  }
+  if (experience === 1) {
+    return "1 Year";
+  }
+  if (experience === 0) {
+    return "0 Years";
+  }
+  if (typeof experience === "number" && experience > 1) {
+    return `${Math.floor(experience)} Years`;
+  }
+  return "N/A";
+}
 
 export default CaregiverModal;
 

@@ -553,6 +553,31 @@ const ScheduleCare = ({
     const day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
+  
+  function getExperienceDisplay(experience: string | number | undefined | null) {
+  let experienceDisplay = "0 Years";
+  if (
+    experience !== null &&
+    experience !== undefined &&
+    !(typeof experience === "string" && experience.match(/^null|undefined|NaN/i))
+  ) {
+    const numericExp = typeof experience === "number"
+      ? experience
+      : parseFloat(String(experience).replace(/[^0-9.]/g, ""));
+
+    if (Number.isFinite(numericExp) && numericExp >= 0) {
+      if (numericExp === 99 || numericExp > 10) {
+        experienceDisplay = "10+ Years";
+      } else if (numericExp === 0) {
+        experienceDisplay = "0 Years";
+      } else {
+        const years = Math.max(0, Math.floor(numericExp));
+        experienceDisplay = `${years} Years`;
+      }
+    }
+  }
+  return experienceDisplay;
+}
 
   // Helper for time formatting - FIXED VERSION
   function fmtTime(minutes: number) {
@@ -677,10 +702,10 @@ const ScheduleCare = ({
   }
 
   return (
-    <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/20 h-screen">
+    <div className="fixed inset-x-0 inset-y-0 z-[3000] flex items-start justify-center bg-black/20 pt-[156px] pb-8">
       <div className="absolute inset-0" onClick={OnClose} />
       <div
-        className="relative z-50 w-full max-w-2xl bg-white rounded-2xl p-4 sm:p-6 shadow-lg overflow-y-auto max-h-[80vh]"
+        className="relative z-50 w-full max-w-2xl bg-white rounded-2xl p-4 sm:p-6 shadow-lg overflow-y-auto max-h-[75vh] mb-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -759,23 +784,7 @@ const ScheduleCare = ({
                     <div className="flex-shrink-0 ml-3 mt-1"> {/* Added mt-1 for consistent top alignment */}
                       <div className="border border-gray-300 rounded-full px-3 py-1">
                         <span className="text-sm text-gray-700 whitespace-nowrap">
-                          {(() => {
-                            // Show '0+ Years' if experience is null, undefined, empty, or contains 'null', 'undefined', 'NaN'
-                            const exp = c.experience;
-                            if (
-                              exp === null ||
-                              exp === undefined ||
-                              (typeof exp === "string" && (
-                                exp.trim() === "" ||
-                                exp.toLowerCase().includes("null") ||
-                                exp.toLowerCase().includes("undefined") ||
-                                exp.toLowerCase().includes("nan")
-                              ))
-                            ) {
-                              return "0 Years";
-                            }
-                            return exp;
-                          })()}
+                          {getExperienceDisplay(c.experience)}
                         </span>
                       </div>
                     </div>

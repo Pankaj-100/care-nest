@@ -261,8 +261,10 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
                   <p className="font-semibold text-lg md:text-xl lg:text-2xl text-[var(--navy)] leading-tight max-w-[180px] md:max-w-none overflow-hidden whitespace-nowrap text-ellipsis md:overflow-visible md:whitespace-normal md:text-clip">
                     #{booking.bookingId}
                   </p>
-                  <p className="text-sm md:text-base text-gray-600 leading-tight">
-                    {booking.careType}
+                  <p className="text-sm font-medium md:text-base text-gray-500 leading-tight">
+                    {Array.isArray(booking.careTypes) && booking.careTypes.length > 0
+                      ? booking.careTypes.map((ct: any) => ct.name).filter(Boolean).join(", ")
+                      : "N/A"}
                   </p>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mt-2 text-sm md:text-base text-gray-600">
                     <div className="inline-flex self-start w-fit md:self-auto items-center gap-2 border px-4 py-2 md:px-5 rounded-full border-[var(--navy)] text-[var(--navy)] md:border-gray-300 md:text-gray-700 font-medium bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
