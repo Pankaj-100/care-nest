@@ -844,7 +844,7 @@ const ScheduleCare = ({
                 <DatePicker
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
-                  minDate={new Date()} // <-- Only allow today or future dates
+                  minDate={startDate || new Date()} // End date must be >= service start date
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Select Date"
                   popperClassName="!z-[9999]"

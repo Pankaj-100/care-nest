@@ -37,7 +37,7 @@ interface RefreshTokenResponse {
   accessToken: string;
 }
 
-const baseAddr = 'https://carenest-backend-8y2y.onrender.com/api/v1/user';
+const baseAddr = process.env.NEXT_PUBLIC_API_URL || '';
 
 // Typed base queries
 const baseQuery = fetchBaseQuery({
@@ -123,7 +123,7 @@ export const authApi = createApi({
       role: 'giver' | 'user';
     }>({
       query: (userData) => ({
-        url: '/signup',
+        url: '/api/v1/user/signup',
         method: 'POST',
         body: userData,
       }),
@@ -135,7 +135,7 @@ export const authApi = createApi({
       type: 'account_verification' | 'password_reset';
     }>({
       query: (verificationData) => ({
-        url: '/verify-email',
+        url: '/api/v1/user/verify-email',
         method: 'POST',
         body: verificationData,
       }),
@@ -165,7 +165,7 @@ export const authApi = createApi({
       rememberMe?: boolean;
     }>({
       query: (credentials) => ({
-        url: '/signin',
+        url: '/api/v1/user/signin',
         method: 'POST',
         body: credentials,
       }),
@@ -193,7 +193,7 @@ export const authApi = createApi({
       type: 'account_verification' | 'password_reset';
     }>({
       query: (data) => ({
-        url: '/resend-otp',
+        url: '/api/v1/user/resend-otp',
         method: 'POST',
         body: data,
       }),
@@ -204,7 +204,7 @@ export const authApi = createApi({
       role: 'giver' | 'user';
     }>({
       query: (data) => ({
-        url: '/forgot-password',
+        url: '/api/v1/user/forgot-password',
         method: 'POST',
         body: data,
       }),
@@ -218,7 +218,7 @@ export const authApi = createApi({
       role: 'giver' | 'user';
     }>({
       query: (data) => ({
-        url: '/reset-password',
+        url: '/api/v1/user/reset-password',
         method: 'PUT',
         body: data,
         headers: {
@@ -238,7 +238,7 @@ export const authApi = createApi({
     }),
     logout: builder.mutation<void, void>({
       query: () => ({
-        url: '/logout',
+        url: '/api/v1/user/logout',
         method: 'POST',
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -259,7 +259,7 @@ export const authApi = createApi({
       rememberMe?: boolean;
     }>({
       query: ({ googleToken, role }) => ({
-        url: '/google-auth',
+        url: '/api/v1/user/google-auth',
         method: 'POST',
         body: { googleToken, role },
       }),

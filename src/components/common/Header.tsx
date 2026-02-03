@@ -443,6 +443,18 @@ const NavbarMenu = ({
   return (
     <div
       className="flex flex-col items-start gap-y-1 lg:flex-row lg:items-center lg:gap-x-1 cursor-pointer relative w-full lg:w-auto justify-start py-2 lg:py-0"
+      onMouseEnter={() => {
+        // Show dropdown on hover for desktop only
+        if (hasDropdown && window.innerWidth >= 1024) {
+          setOpenDropdownIndex(index);
+        }
+      }}
+      onMouseLeave={() => {
+        // Hide dropdown on mouse leave for desktop only
+        if (window.innerWidth >= 1024) {
+          setOpenDropdownIndex(null);
+        }
+      }}
     >
       <div className="flex items-center gap-2">
         {link && !hasDropdown ? (
@@ -463,7 +475,8 @@ const NavbarMenu = ({
             type="button"
             className={`${sectionActive ? "text-[var(--yellow)]" : "text-white"} text-right text-lg lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] flex items-center gap-2`}
             onClick={() => {
-              if (hasDropdown) {
+              // Click handling only for mobile
+              if (hasDropdown && window.innerWidth < 1024) {
                 setOpenDropdownIndex(isDropdownOpen ? null : index);
               }
             }}

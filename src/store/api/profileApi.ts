@@ -154,7 +154,7 @@ interface UpdateRequiredByPayload {
 }
 
 // --------- Base URLs ---------
-const baseUrl = 'https://carenest-backend-8y2y.onrender.com';
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
 // --------- Base Queries ---------
 const baseQuery = fetchBaseQuery({

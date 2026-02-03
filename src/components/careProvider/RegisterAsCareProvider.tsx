@@ -125,10 +125,12 @@ const RegisterAsCareProvider = () => {
       setDescription("");
       setErrors({});
 
+      toast.success("Application submitted successfully!");
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (err) {
       console.error("Error submitting caregiver application:", err);
+      toast.error("Failed to submit application. Please try again.");
     } finally {
       setSubmitting(false);
     }

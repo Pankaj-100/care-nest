@@ -365,7 +365,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
                     {typeof cg.experience === "number"
                       ? (cg.experience === 99 || cg.experience > 10)
                         ? "10+ Years"
-                      : `${Math.max(0, Math.floor(cg.experience))}+ Years`
+                      : `${Math.max(0, Math.floor(cg.experience))} Years`
                       : "N/A"}
                   </span>
                 </div>

@@ -24,7 +24,7 @@ function Messages() {
       if (!token) return;
       try {
         const res = await fetch(
-          `https://carenest-backend-8y2y.onrender.com/api/v1/message/${ADMIN_ID}/chat-history`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/message/${ADMIN_ID}/chat-history`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = await res.json();

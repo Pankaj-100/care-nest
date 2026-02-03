@@ -39,7 +39,7 @@ const link: linkSection[] = [
       { title: "Become A Caregiver", link: "/care-provider" },
       { title: "Who We Are", link: "/who-we-are" },
       { title: "We Accept Medicaid", link: "/medicaid" },
-      { title: "Admin panel", link: "https://carenest-admin.vercel.app/signin"},
+      { title: "Admin panel", link: "http://admin.careworks.biz"},
       { title: "Caregiver", link: "https://carenest-caregiver.vercel.app/signin" },
     ],
     "Other Services": [

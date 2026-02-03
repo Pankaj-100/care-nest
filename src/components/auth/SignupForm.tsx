@@ -23,6 +23,7 @@ function SignupForm() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -32,6 +33,7 @@ function SignupForm() {
     email: "",
     phone: "",
     address: "",
+    city: "",
     zipCode: "",
     password: "",
     confirmPassword: "",
@@ -42,6 +44,7 @@ function SignupForm() {
     email: false,
     phone: false,
     address: false,
+    city: false,
     zipCode: false,
     password: false,
     confirmPassword: false,
@@ -63,6 +66,8 @@ function SignupForm() {
         return /^\d{10}$/.test(value) ? "" : "Phone must be 10 digits";
       case "address":
         return value.trim() ? "" : "Address is required";
+      case "city":
+        return value.trim() ? "" : "City is required";
       case "zipCode":
         if (!value.trim()) return "Zip code is required";
         return /^\d{5}$/.test(value.trim()) ? "" : "Zip code must be 5 digits";
@@ -96,6 +101,7 @@ function SignupForm() {
       email: validateField("email", email),
       phone: validateField("phone", phone),
       address: validateField("address", address),
+      city: validateField("city", city),
       zipCode: validateField("zipCode", zipCode),
       password: validateField("password", password),
       confirmPassword: validateField("confirmPassword", confirmPassword),
@@ -107,6 +113,7 @@ function SignupForm() {
       email: true,
       phone: true,
       address: true,
+      city: true,
       zipCode: true,
       password: true,
       confirmPassword: true,
@@ -131,7 +138,7 @@ function SignupForm() {
         email: email.trim(),
         address: address.trim(),
         mobile: phone.trim(),
-        zipcode: zipcodeNum, // number as required by backend
+        zipcode: zipcodeNum,
         password,
         role: "user",
       };
@@ -192,6 +199,15 @@ function SignupForm() {
         placeholder="Enter Service Address"
         error={touched.address ? errors.address : ""}
         onBlur={() => handleBlur("address", address)}
+        className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
+      />
+      <TextInput
+        text={city}
+        setText={setCity}
+        Icon={addressIcon}
+        placeholder="Enter City"
+        error={touched.city ? errors.city : ""}
+        onBlur={() => handleBlur("city", city)}
         className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
       />
       {/* Zip Code */}

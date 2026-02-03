@@ -25,7 +25,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
   const dispatch = useDispatch();
   const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
 
-  const { data: profileData, isLoading } = useGetProfileQuery();
+  const { data: profileData, isLoading, refetch } = useGetProfileQuery();
   const [updateAvatar] = useUpdateAvatarMutation();
   const [removeAvatar] = useRemoveAvatarMutation();
 
@@ -89,27 +89,10 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
     try {
       const res = await updateAvatar(formData).unwrap();
       if (res?.success) {
-        // Create a temporary preview URL for immediate feedback
-        const localAvatarURL = URL.createObjectURL(file);
-        
-        dispatch(
-          setProfile({
-            name,
-            email,
-            avatar: localAvatarURL,
-            address,
-            mobile,
-            gender,
-          })
-        );
-        
         toast.success("Profile image updated successfully");
         
-        // Refresh the profile data after a short delay to get the actual S3 URL
-        setTimeout(() => {
-          // This will trigger a re-fetch of profile data
-          window.location.reload();
-        }, 2000);
+        // Refetch profile data and wait for it to complete before rendering
+        await refetch();
       }
     } catch (error) {
       console.error('Avatar upload error:', error);
