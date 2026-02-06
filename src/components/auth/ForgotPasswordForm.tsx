@@ -11,13 +11,29 @@ import { useForgotPasswordMutation } from "@/store/api/authApi";
 
 function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const router = useRouter();
 
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
+  // Email validation regex
+  const isValidEmail = (emailStr: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emailStr);
+  };
+
   const handleSubmit = async () => {
+    setEmailError("");
+
     if (!email) {
+      setEmailError("Please enter your email.");
       toast.error("Please enter your email.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setEmailError("Please enter valid mailId");
+      toast.error("Please enter valid mailId");
       return;
     }
 
@@ -28,11 +44,13 @@ function ForgotPasswordForm() {
       }).unwrap();
 
       if (res.success && res.data?.userId) {
+        setEmailError("");
         toast.success(res.message || "OTP sent to your email.");
         Cookies.set('userId', res.data.userId, { expires: 1/24 }); // Expires in 1 hour
         router.push("/otp-verification");
       } else {
-        toast.error(res.message || "Email was not registered");
+        setEmailError("Email Id not registered Yet");
+        toast.error("Email Id not registered Yet");
       }
     } catch (err: unknown) {
       if (typeof err === "object" && err !== null && "data" in err) {
@@ -43,10 +61,12 @@ function ForgotPasswordForm() {
           errorMsg.toLowerCase().includes("not registered") ||
           errorMsg.toLowerCase().includes("not found")
         ) {
-          errorMsg = "Email id Not registered";
+          errorMsg = "Email Id not registered Yet";
         }
+        setEmailError(errorMsg);
         toast.error(errorMsg);
       } else {
+        setEmailError("Failed to send OTP. Try again.");
         toast.error("Failed to send OTP. Try again.");
       }
     }
@@ -60,6 +80,7 @@ function ForgotPasswordForm() {
         Icon={EmailIcon}
         type="email"
         placeholder="Enter Email ID"
+        error={emailError}
         className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
       />
 

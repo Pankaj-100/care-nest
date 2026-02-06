@@ -56,7 +56,8 @@ function SignupForm() {
   const validateField = (field: string, value: string) => {
     switch (field) {
       case "name":
-        return value.trim() ? "" : "Name is required";
+        if (!value.trim()) return "Name is required";
+        return /^[a-zA-Z\s]*$/.test(value) ? "" : "Name can only contain letters and spaces";
       case "email":
         if (!value.trim()) return "EmailId is required";
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
@@ -143,9 +144,10 @@ function SignupForm() {
         role: "user",
       };
 
-      const { data } = await signup(payload).unwrap();
-      if (data?.userId) {
-        Cookies.set("userId", data.userId, { expires: 1 / 24 });
+      const response = await signup(payload).unwrap();
+      if (response?.data?.userId) {
+        Cookies.set("userId", response.data.userId, { expires: 1 / 24 });
+        toast.success("Account creation successful!");
         router.push("/email-verification");
       }
     } catch (err: unknown) {
@@ -171,6 +173,10 @@ function SignupForm() {
         placeholder="Enter User Name"
         error={touched.name ? errors.name : ""}
         onBlur={() => handleBlur("name", name)}
+        onChange={(e) => {
+          const value = e.target.value.replace(/[0-9]/g, "");
+          setName(value);
+        }}
         className="text-base sm:text-sm md:text-md lg:text-lg placeholder:text-base sm:placeholder:text-sm md:placeholder:text-md lg:placeholder:text-lg"
       />
       <TextInput

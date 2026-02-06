@@ -18,27 +18,54 @@ function ResetPasswordForm() {
 
   const router = useRouter();
 
+  // Strong password validation
+  const validatePassword = (pwd: string): string => {
+    if (!pwd) {
+      return "Password is required";
+    }
+    if (pwd.length < 8) {
+      return "Password must contain at least 8 characters";
+    }
+    if (!/[A-Z]/.test(pwd)) {
+      return "Password must contain at least one uppercase letter";
+    }
+    if (!/[a-z]/.test(pwd)) {
+      return "Password must contain at least one lowercase letter";
+    }
+    if (!/[0-9]/.test(pwd)) {
+      return "Password must contain at least one number";
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) {
+      return "Password must contain at least one special character";
+    }
+    return "";
+  };
+
   const handleSubmit = async () => {
     const newErrors = { password: "", confirmPassword: "" };
-    if (!password) {
-      newErrors.password = "Password is required";
-    } else if (password.length < 8) {
-      newErrors.password = "Password must contain at least 8 characters";
+    
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      newErrors.password = passwordError;
     }
+
     if (!confirmPassword) {
       newErrors.confirmPassword = "Please fill the confirmation password";
       toast.error("Please fill the confirmation password");
       setErrors(newErrors);
       return;
     }
-    setErrors(newErrors);
-    if (newErrors.password) {
-      toast.error(newErrors.password);
+
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
+      setErrors(newErrors);
+      toast.error("Passwords do not match.");
       return;
     }
 
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
+    setErrors(newErrors);
+    if (newErrors.password) {
+      toast.error(newErrors.password);
       return;
     }
 
@@ -54,8 +81,11 @@ function ResetPasswordForm() {
         role: "user", // change to "giver" if needed
       }).unwrap();
 
-      toast.success(res.message || "Password reset successful.");
-      router.push("/signin");
+      toast.success("Password Updated Successfully");
+      // Add a slight delay before redirecting to ensure user sees the success message
+      setTimeout(() => {
+        router.push("/signin");
+      }, 1500);
     }catch (err: unknown) {
   if (typeof err === "object" && err !== null && "data" in err) {
     const errorData = err as { data?: { message?: string } };

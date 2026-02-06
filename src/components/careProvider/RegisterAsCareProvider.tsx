@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { YellowButton } from "../common/CustomButton";
 import {PhoneIcon4, DescriptionIcon, AddressIcon, zipCodeIcon, MailIcon4, GenderIcon } from "../icons/page"
-import { PiCity } from "react-icons/pi";
+import { PiCity} from "react-icons/pi";
+import ZipCodePage from "../BookingFlow/ZipCodePage";
 
 
 const API_BASE =
@@ -145,7 +146,7 @@ const RegisterAsCareProvider = () => {
           </div>
         </div>
       )}
-      <div className="relative w-full h-[550px] sm:h-[650px] lg:min-h-[1100px] lg:min-w-1/2">
+      <div className="relative w-full h-[550px] sm:h-[650px] lg:min-h-[1230px] lg:min-w-1/2">
         <Image
           src={"/register-care-provider.jpg"}
           alt="faq"
@@ -188,14 +189,30 @@ const RegisterAsCareProvider = () => {
               onChange={(val) => setPhoneNumber(val.replace(/[^\d]/g, ""))}
               error={errors.phoneNumber}
             />
-            <Input
-              placeholder="Enter Gender"
-              icon={GenderIcon}
-              type="text"
-              value={gender}
-              onChange={setGender}
-              error={errors.gender}
-            />
+            <div className="flex flex-col mb-5">
+              <div className="flex bg-white rounded-3xl p-4 items-center gap-x-5">
+                <div className="relative w-5 h-5">
+                  <GenderIcon />
+                </div>
+                <select
+                  className="outline-none w-full bg-transparent"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              {errors.gender && (
+                <span className="text-red-500 text-sm mt-1 ml-2">
+                  {errors.gender}
+                </span>
+              )}
+            </div>
              <Input
               placeholder="Enter City"
               icon={PiCity}

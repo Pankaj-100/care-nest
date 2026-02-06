@@ -442,7 +442,7 @@ const NavbarMenu = ({
 
   return (
     <div
-      className="flex flex-col items-start gap-y-1 lg:flex-row lg:items-center lg:gap-x-1 cursor-pointer relative w-full lg:w-auto justify-start py-2 lg:py-0"
+      className="flex flex-col items-start gap-y-1 lg:flex-row lg:items-center lg:gap-x-1 cursor-pointer relative w-full lg:w-auto justify-start py-2 lg:py-0 lg:pb-4"
       onMouseEnter={() => {
         // Show dropdown on hover for desktop only
         if (hasDropdown && window.innerWidth >= 1024) {
@@ -475,8 +475,7 @@ const NavbarMenu = ({
             type="button"
             className={`${sectionActive ? "text-[var(--yellow)]" : "text-white"} text-right text-lg lg:text-[clamp(1.1rem,1.3vw,1.3rem)] xl:text-[clamp(1.2rem,1.3vw,1.3rem)] flex items-center gap-2`}
             onClick={() => {
-              // Click handling only for mobile
-              if (hasDropdown && window.innerWidth < 1024) {
+              if (hasDropdown) {
                 setOpenDropdownIndex(isDropdownOpen ? null : index);
               }
             }}
@@ -497,7 +496,7 @@ const NavbarMenu = ({
         <div className="relative hidden lg:block z-[999]">
           {isDropdownOpen && (
             <div
-              className="absolute top-full -left-26 mt-6 min-w-[230px] rounded-2xl bg-white text-[var(--navy)] p-0 overflow-hidden shadow-xl border border-black/5 z-[999]"
+              className="absolute top-full -left-26 mt-3 min-w-[210px] rounded-2xl bg-white text-[var(--navy)] p-0 overflow-hidden shadow-xl border border-black/5 z-[999]"
               onMouseLeave={() => setOpenDropdownIndex(null)}
             >
               {services && services.map((item, idx) => (
@@ -541,7 +540,7 @@ const NavbarMenu = ({
 
       {/* Mobile dropdown (inline reveal) */}
       {hasDropdown && isDropdownOpen && services && (
-        <div className="lg:hidden mt-2 w-full pl-3 text-[1.15rem] text-white/85">
+        <div className="lg:hidden mt-1 w-full pl-3 text-[1.15rem] text-white/85">
           <div className="flex flex-col gap-2">
             {services.map((item, idx) => (
               <React.Fragment key={idx}>

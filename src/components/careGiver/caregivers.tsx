@@ -412,24 +412,26 @@ const CaregiversPage = () => {
             ))}
           </div>
 
-          <div className="mt-10 md:mt-6 lg:mt-10 mb-0 md:mb-0 lg:mb-0 w-full text-center max-w-xl mx-auto">
-            <button
-              onClick={() => {
-                if (mappedCaregiversForSchedule.length < 1) {
-                  toast.error("Please select at least 1 caregiver to proceed with booking.");
-                  return;
-                }
-                setIsScheduleOpen(true);
-              }}
-              className={`lg:w-[25rem]  w-full px-4 py-2 text-[var(--navy)] text-lg rounded-full font-semibold transition ${
-                mappedCaregiversForSchedule.length >= 1
-                  ? "bg-[var(--yellow)] cursor-pointer hover:bg-yellow-400"
-                  : "bg-[#233D4D1A] hover:cursor-not-allowed"
-              }`}
-            >
-              Proceed ({mappedCaregiversForSchedule.length})
-            </button>
-          </div>
+          {caregivers.length > 0 && (
+            <div className="mt-10 md:mt-6 lg:mt-10 mb-0 md:mb-0 lg:mb-0 w-full text-center max-w-xl mx-auto">
+              <button
+                onClick={() => {
+                  if (mappedCaregiversForSchedule.length < 1) {
+                    toast.error("Please select at least 1 caregiver to proceed with booking.");
+                    return;
+                  }
+                  setIsScheduleOpen(true);
+                }}
+                className={`lg:w-[25rem]  w-full px-4 py-2 text-[var(--navy)] text-lg rounded-full font-semibold transition ${
+                  mappedCaregiversForSchedule.length >= 1
+                    ? "bg-[var(--yellow)] cursor-pointer hover:bg-yellow-400"
+                    : "bg-[#233D4D1A] hover:cursor-not-allowed"
+                }`}
+              >
+                Proceed ({mappedCaregiversForSchedule.length})
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

@@ -157,115 +157,125 @@ const ContactForm: React.FC = () => {
           Get In Touch With Us
         </h3>
 
-        <div className="relative">
-          <Image
-            src="/Contact/user-icon.png"
-            alt="Name"
-            width={20}
-            height={20}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
-          />
-          <input
-            name="name"
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter Name"
-            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.name ? 'border-red-500' : ''}`}
-            required
-          />
+        <div>
+          <div className="relative">
+            <Image
+              src="/Contact/user-icon.png"
+              alt="Name"
+              width={20}
+              height={20}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 z-10"
+            />
+            <input
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter Name"
+              className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.name ? 'border-red-500' : ''}`}
+              required
+            />
+          </div>
           {errors.name && (
             <p className="text-red-500 text-sm mt-1 ml-4">{errors.name}</p>
           )}
         </div>
 
-        <div className="relative">
-          <Image
-            src="/Contact/email-icon.png"
-            alt="Email"
-            width={20}
-            height={20}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
-          />
-          <input
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter EmailID"
-            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.email ? 'border-red-500' : ''}`}
-            required
-          />
+        <div>
+          <div className="relative">
+            <Image
+              src="/Contact/email-icon.png"
+              alt="Email"
+              width={20}
+              height={20}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 z-10"
+            />
+            <input
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter EmailID"
+              className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.email ? 'border-red-500' : ''}`}
+              required
+            />
+          </div>
           {errors.email && (
             <p className="text-red-500 text-sm mt-1 ml-4">{errors.email}</p>
           )}
         </div>
 
-        <div className="relative">
-          <Image
-            src="/Contact/location2.png"
-            alt="Zip code"
-            width={20}
-            height={20}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
-          />
-          <input
-            name="zipcode"
-            type="text"
-            value={formData.zipcode}
-            onChange={handleNumericInput}
-            placeholder="Enter Zip code"
-            maxLength={5}
-            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.zipcode ? 'border-red-500' : ''}`}
-            required
-          />
+        <div>
+          <div className="relative">
+            <Image
+              src="/Contact/location2.png"
+              alt="Zip code"
+              width={20}
+              height={20}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 z-10"
+            />
+            <input
+              name="zipcode"
+              type="text"
+              value={formData.zipcode}
+              onChange={handleNumericInput}
+              placeholder="Enter Zip code"
+              maxLength={5}
+              className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.zipcode ? 'border-red-500' : ''}`}
+              required
+            />
+          </div>
           {errors.zipcode && (
             <p className="text-red-500 text-sm mt-1 ml-4">{errors.zipcode}</p>
           )}
         </div>
 
-        <div className="relative">
-          <Image
-            src="/Contact/phone2.png"
-            alt="Phone No"
-            width={20}
-            height={20}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
-          />
-          <input
-            name="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={handleNumericInput}
-            placeholder="Enter Phone No"
-            maxLength={10}
-            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.phone ? 'border-red-500' : ''}`}
-            required
-          />
+        <div>
+          <div className="relative">
+            <Image
+              src="/Contact/phone2.png"
+              alt="Phone No"
+              width={20}
+              height={20}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 z-10"
+            />
+            <input
+              name="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={handleNumericInput}
+              placeholder="Enter Phone No"
+              maxLength={10}
+              className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-full focus:outline-none ${errors.phone ? 'border-red-500' : ''}`}
+              required
+            />
+          </div>
           {errors.phone && (
             <p className="text-red-500 text-sm mt-1 ml-4">{errors.phone}</p>
           )}
         </div>
 
 
-        <div className="relative">
-          <Image
-            src="/Contact/majesticons-icon.png"
-            alt="Name"
-            width={20}
-            height={20}
-            className="absolute left-4 top-4 w-5 h-5"
-          />
+        <div>
+          <div className="relative">
+            <Image
+              src="/Contact/majesticons-icon.png"
+              alt="Name"
+              width={20}
+              height={20}
+              className="absolute left-4 top-4 w-5 h-5 z-10"
+            />
 
-          <textarea
-            name="message"
-            rows={6}
-            value={formData.message}
-            onChange={handleChange}
-            placeholder="Write a brief description"
-            className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-3xl focus:outline-none ${errors.message ? 'border-red-500' : ''}`}
-            required
-          />
+            <textarea
+              name="message"
+              rows={6}
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Write a brief description"
+              className={`w-full pl-12 pr-4 px-4 py-3 border bg-white rounded-3xl focus:outline-none ${errors.message ? 'border-red-500' : ''}`}
+              required
+            />
+          </div>
           {errors.message && (
             <p className="text-red-500 text-sm mt-1 ml-4">{errors.message}</p>
           )}

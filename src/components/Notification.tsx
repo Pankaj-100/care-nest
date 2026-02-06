@@ -5,7 +5,7 @@ import { formatDistanceToNow } from "date-fns";
 import Cookies from "js-cookie";
 
 import CustomSheet from "./common/CustomSheet";
-import { noNotificationIcon, Usernoty, Bookingnoty } from "@/lib/svg_icons";
+import { noNotificationIcon, Bookingnoty } from "@/lib/svg_icons";
 import { useGetNotificationsQuery, useMarkAsReadMutation, useGetUnreadCountQuery, useDeleteNotificationMutation, useClearAllNotificationsMutation  } from "../store/api/notificationApi";
 import { useSocket } from "@/hooks/use-socket";
 import { Notification as NotificationType } from "../lib/types/notification";
@@ -20,6 +20,7 @@ interface Props {
 function Notification({ open, handleOpen }: Props) {
   const [page, setPage] = useState(1);
   const limit = 5;
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
   
   const token = Cookies.get("authToken");
   const { data, isLoading, isError, refetch } = useGetNotificationsQuery(
@@ -35,7 +36,6 @@ function Notification({ open, handleOpen }: Props) {
 
   
   const notifications = data?.data?.notifications || [];
-  const totalPages = data?.data?.totalPages || 0;
   const hasMore = data?.data?.hasMore || false;
   const unreadCount = unreadCountData?.data?.unreadCount || 0;
 
@@ -55,10 +55,17 @@ function Notification({ open, handleOpen }: Props) {
   // Refetch when sheet opens
   useEffect(() => {
     if (open) {
+      setPage(1);
       refetch();
       refetchUnreadCount();
     }
   }, [open, refetch, refetchUnreadCount]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setIsFetchingMore(false);
+    }
+  }, [isLoading]);
 
   const handleMarkAsRead = async (notificationId: string) => {
     try {
@@ -70,15 +77,9 @@ function Notification({ open, handleOpen }: Props) {
   };
 
   const loadMore = () => {
-    if (hasMore) {
-      setPage(prev => prev + 1);
-    }
-  };
-
-  const loadPrevious = () => {
-    if (page > 1) {
-      setPage(prev => prev - 1);
-    }
+    if (!hasMore || isLoading || isFetchingMore) return;
+    setIsFetchingMore(true);
+    setPage((prev) => prev + 1);
   };
 
   const formatTime = (dateString: string) => {
@@ -118,7 +119,17 @@ function Notification({ open, handleOpen }: Props) {
           )}
         </div>
 
-        <div className="mt-5 flex flex-col px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
+        <div
+          className="mt-5 flex flex-col px-3 max-h-[calc(100vh-200px)] overflow-y-auto"
+          onScroll={(event) => {
+            const target = event.currentTarget;
+            const threshold = 80;
+            const distanceFromBottom = target.scrollHeight - target.scrollTop - target.clientHeight;
+            if (distanceFromBottom <= threshold) {
+              loadMore();
+            }
+          }}
+        >
           {isLoading && page === 1 && (
             <div className="text-center py-8 text-gray-500">
               Loading notifications...
@@ -200,25 +211,6 @@ function Notification({ open, handleOpen }: Props) {
             </div>
           ))}
 
-          {notifications.length > 0 && (page > 1 || hasMore) && (
-            <div className="mt-4 flex gap-2">
-              <button
-                onClick={loadPrevious}
-                disabled={page === 1 || isLoading}
-                className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-center font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? "Loading..." : "← Previous"}
-              </button>
-              <button
-                onClick={loadMore}
-                disabled={!hasMore || isLoading}
-                className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-center font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? "Loading..." : "Next →"}
-              </button>
-            </div>
-          )}
-
           {notifications.length > 0 && !hasMore && (
             <div className="text-center py-4 text-gray-400 text-sm">
               No more notifications
@@ -246,6 +238,7 @@ function Notification({ open, handleOpen }: Props) {
                 await clearAllNotifications();
                 refetch();
                 refetchUnreadCount();
+                toast.success('Notifications cleared successfully!', { position: 'top-left' });
               }}
               className="flex-1 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
             >

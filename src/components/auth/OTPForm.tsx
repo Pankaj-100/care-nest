@@ -42,12 +42,13 @@ function OTPForm({ isEmailVerify }: Props) {
     try {
       const res = await verifyEmail({
         userId,
-        code: otp,
+        code: otp.trim(),
         type,
       }).unwrap();
 
       if (res.success) {
-      if (isEmailVerify) {
+        toast.success("OTP verified successfully!");
+        if (isEmailVerify) {
           // Store tokens in cookies for email verification flow
           Cookies.set("authToken", res.data.accessToken, { expires: 1 }); // 1 day
           Cookies.set("refreshToken", res.data.refreshToken, { expires: 7 }); // 7 days
@@ -77,6 +78,11 @@ function OTPForm({ isEmailVerify }: Props) {
       return;
     }
 
+    if (!userId) {
+      toast.error("User session expired. Please sign up again.");
+      return;
+    }
+
     try {
       const res = await resendOtp({
         userId,
@@ -99,17 +105,13 @@ function OTPForm({ isEmailVerify }: Props) {
   };
 
   useEffect(() => {
+    if (time === 0) return; // Stop when timer reaches 0
+    
     const timer = setInterval(() => {
-      setTime((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prev - 1;
-      });
+      setTime((prev) => (prev > 1 ? prev - 1 : 0));
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [time]);
 
   return (
     <div className=" mt-0 lg:mt-[8rem]">
@@ -154,9 +156,13 @@ function OTPForm({ isEmailVerify }: Props) {
       <div className="flex justify-center items-center gap-1 mt-5">
         <div>Didn’t receive OTP yet?</div>
         <button
-          className="p-0 m-0 text-[var(--golden-yellow)] font-medium"
+          className={`p-0 m-0 font-medium cursor-pointer ${
+            isResending || time > 0
+              ? "text-gray-400 cursor-not-allowed"
+              : "text-[var(--golden-yellow)]"
+          }`}
           onClick={handleResend}
-          disabled={isResending}
+          disabled={isResending || time > 0}
         >
           {isResending ? "Resending..." : "Resend"}
         </button>
