@@ -402,6 +402,17 @@ const ScheduleCare = ({
       // Validate meeting duration days selection
       if (selectedDays.length === 0) return setFormError("Select at least one meeting duration day");
 
+      // Validate end date is not before start date
+      if (endDate && startDate) {
+        const endMid = new Date(endDate);
+        const startMid = new Date(startDate);
+        endMid.setHours(0, 0, 0, 0);
+        startMid.setHours(0, 0, 0, 0);
+        if (endMid < startMid) {
+          return setFormError("Service End Date cannot be earlier than the Service Start Date.");
+        }
+      }
+
       // Build weeklySchedule array
       const weeklySchedule: { weekDay: number; startTime: string; endTime: string }[] = [];
       selectedDays.forEach((d) => {

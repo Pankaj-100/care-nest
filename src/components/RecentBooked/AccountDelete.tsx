@@ -4,7 +4,7 @@ import { useState } from "react";
 import ActionDialog from "../common/ActionDialog";
 import { binIcon } from "@/lib/svg_icons";
 import { useDeleteAccountMutation } from "@/store/api/profileApi";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { clearAuth } from "@/store/authSlice";  
@@ -29,13 +29,15 @@ const AccountDelete = ({ goTo }: goToProps) => {
     try {
       const res = await deleteAccount().unwrap();
       toast.success(res.message || "Account deleted successfully.");
-      dispatch(clearAuth());
-      Cookies.remove("authToken");
-      setOpenDialog(false);
-      goTo("Manage Profile");
+      
+      // Wait for toast to be visible before redirecting
       setTimeout(() => {
-        router.push("/signin"); // or redirect to landing page
-      }, 400);
+        dispatch(clearAuth());
+        Cookies.remove("authToken");
+        setOpenDialog(false);
+        goTo("Manage Profile");
+        router.push("/signin");
+      }, 2000);
     } catch (err: unknown) {
   if (typeof err === "object" && err !== null && "data" in err) {
     const errorData = err as { data?: { message?: string } };
@@ -48,6 +50,7 @@ const AccountDelete = ({ goTo }: goToProps) => {
 
   return (
     <div>
+      <ToastContainer position="top-right" />
       <ActionDialog
         open={openDeleteDialog}
         handleOpen={handleOpen}

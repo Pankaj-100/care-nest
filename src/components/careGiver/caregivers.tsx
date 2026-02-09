@@ -120,13 +120,13 @@ const CaregiversPage = () => {
 
   const handleBookmarkToggle = async (id: string) => {
     try {
+      const currentBookmarkState = caregivers.find(cg => cg.id === id)?.isBookmarked;
       await bookmarkCaregiver(id).unwrap();
       setCaregivers(prev =>
         prev.map(cg => (cg.id === id ? { ...cg, isBookmarked: !cg.isBookmarked } : cg))
       );
-      const isNowBookmarked = caregivers.find(cg => cg.id === id)?.isBookmarked;
       toast.success(
-        isNowBookmarked
+        currentBookmarkState
           ? "Caregiver removed successfully!"
           : "Caregiver bookmarked successfully!"
       );

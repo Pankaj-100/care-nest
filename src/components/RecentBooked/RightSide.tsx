@@ -27,14 +27,14 @@ const uiToApiStatus: Record<string, string> = {
   Requested: "requested",
   Active: "active",
   Completed: "completed",
-  Cancelled: "cancel",
+  Cancelled: "cancelled",
 };
 
 const apiToUiStatus: Record<string, string> = {
   pending: "Pending",
   accepted: "Accepted",
   completed: "Completed",
-  cancelled: "Cancel",
+  cancelled: "Cancelled",
   active: "Active",
 };
 
@@ -202,7 +202,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
       </h2>
 
       <div className="grid grid-cols-3 gap-2 sm:gap-3 md:flex md:flex-wrap md:gap-3 lg:gap-5 mb-6 sm:mb-8 cursor-pointer w-full">
-        {["All", "Pending", "Accepted", "Active", "Completed", "Cancel"].map(
+        {["All", "Pending", "Accepted", "Active", "Completed", "Cancelled"].map(
           (status) => (
             <button
               key={status}

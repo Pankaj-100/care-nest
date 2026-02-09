@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,10 +69,11 @@ export default function ManageProfile() {
     name: "",
     email: "",
     gender: "",
+    city: "",
     address: "",
     mobile: "",
     zipcode: "",
-    careRecipient: "", // <-- Add this
+    careRecipient: "",
   });
 
   const [careRecipient, setCareRecipient] = useState("");
@@ -81,6 +82,7 @@ export default function ManageProfile() {
     name: "",
     email: "",
     gender: "",
+    city: "",
     address: "",
     mobile: "",
     zipcode: "",
@@ -113,6 +115,7 @@ export default function ManageProfile() {
         name: p.name || "",
         email: p.email || "",
         gender: p.gender || "",
+        city: (p as any).city || "",
         address: p.address || "",
         mobile: p.mobile || "",
         zipcode: normalizedZip !== undefined ? String(normalizedZip) : "",
@@ -146,6 +149,8 @@ export default function ManageProfile() {
         return emailRegex.test(value) ? "" : "Invalid email address";
       case "gender":
         return value.trim() === "" ? "Gender is required" : "";
+      case "city":
+        return value.trim() === "" ? "City is required" : "";
       case "address":
         return value.trim() === "" ? "Address is required" : "";
       case "mobile":
@@ -159,8 +164,14 @@ export default function ManageProfile() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const nextVal =
-      name === "mobile" || name === "zipcode" ? value.replace(/\D/g, "") : value;
+    let nextVal = value;
+    
+    if (name === "mobile" || name === "zipcode") {
+      nextVal = value.replace(/\D/g, "");
+    } else if (name === "name") {
+      // Only allow alphabets and spaces
+      nextVal = value.replace(/[^a-zA-Z\s]/g, "");
+    }
 
     setForm((prev) => ({ ...prev, [name]: nextVal }));
 
@@ -286,6 +297,7 @@ export default function ManageProfile() {
 
   return (
     <div>
+      <ToastContainer position="top-right" />
       <div className="bg-[#FFFFFF] shadow-md rounded-lg p-4 md:p-4 lg:p-6 w-full max-w-5xl mx-auto mt-10">
         <form onSubmit={handleSubmit}>
           {/* Mobile Profile Header */}
@@ -410,6 +422,14 @@ export default function ManageProfile() {
                 </div>
                 {errors.gender && <p className="text-red-500 text-sm ml-4">{errors.gender}</p>}
               </div>
+              <InputField
+                name="city"
+                value={form.city}
+                onChange={handleChange}
+                placeholder="City"
+                icon={LocationIcon()}
+                error={errors.city}
+              />
               <InputField
                 name="address"
                 value={form.address}

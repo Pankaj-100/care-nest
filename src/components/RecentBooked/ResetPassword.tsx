@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useChangePasswordMutation } from "@/store/api/profileApi";
 import Image from "next/image";
 
@@ -93,6 +93,7 @@ const ResetPassword = () => {
 
   return (
     <div className="bg-white rounded-[20px] p-6 md:p-8 max-w-[818px] w-full mx-auto mt-10 shadow-sm">
+      <ToastContainer position="top-right" />
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className=" flex items-center justify-between mb-6">
           <h2 className="text-3xl font-medium text-[#2B384C]">Reset Password</h2>

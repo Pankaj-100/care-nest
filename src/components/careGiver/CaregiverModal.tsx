@@ -170,7 +170,7 @@ const ModalContent: React.FC<{
     caregiver.avatar && typeof caregiver.avatar === "string" && caregiver.avatar.trim() !== ""
       ? caregiver.avatar.startsWith("http")
         ? caregiver.avatar
-        : `${cdnURL}/${caregiver.avatar.replace(/^\/+/, "")}`
+        : `${cdnURL.replace(/\/+$/, "")}/${caregiver.avatar.replace(/^\/+/, "")}`
       : "/care-giver/boy-icon.png";
 
   const handleBookmark = async () => {
