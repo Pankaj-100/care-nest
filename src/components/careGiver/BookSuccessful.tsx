@@ -38,12 +38,12 @@ const BookSuccessful = ({ isModalOpen, onClose }: BookSuccessfulProps) => {
 
         {/* Title */}
         <h2 className="text-lg sm:text-2xl font-bold text-center text-[var(--navy)] mb-2 sm:mb-3">
-          Thank you for booking with us
+          Thank you for booking with CareWorks
         </h2>
 
         {/* Message */}
         <p className="text-gray-500 text-center mb-5 sm:mb-6 text-md sm:text-md leading-relaxed">
-          You have booked caregivers You will receive an email shortly. we will choose the best one for you and let you know.
+          Your caregiver selections have been received. Our team will carefully review the caregiver's availability and confirm the best match for you. You will hear from us shortly by email and a call.
         </p>
 
         {/* Action Button */}
