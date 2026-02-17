@@ -56,15 +56,15 @@ export default function CareRequestFaq({ open, onClose }: CareRequestFaqProps) {
 	if (!open) return null;
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+		<div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[156px] pb-8">
 			<button
 				type="button"
 				className="absolute inset-0 bg-black/40"
 				aria-label="Close FAQs"
 				onClick={onClose}
 			/>
-			<div className="relative z-10 w-full max-w-2xl rounded-2xl bg-white p-5 sm:p-6 shadow-xl">
-				<div className="flex items-start justify-between gap-4">
+			<div className="relative z-10 w-full max-w-2xl rounded-2xl bg-white shadow-xl max-h-[80vh] flex flex-col">
+				<div className="flex items-start justify-between gap-4 px-5 sm:px-6 pt-5 pb-4 border-b border-[#233D4D1A]">
 					<div>
 						<p className="text-sm font-semibold text-[#F2A307]">Care Request FAQs</p>
 						<h3 className="text-xl sm:text-2xl font-bold text-[var(--navy)]">
@@ -80,7 +80,7 @@ export default function CareRequestFaq({ open, onClose }: CareRequestFaqProps) {
 					</button>
 				</div>
 
-				<div className="mt-4 max-h-[60vh] overflow-y-auto">
+				<div className="px-5 sm:px-6 pt-4 pb-5 sm:pb-6 overflow-y-auto">
 					{faqLoading ? (
 						<div className="space-y-3">
 							{[1, 2, 3].map((i) => (
