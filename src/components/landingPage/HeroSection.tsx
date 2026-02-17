@@ -152,9 +152,10 @@ const HeroSection = () => {
         {/* Main content - desktop: absolute positioned, mobile: relative */}
         <div className="relative lg:absolute lg:left-28 lg:top-[2%] px-4 sm:px-8 lg:px-0 pt-12 lg:pt-0 text-white lg:w-[1050px]">
           <h1 className="font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight text-center lg:text-left">
-            Find compassionate{" "}
+            Faster care.
+            <br className="mb-2" />
             <span className="relative inline-block">
-              <span className="text-[#FFA726]">home care services</span>
+              <span className="text-[#FFA726]">Clear choices.</span>
               <div className="absolute -bottom-2 sm:-bottom-3 left-0 w-full">
                 <Image
                   src="/home-care-underline.png"
@@ -167,7 +168,7 @@ const HeroSection = () => {
               </div>
             </span>{" "}
             <br className="mb-2" />
-            <span className="block mt-2 sm:mt-4">for your loved one</span>
+            <span className="block mt-2 sm:mt-4">Confident decisions.</span>
           </h1>
           
           <div className="my-4 sm:my-6">
@@ -330,7 +331,7 @@ export const BrowseCaregiver = ({ noDescription, title, description }: Props) =>
             {description ??
               (isCaregiversPage
                 ? "Choose caregivers to schedule your meeting."
-                : "Create your free profile to discover verified, compassionate caregivers.")}
+                : "Create your free profile to discover verified, trusted caregivers.")}
           </p>
         </div>
       )}

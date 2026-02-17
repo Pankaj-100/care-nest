@@ -107,7 +107,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
         caregiverId: selectedBooking.caregiverId,
       }).unwrap();
       refetch(); // <-- This reloads the latest bookings
-      toast.success("Booking cancelled successfully");
+      toast.success("Care Request cancelled successfully");
     } catch (err) {
       const errorObj = err as {
         data?: { message?: string };
@@ -116,7 +116,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
       const msg =
         errorObj?.data?.message ||
         errorObj?.error ||
-        "Failed to cancel booking";
+        "Failed to cancel care request. Please try again.";
       toast.error(msg);
       console.error("Cancellation error:", err);
     } finally {
@@ -157,7 +157,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
     return (
       <div className="w-full p-3 sm:p-4 md:p-6 lg:p-8 mt-0 lg:mt-3">
         <h2 className="text-2xl text-center lg:text-start sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
-          Recent Bookings
+          Recent Care Requests
         </h2>
         <div className="space-y-4 sm:space-y-6 w-full">
           {[1, 2, 3, 4, 5].map((i) => (
@@ -198,7 +198,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
   return (
     <div className="w-full p-3 sm:p-4 md:p-6 lg:p-8 mt-0 lg:mt-3">
       <h2 className="text-2xl text-center lg:text-start sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
-        Recent Bookings
+        Recent Care Requests
       </h2>
 
       <div className="grid grid-cols-3 gap-2 sm:gap-3 md:flex md:flex-wrap md:gap-3 lg:gap-5 mb-6 sm:mb-8 cursor-pointer w-full">

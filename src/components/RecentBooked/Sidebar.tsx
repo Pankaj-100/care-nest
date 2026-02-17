@@ -124,7 +124,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
 
   const profileItem = [
     { id: 1, name: "Manage Profile", icon: "/Recent/right-arrow.png", route: "/profile" },
-    { id: 2, name: "Recent Booking", icon: "/Recent/right-arrow.png", route: "/recent-booking" },
+    { id: 2, name: "Recent Care Requests", icon: "/Recent/right-arrow.png", route: "/recent-booking" },
     { id: 3, name: "Saved Caregivers", icon: "/Recent/right-arrow.png", route: "/saved-caregiver" },
     { id: 4, name: "Reset Password", icon: "/Recent/right-arrow.png", route: "/password-reset" },
     { id: 5, name: "Delete Account", icon: "/Recent/right-arrow.png" },
@@ -229,10 +229,9 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
                       setShowDelete(true);
                       return;
                     }
+                    onSelect(item.name);
                     if (item.route) {
                       router.push(item.route);
-                    } else {
-                      onSelect(item.name);
                     }
                   }}
                   className={`cursor-pointer flex items-center justify-between gap-2 px-4 py-2 font-Urbanist text-sm md:text-sm lg:text-base text-[var(--navy)] transition duration-200 ease-in-out ${

@@ -41,12 +41,12 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
       await cancelBooking({ bookingId: bookingDetails.bookingId, caregiverId }).unwrap();
       // update local state so UI reflects cancelled status immediately
       setBookingDetails(prev => ({ ...prev, status: "cancelled" }));
-      toast.success("Booking cancelled successfully");
+      toast.success("Care Request cancelled successfully");
       setOpenDialog(false);
       // navigate back to previous page
       router.push('/recent-booking');
     } catch {
-      toast.error("Failed to cancel booking");
+      toast.error("Failed to cancel care request");
       setOpenDialog(false);
     }
   };
@@ -67,7 +67,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
       };
       const result = await editBooking({ bookingId: booking.bookingId, payload }).unwrap();
       if (result.success) {
-        toast.success("Booking details updated successfully!");
+        toast.success("Care Request details updated successfully!");
         setIsEditing(false);
         setBookingDetails(prev => ({
           ...prev,
@@ -250,11 +250,11 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
             {/* Column 1 */}
             <div className="flex flex-col gap-4">
               <div>
-                <span className="block text-[#233D4D] text-base font-semibold mb-1">Booking ID:</span>
+                <span className="block text-[#233D4D] text-base font-semibold mb-1">Care Request ID:</span>
                 <span className="block text-[#B0B7C3] text-lg font-md truncate max-w-[180px]">#{booking.bookingId}</span>
               </div>
               <div>
-                <span className="block text-[#233D4D] text-base font-semibold mb-1">Booked On:</span>
+                <span className="block text-[#233D4D] text-base font-semibold mb-1">Care Requested On:</span>
                 <span className="block text-[#B0B7C3] text-lg font-md">
                   {bookingDetails.bookedOn
                       ? parseDateLocal(bookingDetails.bookedOn)?.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
@@ -413,7 +413,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
           confirmText="Confirm"
           handleConfirm={handleCancelBooking}
           heading="Confirm Cancellation"
-          subheading="Are you sure you want to cancel this booking?"
+          subheading="Are you sure you want to cancel this care request?"
         />
 
         {/* Edit Booking Schedule */}

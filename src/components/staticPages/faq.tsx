@@ -128,7 +128,7 @@ return (
 				<div className="flex flex-col-reverse md:flex-row justify-between w-full max-w-7xl px-4">
 					<div className="flex-1 md:pl-8 order-2 md:order-1 md:text-left">
 						<h2 className="text-[var(--navy)] font-semibold text-2xl sm:text-5xl mb-4 sm:mb-6 leading-tight">
-							Compassionate Care, Just A Call Away
+							Reliable Care, One Call Away
 						</h2>
 						<p className="text-[var(--navy)] text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
 							Looking For A Caregiver Who Treats Your Loved One With Dignity And Kindness? Our Team Is Ready To Offer Personalized Care And Peace Of Mind. Contact Us To Learn More
