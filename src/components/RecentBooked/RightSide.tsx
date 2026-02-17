@@ -156,9 +156,18 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
   if (isLoading)
     return (
       <div className="w-full p-3 sm:p-4 md:p-6 lg:p-8 mt-0 lg:mt-3">
-        <h2 className="text-2xl text-center lg:text-start sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
-          Recent Care Requests
-        </h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl text-center lg:text-start sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] font-Urbanist">
+            Recent Care Requests
+          </h2>
+          <button
+            type="button"
+            onClick={() => window.location.href = '/faq#care-requests'}
+            className="px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-semibold bg-[var(--yellow)] text-[var(--navy)] hover:brightness-110 transition-all duration-300 whitespace-nowrap"
+          >
+            FAQs
+          </button>
+        </div>
         <div className="space-y-4 sm:space-y-6 w-full">
           {[1, 2, 3, 4, 5].map((i) => (
             <div
@@ -197,9 +206,18 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
 
   return (
     <div className="w-full p-3 sm:p-4 md:p-6 lg:p-8 mt-0 lg:mt-3">
-      <h2 className="text-2xl text-center lg:text-start sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] mb-6 font-Urbanist">
-        Recent Care Requests
-      </h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl text-center lg:text-start sm:text-3xl lg:text-4xl font-semibold text-[var(--navy)] font-Urbanist">
+          Recent Care Requests
+        </h2>
+        <button
+          type="button"
+          onClick={() => window.location.href = '/faq#care-requests'}
+          className="px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-semibold bg-[var(--yellow)] text-[var(--navy)] hover:brightness-110 transition-all duration-300 whitespace-nowrap"
+        >
+          FAQs
+        </button>
+      </div>
 
       <div className="grid grid-cols-3 gap-2 sm:gap-3 md:flex md:flex-wrap md:gap-3 lg:gap-5 mb-6 sm:mb-8 cursor-pointer w-full">
         {["All", "Pending", "Accepted", "Active", "Completed", "Cancelled"].map(

@@ -46,7 +46,7 @@ const CARE_RECIPIENT_OPTIONS = [
 
 export default function ManageProfile() {
   const dispatch = useDispatch();
-  const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
+  const cdnURL = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "";
   
   const { data: profile, isLoading: isFetching } = useGetProfileQuery();
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();

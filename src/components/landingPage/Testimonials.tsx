@@ -16,7 +16,7 @@ type TestimonialItem = {
   createdAt?: string;
 };
 
-const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
+const cdnURL = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "";
 
 const Testimonials: React.FC = () => {
   const API_BASE =

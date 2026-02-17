@@ -47,7 +47,7 @@ const link: linkSection[] = [
       { title: "Home Maker Care", link: "/service/home-maker" },
       { title: "Specialized Care", link: "/service/specialized-care" },
       { title: "Sitter Service", link: "/service/sitter-service" },
-      { title: "Veteran Homecare", link: "/veterans" },
+      { title: "Transitional Care", link: "/veterans" },
       { title: "Transportation", link: "/service/transportation" },
       { title: "Companion care", link: "/service/companion-care" },
     ],
@@ -55,7 +55,7 @@ const link: linkSection[] = [
       { title: "FAQs", link: "/faq" },
       { title: "Privacy Policy", link: "/privacy" },
       { title: "Resources", link: "/resources" },
-      { title: "Veterans Financial Assistance", link: "/veterans" },
+      { title: "Transitional Care", link: "/veterans" },
     ],
   },
 ];

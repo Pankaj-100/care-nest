@@ -209,7 +209,7 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
       <main className="flex-1">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-0">
           <h2 className="text-xl sm:text-2xl md:text-lg font-semibold text-[#2F3C51]">
-            Recent Booking / <span className="text-[#2F3C51]">#{booking.bookingId}</span>
+            Recent Care Request / <span className="text-[#2F3C51]">#{booking.bookingId}</span>
           </h2>
           <div className="flex gap-2 ml-2 sm:gap-4">
             {/* Hide Edit button for completed or cancelled bookings */}

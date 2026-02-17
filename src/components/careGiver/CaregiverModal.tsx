@@ -39,7 +39,7 @@ interface CaregiverDetail {
   isBookmarked?: boolean;
 }
 
-const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
+const cdnURL = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "";
 
 const CaregiverModal: React.FC<CaregiverModalProps> = ({
   isOpen,

@@ -28,7 +28,7 @@ const CaregiverCard: React.FC<CaregiverProps> = ({
   verifiedIconSrc = "/care-giver/verified.png", // place this in /public
   heightClass,
 }) => {
-  const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
+  const cdnURL = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "";
   // Normalize experience: default to 0, show as "X+ Years"
   let experienceDisplay = "0 Years";
   if (

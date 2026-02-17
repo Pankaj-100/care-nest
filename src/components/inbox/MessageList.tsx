@@ -42,7 +42,7 @@ function MessageList({ handleOpenMessages }: Props) {
     }
   };
 
-  const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
+  const cdnURL = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "";
 
   // Filter chats by search
   const filteredChats = search

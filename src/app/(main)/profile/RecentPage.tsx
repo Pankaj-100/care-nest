@@ -211,7 +211,7 @@ export function RecentPage({ selectedOption, setSelectedOption }: RecentPageProp
     switch (selectedOption) {
       case "Manage Profile":
         return <ManageProfile />;
-      case "Recent Booking":
+      case "Recent Care Requests":
         return (
           <RightBookingsPanel
             onBookingClick={(booking: Booking) => {

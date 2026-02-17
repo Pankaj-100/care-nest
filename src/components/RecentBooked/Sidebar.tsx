@@ -23,7 +23,7 @@ interface SidebarProps {
 export function Sidebar({ onSelect, selected }: SidebarProps) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const cdnURL = process.env.NEXT_STORAGE_BUCKET || "";
+  const cdnURL = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "";
 
   const { data: profileData, isLoading, refetch } = useGetProfileQuery();
   const [updateAvatar] = useUpdateAvatarMutation();
