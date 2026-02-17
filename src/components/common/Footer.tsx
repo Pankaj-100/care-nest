@@ -211,7 +211,7 @@ const Footer = () => {
               <div className="flex flex-row flex-nowrap lg:flex-wrap justify-center lg:justify-end items-center gap-4 lg:gap-12 w-full lg:w-auto">
                 <Image src="/partners/caring-com.png" alt="Caring.com" width={100} height={100} className="object-contain h-13 lg:h-16 w-auto flex-shrink-0" />
                 <Image src="/partners/a-place-for-mom.png" alt="A Place for Mom" width={220} height={60} className="object-contain h-12 lg:h-16 w-auto flex-shrink-0" />
-                <Image src="/carescout.png" alt="Carescout Qualtiy network" width={100} height={100} className="object-contain h-13 lg:h-16 w-auto flex-shrink-0" />
+                <Image src="/carescout.png" alt="Carescout Qualtiy network" width={130} height={130} className="object-contain h-13 lg:h-19 w-auto flex-shrink-0" />
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@
 import VeteransFinancialAssistance, { VeteransApiData, VeteransFaqApi, FaqItem } from "@/components/staticPages/veterans";
 
 export const metadata = {
-  title: "Veterans",
+  title: "Transitional Care",
 };
 
 async function fetchVeteransData(): Promise<VeteransApiData | null> {

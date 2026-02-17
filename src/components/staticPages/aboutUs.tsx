@@ -231,6 +231,11 @@ export default function AboutUs() {
 
   const people = about.keyPeople ?? [];
   const values = about.ourValues ?? [];
+  const valueImages = [
+    { src: "/aboutUs/compassion.png", alt: "Compassion" },
+    { src: "/aboutUs/reliability.png", alt: "Reliability" },
+    { src: "/aboutUs/home.png", alt: "Dignity at Home" },
+  ];
 
   // For mobile: show individual members (one at a time)
   const displayedMember = team.length > 0 ? team[currentSlide % team.length] : null;
@@ -437,23 +442,25 @@ export default function AboutUs() {
             <h2 className="text-center text-[var(--navy)] font-bold text-5xl mb-16">{about.valuesHeading ?? "Our Values"}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
               {values.length > 0 ? (
-                values.map((v) => (
-                  <div key={v.id}>
-                    {v.valueName === "Compassion" && (
-                      <Image src="/aboutUs/compassion.png" alt="Compassion" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
-                    )}
-                    {v.valueName === "Reliability" && (
-                      <Image src="/aboutUs/reliability.png" alt="Reliability" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
-                    )}
-                    {v.valueName === "Dignity at Home" && (
-                      <Image src="/aboutUs/home.png" alt="Dignity at Home" width={80} height={80} className="mx-auto mb-6 w-20 h-20" />
-                    )}
-                    <h3 className="text-[var(--navy)] font-bold text-3xl mb-4">{v.valueName}</h3>
-                    <p className="text-[#2B384C] text-base sm:text-lg md:text-xl"
-                      dangerouslySetInnerHTML={{ __html: v.valueDescription ?? "" }}
-                    />
-                  </div>
-                ))
+                values.map((v, idx) => {
+                  const valueImage = valueImages[idx % valueImages.length];
+                  return (
+                    <div key={v.id}>
+                      <Image
+                        src={valueImage.src}
+                        alt={valueImage.alt}
+                        width={80}
+                        height={80}
+                        className="mx-auto mb-6 w-20 h-20"
+                      />
+                      <h3 className="text-[var(--navy)] font-bold text-3xl mb-4">{v.valueName}</h3>
+                      <p
+                        className="text-[#2B384C] text-base sm:text-lg md:text-xl"
+                        dangerouslySetInnerHTML={{ __html: v.valueDescription ?? "" }}
+                      />
+                    </div>
+                  );
+                })
               ) : (
                 <>
                   <div>
@@ -641,11 +648,9 @@ export default function AboutUs() {
       <div className="w-full bg-[#F2A307] px-6 sm:px-10 md:px-12 lg:px-20 py-12 md:py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
         <div className="flex-1 max-w-2xl">
           <h2 className="text-white font-bold text-4xl sm:text-5xl md:text-4xl lg:text-5xl leading-tight mb-6">
-            Compassionate
+            Reliable Care,
             <br />
-            Care, Just A Call
-            <br />
-            Away
+             Just A Call Away
           </h2>
           <p className="text-white text-base sm:text-lg md:text-lg lg:text-xl font-light leading-relaxed mb-8">
             Looking For A Caregiver Who Treats Your Loved One With Dignity And Kindness? Our Team Is Ready To Offer Personalized Care And Peace Of Mind. Contact Us To Learn More

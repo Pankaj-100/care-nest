@@ -7,6 +7,7 @@ import {
 import ActionDialog from "../common/ActionDialog";
 import { cancelIcon } from "@/lib/svg_icons";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
+import CareRequestFaq from "./CareRequestFaq";
 import Image from "next/image";
 import emptyCaregiverImage from "@/assets/care.svg";
 import { toast } from "react-toastify";
@@ -60,6 +61,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
     caregiverId: string;
   } | null>(null);
   const [serviceIds, setServiceIds] = useState<string[]>([]);
+  const [faqOpen, setFaqOpen] = useState(false);
 
   // initialize mutation
   const [cancelBooking, { isLoading: isCancelling }] =
@@ -151,6 +153,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
     if (caregiverIds.length) fetchServices();
   }, [filteredBookings, selectedBooking]);
 
+
   const router = useRouter();
 
   if (isLoading)
@@ -162,7 +165,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
           </h2>
           <button
             type="button"
-            onClick={() => window.location.href = '/faq#care-requests'}
+            onClick={() => setFaqOpen(true)}
             className="px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-semibold bg-[var(--yellow)] text-[var(--navy)] hover:brightness-110 transition-all duration-300 whitespace-nowrap"
           >
             FAQs
@@ -212,7 +215,7 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
         </h2>
         <button
           type="button"
-          onClick={() => window.location.href = '/faq#care-requests'}
+          onClick={() => setFaqOpen(true)}
           className="px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-semibold bg-[var(--yellow)] text-[var(--navy)] hover:brightness-110 transition-all duration-300 whitespace-nowrap"
         >
           FAQs
@@ -390,6 +393,8 @@ const RightBookingsPanel: FC<RightBookingsPanelProps> = ({
           console.log("Booking successful from RightSide component");
         }}
       />
+
+      <CareRequestFaq open={faqOpen} onClose={() => setFaqOpen(false)} />
     </div>
   );
 };

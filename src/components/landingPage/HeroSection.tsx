@@ -153,10 +153,10 @@ const HeroSection = () => {
         <div className="relative lg:absolute lg:left-28 lg:top-[2%] px-4 sm:px-8 lg:px-0 pt-12 lg:pt-0 text-white lg:w-[1050px]">
           <h1 className="font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight text-center lg:text-left">
             Faster care.
-            <br className="mb-2" />
+            <br className="mb-1" />
             <span className="relative inline-block">
               <span className="text-[#FFA726]">Clear choices.</span>
-              <div className="absolute -bottom-2 sm:-bottom-3 left-0 w-full">
+              <div className="absolute -bottom-1 sm:-bottom-3 left-0 w-full">
                 <Image
                   src="/home-care-underline.png"
                   alt=""
@@ -167,11 +167,11 @@ const HeroSection = () => {
                 />
               </div>
             </span>{" "}
-            <br className="mb-2" />
+            <br className="mb-1" />
             <span className="block mt-2 sm:mt-4">Confident decisions.</span>
           </h1>
           
-          <div className="my-4 sm:my-6">
+          <div className="my-4 sm:my-3">
             {loading ? (
               <p className="text-center lg:text-left">
                 <span className="inline-block h-4 w-3/4 bg-gray-600/30 rounded animate-pulse" />
@@ -236,7 +236,7 @@ const HeroSection = () => {
         </div>
 
         {/* Right side hero image - desktop only */}
-        <div className="absolute right-23 lg:right-55 top-[38%] -translate-y-1/2 w-[370px] h-[370px] lg:w-[430px] lg:h-[430px] z-10 hidden lg:block">
+        <div className="absolute right-23 lg:right-55 top-[40%] -translate-y-1/2 w-[370px] h-[370px] lg:w-[430px] lg:h-[430px] z-10 hidden lg:block">
           <div className="relative w-full h-full">
             <Image
               src="/main-hero-section.png"

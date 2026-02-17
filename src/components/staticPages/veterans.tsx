@@ -35,6 +35,42 @@ interface VeteransFinancialAssistanceProps {
 
 export default function VeteransFinancialAssistance({ pageData, faqSectionTitle, faqItems }: VeteransFinancialAssistanceProps) {
   const [openFaqIdx, setOpenFaqIdx] = React.useState<number | null>(null);
+  const [faqTitle, setFaqTitle] = React.useState(faqSectionTitle);
+  const [faqs, setFaqs] = React.useState(faqItems);
+
+  const API_BASE =
+    process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || "";
+
+  React.useEffect(() => {
+    setFaqTitle(faqSectionTitle);
+    setFaqs(faqItems);
+  }, [faqSectionTitle, faqItems]);
+
+  React.useEffect(() => {
+    if (!API_BASE) return;
+    const controller = new AbortController();
+    const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/faq/type/Transitional%20Care`;
+
+    fetch(endpoint, { signal: controller.signal })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((json) => {
+        const payload = json?.data;
+        const faqBlock = Array.isArray(payload?.faqs) ? payload.faqs[0] : payload;
+        const sectionTitle = faqBlock?.sectionTitle;
+        const items = faqBlock?.faqItems;
+        if (sectionTitle) setFaqTitle(sectionTitle);
+        if (Array.isArray(items)) setFaqs(items as FaqItem[]);
+      })
+      .catch((err) => {
+        if (err?.name === "AbortError") return;
+        console.error("Failed to fetch Transitional Care FAQs:", err);
+      });
+
+    return () => controller.abort();
+  }, [API_BASE]);
 
   const headerTitle = pageData?.title1 || "Veterans Financial Assistance";
   const headerDescription =
@@ -158,17 +194,17 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
               General FAQ&apos;s
             </div>
             <h2 className="text-2xl sm:text-4xl md:text-3xl font-bold leading-tight text-[#233D4D]">
-              {faqSectionTitle.split(" ").slice(0, 3).join(" ")}
+              {faqTitle.split(" ").slice(0, 3).join(" ")}
               <br />
-              {faqSectionTitle.split(" ").slice(3).join(" ")}
+              {faqTitle.split(" ").slice(3).join(" ")}
             </h2>
           </div>
           {/* Right: FAQ Cards */}
           <div className="w-full md:w-7/12 flex flex-col gap-3">
-            {faqItems.length === 0 ? (
+            {faqs.length === 0 ? (
               <div className="rounded-xl bg-[#233D4D0A] p-4 sm:p-5 shadow-sm text-[#233D4D]">No FAQs available.</div>
             ) : (
-              faqItems.map((item, idx) => {
+              faqs.map((item, idx) => {
                 const isOpen = openFaqIdx === idx;
                 const safeHasAnswer = !!(item.answer && item.answer.trim() && item.answer.trim() !== '.');
                 return (
@@ -209,9 +245,9 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             We Are Proud To Help You Attain The Benefits You Have Earned As{" "}
             <br className="hidden md:block" />
             <span className="font-light text-lg sm:text-xl md:text-2xl text-[#233D4D]">
-              An Honored Veteran
+              An Honored Transitional
             </span>{" "}
-            Of The US Armed Forces.
+            Care
           </p>
           <a href="/contact">
           <button className="inline-flex cursor-pointer items-center gap-2 font-semibold rounded-full bg-[#233D4D] px-8 md:px-12 py-4 md:py-6 text-xl sm:text-xl md:text-xl text-white transition hover:bg-[#1a2c38]">
