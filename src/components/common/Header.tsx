@@ -116,7 +116,7 @@ const Header = () => {
         { title: "Sitter Services", link: "/service/sitter-service" },
         { title: "Companion Care", link: "/service/companion-care" },
         { title: "Transportation", link: "/service/transportation" },
-        { title: "Veteran's Home Care Services", link: "/veterans" },
+        { title: "Transitional Care", link: "/veterans" },
       ],
     },
     {

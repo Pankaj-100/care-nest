@@ -42,11 +42,14 @@ const link: linkSection[] = [
       { title: "Admin panel", link: "http://admin.careworks.biz"},
       { title: "Caregiver", link: "https://carenest-caregiver.vercel.app/signin" },
     ],
-    "Other Services": [
-      { title: "Transportation", link: "/service/transportation" },
+    "Services": [
+      { title: "Personal Care", link: "/service/personal-care" },
+      { title: "Home Maker Care", link: "/service/home-maker" },
+      { title: "Specialized Care", link: "/service/specialized-care" },
+      { title: "Sitter Service", link: "/service/sitter-service" },
       { title: "Veteran Homecare", link: "/veterans" },
-      { title: "Private Sitters", link: "/service/sitter-service" },
-      { title: "Homemakers", link: "/service/home-maker" },
+      { title: "Transportation", link: "/service/transportation" },
+      { title: "Companion care", link: "/service/companion-care" },
     ],
     "Quick Links": [
       { title: "FAQs", link: "/faq" },
@@ -167,9 +170,9 @@ const Footer = () => {
           <FooterLink title="Company" links={link[0]["Company"]} />
         </div>
         
-        {/* Other Services */}
+        {/* Services */}
         <div className="col-span-1 mt-8 text-xl flex flex-col justify-start h-full md:items-center md:text-center lg:items-start lg:text-left">
-          <FooterLink title="Other Services" links={link[0]["Other Services"]} />
+          <FooterLink title="Services" links={link[0]["Services"] || []} />
         </div>
         
         {/* Locations we cover */}
@@ -265,11 +268,12 @@ const FooterLink = ({
   title: string;
   links: linkItems[];
 }) => {
+  const safeLinks = links || [];
   return (
     <div>
       <p className="font-medium mb-6 text-white text-start lg:text-left">{title}</p>
       <ul className="flex flex-col gap-3 items-start">
-        {links.map((item, index) => (
+        {safeLinks.map((item, index) => (
           <li key={index}>
             <Link 
               href={item.link} 

@@ -62,7 +62,7 @@ const BlogsSection = () => {
     <div className="py-10 sm:py-5 bg-[var(--whiteSmoke)] px-4 sm:px-8 lg:px-20 xl:px-28">
       <div className="flex items-center justify-center mb-8 sm:mb-10 text-center">
         <h1 className="font-semibold text-3xl sm:text-4xl lg:text-5xl leading-snug max-w-xl sm:max-w-4xl capitalize">
-          Resources Are Essential For Human Activities In Various Realms.
+          Resources Are Essential To Support Seniors In Their Daily Lives
         </h1>
       </div>
 

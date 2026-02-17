@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { YellowButton } from "../common/CustomButton";
 import {PhoneIcon4, DescriptionIcon, AddressIcon, zipCodeIcon, MailIcon4, GenderIcon } from "../icons/page"
-import { PiCity} from "react-icons/pi";
+import { PiCity, PiFile, PiMapPinArea} from "react-icons/pi";
 import ZipCodePage from "../BookingFlow/ZipCodePage";
 
 
@@ -22,6 +22,8 @@ const RegisterAsCareProvider = () => {
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [description, setDescription] = useState("");
+  const [resume, setResume] = useState("");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -45,6 +47,7 @@ const RegisterAsCareProvider = () => {
       toast.error(msg);
     }
     if (!description.trim()) newErrors.description = "Description is required.";
+    if (!resume.trim()) newErrors.resume = "Resume/Document is required.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -85,6 +88,45 @@ const RegisterAsCareProvider = () => {
     setShowEmailSuggestions(false);
   };
 
+  const handleFileUpload = async (file: File) => {
+    if (!file) return;
+
+    try {
+      setSubmitting(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/admin/upload-file`;
+      const res = await fetch(endpoint, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        console.error("Failed to upload file", await res.text());
+        toast.error("Failed to upload document. Please try again.");
+        return;
+      }
+
+      const data = await res.json();
+      const fileUrl = data.url || data.fileUrl || data.path;
+      
+      if (!fileUrl) {
+        toast.error("No file URL returned from server.");
+        return;
+      }
+
+      setResume(fileUrl);
+      toast.success("Document uploaded successfully!");
+      setResumeFile(file);
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      toast.error("Failed to upload document. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!API_BASE || submitting) return;
@@ -107,6 +149,7 @@ const RegisterAsCareProvider = () => {
           address,
           zipcode,
           description,
+          resume,
         }),
       });
 
@@ -124,6 +167,8 @@ const RegisterAsCareProvider = () => {
       setAddress("");
       setZipcode("");
       setDescription("");
+      setResume("");
+      setResumeFile(null);
       setErrors({});
 
       toast.success("Application submitted successfully!");
@@ -236,6 +281,13 @@ const RegisterAsCareProvider = () => {
               value={zipcode}
               onChange={(val) => setZipcode(val.replace(/[^\d]/g, ""))}
               error={errors.zipcode}
+            />
+            
+            <FileInput
+              value={resumeFile?.name || ""}
+              onChange={handleFileUpload}
+              error={errors.resume}
+              placeholder="Upload Resume/Document"
             />
             <InputArea icon={DescriptionIcon} value={description} onChange={setDescription} error={errors.description} />
             <YellowButton className="w-full mt-8 text-lg py-6" disabled={submitting}>
@@ -359,6 +411,46 @@ const InputArea = ({ icon, value, onChange, error }: InputAreaProps) => {
           value={value}
           onChange={(e) => onChange(e.target.value)}
         ></textarea>
+      </div>
+      {error && <span className="text-red-500 text-sm mt-1 ml-2">{error}</span>}
+    </div>
+  );
+};
+
+interface FileInputProps {
+  value: string;
+  onChange: (file: File) => void;
+  error?: string;
+  placeholder?: string;
+}
+
+const FileInput = ({ value, onChange, error, placeholder = "Upload Resume/Document" }: FileInputProps) => {
+  return (
+    <div className="flex flex-col mb-5">
+      <div className="flex items-center gap-3 relative">
+        <input
+          type="file"
+          accept=".pdf,.doc,.docx"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              onChange(file);
+            }
+          }}
+          className="hidden"
+          id="resume-upload"
+        />
+        <label
+          htmlFor="resume-upload"
+          className="flex-1 flex items-center gap-3 bg-white rounded-3xl p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+        >
+          <div className="relative w-5 h-5">
+            <PiFile size={20} />
+          </div>
+          <span className={`${value ? "text-gray-900 font-medium" : "text-gray-400"}`}>
+            {value || placeholder}
+          </span>
+        </label>
       </div>
       {error && <span className="text-red-500 text-sm mt-1 ml-2">{error}</span>}
     </div>
