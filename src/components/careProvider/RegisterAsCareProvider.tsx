@@ -96,7 +96,7 @@ const RegisterAsCareProvider = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/admin/upload-file`;
+      const endpoint = `${API_BASE.replace(/\/$/, "")}/api/v1/document/upload`;
       const res = await fetch(endpoint, {
         method: "POST",
         body: formData,
@@ -109,7 +109,7 @@ const RegisterAsCareProvider = () => {
       }
 
       const data = await res.json();
-      const fileUrl = data.url || data.fileUrl || data.path;
+      const fileUrl = data.data?.url || data.url || data.fileUrl || data.path;
       
       if (!fileUrl) {
         toast.error("No file URL returned from server.");

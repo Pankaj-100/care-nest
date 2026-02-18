@@ -96,10 +96,10 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
       "Proper completion of annual VA audits",
     ];
 
-  const image1Src = pageData?.image1 || "/veterans/image1.png";
-  const image2Src = pageData?.image2 || "/veterans/image2.png";
-  const image3Src = pageData?.image3 || "/veterans/image3.png";
-  const sectionImageSrc = pageData?.sectionImage || "/veterans/image4.png";
+  const image1Src = pageData?.image1 || "/transitional/image1.png";
+  const image2Src = pageData?.image2 || "/transitional/image2.png";
+  const image3Src = pageData?.image3 || "/transitional/image3.png";
+  const sectionImageSrc = pageData?.sectionImage || "/transitional/image4.png";
 
   return (
     <div className="flex flex-col items-center pt-6 md:pt-10 pb-0">
@@ -242,12 +242,8 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             Contact Us Today For More Information
           </h2>
           <p className="mb-6 max-w-5xl font-light text-md sm:text-lg md:text-2xl leading-relaxed text-white">
-            We Are Proud To Help You Attain The Benefits You Have Earned As{" "}
-            <br className="hidden md:block" />
-            <span className="font-light text-lg sm:text-xl md:text-2xl text-[#233D4D]">
-              An Honored Transitional
-            </span>{" "}
-            Care
+            Let us help your family arrange dependable care during recovery at home.
+            
           </p>
           <a href="/contact">
           <button className="inline-flex cursor-pointer items-center gap-2 font-semibold rounded-full bg-[#233D4D] px-8 md:px-12 py-4 md:py-6 text-xl sm:text-xl md:text-xl text-white transition hover:bg-[#1a2c38]">
