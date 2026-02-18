@@ -365,6 +365,43 @@ const ScheduleCare = ({
 
   const timeMarkers = getTimeMarkers();
 
+  // Helper function to check if changes were made in edit mode
+  const hasChanges = (): boolean => {
+    if (!isEditMode) return true; // Allow submit for new bookings
+
+    const formattedNewStartDate = formatDateToString(startDate);
+    const formattedNewMeetingDate = formatDateToString(meetingDate);
+    const formattedNewEndDate = formatDateToString(endDate);
+
+    // Compare dates
+    if (formattedNewStartDate !== formatDateToString(initialStartDate || null)) return true;
+    if (formattedNewMeetingDate !== formatDateToString(initialMeetingDate || null)) return true;
+    if (formattedNewEndDate !== formatDateToString(initialEndDate || null)) return true;
+
+    // Compare weekly schedule
+    if (!initialWeeklySchedule) return true;
+    if (selectedDays.length !== initialWeeklySchedule.length) return true;
+
+    const newScheduleStr = JSON.stringify(
+      selectedDays
+        .map((d) => {
+          const slot = schedule[d]?.[0];
+          return {
+            weekDay: DAYS.indexOf(d),
+            startTime: slot ? fmtTime(slot.start) : "",
+            endTime: slot ? fmtTime(slot.end) : "",
+          };
+        })
+        .sort((a, b) => a.weekDay - b.weekDay)
+    );
+
+    const oldScheduleStr = JSON.stringify(
+      initialWeeklySchedule.sort((a, b) => a.weekDay - b.weekDay)
+    );
+
+    return newScheduleStr !== oldScheduleStr;
+  };
+
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
@@ -399,6 +436,10 @@ const ScheduleCare = ({
 
     // Only validate startDate in edit mode
     if (isEditMode) {
+      // Check if any changes were made
+      if (!hasChanges()) {
+        return setFormError("No changes are detected");
+      }
       // Validate meeting duration days selection
       if (selectedDays.length === 0) return setFormError("Select at least one meeting duration day");
 

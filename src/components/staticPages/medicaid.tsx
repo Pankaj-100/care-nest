@@ -175,11 +175,25 @@ export default function MedicaidCASProgram() {
           alt="Wave Background"
           width={1620}
           height={600}
-          className="w-full h-auto object-cover"
+          className="hidden md:block w-full h-auto object-cover"
           style={{ zIndex: 1 }}
         />
         
-        {/* Steps to Determine Eligibility Section - Overlaid on Wave */}
+        {/* Mobile Steps Image */}
+        <div className="md:hidden w-full bg-[#233D4D] py-6 px-4">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-0 text-center text-white">Steps To Determine Eligibility</h2>
+          <div className="flex justify-center">
+            <Image
+              src="/medicaid/steps.png"
+              alt="Steps to Determine Eligibility"
+              width={400}
+              height={600}
+              className="w-full max-w-md h-auto object-contain"
+            />
+          </div>
+        </div>
+        
+        {/* Steps to Determine Eligibility Section - Overlaid on Wave (Desktop Only) */}
         <div className="hidden md:flex absolute inset-0 flex-col items-center justify-center text-white z-10 px-4">
           <h2 className="text-5xl font-bold mb-20 text-center">Steps To Determine Eligibility</h2>
           
@@ -355,12 +369,26 @@ export default function MedicaidCASProgram() {
       {/* How To Apply Section */}
       <div className="w-full bg-white py-20 px-4">
         <div className="max-w-6xl mx-auto relative">
-          <h2 className="text-5xl font-semibold text-[#233D4D] text-center mb-4">
+          <h2 className="hidden md:block text-3xl sm:text-4xl md:text-5xl font-semibold text-[#233D4D] text-center mb-4">
             How To Apply For CAS (Community Attendant Service) Program
           </h2>
-          <p className="text-gray-600 text-center mb-16 text-xl max-w-3xl mx-auto">
+          <p className="hidden md:block text-gray-600 text-center mb-8 sm:mb-12 md:mb-16 text-base sm:text-lg md:text-xl max-w-3xl mx-auto">
             Applying for the Community Attendant Services (CAS) program involves several steps to ensure you meet the eligibility criteria and receive the appropriate level of care. Here&apos;s a step-by-step guide to help you through the process.
           </p>
+          
+          {/* Mobile Layout - Steps Image */}
+          <div className="md:hidden flex justify-center mb-8">
+            <Image
+              src="/medicaid/steps-2.png"
+              alt="How to Apply for CAS Program Steps"
+              width={400}
+              height={1200}
+              className="w-full max-w-md h-auto object-contain"
+            />
+          </div>
+          
+          {/* Desktop Layout */}
+          <div className="hidden md:block">
           
           {/*first Semi-circle Background */}
           <div 
@@ -676,28 +704,29 @@ export default function MedicaidCASProgram() {
             </div>
 
           </div>
+          </div>
         </div>
       </div>
 
       {/* Texas Medicaid Office Banner */}
-      <div className="w-full bg-[#233D4D] py-8 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
+      <div className="w-full bg-[#233D4D] py-8 md:py-8 px-4">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8">
           {/* Left Content */}
-          <div className="flex-1 text-white">
-            <p className="text-[#F2A307] font-semibold text-2xl mb-4">Texas Medicaid Office</p>
-            <h2 className="text-4xl lg:text-3xl font-semibold mb-6 leading-tight">
+          <div className="flex-1 text-white text-center lg:text-left">
+            <p className="text-[#F2A307] font-semibold text-lg sm:text-xl md:text-2xl mb-3 md:mb-4 text-left">Texas Medicaid Office</p>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-4 md:mb-6 leading-tight">
               Dedicated Helpline For Seniors Seeking Care And Support Programs
             </h2>
             
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center">
+            <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+              <div className="flex items-center justify-center lg:justify-start gap-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0">
                   <NetworkIcon/>
                 </div>
                 <a
                   href="https://www.yourtexasbenefits.com/learn/home"
                   target="_blank"
-                  className="text-lg hover:underline focus:underline"
+                  className="text-sm sm:text-base md:text-lg hover:underline focus:underline break-all"
                   aria-label="Visit Your Texas Benefits website"
                   rel="noopener noreferrer"
                 >
@@ -705,14 +734,14 @@ export default function MedicaidCASProgram() {
                 </a>
               </div>
               
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center">
+              <div className="flex items-center justify-center lg:justify-start gap-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0">
                   <LocationIcon1/>
                 </div>
                 <a
                   href="https://www.hhs.texas.gov/services/aging/long-term-care/aging-disability-resource-centers"
                   target="_blank"
-                  className="text-lg hover:underline focus:underline"
+                  className="text-sm sm:text-base md:text-lg hover:underline focus:underline text-left lg:text-left"
                   aria-label="Find Local Aging & Disability Resource Center"
                   rel="noopener noreferrer"
                 >
@@ -721,11 +750,13 @@ export default function MedicaidCASProgram() {
               </div>
             </div>
             
-            <a href="tel:2-1-1">
-              <button className="bg-[#F2A307] text-white px-8 py-4 rounded-full font-light text-lg flex items-center gap-2 hover:bg-[#e6950a] transition">
-                <PhoneIcon2/> Call 2-1-1
-              </button>
-            </a>
+            <div className="flex justify-center lg:justify-start">
+              <a href="tel:2-1-1">
+                <button className="bg-[#F2A307] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-light text-base sm:text-lg flex items-center gap-2 hover:bg-[#e6950a] transition">
+                  <PhoneIcon2/> Call 2-1-1
+                </button>
+              </a>
+            </div>
           </div>
           
           {/* Right Image */}
@@ -735,14 +766,30 @@ export default function MedicaidCASProgram() {
               alt="Helpline Support Representative"
               width={400}
               height={300}
-              className="object-contain"
+              className="object-contain "
             />
           </div>
         </div>
       </div>
 
       {/* Long Term Care Section */}
-      <LongTermCare />
+      {/* Mobile Layout - Steps Image */}
+      <div className="md:hidden w-full bg-white py-8 px-4">
+        <div className="flex justify-center">
+          <Image
+            src="/medicaid/steps-3.png"
+            alt="Long Term Care Steps"
+            width={400}
+            height={800}
+            className="w-full max-w-md h-auto object-contain"
+          />
+        </div>
+      </div>
+      
+      {/* Desktop Layout */}
+      <div className="hidden md:block">
+        <LongTermCare />
+      </div>
 
       {/* We're Here For You Banner */}
       <div className="w-full bg-[#F5F1E8] py-8 px-4">
