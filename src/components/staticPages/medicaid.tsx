@@ -236,7 +236,7 @@ export default function MedicaidCASProgram() {
           alt="Wave Background"
           width={1620}
           height={600}
-          className="hidden md:block w-full h-auto object-cover"
+          className="hidden lg:block w-full h-auto object-cover"
           style={{ zIndex: 1 }}
         />
         
@@ -250,6 +250,20 @@ export default function MedicaidCASProgram() {
               width={400}
               height={600}
               className="w-full max-w-md h-auto object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Tablet Steps Image */}
+        <div className="hidden md:block lg:hidden w-full bg-[#F7F7F3] py-1 px-0">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center text-[#233D4D]">Steps To Determine Eligibility</h2>
+          <div className="flex justify-center">
+            <Image
+              src="/medicaid/steps4.png"
+              alt="Steps to Determine Eligibility"
+              width={800}
+              height={700}
+              className="w-full max-w-4xl h-auto object-contain"
             />
           </div>
         </div>
