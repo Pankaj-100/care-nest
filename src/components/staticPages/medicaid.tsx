@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import LongTermCare from "./longterm-care";
 import {Medicaid1, Medicaid2, Medicaid3, Medicaid4, Medicaid5, Medicaid6,Medicaid7, Medicaid8, Medicaid9, Medicaid10, Medicaid12, Medicaid13, Medicaid14, NetworkIcon, LocationIcon1, PhoneIcon2, NetworkIcon2, PhoneIcon3, MessageIcon3 } from "../icons/page";
+import StepsCare from "./steps-care";
 
 export default function MedicaidCASProgram() {
   return (
@@ -56,8 +57,8 @@ export default function MedicaidCASProgram() {
 
       {/* Eligibility Section */}
       <div className="w-full bg-[#F7F7F3] mt-20 relative z-10">
-        {/* Mobile/Tablet Layout */}
-        <div className="flex flex-col items-center px-4 py-10 gap-8 md:hidden relative z-10">
+        {/* Mobile Layout */}
+        <div className="flex flex-col items-center px-4 py-10 gap-8 md:hidden lg:hidden relative z-10">
           {/* Orange blob image and heading */}
           <div className="flex flex-col items-center w-full">
             <div className="w-full flex justify-center mb-4">
@@ -111,8 +112,69 @@ export default function MedicaidCASProgram() {
           </div>
         </div>
 
+        {/* Tablet Layout */}
+        <div className="hidden md:block lg:hidden w-full px-4 py-10 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            {/* First Row - Centered Image */}
+            <div className="flex justify-center mb-10">
+              <Image
+                src="/medicaid/middle-design.png"
+                alt="Who Is Eligible For CAS"
+                width={400}
+                height={280}
+                className="object-contain"
+              />
+            </div>
+
+            {/* 3x2 Grid - 3 Rows, 2 Columns */}
+            <div className="grid grid-cols-2 gap-8">
+              {/* Row 1 */}
+              <div>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-2">Residency</h3>
+                <p className="text-gray-600 text-base leading-relaxed">
+                  The applicant must be a resident of the state where they are applying for CAS services. For instance, in Texas, the individual must be a resident of Texas.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-2">Medicaid Eligibility</h3>
+                <p className="text-gray-600 text-base leading-relaxed">
+                  The individual must be eligible for Medicaid, which generally means they fall within the low-income bracket as determined by state and federal guidelines.
+                </p>
+              </div>
+
+              {/* Row 2 */}
+              <div>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-2">Need For Assistance</h3>
+                <p className="text-gray-600 text-base leading-relaxed">
+                  The individual must require assistance with at least one activity of daily living (ADL) such as bathing, dressing, grooming, eating, or mobility.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-2">Age And Disability</h3>
+                <p className="text-gray-600 text-base leading-relaxed">
+                  While the program primarily serves elderly individuals and those with disabilities, specific age requirements may vary by state. In general, adults with disabilities and seniors are the primary recipients.
+                </p>
+              </div>
+
+              {/* Row 3 */}
+              <div>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-2">Assessment</h3>
+                <p className="text-gray-600 text-base leading-relaxed">
+                  A professional assessment must determine that the individual requires attendant services to perform daily living activities safely and effectively. This assessment is usually conducted by a healthcare professional or caseworker.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-[#233D4D] mb-2">Functional Limitations</h3>
+                <p className="text-gray-600 text-base leading-relaxed">
+                  The applicant must have a functional limitation that necessitates the need for personal care services. This could be due to a chronic illness, physical disability, or cognitive impairment.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Desktop Layout */}
-        <div className="hidden md:block w-full max-w-[1600px] h-[1080px] mx-auto relative">
+        <div className="hidden lg:block w-full max-w-[1600px] h-[1080px] mx-auto relative">
           {/* Top Left - Medicaid Eligibility */}
           <div className="absolute p-6" style={{ width: '340px', height: '175px', top: '241px', left: '108px' }}>
             <h3 className="text-2xl font-semibold text-[#233D4D] mb-3">Medicaid Eligibility</h3>
@@ -167,7 +229,6 @@ export default function MedicaidCASProgram() {
           </div>
         </div>
       </div>
-
       {/* Wave Background */}
       <div className="w-full relative">
         <Image
@@ -194,7 +255,7 @@ export default function MedicaidCASProgram() {
         </div>
         
         {/* Steps to Determine Eligibility Section - Overlaid on Wave (Desktop Only) */}
-        <div className="hidden md:flex absolute inset-0 flex-col items-center justify-center text-white z-10 px-4">
+        <div className="hidden lg:flex absolute inset-0 flex-col items-center justify-center text-white z-10 px-4">
           <h2 className="text-5xl font-bold mb-20 text-center">Steps To Determine Eligibility</h2>
           
           {/* Central Dotted Line */}
@@ -368,342 +429,385 @@ export default function MedicaidCASProgram() {
       
       {/* How To Apply Section */}
       <div className="w-full bg-white py-20 px-4">
-        <div className="max-w-6xl mx-auto relative">
+        <div className="max-w-6xl mx-auto">
           <h2 className="hidden md:block text-3xl sm:text-4xl md:text-5xl font-semibold text-[#233D4D] text-center mb-4">
             How To Apply For CAS (Community Attendant Service) Program
           </h2>
           <p className="hidden md:block text-gray-600 text-center mb-8 sm:mb-12 md:mb-16 text-base sm:text-lg md:text-xl max-w-3xl mx-auto">
             Applying for the Community Attendant Services (CAS) program involves several steps to ensure you meet the eligibility criteria and receive the appropriate level of care. Here&apos;s a step-by-step guide to help you through the process.
           </p>
-          
-          {/* Mobile Layout - Steps Image */}
-          <div className="md:hidden flex justify-center mb-8">
-            <Image
-              src="/medicaid/steps-2.png"
-              alt="How to Apply for CAS Program Steps"
-              width={400}
-              height={1200}
-              className="w-full max-w-md h-auto object-contain"
-            />
-          </div>
-          
-          {/* Desktop Layout */}
-          <div className="hidden md:block">
-          
-          {/*first Semi-circle Background */}
-          <div 
-            className="absolute"
-            style={{
-              width: '1014px',
-              height: '1014px',
-              top: '204px',
-              left: '656px'
-            }}
-          >
-            <Image
-              src="/medicaid/semi-circle.png"
-              alt="Semi Circle Background"
-              width={1014}
-              height={1014}
-              className="object-contain w-full h-full"
-            />
-          </div>
 
-          {/* Second Semi-circle Background */}
-          <div 
-            className="absolute"
-            style={{
-              width: '937px',
-              height: '937px',
-              top: '1617px',
-              left: '-357px'
-            }}
-          >
-            <Image
-              src="/medicaid/semi-circle2.png"
-              alt="Second Semi Circle Background"
-              width={937}
-              height={937}
-              className="object-contain w-full h-full"
-            />
-          </div>
-          
-          {/* Application Steps - Positioned Container */}
-          <div className="relative" style={{ height: '2300px' }}>
-            
-            {/* Step 1: Verify Medicaid Eligibility */}
-            <div 
-              className="absolute flex flex-col md:flex-row items-start"
-              style={{
-                width: '550px',
-                height: '287px',
-                top: '0px',
-                left: '0px',
-                gap: '20px'
-              }}
-            >
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-[#233D4D1A] rounded-full flex items-center justify-center">
+          {/* Mobile Layout */}
+          <div className="md:hidden max-w-md mx-auto">
+            <h2 className="text-2xl font-semibold text-[#233D4D] text-center leading-snug">
+              How To Apply For CAS (Community Attendant Service) Program
+            </h2>
+            <p className="text-sm text-gray-600 text-center mt-3 mb-6 leading-relaxed">
+              Applying for the Community Attendant Services (CAS) program involves several steps to ensure you meet the eligibility criteria and receive the appropriate level of care. Here&apos;s a step-by-step guide to help you through the process.
+            </p>
+
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
                   <Medicaid6 />
                 </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Verify Medicaid Eligibility</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Ensure you are eligible for Medicaid by checking your income and resource limits as per state and federal guidelines.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Contact your state's Medicaid office or visit their website for eligibility information.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Take the Medicaid Eligibility Test.
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Verify Medicaid Eligibility</h3>
-                <ul className="space-y-2 text-lg text-gray-600">
-                  <li className="flex items-start text-lg gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full text-lg mt-2 flex-shrink-0"></span>
-                    Ensure you are eligible for Medicaid by checking your income and resource limits as per state and federal guidelines.
-                  </li>
-                  <li className="flex items-start text-lg gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full text-lg mt-2 flex-shrink-0"></span>
-                    Contact your state's Medicaid office or visit their website for eligibility information.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Take the Medicaid Eligibility Test.
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            {/* Step 2: Gather Necessary Documentation */}
-            <div 
-              className="absolute flex flex-col md:flex-row items-start"
-              style={{
-                width: '550px',
-                height: '269px',
-                top: '299px',
-                left: '491px',
-                gap: '20px'
-              }}
-            >
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-[#233D4D1A] rounded-full flex items-center justify-center">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
                   <Medicaid7 />
                 </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Gather Necessary Documentation</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Proof of income (pay stubs, tax returns, benefit statements)
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Proof of residency (utility bills, lease agreements)
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Identification documents (driver&apos;s license, social security card)
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Medical records or documentation of disability if applicable
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Gather Necessary Documentation</h3>
-                <ul className="space-y-2 text-lg text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Proof of income (pay stubs, tax returns, benefit statements)
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Proof of residency (utility bills, lease agreements)
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Identification documents (driver&apos;s license, social security card)
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Medical records or documentation of disability if applicable
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            {/* Step 3: Initiate The Process */}
-            <div 
-              className="absolute flex flex-col md:flex-row items-start"
-              style={{
-                width: '550px',
-                height: '287px',
-                top: '580px',
-                left: '0px',
-                gap: '20px'
-              }}
-            >
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-[#233D4D1A] rounded-full flex items-center justify-center">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
                   <Medicaid8 />
                 </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Initiate The Process</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Reach out to the Texas Medicaid office to express your interest in the CAS program.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      You can contact them via phone, online portal, or visit a local Medicaid office.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Call the INTAKE number: <a href="tel:713-692-1635" className="font-semibold text-[#233D4D] hover:underline focus:underline">713-692-1635</a>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Initiate The Process</h3>
-                <ul className="space-y-2 text-lg text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Reach out to the Texas Medicaid office to express your interest in the CAS program.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    You can contact them via phone, online portal, or visit a local Medicaid office.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Call the INTAKE number: <a href="tel:713-692-1635" className="font-semibold text-[#233D4D] hover:underline focus:underline">713-692-1635</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            {/* Step 4: Schedule An Assessment */}
-            <div 
-              className="absolute flex flex-col md:flex-row items-start"
-              style={{
-                width: '550px',
-                height: '253px',
-                top: '879px',
-                left: '491px',
-                gap: '20px'
-              }}
-            >
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-[#233D4D1A] rounded-full flex items-center justify-center">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
                   <Medicaid9 />
                 </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Schedule An Assessment</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      A healthcare professional or caseworker will conduct an in-home assessment to evaluate your need for attendant services.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      This assessment will determine the level and type of care required.
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Schedule An Assessment</h3>
-                <ul className="space-y-2 text-lg text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    A healthcare professional or caseworker will conduct an in-home assessment to evaluate your need for attendant services.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    This assessment will determine the level and type of care required.
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            {/* Step 5: Submit Application */}
-            <div 
-              className="absolute flex flex-col md:flex-row items-start"
-              style={{
-                width: '550px',
-                height: '321px',
-                top: '1144px',
-                left: '0px',
-                gap: '20px'
-              }}
-            >
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-[#233D4D1A] rounded-full flex items-center justify-center">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
                   <Medicaid10 />
                 </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Submit Application</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Fill out the CAS program application form provided by the Medicaid office.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      PROVIDE the name of our agency CAREWORKS as your provider.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Ensure all required documentation is attached.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Submit the application through the appropriate channel (mail, online, or in-person).
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Submit Application</h3>
-                <ul className="space-y-2 text-lg text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Fill out the CAS program application form provided by the Medicaid office.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    PROVIDE the name of our agency CAREWORKS as your provider.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Ensure all required documentation is attached.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Submit the application through the appropriate channel (mail, online, or in-person).
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            {/* Step 6: Processing Time */}
-            <div 
-              className="absolute flex flex-col md:flex-row items-start"
-              style={{
-                width: '550px',
-                height: '253px',
-                top: '1477px',
-                left: '491px',
-                gap: '20px'
-              }}
-            >
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-[#233D4D1A] rounded-full flex items-center justify-center">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
                   <Medicaid12 />
                 </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Processing Time</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      The Medicaid office will review your application and assessment results.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      This process may take several weeks, during which they might request additional information or clarification.
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Processing Time</h3>
-                <ul className="space-y-2 text-lg text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    The Medicaid office will review your application and assessment results.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    This process may take several weeks, during which they might request additional information or clarification.
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            {/* Step 7: Personalized Plan */}
-            <div 
-              className="absolute flex flex-col md:flex-row items-start"
-              style={{
-                width: '550px',
-                height: '253px',
-                top: '1742px',
-                left: '0px',
-                gap: '20px'
-              }}
-            >
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-[#233D4D1A] rounded-full flex items-center justify-center">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
                   <Medicaid13 />
                 </div>
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Personalized Plan</h3>
-                <ul className="space-y-2 text-lg text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    If approved, a personalized care plan will be developed by CAREWORKS based on the assessment.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    This plan outlines the specific services you will receive and the frequency of those services.
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Step 8: Service Initiation */}
-            <div 
-              className="absolute flex flex-col md:flex-row items-start"
-              style={{
-                width: '550px',
-                height: '227px',
-                top: '2007px',
-                left: '491px',
-                gap: '20px'
-              }}
-            >
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-[#233D4D1A] rounded-full flex items-center justify-center">
-                  <Medicaid14 />
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Personalized Plan</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      If approved, a personalized care plan will be developed by CAREWORKS based on the assessment.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      This plan outlines the specific services you will receive and the frequency of those services.
+                    </li>
+                  </ul>
                 </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-[#233D4D] mb-4">Service Initiation</h3>
-                <ul className="space-y-2 text-lg text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Once the care plan is finalized, you will be referred to CAREWORKS.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
-                    Services will begin as per the schedule outlined in your care plan.
-                  </li>
-                </ul>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
+                  <Medicaid14 />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Service Initiation</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Once the care plan is finalized, you will be referred to CAREWORKS.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Services will begin as per the schedule outlined in your care plan.
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-
           </div>
+
+          {/* Tablet Layout */}
+          <div className="hidden md:block lg:hidden max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 gap-8">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
+                  <Medicaid6 />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Verify Medicaid Eligibility</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Ensure you are eligible for Medicaid by checking your income and resource limits as per state and federal guidelines.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Contact your state's Medicaid office or visit their website for eligibility information.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Take the Medicaid Eligibility Test.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
+                  <Medicaid7 />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Gather Necessary Documentation</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Proof of income (pay stubs, tax returns, benefit statements)
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Proof of residency (utility bills, lease agreements)
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Identification documents (driver&apos;s license, social security card)
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Medical records or documentation of disability if applicable
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
+                  <Medicaid8 />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Initiate The Process</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Reach out to the Texas Medicaid office to express your interest in the CAS program.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      You can contact them via phone, online portal, or visit a local Medicaid office.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Call the INTAKE number: <a href="tel:713-692-1635" className="font-semibold text-[#233D4D] hover:underline focus:underline">713-692-1635</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
+                  <Medicaid9 />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Schedule An Assessment</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      A healthcare professional or caseworker will conduct an in-home assessment to evaluate your need for attendant services.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      This assessment will determine the level and type of care required.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
+                  <Medicaid10 />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Submit Application</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Fill out the CAS program application form provided by the Medicaid office.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      PROVIDE the name of our agency CAREWORKS as your provider.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Ensure all required documentation is attached.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Submit the application through the appropriate channel (mail, online, or in-person).
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
+                  <Medicaid12 />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Processing Time</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      The Medicaid office will review your application and assessment results.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      This process may take several weeks, during which they might request additional information or clarification.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
+                  <Medicaid13 />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Personalized Plan</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      If approved, a personalized care plan will be developed by CAREWORKS based on the assessment.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      This plan outlines the specific services you will receive and the frequency of those services.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#E9EEF2] flex items-center justify-center flex-shrink-0">
+                  <Medicaid14 />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Service Initiation</h3>
+                  <ul className="mt-2 space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Once the care plan is finalized, you will be referred to CAREWORKS.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-2 h-2 bg-[#F2A307] rounded-full mt-2 flex-shrink-0"></span>
+                      Services will begin as per the schedule outlined in your care plan.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="hidden lg:block">
+            <StepsCare />
           </div>
         </div>
       </div>
@@ -773,21 +877,404 @@ export default function MedicaidCASProgram() {
       </div>
 
       {/* Long Term Care Section */}
-      {/* Mobile Layout - Steps Image */}
-      <div className="md:hidden w-full bg-white py-8 px-4">
-        <div className="flex justify-center">
-          <Image
-            src="/medicaid/steps-3.png"
-            alt="Long Term Care Steps"
-            width={400}
-            height={800}
-            className="w-full max-w-md h-auto object-contain"
-          />
+      {/* Mobile Layout */}
+      <div className="md:hidden lg:hidden w-full bg-white py-8 px-4">
+        <div className="max-w-md mx-auto">
+          <h2 className="text-2xl font-semibold text-[#233D4D] text-center leading-snug mb-6">
+            Why Choose CareWorks As Your Long-Term Care Provider Under The CAS Program?
+          </h2>
+
+          <div className="space-y-6">
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                1
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[#233D4D]">Expertise In The CAS Program</h3>
+                <div className="mt-2 space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Specialized Knowledge</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      At CareWorks, we have extensive experience with the Medicaid Community Attendant Services (CAS) program. We understand the specific requirements and processes involved, ensuring a smooth and hassle-free experience for our clients.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Comprehensive Support</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      We guide you through the entire process, from eligibility verification to care plan development, ensuring you get the maximum benefits from the CAS program.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                2
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[#233D4D]">Personalized And Compassionate Care</h3>
+                <div className="mt-2 space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Individualized Care Plans</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Our care plans are tailored to meet your unique needs and preferences, ensuring you receive the right level of support and care.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Compassionate Caregivers</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Our team is dedicated to providing compassionate and empathetic care, treating each client with the utmost respect and dignity.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                3
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[#233D4D]">Flexible And Reliable Services</h3>
+                <div className="mt-2 space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">24/7 Availability</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      We offer flexible scheduling options and are available around the clock, including weekends and holidays, to provide the care you need when you need it.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Reliable Support</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Our caregivers are punctual, dependable, and committed to providing consistent, high-quality care.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                4
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[#233D4D]">Comprehensive Range Of Services</h3>
+                <div className="mt-2 space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Diverse Offerings</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      We provide a wide range of services under the CAS program, including personal care, medication reminders, meal preparation, light housekeeping, and companionship.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Integrated Care</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Our holistic approach ensures all your care needs are met, enhancing your overall well-being and quality of life.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                5
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[#233D4D]">Highly Trained And Experienced Caregivers</h3>
+                <div className="mt-2 space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Professional Staff</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Our caregivers are highly trained, experienced, and continuously educated on the latest care techniques and best practices.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Background Checks</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      All our staff undergo thorough background checks and screening to ensure your safety and peace of mind.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                6
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[#233D4D]">Transparent And Affordable Pricing</h3>
+                <div className="mt-2 space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">No Hidden Fees</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      We believe in transparent pricing with no hidden fees or unexpected charges. Our services are designed to be affordable, providing excellent value for your money.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Medicaid Accepted</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      We accept Medicaid, making our services accessible and affordable for eligible individuals.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                7
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[#233D4D]">Strong Community Presence</h3>
+                <div className="mt-2 space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Local Expertise</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      As a locally operated agency, we have a deep understanding of the community and its needs. We are committed to enhancing the quality of life for our clients within our community.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Quick Response</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Being local allows us to respond quickly to your needs and provide timely support.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                8
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[#233D4D]">Positive Client Feedback</h3>
+                <div className="mt-2 space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Satisfied Clients</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Our clients and their families consistently give us high ratings and positive feedback, reflecting our commitment to excellence and client satisfaction.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#233D4D]">Trusted Provider</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      CareWorks is a trusted name in the home care industry, known for our reliability, compassion, and high standards of care.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       
+      {/* Tablet Layout */}
+      <div className="hidden md:block lg:hidden w-full bg-white py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-semibold text-[#233D4D] text-center leading-snug mb-8">
+            Why Choose CareWorks As Your Long-Term Care Provider Under The CAS Program?
+          </h2>
+
+          <div className="grid grid-cols-2 gap-8">
+            {/* Column 1 */}
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                  1
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Expertise In The CAS Program</h3>
+                  <div className="mt-2 space-y-3">
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Specialized Knowledge</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        At CareWorks, we have extensive experience with the Medicaid Community Attendant Services (CAS) program. We understand the specific requirements and processes involved, ensuring a smooth and hassle-free experience for our clients.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Comprehensive Support</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        We guide you through the entire process, from eligibility verification to care plan development, ensuring you get the maximum benefits from the CAS program.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                  3
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Flexible And Reliable Services</h3>
+                  <div className="mt-2 space-y-3">
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">24/7 Availability</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        We offer flexible scheduling options and are available around the clock, including weekends and holidays, to provide the care you need when you need it.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Reliable Support</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        Our caregivers are punctual, dependable, and committed to providing consistent, high-quality care.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                  5
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Highly Trained And Experienced Caregivers</h3>
+                  <div className="mt-2 space-y-3">
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Professional Staff</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        Our caregivers are highly trained, experienced, and continuously educated on the latest care techniques and best practices.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Background Checks</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        All our staff undergo thorough background checks and screening to ensure your safety and peace of mind.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                  7
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Strong Community Presence</h3>
+                  <div className="mt-2 space-y-3">
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Local Expertise</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        As a locally operated agency, we have a deep understanding of the community and its needs. We are committed to enhancing the quality of life for our clients within our community.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Quick Response</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        Being local allows us to respond quickly to your needs and provide timely support.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Column 2 */}
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                  2
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Personalized And Compassionate Care</h3>
+                  <div className="mt-2 space-y-3">
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Individualized Care Plans</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        Our care plans are tailored to meet your unique needs and preferences, ensuring you receive the right level of support and care.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Compassionate Caregivers</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        Our team is dedicated to providing compassionate and empathetic care, treating each client with the utmost respect and dignity.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                  4
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Comprehensive Range Of Services</h3>
+                  <div className="mt-2 space-y-3">
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Diverse Offerings</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        We provide a wide range of services under the CAS program, including personal care, medication reminders, meal preparation, light housekeeping, and companionship.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Integrated Care</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        Our holistic approach ensures all your care needs are met, enhancing your overall well-being and quality of life.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                  6
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Transparent And Affordable Pricing</h3>
+                  <div className="mt-2 space-y-3">
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">No Hidden Fees</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        We believe in transparent pricing with no hidden fees or unexpected charges. Our services are designed to be affordable, providing excellent value for your money.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Medicaid Accepted</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        We accept Medicaid, making our services accessible and affordable for eligible individuals.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#233D4D] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                  8
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[#233D4D]">Positive Client Feedback</h3>
+                  <div className="mt-2 space-y-3">
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Satisfied Clients</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        Our clients and their families consistently give us high ratings and positive feedback, reflecting our commitment to excellence and client satisfaction.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#233D4D]">Trusted Provider</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        CareWorks is a trusted name in the home care industry, known for our reliability, compassion, and high standards of care.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Desktop Layout */}
-      <div className="hidden md:block">
+      <div className="hidden lg:block">
         <LongTermCare />
       </div>
 
