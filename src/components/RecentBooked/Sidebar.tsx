@@ -167,7 +167,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
             <div className="mt-2 flex flex-row items-start gap-3 mb-6 border-b border-[#00000033] pb-1">
               <div className="relative w-[68px] h-[68px] flex-shrink-0 group">
                 <Image
-                  src={avatar || "/Recent/profile.png"}
+                  src={avatar || "/profile-5.png"}
                   alt="User Avatar"
                   width={68}
                   height={68}
@@ -175,7 +175,7 @@ export function Sidebar({ onSelect, selected }: SidebarProps) {
                   onError={(e) => {
                     // Fallback to default image on error
                     const target = e.target as HTMLImageElement;
-                    target.src = "/Recent/profile.png";
+                    target.src = "/profile-5.png";
                   }}
                   unoptimized={avatar?.startsWith('blob:') || false} // For temporary blob URLs
                 />

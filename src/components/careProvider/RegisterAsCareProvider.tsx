@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { YellowButton } from "../common/CustomButton";
 import {PhoneIcon4, DescriptionIcon, AddressIcon, zipCodeIcon, MailIcon4, GenderIcon } from "../icons/page"
-import { PiCity, PiFile, PiMapPinArea} from "react-icons/pi";
+import { PiCity, PiFile, PiMapPinArea, PiMapPinAreaBold, PiMapPinAreaThin, PiMapPinSimpleArea, PiMapPinSimpleAreaBold} from "react-icons/pi";
 import ZipCodePage from "../BookingFlow/ZipCodePage";
 
 
@@ -191,7 +191,7 @@ const RegisterAsCareProvider = () => {
           </div>
         </div>
       )}
-      <div className="relative w-full h-[550px] sm:h-[650px] lg:min-h-[1230px] lg:min-w-1/2">
+      <div className="relative w-full h-[550px] sm:h-[650px] lg:min-h-[1320px] lg:min-w-1/2">
         <Image
           src={"/register-care-provider.jpg"}
           alt="faq"
@@ -276,7 +276,7 @@ const RegisterAsCareProvider = () => {
             />
             <Input
               placeholder="Enter Zipcode"
-              icon={AddressIcon}
+              icon={PiMapPinSimpleAreaBold}
               type="text"
               value={zipcode}
               onChange={(val) => setZipcode(val.replace(/[^\d]/g, ""))}

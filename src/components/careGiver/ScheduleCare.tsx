@@ -60,6 +60,7 @@ function isBookingResponse(r: unknown): r is BookingResponse {
   return typeof r === "object" && r !== null && "success" in r;
 }
 
+
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
 type Day = (typeof DAYS)[number];
 
@@ -487,18 +488,31 @@ const ScheduleCare = ({
       try {
         if (bookingId) {
           const result = await editBooking({ bookingId, payload }).unwrap();
-          if (isBookingResponse(result) && result.success) {
-            OnClose();
-            if (onBookingSuccess) {
-              onBookingSuccess({
-                startDate: payload.startDate,
-                meetingDate: payload.meetingDate,
-                endDate: payload.endDate ?? null,
-                weeklySchedule: payload.weeklySchedule,
-              });
-            }
-          } else {
-            setFormError(result.message || "Update failed. Please try again.");
+          const isStatusFlag = typeof result === "object" && result !== null && "status" in result;
+          const isSuccess = isBookingResponse(result)
+            ? Boolean((result as BookingResponse).success)
+            : isStatusFlag
+              ? Boolean((result as { status?: boolean }).status)
+              : true;
+
+          if (!isSuccess) {
+            const message = isBookingResponse(result)
+              ? (result as BookingResponse).message
+              : isStatusFlag
+                ? (result as { message?: string }).message
+                : "Update failed. Please try again.";
+            setFormError(message || "Update failed. Please try again.");
+            return;
+          }
+
+          OnClose();
+          if (onBookingSuccess) {
+            onBookingSuccess({
+              startDate: payload.startDate,
+              meetingDate: payload.meetingDate,
+              endDate: payload.endDate ?? null,
+              weeklySchedule: payload.weeklySchedule,
+            });
           }
         }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

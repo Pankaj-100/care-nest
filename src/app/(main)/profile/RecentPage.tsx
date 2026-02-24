@@ -16,11 +16,13 @@ import type { Booking } from "@/types/Booking";
 import { useGetBookmarkedCaregiversQuery, useBookmarkCaregiverMutation } from "@/store/api/bookingApi";
 import ScheduleCare from "@/components/careGiver/ScheduleCare";
 import BookSuccessful from "@/components/careGiver/BookSuccessful";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSelectedCaregivers, clearBookingState, type SelectedCaregiver } from "@/store/slices/bookingSlice";
 
 const SavedCaregiversPanel = () => {
+  const toastContainerId = "profile-toast";
+  const cdnURL = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "";
   const { data, isLoading, isError, refetch } = useGetBookmarkedCaregiversQuery();
   const [removeBookmarkedCaregiver] = useBookmarkCaregiverMutation();
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
@@ -55,7 +57,11 @@ const SavedCaregiversPanel = () => {
     .map(giver => ({
       id: giver.id,
       name: giver.name,
-      avatar: giver.avatar ?? "/care-giver/boy-icon.png",
+      avatar: giver.avatar
+        ? giver.avatar.startsWith("http")
+          ? giver.avatar
+          : `${cdnURL}/${giver.avatar.replace(/^\/+/, "")}`
+        : "/care-giver/boy-icon.png",
       specialty: giver.services.join(", "),
       experience: typeof giver.experience === "string" ? giver.experience : giver.experience ? `${giver.experience} Years` : "0+ Years",
       price: giver.price ? `₹${giver.price}` : "N/A",
@@ -74,17 +80,23 @@ const SavedCaregiversPanel = () => {
 
   // Handler to remove caregiver from bookmarks
   const handleRemoveBookmark = async (id: string) => {
+    const toastId = toast.success("Caregiver removed successfully!", {
+      containerId: toastContainerId,
+    });
     try {
       await removeBookmarkedCaregiver(id).unwrap();
-      toast.success("Caregiver removed successfully!");
       refetch(); // Refetch to update the UI
     } catch {
-      toast.error("Failed to remove caregiver. Please try again.");
+      toast.dismiss(toastId);
+      toast.error("Failed to remove caregiver. Please try again.", {
+        containerId: toastContainerId,
+      });
     }
   };
 
   return (
     <div className="p-3 sm:p-4 md:p-6 mt-6 md:mt-10">
+      <ToastContainer position="top-right" autoClose={3000} containerId={toastContainerId} />
       <h2 className="text-2xl text-center sm:text-left sm:text-2xl font-bold">Saved Caregivers</h2>
       {data.data.givers.length === 0 ? (
         <div className="flex flex-col items-center justify-center mt-8 sm:mt-10 space-y-4">
@@ -112,7 +124,7 @@ const SavedCaregiversPanel = () => {
                     giver.avatar
                       ? giver.avatar.startsWith("http")
                         ? giver.avatar
-                        : `https://creative-story.s3.us-east-1.amazonaws.com/${giver.avatar.replace(/^\/+/,"")}`
+                        : `${cdnURL}/${giver.avatar.replace(/^\/+/,"")}`
                       : "/care-giver/boy-icon.png"
                   }
                   specialty={giver.services && giver.services.length > 0 ? giver.services.join(", ") : "General care"}

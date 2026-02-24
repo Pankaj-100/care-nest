@@ -127,14 +127,14 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
           alt="Veteran 1"
           width={232}
           height={264}
-          className="w-28 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
+          className="w-28 sm:w-32 md:w-60 h-auto object-cover rounded-xl shadow-md"
         />
         <Image
           src={image2Src}
           alt="Veteran 2"
           width={232}
           height={264}
-          className="w-28 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
+          className="w-28 sm:w-32 md:w-68 h-auto object-cover rounded-xl shadow-md"
         />
         <div className="relative">
           <Image
@@ -142,7 +142,7 @@ export default function VeteransFinancialAssistance({ pageData, faqSectionTitle,
             alt="Veteran 3"
             width={232}
             height={264}
-            className="w-28 sm:w-32 md:w-50 h-auto object-cover rounded-xl shadow-md"
+            className="w-28 sm:w-32 md:w-60 h-auto object-cover rounded-xl shadow-md"
           />
           {/* Yellow design image, position as needed
           <Image src="/veterans/yellow.png" alt="Yellow Design" width={104} height={104} className="absolute bottom-0 right-1 w-26 h-26" /> */}

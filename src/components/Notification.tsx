@@ -21,6 +21,8 @@ function Notification({ open, handleOpen }: Props) {
   const [page, setPage] = useState(1);
   const limit = 5;
   const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [hasMore, setHasMore] = useState(false);
   
   const token = Cookies.get("authToken");
   const { data, isLoading, isError, refetch } = useGetNotificationsQuery(
@@ -35,9 +37,20 @@ function Notification({ open, handleOpen }: Props) {
   const [clearAllNotifications] = useClearAllNotificationsMutation();
 
   
-  const notifications = data?.data?.notifications || [];
-  const hasMore = data?.data?.hasMore || false;
   const unreadCount = unreadCountData?.data?.unreadCount || 0;
+
+  useEffect(() => {
+    if (!data?.data?.notifications) return;
+
+    setHasMore(Boolean(data.data.hasMore));
+    setNotifications((prev) => {
+      if (page === 1) return data.data.notifications;
+
+      const existingIds = new Set(prev.map((item) => item.id));
+      const nextItems = data.data.notifications.filter((item) => !existingIds.has(item.id));
+      return [...prev, ...nextItems];
+    });
+  }, [data, page]);
 
   // Listen for real-time notifications
   useEffect(() => {
@@ -54,12 +67,17 @@ function Notification({ open, handleOpen }: Props) {
 
   // Refetch when sheet opens
   useEffect(() => {
-    if (open) {
+    if (!open || !token) {
+      setNotifications([]);
+      setHasMore(false);
       setPage(1);
-      refetch();
-      refetchUnreadCount();
+      return;
     }
-  }, [open, refetch, refetchUnreadCount]);
+
+    setPage(1);
+    refetch();
+    refetchUnreadCount();
+  }, [open, token, refetch, refetchUnreadCount]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -70,6 +88,13 @@ function Notification({ open, handleOpen }: Props) {
   const handleMarkAsRead = async (notificationId: string) => {
     try {
       await markAsRead(notificationId).unwrap();
+      setNotifications((prev) =>
+        prev.map((notif) =>
+          notif.id === notificationId
+            ? { ...notif, isRead: true, readAt: new Date().toISOString() }
+            : notif
+        )
+      );
       refetchUnreadCount();
     } catch (error) {
       console.error("Failed to mark as read:", error);
@@ -100,7 +125,7 @@ function Notification({ open, handleOpen }: Props) {
       handleOpen={handleOpen}
       className="md:!max-w-[28rem] !w-full rounded-l-3xl px-1 text-[var(--blue-gray)] mx-0 z-99999"
     >
-      <div className="mt-0">
+      <div className="mt-0 flex h-full flex-col">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button
@@ -120,7 +145,7 @@ function Notification({ open, handleOpen }: Props) {
         </div>
 
         <div
-          className="mt-5 flex flex-col px-3 max-h-[calc(100vh-200px)] overflow-y-auto"
+          className="mt-5 flex flex-1 flex-col px-3 overflow-y-auto"
           onScroll={(event) => {
             const target = event.currentTarget;
             const threshold = 80;
@@ -198,6 +223,7 @@ function Notification({ open, handleOpen }: Props) {
                   e.stopPropagation();
                   try {
                     await deleteNotification(notification.id).unwrap();
+                    setNotifications((prev) => prev.filter((item) => item.id !== notification.id));
                     refetch();
                     refetchUnreadCount();
                     toast.success('Notification deleted successfully!', { position: 'top-left' });
@@ -220,7 +246,7 @@ function Notification({ open, handleOpen }: Props) {
 
         {/* Mark all as read and Clear all buttons - always display when notifications exist */}
         {notifications.length > 0 && (
-          <div className="lg:mt-9 mt-4 px-3 pb-2 flex gap-2">
+          <div className="mt-auto px-3 pb-2 pt-4 flex gap-2">
             <button
               onClick={() => {
                 notifications.forEach(notif => {
@@ -236,6 +262,9 @@ function Notification({ open, handleOpen }: Props) {
             <button
               onClick={async () => {
                 await clearAllNotifications();
+                setNotifications([]);
+                setHasMore(false);
+                setPage(1);
                 refetch();
                 refetchUnreadCount();
                 toast.success('Notifications cleared successfully!', { position: 'top-left' });

@@ -71,7 +71,7 @@ export default function ManageProfile() {
     gender: "",
     city: "",
     address: "",
-    mobile: "",
+    mobile: "+1 ",
     zipcode: "",
     careRecipient: "",
   });
@@ -111,13 +111,17 @@ export default function ManageProfile() {
         if (Number.isFinite(n)) normalizedZip = n;
       }
 
+      const digits = (p.mobile || "").replace(/[^0-9]/g, "");
+      const withoutCountry = digits.startsWith("1") ? digits.slice(1) : digits;
+      const limitedMobile = withoutCountry.slice(0, 10);
+
       setForm({
         name: p.name || "",
         email: p.email || "",
         gender: p.gender || "",
         city: (p as any).city || "",
         address: p.address || "",
-        mobile: p.mobile || "",
+        mobile: `+1 ${limitedMobile}`,
         zipcode: normalizedZip !== undefined ? String(normalizedZip) : "",
         careRecipient: "",
       });
@@ -153,8 +157,11 @@ export default function ManageProfile() {
         return value.trim() === "" ? "City is required" : "";
       case "address":
         return value.trim() === "" ? "Address is required" : "";
-      case "mobile":
-        return /^\d{10}$/.test(value) ? "": "Mobile must be 10 digits";
+      case "mobile": {
+        const digits = value.replace(/[^0-9]/g, "");
+        const tenDigits = digits.startsWith("1") ? digits.slice(1) : digits;
+        return /^\d{10}$/.test(tenDigits) ? "" : "Mobile must be 10 digits";
+      }
       case "zipcode":
         return /^\d{5}$/.test(value) ? "" : "Zip code must be 5 digits";
       default:
@@ -166,7 +173,12 @@ export default function ManageProfile() {
     const { name, value } = e.target;
     let nextVal = value;
     
-    if (name === "mobile" || name === "zipcode") {
+    if (name === "mobile") {
+      const digits = value.replace(/\D/g, "");
+      const withoutCountry = digits.startsWith("1") ? digits.slice(1) : digits;
+      const limited = withoutCountry.slice(0, 10);
+      nextVal = `+1 ${limited}`;
+    } else if (name === "zipcode") {
       nextVal = value.replace(/\D/g, "");
     } else if (name === "name") {
       // Only allow alphabets and spaces
@@ -259,8 +271,10 @@ export default function ManageProfile() {
     }
 
     try {
+      const mobileDigits = form.mobile.replace(/[^0-9]/g, "");
       const payload = {
         ...form,
+        mobile: mobileDigits,
         zipcode: zipNum, // send number
       } as unknown as Parameters<typeof updateProfile>[0];
 

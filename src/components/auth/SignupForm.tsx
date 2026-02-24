@@ -21,7 +21,7 @@ import { useSignupMutation } from "@/store/api/authApi";
 function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+1 ");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
@@ -53,6 +53,8 @@ function SignupForm() {
   const router = useRouter();
   const [signup, { isLoading }] = useSignupMutation();
 
+  const normalizePhone = (value: string) => value.replace(/[^0-9]/g, "");
+
   const validateField = (field: string, value: string) => {
     switch (field) {
       case "name":
@@ -63,8 +65,11 @@ function SignupForm() {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
           ? ""
           : "Invalid email format";
-      case "phone":
-        return /^\d{10}$/.test(value) ? "" : "Phone must be 10 digits";
+      case "phone": {
+        const digits = normalizePhone(value);
+        const tenDigits = digits.startsWith("1") ? digits.slice(1) : digits;
+        return /^\d{10}$/.test(tenDigits) ? "" : "Phone must be 10 digits";
+      }
       case "address":
         return value.trim() ? "" : "Address is required";
       case "city":
@@ -138,7 +143,7 @@ function SignupForm() {
         name: name.trim(),
         email: email.trim(),
         address: address.trim(),
-        mobile: phone.trim(),
+        mobile: normalizePhone(phone),
         zipcode: zipcodeNum,
         password,
         role: "user",
@@ -191,7 +196,14 @@ function SignupForm() {
       />
       <TextInput
         text={phone}
-        setText={setPhone}
+        setText={(value) => {
+          if (typeof value === "string") {
+            const digits = normalizePhone(value);
+            const withoutCountry = digits.startsWith("1") ? digits.slice(1) : digits;
+            const limited = withoutCountry.slice(0, 10);
+            setPhone(`+1 ${limited}`);
+          }
+        }}
         Icon={phoneIcon}
         placeholder="Enter Phone Number"
         error={touched.phone ? errors.phone : ""}

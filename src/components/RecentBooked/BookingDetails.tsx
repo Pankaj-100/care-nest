@@ -8,7 +8,7 @@ import CaregiverModal from "../careGiver/CaregiverModal";
 import ScheduleCare from "../careGiver/ScheduleCare";
 import { binIcon } from "@/lib/svg_icons";
 import type { Booking, WeeklyScheduleSlot } from "@/types/Booking";
-import { useCancelBookingMutation, useEditBookingMutation } from "@/store/api/bookingApi";
+import { useCancelBookingMutation } from "@/store/api/bookingApi";
 import { toast } from "react-toastify";
 
 interface BookingDetailsProps {
@@ -21,8 +21,6 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
   const [openDeleteDialog, setOpenDialog] = useState(false);
   const [selectedCaregiverId, setSelectedCaregiverId] = useState<string | null>(null);
   const [cancelBooking, { isLoading: isCancelling }] = useCancelBookingMutation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [editBooking, { isLoading: isSaving }] = useEditBookingMutation();
   const [isEditing, setIsEditing] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(booking);
   const [showAllTimings, setShowAllTimings] = useState(false);
@@ -58,28 +56,19 @@ export default function BookingDetails({ booking, isLoading = false }: BookingDe
     endDate: string | null;
     weeklySchedule: WeeklyScheduleSlot[];
   }) => {
-    try {
-      const payload = {
-        startDate: updatedValues.startDate,
-        meetingDate: updatedValues.meetingDate,
-        endDate: updatedValues.endDate || null,
-        weeklySchedule: updatedValues.weeklySchedule,
-      };
-      const result = await editBooking({ bookingId: booking.bookingId, payload }).unwrap();
-      if (result.success) {
-        toast.success("Care Request details updated successfully!");
-        setIsEditing(false);
-        setBookingDetails(prev => ({
-          ...prev,
-          ...payload,
-          endDate: payload.endDate ?? "",
-        }));
-      } else {
-        toast.error(result.message || "Update failed. Please try again.");
-      }
-    } catch {
-      toast.error("Update failed. Please try again.");
-    }
+    const payload = {
+      startDate: updatedValues.startDate,
+      meetingDate: updatedValues.meetingDate,
+      endDate: updatedValues.endDate || null,
+      weeklySchedule: updatedValues.weeklySchedule,
+    };
+    toast.success("Care Request details updated successfully!");
+    setIsEditing(false);
+    setBookingDetails(prev => ({
+      ...prev,
+      ...payload,
+      endDate: payload.endDate ?? "",
+    }));
   };
 
   if (!booking) return <div className="p-4">No booking selected</div>;

@@ -100,7 +100,7 @@ const ResetPassword = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="lg:flex items-center hidden gap-2 bg-yellow-400 hover:bg-yellow-500 text-[var(--navy)] px-4 lg:py-2 py-0 rounded-full transition duration-200 ease-in-out font-semibold disabled:opacity-60"
+            className="lg:flex items-center hidden gap-2 bg-[#F2A307] hover:bg-yellow-500 text-[var(--navy)] px-4 lg:py-2 py-0 rounded-full transition duration-200 ease-in-out font-semibold disabled:opacity-60"
           >
             {isLoading ? "Saving..." : "Save"}
             <span><Image src="/Recent/file.png" alt="save" width={20} height={20} /></span>

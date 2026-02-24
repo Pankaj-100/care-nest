@@ -8,7 +8,7 @@ import HeroSectionCareProvider from "@/components/careProvider/HeroSectionCarePr
 
 export default function BookingDetailsPage() {
   const { bookingId } = useParams();
-  const [selectedOption, setSelectedOption] = useState("Recent Booking");
+  const [selectedOption, setSelectedOption] = useState("Recent Care Requests");
   const { data, isLoading, error } = useGetRecentBookingsQuery(undefined); // fetch all bookings
 
   if (error) return <div className="p-6 text-red-500">Failed to load booking.</div>;
@@ -21,7 +21,7 @@ export default function BookingDetailsPage() {
 
   return (
     <>
-      <HeroSectionCareProvider title="Booking Details" />
+      <HeroSectionCareProvider title="Care Request Details" />
       <div className="min-h-screen bg-[#F8F9FA] max-w-7xl mx-auto flex flex-col md:flex-row p-4 gap-4">
         {isLoading ? (
           <>
