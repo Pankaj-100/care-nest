@@ -38,7 +38,7 @@ const JoinCommunity = () => {
             <div className="relative w-6 h-6 sm:w-8 sm:h-8 -ml-6 sm:-ml-12">
               <Image src={"/yellow 3 line.png"} alt="community" fill />
             </div>
-            <div className="relative w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-t-2xl rounded-l-2xl">
+            <div className="relative w-36 h-32 sm:w-40 sm:h-40 lg:w-52 lg:h-52 rounded-t-2xl rounded-l-2xl">
               <Image
                 src={"/community-img-1.png"}
                 alt="community"
@@ -56,7 +56,7 @@ const JoinCommunity = () => {
                 className="rounded-t-2xl rounded-r-2xl"
               />
             </div>
-            <div className="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-34 lg:h-35 rounded-t-2xl rounded-r-2xl">
+            <div className="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 rounded-t-2xl rounded-r-2xl">
               <Image
                 src={"/community-img-3.png"}
                 alt="community"
@@ -68,7 +68,7 @@ const JoinCommunity = () => {
         </div>
 
         <div className="flex mt-3 gap-3">
-          <div className="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-35 lg:h-35 rounded-l-2xl rounded-b-2xl ml-2">
+          <div className="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-38 lg:h-38 rounded-l-2xl rounded-b-2xl ml-5">
             <Image
               src={"/community-img-3.png"}
               alt="community"
@@ -76,7 +76,7 @@ const JoinCommunity = () => {
               className="rounded-l-2xl rounded-b-2xl object-cover"
             />
           </div>
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-r-2xl rounded-b-2xl">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-32 lg:h-32 rounded-r-2xl rounded-b-2xl">
             <Image
               src={"/community-img-1.png"}
               alt="community"
