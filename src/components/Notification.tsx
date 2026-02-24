@@ -25,10 +25,10 @@ function Notification({ open, handleOpen }: Props) {
   const token = Cookies.get("authToken");
   const { data, isLoading, isError, refetch } = useGetNotificationsQuery(
     { page, limit },
-    { skip: !open }
+    { skip: !open || !token }
   );
   
-  const { data: unreadCountData, refetch: refetchUnreadCount } = useGetUnreadCountQuery();
+  const { data: unreadCountData, refetch: refetchUnreadCount } = useGetUnreadCountQuery(undefined, { skip: !token });
   const [markAsRead] = useMarkAsReadMutation();
   const { onNewNotification } = useSocket(token);
   const [deleteNotification] = useDeleteNotificationMutation();

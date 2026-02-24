@@ -19,10 +19,11 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const token = Cookies.get("authToken");
   
-  const { data } = useGetUnreadCountQuery();
+  // Only fetch unread count if user is authenticated
+  const { data } = useGetUnreadCountQuery(undefined, { skip: !token });
   const { onNewNotification } = useSocket(token);
   
-  const unreadCount = data?.data?.unreadCount || 0;
+  const unreadCount = token && data?.data?.unreadCount ? data.data.unreadCount : 0;
 
   useEffect(() => {
     if (!token) return;
